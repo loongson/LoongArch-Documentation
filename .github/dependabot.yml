@@ -1,0 +1,21 @@
+version: 2
+updates:
+  # Enable version updates for github-actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependabot"
+    commit-message:
+      prefix: "github-actions"
+
+  # Enable version updates for ruby
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependabot"
+    commit-message:
+      prefix: "bundler"

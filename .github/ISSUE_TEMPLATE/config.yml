@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Bug is about original documents
+    url: http://bugs.loongnix.org
+    about: Please report problems with original documents here.
+  - name: Bug is about Asciidoctor
+    url: https://github.com/asciidoctor/asciidoctor
+    about: Please report problems with Asciidoctor here.
+  - name: Bug is about Asciidoctor PDF
+    url: https://github.com/asciidoctor/asciidoctor-pdf
+    about: Please report problems with Asciidoctor PDF here.

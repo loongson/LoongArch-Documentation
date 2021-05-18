@@ -1,0 +1,24 @@
+extends: default-with-fallback-font
+font:
+  catalog:
+    merge: true
+    Roboto:
+      normal: Roboto/Roboto-Regular.ttf
+      bold: Roboto/Roboto-Bold.ttf
+      italic: Roboto/Roboto-Italic.ttf
+      bold_italic: Roboto/Roboto-BoldItalic.ttf
+    Roboto Mono:
+      normal: Roboto_Mono/RobotoMono-Regular.ttf
+      bold: Roboto_Mono/RobotoMono-Bold.ttf
+      italic: Roboto_Mono/RobotoMono-Italic.ttf
+      bold_italic: Roboto_Mono/RobotoMono-BoldItalic.ttf
+base:
+  font_family: Roboto
+literal:
+  font_family: Roboto Mono
+key:
+  font_family: $literal_font_family
+code:
+  font_family: $literal_font_family
+conum:
+  font_family: $literal_font_family
