@@ -1,5 +1,5 @@
-[[unaligned-storage-access]]
-==== Unaligned Storage Access
+[[unaligned-memory-access]]
+==== Unaligned Memory Access
 
 The fetch addresses of all instruction fetches must be aligned on 4-byte boundaries, otherwise the ADEF will be triggered.
 

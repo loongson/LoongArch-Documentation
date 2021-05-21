@@ -1,0 +1,12 @@
+[[section-memory-access-types]]
+=== Memory Access Types
+
+As mentioned in <<memory-access-types,Memory Access Types>>, there are three types of memory access in LoongArch, including CC, SUC, and WUC.
+
+When the MMU of the processor core is in direct address translation mode, the memory access types of all fetch operations are determined by `CSR.CRMD.DATF`, and the memory access types of all load/store operations are determined by `CSR.CRMD.DATM`.
+
+When the MMU of the processor core is in mapped address translation mode, the memory access types are divided into two cases.
+If the address of a fetch or load/store operation falls on one of the direct mapping configuration windows, then its memory access type is determined by the MAT field in the CSR register that is configured in the window.
+If the fetch or load/store can only be mapped through the page table, then its memory access type is determined by the MAT field in the page table entry.
+
+In any case, the definition of the control value for the memory access type is always the same: `0` for strongly-ordered uncached, `1` for coherent cached, `2` for weakly-ordered uncached, and `3` for reserved.

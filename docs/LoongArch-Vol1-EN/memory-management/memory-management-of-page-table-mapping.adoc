@@ -1,0 +1,15 @@
+[[memory-management-of-page-table-mapping]]
+=== Memory Management of Page Table Mapping
+
+In mapped address translation mode, all legal addresses, except those that fall in the direct mapping configuration window, must be mapped through the page table to complete the translation of virtual addresses to physical addresses.
+As a temporary Cache for the processor to store information about page tables in the operating system, TLB is used to speed up the translation of virtual addresses to physical addresses for fetch and load/store operations in mapped address translation mode.
+
+include::memory-management-of-page-table-mapping/tlb-organizational-structure.adoc[]
+
+include::memory-management-of-page-table-mapping/tlb-entry.adoc[]
+
+include::memory-management-of-page-table-mapping/software-management-of-tlb.adoc[]
+
+include::memory-management-of-page-table-mapping/tlb-based-translation-of-virtual-addresses-to-physical-addresses.adoc[]
+
+include::memory-management-of-page-table-mapping/multi-level-page-table-structure-supported-by-page-walking.adoc[]

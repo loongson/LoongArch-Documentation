@@ -21,7 +21,7 @@ The basic part of LoongArch includes an non-privileged instruction set and a pri
 The non-privileged instruction set defines commonly used integer and floating-point instructions, which can adequately support the current mainstream compiler to generate efficient target codes.
 
 The virtualization extension part of LoongArch is used for operating system virtualization to provide hardware acceleration to improve performance.
-This part involves basically all privileged resources, including some privileged instructions and control and status registers, functions added in exceptions and interrupts, storage management, and so on.
+This part involves basically all privileged resources, including some privileged instructions and control and status registers, functions added in exceptions and interrupts, memory management, and so on.
 
 The binary translation extension part of LoongArch is used to improve the execution efficiency of the cross-instruction system binary translation on the LoongArch platform.
 It expands on the basic part and also includes two parts, the non-privileged instruction set and the privileged instruction set.
@@ -41,6 +41,6 @@ The so-called "`incremental`" means that for any part that can be evolved indepe
 
 Starting from Chapter 2 of this manual, the specification of the LoongArch will be described in detail.
 The contents of Chapter 2 and 3 involve the non-privileged instruction set part of the architecture, including the function definitions of basic integer instructions and basic floating-point instructions and their application-level programming models.
-Chapters 4 to 7 are used to describe the privileged resources in the architecture, mainly including the introduction of privileged instructions, control and status registers, function specifications in operating modes, exceptions and interrupts, storage management, and etc.
+Chapters 4 to 7 are used to describe the privileged resources in the architecture, mainly including the introduction of privileged instructions, control and status registers, function specifications in operating modes, exceptions and interrupts, memory management, and etc.
 The pseudo-code descriptions designed to describe the function definitions of instructions are concentrated in Appendix A.
 The specific coding definitions of the instructions involved are listed in Appendix B.

@@ -24,7 +24,7 @@ include::docs/LoongArch-Vol1-EN/basic-floating-point-instructions.adoc[]
 
 include::docs/LoongArch-Vol1-EN/overview-of-privileged-resources.adoc[]
 
-include::docs/LoongArch-Vol1-EN/storage-management.adoc[]
+include::docs/LoongArch-Vol1-EN/memory-management.adoc[]
 
 include::docs/LoongArch-Vol1-EN/exceptions-and-interrupts.adoc[]
 

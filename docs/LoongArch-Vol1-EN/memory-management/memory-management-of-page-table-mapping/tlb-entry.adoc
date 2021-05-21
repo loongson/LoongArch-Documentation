@@ -54,8 +54,8 @@ This bit is set when a fetch operation is not allowed on the address space where
 This control bit is only exist in LA64.
 
 * **M**emory **A**ccess **T**ype (`MAT`), `2` bits.
-`MAT` controls the type of storage access that falls on the address space where the page table entry is located.
-See <<section-storage-access-types,Storage Access Types>> for the specific meaning of each value.
+`MAT` controls the type of memory access that falls on the address space where the page table entry is located.
+See <<section-memory-access-types,Memory Access Types>> for the specific meaning of each value.
 
 * **P**rivilege **L**e**V**el (`PLV`), `2` bits.
 `PLV` refers to the privilege level corresponding to this page table entry.

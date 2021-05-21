@@ -18,7 +18,7 @@ When `CSR.CRMD.DA=0` and `CSR.CRMD.PG=1`, the MMU of the processor core is in ma
 Specifically, there are two types of address translation modes: direct mapped address translation mode (direct mapped mode) and page table mapped address translation mode (page table mapped mode).
 When translating addresses, the direct mapped mode is preferred.
 Only when the address cannot be translated by the direct mapped mode, the page table mapped mode is used for translation.
-See <<direct-mapped-address-translation-mode,Direct Mapped Address Translation Mode>> for details on the direct mapped mode and <<storage-management-of-page-table-mapping,Storage Management of Page Table Mapping>> for details on the page table mapped mode.
+See <<direct-mapped-address-translation-mode,Direct Mapped Address Translation Mode>> for details on the direct mapped mode and <<memory-management-of-page-table-mapping,Memory Management of Page Table Mapping>> for details on the page table mapped mode.
 The rules for virtual address space legality during using the page table mapped mode in LA64 are presented here.
 The `[63:PALEN]` bits of the legal virtual address must be the same as the `[PALEN-1]` bits, otherwise an **AD**dress error **E**xception (ADE) will be triggered.
 In direct mapped mode, however, this address illegality check is not required.

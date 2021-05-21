@@ -1,7 +1,7 @@
-[[overview-of-storage-consistency]]
-==== Overview of Storage Consistency
+[[overview-of-memory-consistency]]
+==== Overview of Memory Consistency
 
-The storage consistency model of the LoongArch uses the **W**eak **C**onsistency (WC) model.
+The memory consistency model of the LoongArch uses the **W**eak **C**onsistency (WC) model.
 This section only gives a brief description of the weak consistency model adopted by the architecture.
 
 In the weak consistency model, synchronization operations need to be distinguished from ordinary memory accesses.

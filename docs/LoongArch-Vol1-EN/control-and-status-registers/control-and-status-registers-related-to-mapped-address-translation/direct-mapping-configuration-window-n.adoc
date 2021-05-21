@@ -36,7 +36,7 @@ d|Name
 |5:4
 |MAT
 |RW
-|The virtual address falls under the storage access type of the access operation in this mapping window.
+|The virtual address falls under the memory access type of the access operation in this mapping window.
 
 |59:6
 |0
@@ -82,7 +82,7 @@ d|Name
 |5:4
 |MAT
 |RW
-|The virtual address falls under the storage access type of the access operation in this mapping window.
+|The virtual address falls under the memory access type of the access operation in this mapping window.
 
 |24:6
 |0

@@ -1,2 +1,3 @@
 FreeFlyingSheep <chenfeiyang@loongson.cn>
+qmuntal <quimmuntal@gmail.com>
 sterling-teng <siyanteng@loongson.cn>

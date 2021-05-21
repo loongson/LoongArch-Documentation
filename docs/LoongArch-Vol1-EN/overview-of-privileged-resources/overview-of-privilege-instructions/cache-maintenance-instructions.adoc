@@ -27,12 +27,12 @@ Suppose the Cache to be accessed has `(1<<Way)` ways, each ways has `(1<<Index)`
 See the previous paragraph for a definition of the direct address indexing method.
 The operation to maintain consistency is an invalidate and writeback operation on the specified Cache.
 If the operation is on the instruction Cache, then only the invalidation operation is performed, not the writing back of the data in the Cache row.
-The data written back into which level of storage is determined by the specific implementation of the Cache hierarchy and the inclusion or mutually exclusive relationship between the levels.
+The data written back into which level of memory is determined by the specific implementation of the Cache hierarchy and the inclusion or mutually exclusive relationship between the levels.
 For data Cache or mixed Cache, it is up to the implementation to decide whether to write back the data in the Cacche row only if it is dirty.
 
-`op[4:3]=2` means that Cache consistency is maintained by query indexing (Hit Invalidate / Invalidate and Writeback).
+`op[4:3]=2` means that Cache coherency is maintained by query indexing (Hit Invalidate / Invalidate and Writeback).
 
-The operation of maintaining Cache consistency here is the same as described in the above paragraph.
+The operation of maintaining Cache coherency here is the same as described in the above paragraph.
 The so-called query index approach treats the `VA` of the `CACOP` instruction as a normal load instruction to access the Cache to be operated on, and if it hits, it operates on the hit Cache row, otherwise it does not do any operation.
 Since this query process may involve virtual-to-real address translation, the CACOP instruction may trigger TLB-related exceptions in this case.
 However, since the CACOP instruction operates on Cache rows, there is no need to consider address alignment or not in this case.

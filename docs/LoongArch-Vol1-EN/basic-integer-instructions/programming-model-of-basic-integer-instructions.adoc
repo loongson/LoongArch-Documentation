@@ -18,8 +18,8 @@ include::programming-model-of-basic-integer-instructions/memory-address-space.ad
 
 include::programming-model-of-basic-integer-instructions/endian.adoc[]
 
-include::programming-model-of-basic-integer-instructions/storage-access-types.adoc[]
+include::programming-model-of-basic-integer-instructions/memory-access-types.adoc[]
 
-include::programming-model-of-basic-integer-instructions/unaligned-storage-access.adoc[]
+include::programming-model-of-basic-integer-instructions/unaligned-memory-access.adoc[]
 
-include::programming-model-of-basic-integer-instructions/overview-of-storage-consistency.adoc[]
+include::programming-model-of-basic-integer-instructions/overview-of-memory-consistency.adoc[]

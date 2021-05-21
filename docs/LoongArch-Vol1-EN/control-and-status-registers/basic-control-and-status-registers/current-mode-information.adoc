@@ -75,7 +75,7 @@ The result is uncertain when the software is configured for other combinations.
 |6:5
 |DATF
 |RW
-|The type of storage access for fetch operations when in direct address translation mode.
+|The type of memory access for fetch operations when in direct address translation mode.
 
 The hardware sets this field to `0` when a machine error exception is triggered.
 
@@ -86,7 +86,7 @@ In the case of using software to handle TLB refill, when the software sets `PG` 
 |8:7
 |DATM
 |RW
-|The type of storage access for load and store operations when in direct address translation mode.
+|The type of memory access for load and store operations when in direct address translation mode.
 
 The hardware sets this field to `0` when a machine error exception is triggered.
 

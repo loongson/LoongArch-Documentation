@@ -102,4 +102,4 @@ During the execution of the paired `LLSC`, the following events will clear the `
 
 * Other processor cores or Cache Coherent I/O masters perform a store operation on the Cache line where the address corresponding to the `LLbit` is located.
 
-If the storage access attribute of the `LLSC` instruction to the access address is not Cached, then the execution result is uncertain.
+If the memory access attribute of the `LLSC` instruction to the access address is not Cached, then the execution result is uncertain.
