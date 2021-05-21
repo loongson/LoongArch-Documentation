@@ -1,0 +1,12 @@
+[[circular-right-shift]]
+==== Circular Right Shift
+
+[source]
+----
+bits(N) ROTR(bits(N) x, integer sa):
+    if sa == 0:
+        result = x
+    else:
+        result = {x[sa-1:0], x[N-1:sa]}
+    return result
+----

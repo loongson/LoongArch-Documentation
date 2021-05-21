@@ -1,0 +1,26 @@
+[[interrupt-types]]
+==== Interrupt Types
+
+Interrupts in LoongArch take the form of line-based interrupts.
+Each processor core can record 13 line-based interrupts: one **I**nter-**P**rocessor **I**nterrupt (IPI), one **T**imer **I**nterrupt (TI), one **P**erformance **M**onitor **C**ounter **O**verflow **I**nterrupt (PMCOV), eight **H**ard**W**are **I**nterrupts (HWI0–HWI7), and two **S**oft**W**are **I**nterrupts (SWI0–SWI1).
+All line-based interrupts are level-triggered and are high level triggered.
+
+The interrupt source for inter-processor interrupts comes from an interrupt controller outside the core, which is recorded by the processor core in the `CSR.ESTA.IS[12]` bit.
+
+The interrupt source for the timer interrupt is from the constant frequency timer in the core.
+This interrupt is triggered when the constant frequency timer counts down to zero.
+The timer interrupt is recorded by the processor core in the `CSR.ESTA.IS[11]` bit.
+Clearing the timer interrupt is accomplished by the software via writing `1` to `CSR.TICLR.TI`.
+
+The interrupt source for the performance monitor counter overflow interrupt comes from the performance monitor counter in the core.
+This interrupt is triggered when the `[63]` bit of the performance counter of any enabled interrupt is `1`.
+The performance monitor counter overflow interrupt is recorded by the processor core in the `CSR.ESTA.IS[10]` bit.
+To clear a performance monitor counter overflow interrupt, set the performance monitor counter of the interrupt that is triggered to `0` at the `[63]` bit, or disable the interrupt for that performance monitor counter.
+
+The interrupt source for hardware interrupts comes from outside the processor core, and its direct source is usually an interrupt controller outside the core.
+8 hardware interrupts (`HWI[7:0]`) are recorded by the processor core in the `CSR.ESTA.IS[9:2]` bits .
+
+The source of the software interrupt comes from the internal core of the processor, and the software writes `1` to `CSR.ESTA.IS[1:0]` to set up the software interrupt and `0` to clear it.
+
+The index of the location of the interrupt recorded by the `CSR.ESTA.IS` field is also called the **Int**errupt *Number* (Int Number).
+Int number for SWI0 is equal to `0`, int number for SWI1 is equal to `1`, ... , int number of IPI is equal to `12`.

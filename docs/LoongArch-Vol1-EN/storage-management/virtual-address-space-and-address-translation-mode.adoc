@@ -1,0 +1,30 @@
+[[virtual-address-space-and-address-translation-mode]]
+=== Virtual Address Space and Address Translation Mode
+
+The virtual address space is linear/flat in LoongArch.
+For PLV0 level, the virtual address space size is 2^32^ bytes in LA32 and 2^64^ bytes in LA64.
+However, the 2^64^-byte virtual address space is not always legal in LA64.
+It can be assumed that there are some virtual address holes.
+The legal virtual address space is closely related to the address translation mode, which is described in the next section in conjunction with the definition of the address translation mode.
+
+The MMU in LoongArch supports two modes of translating virtual addresses to physical addresses: direct address translation mode and mapped address translation mode.
+
+When `CSR.CRMD.DA=1` and `CSR.CRMD.PG=0`, the MMU of the processor core is in direct address translation mode.
+In this mode, the physical address is by default equal to the `[PALEN-1:0]` bits of the virtual address (zero extension if necessary), unless the implementation uses other higher priority translation rules.
+The entire virtual address space is legal at this point.
+The processor will enter the direct address translation mode after reset.
+
+When `CSR.CRMD.DA=0` and `CSR.CRMD.PG=1`, the MMU of the processor core is in mapped address translation mode.
+Specifically, there are two types of address translation modes: direct mapped address translation mode (direct mapped mode) and page table mapped address translation mode (page table mapped mode).
+When translating addresses, the direct mapped mode is preferred.
+Only when the address cannot be translated by the direct mapped mode, the page table mapped mode is used for translation.
+See <<direct-mapped-address-translation-mode,Direct Mapped Address Translation Mode>> for details on the direct mapped mode and <<storage-management-of-page-table-mapping,Storage Management of Page Table Mapping>> for details on the page table mapped mode.
+The rules for virtual address space legality during using the page table mapped mode in LA64 are presented here.
+The `[63:PALEN]` bits of the legal virtual address must be the same as the `[PALEN-1]` bits, otherwise an **AD**dress error **E**xception (ADE) will be triggered.
+In direct mapped mode, however, this address illegality check is not required.
+
+include::virtual-address-space-and-address-translation-mode/direct-mapped-address-translation-mode.adoc[]
+
+include::virtual-address-space-and-address-translation-mode/32-bit-address-mode-in-la64.adoc[]
+
+include::virtual-address-space-and-address-translation-mode/virtual-address-reduction-mode-in-la64.adoc[]

@@ -1,0 +1,553 @@
+[[arithmetic-operation-instructions]]
+==== Arithmetic Operation Instructions
+
+===== `ADD.{W/D}`, `SUB.{W/D}`
+
+Instruction formats:
+
+[source]
+----
+add.w   rd, rj, rk
+add.d   rd, rj, rk
+sub.w   rd, rj, rk
+sub.d   rd, rj, rk
+----
+
+The `ADD.W` instruction performs the operation that the `[31:0]` bit data in the general register rj plus the `[31:0]` bit data in the general register `rk`; the resultant `[31:0]` bit is sign extension, then written into the general register `rd`.
+
+[source]
+----
+ADD.W:
+    tmp = GR[rj][31:0] + GR[rk][31:0]
+    GR[rd] = SignExtend(tmp[31:0],GRLEN)
+----
+
+The `SUB.W` instruction performs the operation that the `[31:0]` bit data in the general register `rk` minus the `[31:0]` bit data in the general register `rj`; the resultant `[31:0]` bit is sign extension, then written into the general register `rd`.
+
+[source]
+----
+SUB.W:
+    tmp = GR[rj][31:0] - GR[rk][31:0]
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `ADD.D` instruction performs the operation that the `[63:0]` bit data in the general register `rj` plus the `[63:0]` bit data in the general register `rk`; the result is written into the general register `rd`.
+
+[source]
+----
+ADD.D:
+    tmp = GR[rj][63:0] + GR[rk][63:0]
+    GR[rd] = tmp[63:0]
+----
+
+The `SUB.D` instruction performs the operation that the `[63:0]` bit data in the general register `rj` minus the `[63:0]` bit data in the general register `rk`; writes the result into the general register `rd`.
+
+[source]
+----
+SUB.D:
+    tmp = GR[rj][63:0] - GR[rk][63:0]
+    GR[rd] = tmp[63:0]
+----
+
+When the above instructions are executed, no special handling will be done on overflow.
+
+===== `ADDI.{W/D}`, `ADDU16I.D`
+
+Instruction formats:
+
+[source]
+----
+addi.w      rd, rj, si12
+addi.d      rd, rj, si12
+addu16i.d   rd, rj, si16
+----
+
+The `ADDI.W` instruction performs the operation that the `[31:0]` bit data in the general register `rj` plus the 12-bit immediate `si12` sign extension 32-bit data; the resultant `[31:0]` bit is sign extension, then written into the general register `rd`.
+
+[source]
+----
+ADDI.W:
+    tmp = GR[rj][31:0] + SignExtend(si12, 32)
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `ADDI.D` instruction performs the operation that the `[63:0]` bit data in the general register plus to the 64-bit data after 12-bit immediate `si12` sign-extension; the result is written into the general register `rd`.
+
+[source]
+----
+ADDI.D:
+    tmp = GR[rj][63:0] + SignExtend(si12, 64)
+    GR[rd] = tmp[63:0]
+----
+
+`ADDU16I.D` shifts the 16-bit immediate `sil6` logic to the left by 16 bits and then sign extensions the resultant data, the result plus `[63:0]` bit data in the general register `rj`, and the result of the addition is written into the general register `rd`.
+The `ADDU16I.D` instruction is used in conjunction with the `LDPTR.W/D` and `STPTR.W/D` instructions to accelerate GOT table-based access in position-independent codes.
+
+[source]
+----
+ADDU16I.D:
+    tmp = GR[rj][63:0] + SignExtend({si16, 16'b0}, 64)
+    GR[rd] = tmp[63:0]
+----
+
+When the above instructions are executed, no special handling will be done on overflow.
+
+===== `ALSL.{W[U]/D}`
+
+Instruction formats:
+
+[source]
+----
+alsl.w  rd, rj, rk, sa2
+alsl.d  rd, rj, rk, sa2
+alsl.wu rd, rj, rk, sa2
+----
+
+The `ALSL.W` instruction performs the operation that logical shift the `[31:0]` bit data in the general register `rj` to the left `(sa2 + 1)` and it plus the `[31:0]` bit data in the general register `rk`; then write the result into the general register `rd` after the sign extension.
+
+[source]
+----
+ALSL.W:
+    tmp = (GR[rj][31:0] << (sa2+1)) + GR[rk][31:0]
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+`ALSL.WU` logical shift the `[31:0]` bit data in the general register `rj` to the left `(sa2 + 1)` bit and it plus the `[31:0]` bit data in the general register `rk`; then the result is `[31:0]` bit zero after expansion, write to general register `rd`.
+
+[source]
+----
+ALSL.WU:
+    tmp = (GR[rj][31:0] << (sa2+1)) + GR[rk][31:0]
+    GR[rd] = ZeroExtend(tmp[31:0], GRLEN)
+----
+
+The `ALSL.D` instruction performs the operation that logical shift the `[63:0]` bit data in the general register `rj` `(sa2 + 1)` to the left and it plus the `[63:0]` bit data in the general register `rk`; then the result is written into the general register `rd`.
+
+[source]
+----
+ALSL.D:
+    tmp = (GR[rj][63:0] << (sa2+1)) + GR[rk][63:0]
+    GR[rd] = tmp[63:0]
+----
+
+When the above instructions are executed, no special handling will be done on overflow.
+
+===== `LU12I.W`, `LU32I.D`, `LU52I.D`
+
+Instruction formats:
+
+[source]
+----
+lu12i.w     rd, si20
+lu32i.d     rd, si20
+lu52i.d     rd, rj, si12
+----
+
+The LU12I.W instruction performs the operation that splice the 12-bit 0 behind the lowest bit of the 20-bit immediate si20, then writes it into the general register rd after sign extension.
+
+[source]
+----
+    LU12I.W:
+    GR[rd] = SignExtend({si20, 12'b0}, GRLEN)
+----
+
+The `LU32I.D` instruction performs the operation that splice the bit data `[31:0]` in the general register `rd` behind the lowest bit of the 20-bit immediate `si20` sign extension data; then the result is written into the general register `rd`.
+
+[source]
+----
+    LU32I.D:
+    GR[rd] = {SignExtend(si20, 32), GR[rd][31:0]}
+----
+
+The `LU52I.D` instruction performs the operation that splice the `[51:0]` bit data in the general register `rj` behind the lowest bit of the 12-bit immediate `sil2` sign extension data; then the result is written into the general register `rd`.
+
+[source]
+----
+    LU52I.D:
+    GR[rd] = {si12, GR[rd][51:0]}
+----
+
+When the above instructions are executed, no special handling will be done on overflow.
+
+===== `SLT[U]`
+
+Instruction formats:
+
+[source]
+----
+    slt     rd, rj, rk
+    sltu    rd, rj, rk
+----
+
+The `SLT` instruction performs the operation that compares the data in the general register `rj` with the data in the general register `rk` as signed integers.
+If the former is smaller than the latter, the value of the general register `rd` is set to `1`, otherwise it is set to `0`.
+
+[source]
+----
+SLT:
+    GR[rd] = (signed(GR[rj]) < signed(GR[rk])) ? 1 : 0
+----
+
+The `SLTU` instruction performs the operation that compares the data in the general register `rj` with the data in the general register `rk` as unsigned integers.
+If the former is less than the latter, the value of the general register `rd` is set to `1`, otherwise it is set to `0`.
+
+[source]
+----
+SLTU:
+    GR[rd] = (unsigned(GR[rj]) < unsigned(GR[rk])) ? 1 : 0
+----
+
+The data length compared by `SLT` and `SLTU` is consistent with the length of the general register of the executing machine.
+
+===== `SLT[U]I`
+
+Instruction formats:
+
+[source]
+----
+slti    rd, rj, si12
+sltui   rd, rj, si12
+----
+
+The `SLTI` instruction performs the operation that compares the data in the general register `rj` and the 12-bit immediate `sil2` sign extension data as a signed integer for size comparison.
+If the former is smaller than the latter, the value of the general register `rd` is set to `1`, otherwise it is set to `0`.
+
+[source]
+----
+SLTI:
+    tmp = SignExtend(si12, GRLEN)
+    GR[rd] = (signed(GR[rj]) < signed(tmp)) ? 1 : 0
+----
+
+The `SLTUI` instruction performs the operation that compares the data in the general register `rj` and the 12-bit immediate `sil2` sign extension data as an unsigned integer for size comparison.
+If the former is smaller than the latter, the value of the general register `rd` is set to `1`, otherwise it is set to `0`.
+
+[source]
+----
+SLTUI:
+    tmp = SignExtend(si12, GRLEN)
+    GR[rd] = (unsigned(GR[rj]) < unsigned(tmp)) ? 1 : 0
+----
+
+The data length compared by `SLTI` and `SLTUI` is consistent with the length of the general register of the executing machine.
+Note that for `SLTUI` instructions, immediate data is still sign extended.
+
+===== `PCADDI`, `PCADDU121`, `PCADDU18l`, `PCALAU12I`
+
+Instruction formats:
+
+[source]
+----
+pcaddi      rd, si20
+pcaddu12i   rd, si20
+pcaddu18i   rd, si20
+pcalau12i   rd, si20
+----
+
+The `PCADDI` instruction performs the operation that splice the `2` bit `0` behind the lowest bit of the 20-bit immediate data `si20` and sign extension, the resultant data plus the `PC` of the instruction; then the result of the addition is written into the general register `rd`.
+
+[source]
+----
+PCADDI:
+    GR[rd]= PC + SignExtend({si20, 2'b0}, GRLEN)
+----
+
+The `PCADDU12I` instruction performs the operation that splice the 12-bit `0` behind the lowest bit of the 20-bit immediate data `si20` and signs extension, the resultant data plus the `PC` of the instruction; then the result of the addition is written into the general register `rd`.
+
+[source]
+----
+PCADDU12I:
+    GR[rd] = PC + SignExtend({si20, 12'b0}, GRLEN)
+----
+
+The `PCADDU18I` instruction performs the operation that splice the 18-bit `0` behind the lowest bit of the 20-bit immediate `si20` and signs extension, the resultant data plus the `PC` of the instruction; then the result of the addition is written into the general register `rd`.
+
+[source]
+----
+PCADDU18I:
+    GR[rd] = PC + SignExtend({si20, 18'b0}, GRLEN)
+----
+
+The `PCALAU12I` instruction performs the operation that splice the 12-bit `0` behind the lowest bit of the 20-bit immediate data `si20` and sign extension; the resultant data plus the `PC` of the instruction; then the lowest 12 bits of the addition result are erased and written into the general register `rd`.
+
+[source]
+----
+PCALAU12I:
+    tmp = PC + SignExtend({si20, 12'b0}, GRLEN)
+    GR[rd] = {tmp[GRLEN-1:12], 12'b0}
+----
+
+The data length of the above instruction operation is consistent with the length of the general register of the executed machine.
+
+===== `AND`, `OR`, `NOR`, `XOR`, `ANDN`, `ORN`
+
+Instruction formats:
+
+[source]
+----
+and     rd, rj, rk
+or      rd, rj, rk
+nor     rd, rj, rk
+xor     rd, rj, rk
+andn    rd, rj, rk
+orn     rd, rj, rk
+----
+
+The `AND` instruction performs the bitwise AND operation between the data in the general register `rj` and the data in the general register `rk`; then the result is written into the general register `rd`.
+
+[source]
+----
+AND:
+    GR[rd] = GR[rj] & GR[rk]
+----
+
+The `OR` instruction performs the bitwise OR operation between the data in the general register `rj` and the data in the general register `rk`; then the result is written into the general register `rd`.
+
+[source]
+----
+OR:
+    GR[rd] = GR[rj] | GR[rk]
+----
+
+The `NOR` instruction performs the bitwise OR operation between the data in the general register `rj` and the data in the general register `rk`; then the result is written into the general register `rd`.
+
+[source]
+----
+NOR:
+    GR[rd] = ~(GR[rj] | GR[rk])
+----
+
+The `XOR` instruction performs the bitwise XOR operation between the data in the general register `rj` and the data in the general register `rk`; then the result is written into the general register `rd`.
+
+[source]
+----
+XOR:
+    GR[rd] = GR[rj] ^ GR[rk]
+----
+
+The `ANDN` instruction performs the operation that reverses the data in the general register `rk` bit by bit, then performs the bitwise AND operation with the data in the general register `rk` and the data in the general register `rj`; then the result is written into the general register `rd`.
+
+[source]
+----
+ANDN:
+    GR[rd] = GR[rj] & (~GR[rk])
+----
+
+The `ORN` instruction performs the operation that reverses the data in the general register `rk` bit by bit, then performs a bitwise OR operation with the data in the general register `rk` and the data in the general register `rj`, and the result is written into the general register `rd`.
+
+[source]
+----
+ORN:
+    GR[rd] = GR[rj] | (~GR[rk])
+----
+
+The data length of the above instruction operation is consistent with the length of the general register of the executed machine.
+
+===== `ANDI`, `ORI`, `XORI`
+
+Instruction formats:
+
+[source]
+----
+andi    rd, rj, ui12
+ori     rd, rj, ui12
+xori    rd, rj, ui12
+----
+
+The `ANDI` instruction performs the bitwise AND operation between the data in the general register `rj` and the 12-bit immediate zero extension data; then the result is written into the general register `rd`.
+
+[source]
+----
+ANDI:
+    GR[rd] = GR[rj] & ZeroExtend(ui12, GRLEN)
+----
+
+The `ORI` instruction performs the bitwise OR operation between the data in the general register `rj` and the 12-bit immediate zero extension data; then the result is written into the general register `rd`.
+
+[source]
+----
+ORI:
+    GR[rd] = GR[rj] | ZeroExtend(ui12, GRLEN)
+----
+
+The `XORI` instruction performs the bitwise XOR operation between the data in the general register `rj` and the 12-bit immediate zero extension data; then the result is written into the general register `rd`.
+
+[source]
+----
+XORI:
+    GR[rd] = GR[rj] ^ ZeroExtend(ui12, GRLEN)
+----
+
+The data length of the above instruction operation is consistent with the length of the general register of the executed machine.
+
+===== `NOP`
+
+The `NOP` instruction is an alias for the instruction `andi r0, r0, 0`.
+Its function is only to occupy the 4-byte instruction code position and increase the `PC` by `4`, except that it will not change any other software-visible processor state.
+
+===== `MUL.{W/D}`, `MULH`, `{W[U]/D[U]}`
+
+Instruction formats:
+
+[source]
+----
+mul.w       rd, rj, rk
+mulh.w      rd, rj, rk
+mulh.wu     rd, rj, rk
+mul.d       rd, rj, rk
+mulh.d      rd, rj, rk
+mulh.du     rd, rj, rk
+----
+
+The `MUL.W` instruction performs the operation that multiplies the `[31:0]` bit data in the general register `rj` with the `[31:0]` bit data in the general register `rk`, the result of the multiplication `[31:0]` bit data is signed and written into the general register `rd`.
+
+[source]
+----
+MUL.W:
+    product = signed(GR[rj][31:0]) * signed(GR[rk][31:0])
+    GR[rd] = SignExtend(product[31:0], GRLEN)
+----
+
+The `MULH.W` instruction performs the operation that multiplies the `[31:0]` bit data in the general register `rj` with the `[31:0]` bit data in the general register `rk` as a signed number, the result of the multiplication `[63:32]` bit data is sign extension and written into the general register `rd`.
+
+[source]
+----
+MULH.W:
+    product = signed(GR[rj][31:0]) * signed(GR[rk][31:0])
+    GR[rd] = SignExtend(product[63:32], GRLEN)
+----
+
+The `MULH.WU` instruction performs the operation that multiplies the `[31:0]` bit data in the general register `rj` with the `[31:0]` bit data in the general register `rk` as unsigned numbers, the result of the multiplication `[63:32]` bit data is sign extension and written into the general register `rd`.
+
+[source]
+----
+MULH.WU:
+    product = unsigned(GR[rj][31:0]) * unsigned(GR[rk][31:0])
+    GR[rd] = SignExtend(product[63:32], GRLEN)
+----
+
+The `MUL.D` instruction performs the operation that multiplies the `[63:0]` bit data in the general register `rj` with the `[63:0]` bit data in the general register `rk`, the result of the multiplication `[63:0]` bit data and written into the general register `rd`.
+
+[source]
+----
+MUL.D:
+    product = signed(GR[rj][63:0]) * signed(GR[rk][63:0])
+    GR[rd] = product[63:0]
+----
+
+The `MULH.D` instruction performs the operation that multiplies the `[63:0]` bit data in the general register `rj` with the `[63:0]` bit data in the general register `rk` as a signed number, the result of the multiplication `[127:64]` bit data and written into the general register `rd`.
+
+[source]
+----
+MULH.D:
+    product = signed(GR[rj][63:0]) * signed(GR[rk][63:0])
+    GR[rd] = product[127:64]
+----
+
+The `MULH.DU` instruction performs the operation that multiplies the `[63:0]` bit data in the general register `rj` and the `[63:0]` bit data in the general register `rk` as unsigned numbers, the result of the multiplication `[127:64]` bit data and written into the general register `rd`.
+
+[source]
+----
+MULH.DU:
+    product = unsigned(GR[rj][63:0]) * unsigned(GR[rk][63:0])
+    GR[rd] = product[127:64]
+----
+
+===== `MULW.D.W[U]`
+
+Instruction formats:
+
+[source]
+----
+    mulw.d.w    rd, rj, rk
+    mulw.d.wu   rd, rj, rk
+----
+
+The `MULW.D.W` instruction performs the operation that multiplies the `[31:0]` bit data in the general register `rj` with the `[31:0]` bit data in the general register `rk` as a signed number, and the 64-bit product result is written into the general register `rd`.
+
+[source]
+----
+MULW.D.W:
+    product = signed(GR[rj][31:0]) * signed(GR[rk][31:0])
+    GR[rd] = product[63:0]
+----
+
+The `MULW.D.WU` instruction performs the operation that multiplies the `[31:0]` bit data in the general register `rj` with the `[31:0]` bit data in the general register `rk` as unsigned numbers, and writes the 64-bit product result into the general register `rd`.
+
+[source]
+----
+MULW.D.WU:
+    product = unsigned(GR[rj][31:0]) * unsigned(GR[rk][31:0])
+    GR[rd] = product[63:0]
+----
+
+===== `DIV.{W[U]/D[U]}`, `MOD.{W[U]/D[U]}`
+
+Instruction formats:
+
+[source]
+----
+div.w       rd, rj, rk
+mod.w       rd, rj, rk
+div.wu      rd, rj, rk
+mod.wu      rd, rj, rk
+div.d       rd, rj, rk
+mod.d       rd, rj, rk
+div.du      rd, rj, rk
+mod.du      rd, rj, rk
+----
+
+The `DIV.W` and `DIV.WU` instruction performs the operation that divide the `[31:0]` bit data in the general register `rj` by the `[31:0]` bit data in the general register `rk`, and the resulting quotient is sign extension and written into the general register `rd`.
+
+[source]
+----
+DIV.W:
+    quotient = signed(GR[rj][31:0]) / signed(GR[rk][31:0])
+    GR[rd] = SignExtend(quotient[31:0], GRLEN)
+
+DIV.WU:
+    quotient = unsigned(GR[rj][31:0]) / unsigned(GR[rk][31:0])
+    GR[rd] = SignExtend(quotient[31:0], GRLEN)
+----
+
+The `MOD.W` and `MOD.WU` instruction performs the operation that divide the `[31:0]` bit data in the general register `rj` by the `[31:0]` bit data in the general register `rk`, and the resulting remainder is sign extension and written into the general register `rd`.
+
+[source]
+----
+MOD.W:
+    remainder = signed(GR[rj][31:0]) % signed(GR[rk][31:0])
+    GR[rd] = SignExtend(remainder[31:0], GRLEN)
+
+MOD.WU:
+    remainder = unsigned(GR[rj][31:0]) % unsigned(GR[rk][31:0])
+    GR[rd] = SignExtend(remainder[31:0], GRLEN)
+----
+
+The `DIV.D` and `DIV.DU` instruction performs the operation that divide the `[63:0]` bit data in the general register `rj` by the `[63:0]` bit data in the general register `rk`, and the resulting quotient sign extension and written into the general register `rd`.
+
+[source]
+----
+DIV.D:
+    GR[rd] = signed(GR[rj][63:0]) / signed(GR[rk][63:0])
+
+DIV.DU:
+    GR[rd] = unsigned(GR[rj][63:0]) / unsigned(GR[rk][63:0])
+----
+
+The `MOD.D` and `MOD.DU` instruction performs the operation that divide the `[63:0]` bit data in the general register `rj` by the `[63:0]` bit data in the general register `rk`, and the resulting remainder is sign extension and written into the general register `rd`.
+
+[source]
+----
+MOD.D:
+    GR[rd] = signed(GR[rj][63:0]) % signed(GR[rk][63:0])
+
+MOD.DU:
+    GR[rd] = unsigned(GR[rj][63:0]) % unsigned(GR[rk][63:0])
+----
+
+When `DIV.W`, `MOD.W`, `DIV.D` and `MOD.D` perform division operations, the operands are all regarded as signed numbers.
+When `DIV.WU`, `M0D.WU`, `DIV.DU` and `MOD.DU` perform division operations, the source operands are all regarded as unsigned numbers.
+
+Each pair of instructions for finding the quotient/remainder satisfies the result of `DIV.W`/`MOD.W`, `DIV.WU`/`MOD.WU`, `DIV.D`/`MOD.D`, `DIV.DU`/`MOD.DU`, the remainder and the dividend The sign is consistent and the absolute value of the remainder is less than the absolute value of the divisor.
+
+When the divisor is `0`, the result can be any value, but no exception will be triggered.

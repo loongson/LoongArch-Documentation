@@ -1,0 +1,9 @@
+[[privilege-levels]]
+=== Privilege Levels
+
+The processor cores are divided into four privilege levels (PLV0 to PLV3), which are uniquely determined by the value of the `PLV` field in `CSR.CRMD`.
+
+Among all privilege levels, PLV0 is the privilege level with the highest privilege and is the only privilege level that can use privileged instructions and access all privileged resources.
+The three privilege levels, PLV1 to PLV3, cannot execute privileged instructions to access privileged resources, but the three privilege levels have different access rights under the MMU's mapped address translation mode.
+
+For Linux systems, only the PLV0 level can correspond to the kernel state in the architecture, while the PLV3 level is recommended for the user state.

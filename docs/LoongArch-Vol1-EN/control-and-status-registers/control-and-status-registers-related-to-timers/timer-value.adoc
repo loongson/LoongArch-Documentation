@@ -1,0 +1,25 @@
+[[timer-value]]
+==== Timer Value (`TVAL`)
+
+The software can read this register to know the current count value of the timer.
+The number of valid bits of the timer is determined by the implementation, so the length of the `TimeVal` field in this register will also change.
+
+[[definition-of-timer-value-register]]
+.Definition of timer value register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|n-1:0
+|TimeVal
+|R
+|The count value of the current timer.
+
+|GRLEN-1:n
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+|===

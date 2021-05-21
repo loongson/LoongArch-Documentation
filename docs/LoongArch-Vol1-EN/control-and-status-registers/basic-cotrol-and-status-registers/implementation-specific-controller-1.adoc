@@ -1,0 +1,5 @@
+[[implementation-specific-controller-1]]
+==== Implementation-specific Controller 1 (`IMPCTL1`)
+
+This register contains control information related to the microstructure characteristics at the time of the specific implementation.
+Its format and the specific meaning of each field are defined by the specific implementation.

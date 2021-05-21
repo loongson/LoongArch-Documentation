@@ -1,0 +1,107 @@
+== List of Figures
+
+* <<loongarch-components,LoongArch components>>
+* <<gr-and-pc,GR and PC>>
+* <<single-precision-floating-point-number-format,Single-precision floating-point number format>>
+* <<double-precision-floating-point-number-format,Double-precision floating-point number format>>
+* <<floating-point-registers,Floating-point registers>>
+* <<tlb-entry-formats,TLB entry formats>>
+* <<multi-level-page-table-structure-supported-by-page-walking,Multi-level page table structure supported by page walking>>
+* <<table-entry-format-for-common-pages,Table entry format for common pages>>
+* <<table-entry-format-for-huge-pages,Table entry format for huge pages>>
+
+== List of Tables
+
+* <<typical-instruction-formats-in-loongarch,Typical Instruction Formats in LoongArch>>
+* <<application-level-basic-integer-instructions-in-la32,Application-level basic integer instructions in LA32>>
+* <<the-configuration-information-accessible-by-the-cpucfg-instruction,The configuration information accessible by the `CPUCFG` instruction>>
+* <<single-precision-floating-point-number-calculation-method,Single-precision floating-point number calculation method>>
+* <<double-precision-floating-point-number-calculation-method,Double-precision floating-point number calculation method>>
+* <<definitions-of-fcsr0-register-fields,Definitions of FCSR0 register fields>>
+* <<default-results-of-floating-point-exceptions,Default results of floating-point exceptions>>
+* <<results-of-floating-point-classification,Results of floating-point classification>>
+* <<floating-point-comparison-conditions-and-judgment-standards,Floating-point comparison conditions and judgment standards>>
+* <<standard-for-converting-to-integer,Standard for converting to integer>>
+* <<standard-for-floating-point-conversion,Standard for floating-point conversion>>
+* <<standard-for-rounding-to-integer,Standard for rounding to integer>>
+* <<operations-corresponding-to-each-op-in-the-invtlb-instruction,Operations corresponding to each `op` in the `INVTLB` instruction>>
+* <<table-overview-of-control-and-status-registers,Overview of Control and Status Registers>>
+* <<definition-of-current-mode-information-register,Definition of current mode information register>>
+* <<definition-of-pre-exception-mode-information-register,Definition of pre-exception mode information register>>
+* <<definition-of-extended-component-unit-enable-register,Definition of extended component unit enable register>>
+* <<definition-of-miscellaneous-controller-register,Definition of miscellaneous controller register>>
+* <<definition-of-exception-configuration-register,Definition of exception configuration register>>
+* <<definition-of-exception-status-register,Definition of exception status register>>
+* <<table-of-exception-encoding,Table of exception encoding>>
+* <<definition-of-exception-return-address-register,Definition of exception program counter register>>
+* <<definition-of-bad-virtual-address-register,Definition of bad virtual address register>>
+* <<definition-of-bad-instruction-register,Definition of bad instruction register>>
+* <<definition-of-exception-entry-base-address-register,Definition of exception entry base address register>>
+* <<definition-of-reduced-virtual-address-configuration-register,Definition of reduced virtual address configuration register>>
+* <<definition-of-cpu-identity-register,Definition of CPU identity register>>
+* <<definition-of-privileged-resource-configuration-1-register,Definition of privileged resource configuration 1 register>>
+* <<definition-of-privileged-resource-configuration-2-register,Definition of privileged resource configuration 2 register>>
+* <<definition-of-privileged-resource-configuration-3-register,Definition of privileged resource configuration 3 register>>
+* <<definition-of-data-save-register,Definition of data save register>>
+* <<definition-of-llbit-controller-register,Definition of llbit controller register>>
+* <<definition-of-tlb-index-register,Definition of TLB index register>>
+* <<definition-of-tlb-entry-high-order-bits-register-in-la64,Definition of TLB entry high order bits register in LA64>>
+* <<definition-of-tlb-entry-high-order-bits-register-in-la32,Definition of TLB entry high order bits register in LA32>>
+* <<definition-of-tlb-entry-low-order-bits-register-in-la32,Definition of TLB entry low order bits in LA32>>
+* <<definition-of-tlb-entry-low-order-bits-register-in-la64,Definition of TLB entry low order bits in LA64>>
+* <<definition-of-address-space-identifier-register,Definition of address space identifier register>>
+* <<definition-of-page-global-directory-base-address-for-higher-half-address-space-register,Definition of page global directory base address for higher half address space register>>
+* <<definition-of-page-global-directory-base-address-for-lower-half-address-space-register,Definition of page global directory base address for lower half address space register>>
+* <<definition-of-page-global-directory-base-address-register,Definition of page global directory base address register>>
+* <<definition-of-page-walk-controller-for-lower-half-address-space-register,Definition of page walk controller for lower half address space register>>
+* <<definition-of-page-walk-controller-for-higher-half-address-space-register,Definition of page walk controller for higher half address space register>>
+* <<definition-of-stlb-page-size-register,Definition of STLB page size register>>
+* <<definition-of-tlb-refill-exception-entry-base-address-register-in-la64,Definition of TLB refill exception entry base address register in LA64>>
+* <<definition-of-tlb-refill-exception-entry-base-address-register-in-la32,Definition of TLB refill exception entry base address register in LA32>>
+* <<definition-of-tlb-refill-exception-bad-virtual-address-register,Definition of TLB refill exception bad virtual address register>>
+* <<definition-of-tlb-refill-exception-return-address-register,Definition of TLB refill exception program counter register>>
+* <<definition-of-tlb-refill-exception-data-save-register,Definition of TLB refill exception data save register>>
+* <<definition-of-tlb-refill-exception-entry-low-order-bits-register-in-la64,Definition of TLB refill exception entry low order bits register in LA64>>
+* <<definition-of-tlb-refill-exception-entry-low-order-bits-register-in-la32,Definition of TLB refill exception entry low order bits register in LA32>>
+* <<definition-of-tlb-refill-exception-entry-high-order-bits-register-in-la64,Definition of TLB refill exception entry high order bits register in LA64>>
+* <<definition-of-tlb-refill-exception-entry-high-order-bits-register-in-la32,Definition of TLB refill exception entry high order bits register in LA32>>
+* <<definition-of-tlb-refill-exception-pre-exception-mode-information-register,Definition of TLB refill exception pre-exception mode information register>>
+* <<definition-of-direct-mapping-configuration-window-n-register-in-la64,Definition of direct mapping configuration window n register in LA64>>
+* <<definition-of-direct-mapping-configuration-window-n-register-in-la32,Definition of direct mapping configuration window n register in LA32>>
+* <<definition-of-timer-identity-register,Definition of timer identity register>>
+* <<definition-of-timer-configuration-register,Definition of timer configuration register>>
+* <<definition-of-timer-value-register,Definition of timer value register>>
+* <<definition-of-counter-compensation-register,Definition of counter compensation register>>
+* <<definition-of-timer-interrupt-clearing-register,Definition of timer interrupt clearing register>>
+* <<definition-of-machine-error-controller-register,Definition of machine error controller register>>
+* <<definition-of-machine-error-exception-entry-base-address-register-in-la64,Definition of machine error exception entry base address register in LA64>>
+* <<definition-of-machine-error-exception-entry-base-address-register-in-la32,Definition of machine error exception entry base address register in LA32>>
+* <<definition-of-machine-error-exception-return-address-register,Definition of machine error exception return address register>>
+* <<definition-of-machine-error-exception-data-save-register,Definition of machine error exception data save register>>
+* <<definition-of-performance-monitor-configuration-n-register,Definition of performance monitor configuration n register>>
+* <<definition-of-performance-monitor-overall-counter-n-register,Definition of performance monitor overall counter n register>>
+* <<definition-of-memory-load-store-watchpoint-overall-controller-register,Definition of memory load/store watchpoint overall controller register>>
+* <<definition-of-memory-load-store-watchpoint-overall-status-register,Definition of memory load/store watchpoint overall status register>>
+* <<definition-of-load-store-watchpoint-judgment-process-mbyten,Definition of load/store watchpoint judgment process `mbyten`>>
+* <<definition-of-load-store-watchpoint-bytemask,Definition of load store watchpoint `bytemask`>>
+* <<definition-of-memory-load-store-watchpoint-n-configuration-1-register,Definition of memory load/store watchpoint n configuration 1 register>>
+* <<definition-of-memory-load-store-watchpoint-n-configuration-2-register,Definition of memory load/store watchpoint n configuration 2 register>>
+* <<definition-of-memory-load-store-watchpoint-n-configuration-3-register,Definition of memory load/store watchpoint n configuration 3 register>>
+* <<definition-of-memory-load-store-watchpoint-n-configuration-4-register,Definition of memory load/store watchpoint n configuration 4 register>>
+* <<definition-of-fetch-watchpoint-overall-controller-register,Definition of fetch watchpoint overall controller register>>
+* <<definition-of-fetch-watchpoint-overall-status-register,Definition of fetch watchpoint overall status register>>
+* <<definition-of-fetch-watchpoint-n-configuration-1-register,Definition of fetch watchpoint n configuration 1 register>>
+* <<definition-of-fetch-watchpoint-n-configuration-2-register,Definition of fetch watchpoint n configuration 2 register>>
+* <<definition-of-fetch-watchpoint-n-configuration-3-register,Definition of fetch watchpoint n configuration 3 register>>
+* <<definition-of-fetch-watchpoint-n-configuration-4-register,Definition of fetch watchpoint n configuration 4 register>>
+* <<definition-of-debug-data-save-register,Definition of debug data save register>>
+* <<definition-of-debug-exception-return-address-register,Definition of debug exception program counter register>>
+* <<definition-of-debug-register,Definition of debug register>>
+* <<interpretation-of-semantic-keyword,Interpretation of semantic keyword>>
+* <<interpretation-of-bit-string-operators,Interpretation of bit string operators>>
+* <<interpretation-of-arithmetic-operators,Interpretation of arithmetic operators>>
+* <<interpretation-of-comparison-operators,Interpretation of comparison operators>>
+* <<interpretation-of-bit-operators,Interpretation of bit operators>>
+* <<interpretation-of-logical-operators,Interpretation of logical operators>>
+* <<operator-priority,Operator priority>>
+* <<table-table-of-instruction-encoding,Table of instruction encoding>>

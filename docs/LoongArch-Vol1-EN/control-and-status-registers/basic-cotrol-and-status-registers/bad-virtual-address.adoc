@@ -1,0 +1,33 @@
+[[bad-virtual-address]]
+==== Bad Virtual Address (`BADV`)
+
+This register is used to record the bad address when a bad address exception is triggered.
+Such exceptions include:
+
+* **AD**dress error **E**xception for **F**etching instructions (ADEF), at this time the `PC` of the instruction is recorded
+* **AD**dress error **E**xception for **M**emory access instructions (ADEM)
+* **A**ddress a**L**ignment fault **E**xception (ALE)
+* **B**oundary **C**onstraint check failed **E**xception (BCE)
+* **P**age **I**nvalid exception for **L**oad operation (PIL)
+* **P**age **I**nvalid exception for **S**tore operation (PIS)
+* **P**age **I**nvalid exception for **F**etch operation (PIF)
+* **P**age **M**odification **E**xception (PME)
+* **P**age **N**on-**R**eadable exception (PNR)
+* **P**age **N**on-e**X**ecutable exception (PNX)
+* **P**age **P**rivilege level **I**llegal exception (PPI)
+
+[[definition-of-bad-virtual-address-register]]
+.Definition of bad virtual address register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|VAddr
+|RW
+|When a bad address exception exception is triggered, the hardware records the bad address here.
+For LA64, if the privilege level that triggered the exception is in 32-bit address mode, the high `32` bits of the recorded virtual address are forced to `0`.
+|===

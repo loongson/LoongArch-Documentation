@@ -1,0 +1,23 @@
+[[debug-data-save-register]]
+==== Debug Data Save Register (`DSAVE`)
+
+This register is used to store data temporarily for the system software.
+Each dava save register can hold the data of one general-purpose register.
+
+An additional `SAVE` register for debug exception handler is provided because debug exceptions can occur in any scenario and the handling of debug exceptions should be transparent to the software on the Host being debugged.
+
+[[definition-of-debug-register]]
+.Definition of debug register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|63:0
+|Data
+|RW
+|Data for software to read and write only.
+The hardware does not modify the contents of this field except for the execution of CSR instructions.
+|===

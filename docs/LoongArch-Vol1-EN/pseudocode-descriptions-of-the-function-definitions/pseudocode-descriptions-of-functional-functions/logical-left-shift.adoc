@@ -1,0 +1,12 @@
+[[logical-left-shift]]
+==== Logical Left Shift
+
+[source]
+----
+bits(N) SLL(bits(N) x, integer sa):
+    if sa == 0:
+        result = x
+    else:
+        result = {x[N-sa-1:0], {sa{1'b0}}}
+    return result
+----

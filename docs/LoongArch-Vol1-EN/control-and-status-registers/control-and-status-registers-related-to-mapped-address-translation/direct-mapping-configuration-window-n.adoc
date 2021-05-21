@@ -1,0 +1,108 @@
+[[direct-mapping-configuration-window-n]]
+==== Direct Mapping Configuration Window n (`DMW0`–`DMW3`)
+
+This -group sender is involved in completing the direct mapping address translation mode.
+See <<direct-mapped-address-translation-mode,Direct Mapped Address Translation Mode>> for more information about this address translation mode.
+
+[[definition-of-direct-mapping-configuration-window-n-register-in-la64]]
+.Definition of direct mapping configuration window n register in LA64
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|PLV0
+|RW
+|`1` indicates that the configuration of this window can be used for direct mapping address translation at the PLV0 privilege level.
+
+|1
+|PLV1
+|RW
+|`1` indicates that the configuration of this window can be used for direct mapping address translation at the PLV1 privilege level.
+
+|2
+|PLV2
+|RW
+|`1` indicates that the configuration of this window can be used for direct map address translation at the PLV2 privilege level.
+
+|3
+|PLV3
+|RW
+|`1` indicates that the configuration of this window can be used for direct mapping address translation at the PLV3 privilege level.
+
+|5:4
+|MAT
+|RW
+|The virtual address falls under the storage access type of the access operation in this mapping window.
+
+|59:6
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+
+|63:60
+|VSEG
+|RW
+|The `[63:60]` bits of the virtual address of the direct mapping window.
+|===
+
+[[definition-of-direct-mapping-configuration-window-n-register-in-la32]]
+.Definition of direct mapping configuration window n register in LA32
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|PLV0
+|RW
+|`1` indicates that the configuration of this window can be used for direct mapping address translation at the PLV0 privilege level.
+
+|1
+|PLV1
+|RW
+|`1` indicates that the configuration of this window can be used for direct mapping address translation at the PLV1 privilege level.
+
+|2
+|PLV2
+|RW
+|`1` indicates that the configuration of this window can be used for direct map address translation at the PLV2 privilege level.
+
+|3
+|PLV3
+|RW
+|`1` indicates that the configuration of this window can be used for direct mapping address translation at the PLV3 privilege level.
+
+|5:4
+|MAT
+|RW
+|The virtual address falls under the storage access type of the access operation in this mapping window.
+
+|24:6
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+
+|27:25
+|PSEG
+|RW
+|The `[31:29]` bits of the physical address of the direct mapping window.
+
+|28
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+
+|31:29
+|VSEG
+|RW
+|The `[31:29]` bits of the virtual address of the direct mapping window.
+|===

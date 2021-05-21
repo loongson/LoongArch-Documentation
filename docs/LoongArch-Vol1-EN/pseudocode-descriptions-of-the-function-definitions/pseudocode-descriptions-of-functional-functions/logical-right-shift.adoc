@@ -1,0 +1,12 @@
+[[logical-right-shift]]
+==== Logical Right Shift
+
+[source]
+----
+bits(N) SRL(bits(N) x, integer sa):
+    if sa == 0:
+        result = x
+    else:
+        result = {{sa{1'b0}}, x[N-1:sa]}
+    return result
+----

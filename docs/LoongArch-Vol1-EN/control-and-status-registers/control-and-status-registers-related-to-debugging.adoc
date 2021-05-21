@@ -1,0 +1,8 @@
+[[control-and-status-registers-related-to-debugging]]
+=== Control and Status Registers Related to Debugging
+
+include::control-and-status-registers-related-to-debugging/debug-register.adoc[]
+
+include::control-and-status-registers-related-to-debugging/debug-exception-return-address.adoc[]
+
+include::control-and-status-registers-related-to-debugging/debug-data-save-register.adoc[]

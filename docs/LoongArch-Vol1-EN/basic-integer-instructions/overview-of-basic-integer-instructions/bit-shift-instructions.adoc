@@ -1,0 +1,194 @@
+[[bit-shift-instructions]]
+==== Bit-shift Instructions
+
+===== `SLL.W`, `SRL.W`, `SRA.W`, `ROTR.W`
+
+Instruction formats:
+
+[source]
+----
+sll.w       rd, rj, rk
+srl.w       rd, rj, rk
+sra.w       rd, rj, rk
+rotr.w      rd, ri, rk
+----
+
+The `SLL.W` instruction performs the operation that logical left shifts the bit data of `[31:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SLL.W:
+    tmp = SLL(GR[rj][31:0], GR[rk][4:0])
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `SRL.W` instruction performs the operation that logical right shifts the bit data of `[31:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SRL.W:
+    tmp = SRL(GR[rj][31:0], GR[rk][4:0])
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `SRA.W` instruction performs the operation that arithmetical right shifts `[31:0]` bit data in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SRA.W:
+    tmp = SRA(GR[rj][31:0], GR[rk][4:0])
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `ROTR.W` instruction performs the operation that cyclical right shifts the `[31:0]` bit data in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+ROTR.W:
+    tmp = ROTR(GR[rj][31:0], GR[rk][4:0])
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The shift amount of the above-mentioned shift instruction is all `[4:0]` bit data in the general register `rk`, and is regarded as an unsigned number.
+
+===== `SLLI.W`, `SRLI.W`, `SRAI.W`, `ROTRI.W`
+
+Instruction formats:
+
+[source]
+----
+sliw        rd, rj, ui5
+srli.w      rd, rj, ui5
+srai.w      rd, rj, ui5
+rotri.w     rd, rj, ui5
+----
+
+The `SLLI.W` instruction performs the operation that logical left shifts the `[31:0]` bit data in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SLLI.W:
+    tmp = SLL(GR[rj][31:0], ui5)
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `SRLI.W` instruction performs the operation that logical right shifts the `[31:0]` bit data in the general register `rj` to the right, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SRLI.W:
+    tmp = SRL(GR[rj][31:0], ui5)
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `SRAI.W` instruction performs the operation that arithmetical right shifts the bit data of `[31:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SRAI.W:
+    tmp = SRA(GR[rj][31:0], ui5)
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `ROTRI.W` instruction performs the operation that cyclical right shifts the `[31:0]` bit data in the general register `rj`, and the sign extension of the shift result is written into the general register `rd`.
+
+[source]
+----
+ROTRI.W:
+    tmp = ROTR(GR[rj][31:0], ui5)
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The shift amounts of the above shift instructions are all 5-bit unsigned immediate `ui5` in the instruction code.
+
+===== `SLL.D`, `SRL.D`, `SRA.D`, `ROTR.D`
+
+Instruction formats:
+
+[source]
+----
+sl.d        rd, rj, rk
+srl.d       rd, rj, rk
+sra.d       rd, rj, rk
+rotr.d      rd, rj, rk
+----
+
+The `SLL.D` instruction performs the operation that logical left shifts the bit data of `[63:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SLL.D:
+    GR[rd] = SLL(GR[rj][63:0], GR[rk][5:0])
+----
+
+The `SRL.D` instruction performs the operation that logical right shifts the bit data of `[63:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SRL.D:
+    GR[rd] = SRL(GR[rj][63:0], GR[rk][5:0])
+----
+
+The `SRA.D` instruction performs the operation that arithmetic right shifts the bit data of `[63:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SRA.D:
+    GR[rd] = SRA(GR[rj][63:0], GR[rk][5:0])
+----
+
+The `ROTR.D` instruction performs the operation that cyclical right shifts the bit data of `[63:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+ROTR.D:
+    GR[rd] = ROTR(GR[rj][63:0], GR[rk][5:0])
+----
+
+The shift amount of the above-mentioned shift instruction is all `[5:0]` bit data in the general register `rk`, and is regarded as an unsigned number.
+
+===== `SLLI.D`, `SRLI.D`, `SRAI.D`, `ROTRI.D`
+
+Instruction formats:
+
+[source]
+----
+slli.d      rd, rj, ui6
+srli.d      rd, rj, ui6
+srai.d      rd, rj, ui6
+rotri.d     rd, rj, ui6
+----
+
+The `SLII.D` instruction performs the operation that logicalleft shifts the bit data of `[63:0]` in the general register `rj`, and the sign extension of the shift result is written into the general register `rd`.
+
+[source]
+----
+SLL.D:
+    GR[rd] = SLL(GR[rj][63:0], ui6)
+----
+
+The `SRLI.D` instruction performs the operation that logical right shifts the bit data of `[63:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SRL.D:
+    GR[rd] = SRL(GR[rj][63:0], ui6)
+----
+
+The `SRAI.D` instruction performs the operation that arithmetically right shifts the bit data of `[63:0]` in the general register `rj`, and writes the sign extension of the shift result into the general register `rd`.
+
+[source]
+----
+SRA.D:
+    GR[rd] = SRA(GR[rj][63:0], ui6)
+----
+
+The `ROTRI.D` instruction performs the operation that cyclical right shifts the `[63:0]` bit data in the general register `rj`, and the sign extension of the shift result is written into the general register `rd`.
+
+[source]
+----
+ROTR.D:
+    GR[rd] = ROTR(GR[rj][63:0], ui6)
+----
+
+The shift amount of the above-mentioned shift instruction is the 6-bit unsigned immediate `ui6` in the instruction code.

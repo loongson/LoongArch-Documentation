@@ -1,0 +1,6 @@
+[[interrupt-priority]]
+==== Interrupt Priority
+
+The response to multiple interrupts at the same time is arbitrated by a fixed priority.
+The higher the int number, the higher the priority.
+Therefore, IPI has the highest priority, TI the second highest, ... , SWI0 has the lowest priority.

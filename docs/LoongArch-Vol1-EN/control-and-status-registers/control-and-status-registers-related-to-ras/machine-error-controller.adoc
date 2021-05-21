@@ -1,0 +1,109 @@
+[[machine-error-controller]]
+==== Machine Error Controller (`MERRCTL`)
+
+Since the timing of machine error exceptions cannot be predicted and controlled by the software, a separate set of CSRs is defined for machine error exceptions in order not to destroy any other site when triggering machine error exceptions, which is used by the system software to save and restore other sites.
+This set of independent CSRs except `MERRERA` and `MERRSAVE`, the rest are concentrated in `MERRCTL` register.
+
+[[definition-of-machine-error-controller-register]]
+.Definition of machine error controller register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|IsMERR
+|R
+|`1` indicates that it is currently in the context of machine error exception processing.
+The hardware sets this bit to 1 when a machine error exception is triggered.
+
+When this bit is `1`, execution of the `ERTN` instruction will clear it to `0`.
+
+Because the architecture defines a separate set of CSRs for machine error exceptions, when this bit is `1`,
+
+* when `ERTN` returns, information used to restore the CSRs will come from `PPLV`, `PLV` and so on of this field;
+
+* when `ERTN` returns, address information will come from `CSR.MERRERA`.
+
+|1
+|Repairable
+|RW
+|`1` means that the hardware can automatically fix machine errors that occur, so the exception handler can return directly without any processing.
+
+|3:2
+|PPLV
+|RW
+|When a machine error exception is triggered, the hardware records the old value of the `PLV` field in `CSR.CRMD` in this field.
+
+When the `IsMERR` of this register is `1`, the hardware returns from the exception handler by executing the `ERTN` instruction.
+The hardware restores the value of this field to the `PLV` field of `CSR.CRMD`.
+
+|4
+|PIE
+|R
+|When a machine error exception is triggered, the hardware records the old value of the `IE` field in `CSR.CRMD` in this field.
+
+When `IsMERR` of this register is `1`, the hardware restores the value of this field to the `IE` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|5
+|0
+|RW
+|If the virtualization expansion is not implemented, this field is read-only constant `0` and writing to this field is ignored.
+
+|6
+|PWE
+|RW
+|When a machine error exception is triggered, the hardware records the old value of the `WE` field in `CSR.CRMD` in this field.
+
+When `IsMERR` of this register is `1`, the hardware restores the value of this field to the `WE` field in `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|7
+|PDA
+|RW
+|When a machine error exception is triggered, the hardware records the old value of the `DA` field in the `CSR.CRMD` in this field.
+
+When `IsMERR` of this register is `1`, the hardware restores the value of this field to the `DA` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|8
+|PPG
+|RW
+|When a machine error exception is triggered, the hardware records the old value of the `PG` field in the `CSR.CRMD` in this field.
+
+When IsMERR of this register is `1`, the hardware restores the value of this field to the `PG` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|10:9
+|PDATF
+|RW
+|When a machine error exception is triggered, the hardware records the old value of the `DATF` field in the `CSR.CRMD` in this field.
+
+When `IsMERR` of this register is `1`, the hardware restores the value of this field to the `DATF` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|12:11
+|PDATM
+|RW
+|When a machine error exception is triggered, the hardware records the old value of the `DATM` field in the `CSR.CRMD` in this field.
+
+When `IsMERR` of this register is `1`, the hardware restores the value of this field to the DATM field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|15:13
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software must write `0`, or mask out this field by `csr mask write`.
+
+|23:16
+|Cause
+|R
+|Machine error type code.
+Currently only the `0x1` value is defined for Cache checksum errors.
+
+The rest of the encoded values are reserved.
+
+|31:24
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

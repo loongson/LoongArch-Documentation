@@ -1,0 +1,65 @@
+[[performance-monitor-configuration-n]]
+==== Performance Monitor Configuration n (`PMCFG`)
+
+[[definition-of-performance-monitor-configuration-n-register]]
+.Definition of performance monitor configuration n register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|9:0
+|EvCode
+|RW
+|The event number of the performance event being monitored.
+The definition of event numbers is divided into two parts, a part whose meaning is specified in the architecture specification and must be implemented by all processors compatible with this architecture, and a remaining part whose meaning is implementation specific and is defined by the processor's implementer.
+
+|15:10
+|0
+|R0
+|Reserved fields.
+Return `0` if read this field, and software is not allowed to change its value.
+
+|16
+|PLV0
+|RW
+|PLV0 privilege level enables counting for this performance monitor.
+`1` - count, `0` - stop.
+
+|17
+|PLV1
+|RW
+|PLV1 privilege level enables counting for this performance monitor.
+`1` - count, `0` - stop.
+
+|18
+|PLV2
+|RW
+|PLV2 privilege level enables counting for this performance monitor.
+`1` - count, `0` - stop.
+
+|19
+|PLV3
+|RW
+|Count enable for this performance monitor at the PLV3 privilege level.
+`1` - count, `0` - stop.
+
+|20
+|PMIEn
+|RW
+|Performance monitoring count overflow interrupt enable bit for this performance monitor.
+`1` - enable, `0` - disable.
+
+|22:21
+|0
+|R
+|If the virtualization expansion is not implemented, this field is read-only constant `0` and writing to this field is ignored.
+
+|31:23
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

@@ -1,0 +1,438 @@
+[[other-miscellaneous-instructions]]
+==== Other Miscellaneous Instructions
+
+===== `syscall`
+
+Instruction formats:
+
+[source]
+----
+syscall     code
+----
+
+Executing the `SYSCALL` instruction will immediately and unconditionally trigger the system call exception.
+
+The information carried in the code field in the instruction code can be used as a parameter passed by the exception handling routine.
+
+===== `break`
+
+Instruction formats:
+
+[source]
+----
+break       code
+----
+
+Executing the `BREAK` instruction will immediately and unconditionally trigger the breakpoint exception.
+
+The information carried in the code field in the instruction code can be used as a parameter passed by the exception handling routine.
+
+===== `ASRT{LE/GT}.D`
+
+Instruction formats:
+
+[source]
+----
+asrtle.d        rj, rk
+asrtgt.d        rj, rk
+----
+
+The value in general register `rj` and general register `rk` are compared as signed numbers.
+If the comparison conditions are not met, an exception for address boundary checking is triggered.
+For the `ASRTLE.D` instruction, if the value in the general register `rj` is greater than the value in the general register `rk`, an exception is triggered; for the `ASRTGT.D` instruction, if the value in the general register `rj` is less than or equal to the value in the general register `rk`, an exception is triggered.
+
+===== `RDTIME{L/H}.W`, `RDTIME.D`
+
+Instruction formats:
+
+[source]
+----
+rdtimel.w       rd, rj
+rdtimeh.w       rd, rj
+rdtime.w        rd, rj
+----
+
+The LoongArch instruction system defines-a constant frequency timer, whose main body is-a 64-bit counter called StableCounter.
+StableCounter is set to 0 after reset, and then increments by `1` every counting clock cycle.
+When the count reaches all 1s, it automatically wraps around to `0` and continues to increment.
+At the same time, each timer has a software-configurable globally unique-number, called Counter ID.
+The characteristic of the constant frequency timer is that its timing frequency remains unchanged after reset, no matter how the clock frequency of the processor core changes.
+
+The `RDTIME{L/W}.W` and `RDTIME.D` instructions are used to read constant frequency timer information, the StableCounter value is written into the general register `rd`, and the Counter ID number information is written into the general register `rj`.
+The difference between the three instructions is the difference in the Stable Counter information read.
+`RDTIMEL.W` reads the `[31:0]` bits of the Counter, `RDTIMEH.W` reads the `[63:32]` bits of the Counter, and `RDTIME.D` reads The entire 64-bit Counter value.
+On a 64-bit processor, the 32-bit value read by the `RDTIME{L/H}.W` instruction is sign extension and written to the general register `rd`.
+The `RDTIME(L/H).W` instruction is defined so that the 64-bit Counter can also be accessed on a 32-bit processor.
+
+===== `cpucfg`
+Instruction formats:
+
+[source]
+----
+cpucfg      rd, rj
+----
+
+The `CPUCFG` instruction is used to dynamically identify which features of LoongArch are implemented in the running processor during the execution of the software.
+The realization of the functional characteristics of these instruction systems is recorded in the series of configuration information words.
+One configuration information word can be read once the `CPUCFG` instruction is executed.
+
+When using the CPUCFG instruction, the source operand register `rj` stores the number of the configuration information word to be accessed, and the configuration information word information read after the instruction is executed is written into the general register `rd`.
+In LA64, each configuration information word is 32 bits, which is written into the result register after the sign extension.
+
+The configuration information word contains-series of configuration bits (fields), and its record form is `CPUCFG.<configuration word number>.<configuration information mnemonic name>[bit subscript]`, where the single bit configuration bit is marked as `bitXX`, which means The `XX` bit of the configuration word; the bit under the multi-bit configuration field is marked as `bitXX:YY`, which means the continuous `(XX-YY+1)` bit from the `XX` bit to the `YY` bit of the configuration word.
+For example, the ``0``th bit in the configuration word No.1 is used to indicate whether to implement LA32.
+Record this configuration information as `CPUCFG.1.LA32[bit0]`, where `0x1` indicates that the font size of the configuration information word is No.1, and LA32 indicates this configuration The mnemonic name of the information field is called LA32, and bit `0` means that the field of LA32 is located at bit `0` of the configuration word.
+The `PALEN` field of the number of physical address bits supported by the 11th to 4th digits of the configuration word No.1 is recorded as `CPUCFG.1.PALEN[itl1:4]`.
+
+The configuration information accessible by the `CPUCFG` instruction in the Godson architecture is listed in the table.
+`CPUCFG` access to undefined configuration words will read back all `0` values.
+The undefined field in the defined configuration word can be read back to any value when `CPUCFG` is executed, and the software should not make any interpretation of it.
+
+[[the-configuration-information-accessible-by-the-cpucfg-instruction]]
+.The configuration information accessible by the `CPUCFG` instruction
+[%header,cols="1,1,2,6"]
+|===
+^|Word number
+^|Bit number
+^|Annotation
+^|Implication
+
+^m|0
+^m|31:0
+^m|PRID
+|Processor Identity
+
+.12+^m|1
+^m|1:0
+^m|ARCH
+|`2'b00` indicates the implementation of simplified LA32;
+
+`2'b01` indicates the implementation of LA32;
+
+`2'b10` indicates the implementation of LA64;
+
+`2'b11` is reserved.
+
+^m|2
+^m|PGMMU
+|`1` indicates that the MMU supports page mapping mode
+
+^m|3
+^m|IOCSR
+|`1` indicates support for the IOCSR instruction
+
+^m|11:4
+^m|PALEN
+|The supported physical address bits `PALEN` value minus `1`
+
+^m|19:12
+^m|VALEN
+|The supported virtual address bits `VALEN` value minus `1`
+
+^m|20
+^m|UAL
+|`1` indicates support for non-aligned memory access
+
+^m|21
+^m|RI
+|`1` indicates support for page attribute of "`Read Inhibit`"
+
+^m|22
+^m|EP
+|`1` indicates support for  page attribute of "`Execution Protection`"
+
+^m|23
+^m|RPLV
+|`1` indicates support for page attributes of `RPLV`
+
+^m|24
+^m|HP
+|`1` indicates support for page attributes of huge page
+
+^m|25
+^m|IOCSR_BRD
+|`1` indicates that the string of processor product information is recorded at address `0` of the IOCSR access space
+
+That is, information such as "`Loongson3A5000 @ 2.5GHz`"
+
+^m|26
+^m|MSG_INT
+|`1` indicates that the external interrupt uses the message interrupt mode, otherwise it is the level interrupt line mode
+
+.17+^m|2
+^m|0
+^m|FP
+|`1` indicates support for basic floating-point instructions
+
+^m|1
+^m|FP_SP
+|`1` indicates support for single-precision floating-point numbers
+
+^m|2
+^m|FP_DP
+|`1` indicates support for double-precision floating-point numbers
+
+^m|5:3
+^m|FP_ver
+|The version number of the floating-point arithmetic standard.
+`1` is the initial version number, indicating that it is compatible with the IEEE 754-2008 standard
+
+^m|6
+^m|LSX
+|`1` indicates support for 128-bit vector extension
+
+^m|7
+^m|LASX
+|`1` indicates support for 256-bit vector expansion
+
+^m|8
+^m|COMPLEX
+|`1` indicates support for complex vector operation instructions
+
+^m|9
+^m|CRYPTO
+|`1` indicates support for encryption and decryption vector instructions
+
+^m|10
+^m|LVZ
+|`1` indicates support for virtualization expansion
+
+^m|13:11
+^m|LVZ_ver
+|The version number of the virtualization hardware acceleration specification.
+`1` is the initial version number
+
+^m|14
+^m|LLFTP
+|`1` indicates support for constant frequency counter and timer
+
+^m|17:15
+^m|LLFTP_ver
+|Constant frequency counter and timer version number.
+`1` is the initial version
+
+^m|18
+^m|LBT_X86
+|`1` indicates support for X86 binary translation extension
+
+^m|19
+^m|LBT_ARM
+|`1` indicates support for ARM binary translation extension
+
+^m|20
+^m|LBT_MIPS
+|`1` indicates support for MIPS binary translation extension
+
+^m|21
+^m|LSPW
+|`1` indicates support for the software page table walking instruction
+
+^m|22
+^m|LAM
+|`1` indicates support `AM*` atomic memory access instruction
+
+.12+^m|3
+^m|0
+^m|CCDMA
+|`1` indicates support for hardware Cache coherent DMA
+
+^m|1
+^m|SFB
+|`1` indicates support for Store Fill Buffer (SFB)
+
+^m|2
+^m|UCACC
+|`1` indicates support for ucacc win
+
+^m|3
+^m|LLEXC
+|`1` indicates support for LL instruction to fetch exclusive block function_
+
+^m|4
+^m|SCDLY
+|`1` indicates support random delay function after SC
+
+^m|5
+^m|LLDBAR
+|`1` indicates support LL automatic with dbar function
+
+^m|6
+^m|ITLBT
+|`1` indicates that the hardware maintains the consistency between ITLB and TLB
+
+^m|7
+^m|ICACHET
+|`1` indicates that the hardware maintains the data consistency between ICache and DCache in one processor core
+
+^m|10:8
+^m|SPW_LVL
+|The maximum number of directory levels supported by the page walk instruction
+
+^m|11
+^m|SPW_HP_HF
+|`1` indicates that the page walk instruction fills the TLB in half when it encounters a large page
+
+^m|12
+^m|RVA
+|`1` indicates that the software configuration can be used to shorten the virtual address range
+
+^m|16:13
+^m|RVAMAX-1
+|The maximum configurable virtual address is shortened by `-1`
+
+^m|4
+^m|31:0
+^m|CC_FREQ
+|Constant frequency timer and the crystal frequency corresponding to the clock used by the timer
+
+.2+^m|5
+^m|15:0
+^m|CC_MUL
+|Constant frequency timer and the corresponding multiplication factor of the clock used by the timer
+
+^m|31:16
+^m|CC_DIV
+|Constant frequency timer and the division coefficient corresponding to the clock used by the timer
+
+.5+^m|6
+^m|0
+^m|PMP
+|`1` indicates support for the performance counter
+
+^m|3:1
+^m|PMVER
+|In the performance monitor, the architecture defines the version number of the event, and `1` is the initial version
+
+^m|7:4
+^m|PMNUM
+|Number of performance monitors minus `1`
+
+^m|13:8
+^m|PMBITS
+|Number of bits of a performance monitor minus `1`
+
+^m|14
+^m|UPM
+|`1` indicates support for reading performance counter in user mode
+
+.17+^m|10
+^m|0
+^m|L1 IU_Present
+|`1` indicates that there is a first-level instruction Cache or a first-level unified Cache
+
+^m|1
+^m|L1 IU Unify
+|`1` indicates that the Cache shown by `L1 IU_Present` is the unified Cache
+
+^m|2
+^m|L1 D Prwsent
+|`1` indicates there is a first-level data Cache
+
+^m|3
+^m|L2 IU Present
+|`1` indicates there is a second-level instruction Cache or a second-level unified Cache
+
+^m|4
+^m|L2 IU Unitfy
+|`1` indicates that the Cache shown by `L2 IU_Present` is the unified Cache
+
+^m|5
+^m|L2 IU Private
+|`1` indicates that the Cache shown by `L2 IU_Present` is private to each core
+
+^m|6
+^m|L2 IU Inclusive
+|`1` indicates that the Cache shown by `L2 IU_Present` has an inclusive relationship to the lower levels (L1)
+
+^m|7
+^m|L2 D Present
+|`1` indicates there is a secondary data Cache
+
+^m|8
+^m|L2 D Private
+|`1` indicates that the secondary data Cache is private to each core
+
+^m|9
+^m|L2 D Inclusive
+|`1` indicates that the secondary data Cache has a containment relationship to the lower level (L1)
+
+^m|10
+^m|L3 IU Present
+|`1` indicates there is a three-level instruction Cache or a three-level system Cache
+
+^m|11
+^m|L3 IU Unify
+|`1` indicates that the Cache shown by `L3 IU_Present` is unified Cache
+
+^m|12
+^m|L3 IU Private
+|`1` indicates that the Cache shown by `L3 IU_Present` is private to each core
+
+^m|13
+^m|L3 IU Inclusive
+|`1` indicates that the Cache shown by `L3 IU_Present` has an inclusive relationship to the lower levels (L1 and L2)
+
+^m|14
+^m|L3 D Present
+|`1` indicates there is a three-level data Cache
+
+^m|15
+^m|L3 F Inclusive
+|`1` indicates that the three-level data Cache is private to each core
+
+^m|16
+^m|L3 D Inclusive
+|`1` indicates that the three-level data Cache has an inclusive relationship to the lower levels (L1 and 12)
+
+.3+^m|11
+^m|15:0
+^m|Way-1
+|Number of channels minus `1` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
+
+^m|23:16
+^m|Index-log2
+|`log2(number of Cache rows per channel)` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
+
+^m|30:24
+^m|Linesize-log2
+|`log2(Cache line bytes)` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
+
+.3+^m|12
+^m|15:0
+^m|Way-1
+|Number of channels minus `1` (Cache corresponding to `L1 D Present` in configuration word `10`)
+
+^m|23:16
+^m|Index-log2
+|`log2(number of Cache rows per channel)` (Cache corresponding to `L1 D Present` in configuration word `10`)
+
+^m|30:24
+^m|Linesize-log2
+|`log2(Cache row bytes)` (Cache corresponding to `L1 D Present` in configuration word `10`)
+
+.3+^m|13
+^m|15:0
+^m|Way-1
+|Number of channels minus `1` (Cache corresponding to `L2 IU Present` in configuration word `10`)
+
+^m|23:16
+^m|Index-log2
+|`log2(number of Cache rows per channel)` (Cache corresponding to `L2 IU Present` in configuration word `10`)
+
+^m|30:24
+^m|Linesize-log2
+|`log2(Cache row bytes)` (Cache corresponding to `L2 IU Present` in configuration word `10`)
+
+.3+^m|14
+^m|15:0
+^m|Way-1
+|Number of channels minus `1` (Cache corresponding to `L3 IU Present` in configuration word `10`)
+
+^m|23:16
+^m|Index-log2
+|`log2(number of Cache rows per channel)` (Cache corresponding to `L3 IU Present` in configuration word `10`)
+
+^m|30:24
+^m|Linesize-log2
+|`log2(Cache row bytes)` (Cache corresponding to `L3 IU Present` in configuration word `10`)
+|===

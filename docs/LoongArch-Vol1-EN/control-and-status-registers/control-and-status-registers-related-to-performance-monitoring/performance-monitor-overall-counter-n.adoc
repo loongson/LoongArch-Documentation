@@ -1,0 +1,20 @@
+[[performance-monitor-overall-counter-n]]
+==== Performance Monitor Overall Counter n (`PMCNT`)
+
+[[definition-of-performance-monitor-overall-counter-n-register]]
+.Definition of performance monitor overall counter n register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|Count
+|RW
+|The counter is incremented by `1` for each performance event monitored by the performance monitor.
+
+If the performance monitor has enabled the performance monitoring count overflow interrupt, and when the highest bit of `Count` is `1`, the interrupt is triggered.
+This also means that the software can cancel the interrupt by clearing the highest bit of `Count` to `0`.
+|===

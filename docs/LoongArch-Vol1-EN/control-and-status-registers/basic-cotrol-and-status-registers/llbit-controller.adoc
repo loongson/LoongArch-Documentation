@@ -1,0 +1,39 @@
+[[llbit-controller]]
+==== LLBit Controller (`LLBCTL`)
+
+This register is used for the access control operations performed on the `LLBit`.
+
+[[definition-of-llbit-controller-register]]
+.Definition of llbit controller register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|ROLLB
+|R
+|A read-only bit.
+Reading this bit will return the value of the current `LLBit`.
+
+|1
+|WCLLB
+|W1
+|A software writing `1` to this bit will clear the `LLBit` to `0`.
+A software writing `0` to this bit will be ignored by hardware.
+
+|2
+|KLO
+|RW
+|Used to control the operation of the `LLBit` when the `ERTN` instruction is executed.
+When this bit is `1`, the `LLBit` is not cleared to `0` when the `ERTN` instruction is executed.
+But the bit is automatically cleared to `0` by the hardware; it means that each time `KLO` is set to `1`, it can only affect the execution of the `ERTN` instruction once.
+
+|31:3
+|0
+|R0
+|Reserved field.
+Return `0` if read this field, and software is not allowed to change its value.
+|===

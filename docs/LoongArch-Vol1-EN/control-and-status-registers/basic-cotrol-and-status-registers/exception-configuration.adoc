@@ -1,0 +1,41 @@
+[[exception-configuration]]
+==== Exception Configuration (`ECFG`)
+
+This register is used to control the entry calculation method of exceptions and interrupts and the local enable bit of each interrupt.
+
+[[definition-of-exception-configuration-register]]
+.Definition of exception configuration register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|12:0
+|LIE
+|RW
+|Local interrupt enable bits, which are high valid.
+These local interrupt enable bits correspond to the 13 interrupt sources recorded in the `IS` field in `CSR.ESTAT`.
+Each bit controls one interrupt source.
+
+|15:13
+|0
+|R0
+|Reserved field.
+Return `0` if read this field, and software is not allowed to change its value.
+
+|18:16
+|VS
+|KW
+|Configure the spacing of exceptions and interrupt entries.
+When `VS=0`, all exceptions and interrupts have the same entry base address.
+When `VS!=0,` the entry base address spacing between each exception and interrupt is `2VS` instructions.
+Since the TLB refill exceptions and machine error exceptions have separate entry base addresses, the entry of both exceptions is not affected by the `VS` field.
+
+|31:19
+|0
+|RO
+|Reserved field.
+Return `0` if read this field, and software is not allowed to change its value.
+|===

@@ -1,0 +1,14 @@
+[[crc-32-checksum-calculation]]
+==== CRC-32 Checksum Calculation
+
+[source]
+----
+bits(32) CRC32(old_chksum, msg, width, poly):
+    new_chksum = (old_chksum & 0xFFFFFFFF) ^ {{(64-width){1'b0}}, msg}
+    for i in range(width):
+        if (new_chksum & 1'b1):
+            new_chksum = (new_chksum >> 1) ^ poly
+        else:
+            new_chksum = (new_chksum >> 1)
+    return new_chksum
+----

@@ -1,0 +1,24 @@
+[[general-hardware-exception-handling-of-general-exceptions]]
+==== General Hardware Exception Handling of General Exceptions
+
+There may be some differences in the handling of different general exceptions by the processor, and the general hardware exception handling of general exceptions is described here.
+
+When a general exception is triggered, the processor does the following:
+
+* Store `PLV` and `IE` in `CSR.CRMD` to `PPLV` and `PIE` in `CSR.PRMD`, then set `PLV` in `CSR.CRMD` to `0` and `IE` to `0`;
+
+* For implementations that support the Watch function, also store `WE` in `CSR.CRMD` to `PWE` in `CSR.PRMD` and then set `WE` in `CSR.CRMD` to `0`;
+
+* Record `PC` that triggered the exception by `CSR.ERA`;
+
+* Jump to the exception entry to fetch instructions.
+
+When the software executes the `ERTN` instruction returning from general exceptions, the processor does the following:
+
+* Restore `PPLV` and `PIE` in `CSR.PRMD` to `PLV` and `IE` in `CSR.CRMD`;
+
+* For implementations that support the Watch function, also restore `PWE` in `CSR.PRMD` to `WE` in `CSR.CRMD`;
+
+* Jump to the address recorded by `CSR.ERA` to fetch instructions.
+
+For the above hardware implementation, the software needs to save `PPLV` and `PIE` in `CSR.PRMD` if the interrupt needs to be enabled during the exception handling, and restore the saved contents to `CSR.PRMD` before the exception returns.

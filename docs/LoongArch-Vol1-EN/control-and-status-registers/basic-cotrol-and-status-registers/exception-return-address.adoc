@@ -1,0 +1,24 @@
+[[exception-return-address]]
+==== Exception Return Address (`ERA`)
+
+When an exception is triggered, if the exception type is neither a TLB refill exception nor a machine error exception, the `PC` of the instruction that triggered the exception will be recorded in this register.
+
+[[definition-of-exception-return-address-register]]
+.Definition of exception program counter register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|PC
+|RW
+|When an exception is triggered:
+
+this field remains unchanged if the exception is a TLB refill exception or a machine error exception;
+
+otherwise, the hardware records the `PC` of the instruction that triggered the exception here.
+For LA64, in this case, if the privilege level that triggered the exception is in 32-bit address mode, then the higher 32 bits of the recorded `PC` are forced to `0`.
+|===

@@ -1,0 +1,111 @@
+[[floating-point-common-memory-access-instructions]]
+==== Floating-Point Common Memory Access Instructions
+
+===== `FLD.{S/D}, FST.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+flds    fd, rj, si12
+fld.d   fd, rj, si12
+fst.s   fd, rj, si12
+fst.d   fd, rj, si12
+----
+
+`FLD.S` retrieves a word of data from the internal memory and writes it into the lower 32 bits of the floating-point register `fd`.
+If the length of the floating-point register is 64 bits, the high 32-bit value of fd is uncertain.
+
+`FLD.D` retrieves a double word from the internal memory and writes it into the floating-point register `fd`.
+
+`FST.S` writes the low 32-bit word data in the floating-point register `fd` into the memory.
+
+`FST.D` writes double-word data in the floating-point register `fd` into the memory.
+
+The access address of the above instruction is calculated by summing the value in the general register `rj` with the symbolically expanded 12-bit immediate number `si12`.
+
+`FLD.{S/D}` and `FST.{S/D}` instructions, regardless of the hardware implementation and environment configuration, as long as the access address is naturally aligned, the non-alignment exception will not be triggered; when the access address is not naturally aligned, if the hardware implementation supports non-aligned access and the current computing environment is configured to allow non-aligned access, then the non-alignment exception will not be triggered; otherwise, the non-alignment exception will be triggered.
+Otherwise, the non-alignment exception will be triggered.
+
+[source]
+----
+FLD.S:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    word = MemoryLoad(paddr, WORD)
+    FR[fd][31:0] = word
+
+FLD.D:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    doubleword = MemoryLoad(paddr, DOUBLEWORD)
+    FR[fd] = doubleword
+
+FST.S:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(FR[fd][31:0], paddr, WORD)
+
+FST.D:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(FR[fd][63:0], paddr, DOUBLEWORD)
+----
+
+===== `FLDX.{S/D}, FSTX.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fldx.s  fd, rj, rk
+fldx.d  fd, rj, rk
+fstx.s  fd, rj, rk
+fstx.d  fd, rj, rk
+----
+
+`FLDX.S` retrieves a word of data from the memory and writes it into the lower 32 bits of the floating-point register `fd`.
+If the length of the floating-point register is 64 bits, the high 32-bit value of fd is uncertain.
+
+`FLDX.D` retrieves a double word of data from the memory and writes it into the floating-point register `fd`.
+
+`FSTX.S` writes the low 32-bit word data in the floating-point register `fd` into the memory.
+
+`FSTX.D` writes the double word data in the floating-point register `fd` into the memory.
+
+The memory access address calculation method of the above instruction is to add sum the value in the general register `rj` and the value in the general register `rk`.
+
+For `FLDX.{S/D} and FSTX.{S/D}` instructions, no matter what kind of hardware implementation and environmental configuration, as long as the memory access address is naturally aligned, the non-aligned exception will not be triggered; When the memory address is not naturally aligned, if the hardware implementation supports unaligned memory access and the current computing environment is configured to allow unaligned memory access, then the unaligned exception will not be triggered, otherwise it will trigger the unaligned exception.
+
+[source]
+----
+FLDX.S:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    word = MemoryLoad(paddr, WORD)
+    FR[fd][31:0] = word
+
+FLDX.D:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    doubleword = MemoryLoad(paddr, DOUBLEWORD)
+    FR[fd] = doubleword
+
+FSTX.S:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(FR[fd][31:0], paddr, WORD)
+
+FSTX.D:
+    vaddr = GR[rj] + GR[rk]
+    AddressCompli anceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(FR[fd][63:0], paddr, DOUBLEWORD)
+----

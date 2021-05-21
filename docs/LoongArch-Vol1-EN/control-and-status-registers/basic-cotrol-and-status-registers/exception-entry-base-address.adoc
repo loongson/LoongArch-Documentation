@@ -1,0 +1,24 @@
+[[exception-entry-base-address]]
+==== Exception Entry Base Address (`EENTRY`)
+
+This register is used to configure the entry base address for general exceptions and interrupts.
+
+[[definition-of-exception-entry-base-address-register]]
+.Definition of exception entry base address register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|11:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|GRLEN-1:12
+|VPN
+|RW
+|The virtual page table number of the entry base address for general exceptions and interrupts.
+|===

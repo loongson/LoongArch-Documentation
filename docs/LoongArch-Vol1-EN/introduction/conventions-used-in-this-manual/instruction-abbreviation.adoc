@@ -1,0 +1,12 @@
+[[instruction-abbreviation]]
+==== Instruction Abbreviation
+
+There are many instructions defined by LoongArch that appear frequently and have similar behaviors.
+Generally, they only have some differences in operands.
+For the convenience of readers, such instructions are often introduced together.
+For the sake of brevity, this manual uses abbreviation rules for the instruction name.
+`{A/B/C}` means to use `A`, `B`, and `C` to combine the instruction name.
+`A[B]` means to use `A` and `AB` to combine the instruction name.
+For example, `ADD.{W/D}` represents two instruction names `ADD.W` and `ADD.D`, while `BLT[U]` represents two instruction names `BLT` and BLTU.
+A more complicated example is `ADD[I].{W/D}`, which represents four instruction names `ADD.W`, `ADD.D`, `ADDI.W` and `ADDI.D`.
+Even though instruction names can be abbreviated, it does not mean that their opcode fields have similar contents.

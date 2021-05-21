@@ -1,0 +1,6 @@
+[[data-types]]
+==== Data Types
+
+There are 5 data types operated by basic integer instructions, namely: **b**it (b), **B**yte (B, length 8b), **H**alfword (H, length 16b), **W**ord (W, length 32b), **D**oubleword (D, length 64b).
+In LA32, there are no integer instructions for operating doubleword.
+Byte, half-word, word and double-word data types all use two's complement encoding.

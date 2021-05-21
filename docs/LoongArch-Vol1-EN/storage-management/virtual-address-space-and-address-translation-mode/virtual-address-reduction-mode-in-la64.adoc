@@ -1,0 +1,6 @@
+[[virtual-address-reduction-mode-in-la64]]
+==== Virtual Address Reduction Mode in LA64
+
+In order to reduce the number of page table levels in some occasions, the virtual address reduction mode is also provided in LA64.
+When the system software set `RDVA` in the `CSR.RVACFG` register to a value from `1` to `8`, the valid bits of the virtual address in mapped address translation mode are treated as `(VALEN-RDVA)` bits.
+For example, when `VALEN=48` and `RDVA` is set to `8`, the `[63:40]` bits of the legal address must be a sign expansion of the `[39]` bit.

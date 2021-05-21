@@ -1,0 +1,9 @@
+[[references-to-control-and-status-registers]]
+==== References to Control and Status Registers
+
+LoongArch defines a series of **C**ontrol and **S**tatus **R**egisters (CSRs), which are used to control the execution behavior of instructions.
+Each CSR usually contains several fields.
+This manual use `+CSR.%%%%.####+` to refer to the `+####+` field of the control and status register whose name is abbreviated as `+%%%%+`.
+For example, `CSR.CRMD.PLV` represents the `PLV` field in the `CRMD` register.
+When the virtualization extension is implemented, there are two sets of CSRs in the processor, one belongs to the Host and the other belongs to the Guest.
+If the two sets of CSRs cannot be distinguished by the context, `CSR.XXXX` is used to represent the CSRs of the Host and `GCSR.XXXX` is used to represent the CSRs of the Guest.

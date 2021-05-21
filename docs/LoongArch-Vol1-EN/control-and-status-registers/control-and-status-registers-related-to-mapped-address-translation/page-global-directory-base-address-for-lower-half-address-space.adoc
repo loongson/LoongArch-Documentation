@@ -1,0 +1,28 @@
+[[page-global-directory-base-address-for-lower-half-address-space]]
+==== Page Global Directory Base Address for Lower Half Address Space (`PGDL`)
+
+This register is used to configure the base address of the global directory for the lower half address space.
+It is required that the base address of the global directory must be aligned to a `4KB` boundary address.
+
+This register also contains the information related to the `PS` and `P` fields in the TLB table entry when executing the TLB-related instructions.
+
+[[definition-of-page-global-directory-base-address-for-lower-half-address-space-register]]
+.Definition of page global directory base address for lower half address space register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|11:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|GRLEN-1:12
+|Base
+|RW
+|The base address of the global directory in the lower half address space.
+By lower half address space, it means that the `[VALEN-1]` bit of the virtual address is equal to `0`.
+|===

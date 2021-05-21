@@ -1,0 +1,272 @@
+[[memory-load-store-watchpoint-n-configuration]]
+==== Memory Load/Store Watchpoint n Configuration (`MWPnCFG1`–`MWPnCFG4`)
+
+The information contained in the configuration `1` to `3` registers of each load/store watchpoint is used directly for the comparison judgment of the watchpoint check.
+Assuming that the address of the operation to be compared is maddr and the byte range is mbyten, the process of determining the hit of each watchpoint is as follows:
+
+. If `CSR.CRMD.WE=0`, the judgment is terminated, otherwise turn `2`;
+
+. If the current is not in debug mode but the DMOnly bit of `MWPCFG3` is equal to `1`, the judgment is terminated, otherwise turn to `3`;
+
+. If the bit corresponding to the current privilege level in `PLV0`–`PLV3` of `MWPCFG3` is equal to `0`, the judgment is terminated, otherwise turn to `4`;
+
+. If the operation is a load operation but the `LoadEn` bit in `MWPCFG3` is equal to `0`, or the operation is a store operation but the `StoreEn` bit in `MWPCFG3` is equal to `0`, the judgment is terminated, otherwise go to `5`;
+
+. If the `LCL` bit in `MWPCFG3` is equal to `1`, but the `CSR.ASID.ASID` is not equal to the `ASID` in `MWPCFG4`, the judgment is terminated, otherwise go to `6`;
+
+. If `(maddr & (~MWPCFG2.Mask)) != (MWPCFG1.VAaddr & (~MWPCFG2.Mak))`, that is, the address comparison is not equal, the judgment terminates, otherwise turn 7;
+
+. If `(~bytemask[7:0] & mbyten[7:0])` is equal to all `0` values, the judgment is terminated, otherwise the watchpoint is considered to be hit.
+
+The concepts of `mbyten` and `bytemask`, which appear in the description of the judgment process above, are explained further below.
+
+`mbyten` represents the bytes involved in the operation, which is an 8-bit bit vector whose value is related to the type of load/store operation and the low value of the address, as defined in the table:
+
+[[definition-of-load-store-watchpoint-judgment-process-mbyten]]
+.Definition of load/store watchpoint judgment process `mbyten`
+[%header,cols="4m,8*^1m"]
+|===
+.2+^|Intsruction Name
+8+|`maddr[2:0]`
+
+^|0
+^|1
+^|2
+^|3
+^|4
+^|5
+^|6
+^|7
+
+|LD[X].B[U], ST[X].B,
+
+LD{GT/LE}.B, ST{GT/LE}.B
+|0x01
+|0x02
+|0x04
+|0x08
+|0x10
+|0x20
+|0x40
+|0x80
+
+|LD[X].H[U], ST[X].H
+
+LD{GT/LE}.H, ST{GT/LE}.H
+2+|0x30
+2+|0x0C
+2+|0x30
+2+|0xC0
+
+|LD[X].W[U], ST[X].W,
+
+LD{GT/LE}.W, ST{GT/LE}.W,
+
+LDPTR.W, STPTR.W,
+
+LL.W, SC.W,
+
+AM{SWAP/ADD/AND/OR/XOR/MAX/MIN}[.DB].W,
+
+AM{MAX/MIN}[_DBI].WU,
+
+FLD[X].S, FST[X]S,
+
+FLD{GT/LE}.S, FST{GT/LE}.S
+4+|0x0F
+4+|0xF0
+
+|LD[X].D, ST[X].D,
+
+LD{GT/LE}.D, ST[GT/LE].D,
+
+LDPTR.D, STPTR.D,
+
+LL.D, SC.D,
+
+AM{SWAP/ADD/AND/OR/XOR/MAX/MIN}[_DB].D,
+
+AM{MAX/MIN}[_DB].DU,
+
+FLD[X].D, FST[X].D,
+
+FLD{GT/LE}.D, FST{GT/LE}.D
+8+|0xFF
+|===
+
+`bytemask` indicates which bytes do not participate in the comparison mask when watchpoint comparison, which is an 8-bit bit vector whose value is related to the low bit of `VAddr` in `MWPCFG1` and Size in MWPCF`G3, as defined as shown.
+
+[[definition-of-load-store-watchpoint-bytemask]]
+.Definition of load store watchpoint `bytemask`
+[%header,cols="4m,8*^1m"]
+|===
+.2+^|`MWPCFG3.Size`
+8+|`MWPCFG1.Vaddr[2:0]`
+
+^|0
+^|1
+^|2
+^|3
+^|4
+^|5
+^|6
+^|7
+
+|0b00
+8+|0x00
+
+|0b01
+4+|0xF0
+4+|0x0F
+
+|0b10
+2+|0xFC
+2+|0xF3
+2+|0xCF
+2+|0x3F
+
+|0b11
+|0xFE
+|0xFD
+|0xFB
+|0xF7
+|0xEF
+|0xDF
+|0xBF
+|0x7F
+|===
+
+[[definition-of-memory-load-store-watchpoint-n-configuration-1-register]]
+.Definition of memory load/store watchpoint n configuration 1 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|VAddr
+|RW
+|The virtual address to be compared for this load/store watchpoint.
+|===
+
+[[definition-of-memory-load-store-watchpoint-n-configuration-2-register]]
+.Definition of memory load/store watchpoint n configuration 2 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|Mask
+|RW
+|Mask bit for address comparison for this load/store watchpoint.
+If bit `i` (`0 &#8804; i < GRLEN`) is `1`, it means that bit `i` of the address is not involved in the comparison.
+|===
+
+[[definition-of-memory-load-store-watchpoint-n-configuration-3-register]]
+.Definition of memory load/store watchpoint n configuration 3 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|DMOnly
+|RW
+|A bit of `1` indicates that the load/store watchpoint is only available in debug mode.
+Here "`available`" contains two meanings: first, the configuration register of the watchpoint can be modified by software in this mode, and second, the check hit of the watchpoint will trigger the watchpoint exception and mark the status of the watchpoint only in this mode.
+
+This bit can only be modified in debug mode (`CSR.DBG.DM=1`).
+This means that the (Host) software running in debug mode has the priority to use the watchpoint.
+
+|1
+|PLV0
+|RW
+|This watchpoint triggers the enable of the watchpoint exception at the PLV0 privilege level.
+`1` - enable, `0` - disable.
+
+|2
+|PLV1
+|RW
+|The watchpoint triggers the watchpoint exception enable at the PLV1 privilege level.
+`1` - enable, `0` - disable.
+
+|3
+|PLV2
+|RW
+|The watchpoint triggers the enable of the watchpoint exception at the PLV2 privilege level.
+`1` - enable, `0` - disable.
+
+|4
+|PLV3
+|RW
+|The watchpoint triggers the enablement of the watchpoint exception at the PLV3 privilege level.
+`1` - enable, `0` - disable.
+
+|6:5
+|0
+|R
+|If virtualization extensions are not implemented, the field is read-only constant at `0` and writes are ignored.
+
+|7
+|LCL
+|RW
+|`1` indicates that the ASID comparison is performed during the watchpoint check
+
+|8
+|LoadEn
+|RW
+|`1` indicates a watchpoint check for load operations, otherwise no check.
+
+|9
+|StoreEn
+|RW
+|`1` means that a watchpoint check is performed for the store operation, otherwise, no check is performed.
+
+|11:10
+|Size
+|RW
+|Which bytes fall within the comparison range when the watchpoint check is performed.
+
+|31:12
+|0
+|R0
+|Reserved field.
+Return `0` if read this field, and the software does not allow to change its value.
+|===
+
+[[definition-of-memory-load-store-watchpoint-n-configuration-4-register]]
+.Definition of memory load/store watchpoint n configuration 4 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|9:0
+|ASID
+|RW
+|The ASID being compared
+
+|15:10
+|0
+|R
+|Read-only is always `0`, writes are ignored.
+
+|23:16
+|0
+|R
+|If the virtualization extension is not implemented, the field is read-only constant to `0` and writes are ignored.
+
+|31:24
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+|===

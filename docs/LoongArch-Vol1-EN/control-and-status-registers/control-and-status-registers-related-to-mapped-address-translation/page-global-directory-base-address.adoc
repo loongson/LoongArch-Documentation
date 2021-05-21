@@ -1,0 +1,26 @@
+[[page-global-directory-base-address]]
+==== Page Global Directory Base Address (`PGD`)
+
+This register is a read-only register, whose content is the global directory base address information corresponding to the bad virtual address in the current context.
+
+[[definition-of-page-global-directory-base-address-register]]
+.Definition of page global directory base address register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|11:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|GRLEN_1:12
+|Base
+|R
+|If the highest bit of the bad virtual address in the current context is `0`, the return value of reading is equal to the `Base` field of `CSR.PGDL`; otherwise, the read return value is equal to the `Base` field of `CSR.PGDH`.
+
+When `CSR.TLBRERA.IsTLBR=0`, the bad virtual address information in the current context is located in `CSR.BADV`; otherwise, the bad virtual address information is located in `CSR.TLBRBADV`.
+|===

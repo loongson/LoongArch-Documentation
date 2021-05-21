@@ -1,0 +1,105 @@
+[[atomic-memory-access-instructions]]
+==== Atomic Memory Access Instructions
+
+===== `AM{SWAP/ADD/AND/OR/XOR/MAX/MIN}[DB].{W/D}`, `AM{MAX/MIN}[_DB].{WU/DU}`
+
+Instruction formats:
+
+[source]
+----
+amswap.w        rd, rk, rj
+amswap_db.w     rd, rk, rj
+amswap.d        rd, rk, rj
+amswap_db.d     rd, rk, rj
+amadd.w         rd, rk, rj
+amadd_db.w      rd, rk, rj
+amadd.d         rd, rk, rj
+amadd_db.d      rd, rk, rj
+amand.w         rd, rk, rj
+amand_db.w      rd, rk, rj
+amand.d         rd, rk, rj
+amand_db.d      rd, rk, rj
+amor.w          rd, rk, rj
+amor_db.w       rd, rk, rj
+amor.d          rd, rk, rj
+amor_db.d       rd, rk, rj
+amxor.w         rd, rk, rj
+amxor_db.w      rd, rk, rj
+amxor.d         rd, rk, rj
+amxor_db.d      rd, rk, rj
+ammax.w         rd, rk, rj
+ammax_db.w      rd, rk, rj
+ammax.d         rd, rk, rj
+ammax_db.d      rd, rk, rj
+ammin.w         rd, rk, rj
+ammin_db.w      rd, rk, rj
+ammin.d         rd, rk, rj
+ammin_db.d      rd, rk, rj
+ammax.wu        rd, rk, rj
+ammax_db.wu     rd, rk, rj
+ammax.du        rd, rk, rj
+ammax_db.du     rd, rk, rj
+ammin.wu        rd, rk, rj
+ammin_db.wu     rd, rk, rj
+ammin.du        rd, rk, rj
+ammin_db.du     rd, rk, rj
+----
+
+The `AM*` atomic access instruction performs a sequence of "`read-modify-write`" operations on a memory cell atomically.
+Specifically, it retrieves the old value at the specified address in memory and writes it to the general register `rd`, performs some simple operations on the old value in memory and the value in the general register `rk`, and then writes the result of the operations back to the specified address in memory.
+The entire "`read-modify-write`" process is atomic, meaning that the processor executing the instruction does not perform any other access-write operations nor does it trigger any exceptions during the time between the return of the access read operation data and the global visibility of the access write operation, and no other processor cores or cache-consistent.
+The module has global visibility of the execution of the write operation on the Cache row where the instruction accesses the object.
+
+The access address of an `AM*` atomic access instruction is the value of the general register `rj`.
+The access address of an `AM*` atomic access instruction always requires natural alignment, and failure to meet this condition will trigger a non-alignment exception.
+
+Atomic access instructions ending in `.W` and `.WU` read and write memory and intermediate operations with a data length of 32 bits, while atomic access instructions ending in `.D` and `.DU` read and write memory and intermediate operations with a data length of 64 bits.
+Whether ending in `.W` or `.WU`, the data of a word retrieved from memory by an atomic access instruction is symbolically extended and written to the general register `rd`.
+
+`AMSWAP[.DB].{W/D}` instruction writes the new value of memory from the general register `rk`.
+`AMADD[.DB].{W/D}` instruction writes the new value of memory from the result ofold value of memory plus the value in general register `rk`.
+`AMAND[DB].{W/D}` instruction writes the new value to memory as a result of the bitwise AND operation of the old value in memory and the value in general register `rk`.
+`AMOR[DB].{W/D}` instruction writes a new value to memory from `AMXOR[.DB]`.
+The new value written to memory by the `{W/D}` instruction is the result of the bitwise OR operation of the old value in memory and the value in general register `rk`.
+`AMMAX[_DB].{W/D}` instruction writes the new value to memory as the result of the bitwise AND operation of the old value in memory and the value in general register `rk`.
+The new value written to memory is the maximum value obtained by comparing the old value in memory with the value in general register `rk` as a signed number.
+`[_DB].{W/D}` instruction The new value written to memory is the minimum value obtained by comparing the old value of memory with the value in general register `rk` as if it were a signed number.
+The new value written to memory by the `AMMAX[DB].[WU/DU]` instruction is the maximum value obtained by comparing the old value in memory with the value in general register rk as an unsigned number.
+`AMMIN[_DB].{WU/DU}` instruction writes the new value to memory by comparing the old value in memory with the value in general register rk as an unsigned number.
+The new value written to memory is the minimum value obtained by comparing the old value in memory with the value in general register rk as an unsigned number.
+
+`AM*_DB.W[U]/D[U]` instruction not only completes the above atomized operation sequence, but also implements the data barrier function at the same time.
+That is, all access operations preceding the atomic access instruction in the same processor core are completed before such atomic access instructions are allowed to be executed, and all access operations following the atomic access instruction in the same processor core are allowed to be executed only after such atomic access instructions are executed.
+
+If the `AM*` atomic memory access instruction has the same register number as `rd` and `rj`, there is no exception for the trigger instruction.
+
+If the `AM*` atomic memory access instruction has the same register number as `rd` and `rk`, the execution result is uncertain.
+Please software to avoid this situation.
+
+===== `LL.{W/D}`, `SC.{W/D}`
+
+Instruction formats:
+
+[source]
+----
+ll.w        rd, rj, si14
+ll.d        rd, rj, si14
+sc.w        rd, rj, si14
+sc.d        rd, rj, si14
+----
+
+The two pairs of instructions, `LL.W` and `SC.W`, `LL.D` and `SC.D`, are used to implement an atomic "`read, modify, and write`" sequence of memory access operations.
+The `LL.{W/D}` instruction retrieves a word/double-word data from the specified address of the memory and writes it to the general register rd after sign extension, and the paired `SC`.
+`{W/D}` instruction operates on the same length of data and has the same access Memory address.
+The atomic maintenance mechanism for the sequence of memory access operations is that when `LL.{W/D}` is executed, the access address is recorded and the previous flag is set (`Lbit` is set to `1`), and the LLbit is checked when the `SC.{W/D}` instruction is executed.
+Only when the `LLbit` is `1`, the write action will actually occur, otherwise it will not be written.
+When the software needs to successfully complete an atomic "`read-modify-write`" memory access operation sequence, it needs to construct a loop to repeatedly execute the `LLSC` instruction pair until the `SC` is successfully completed.
+In order to construct this loop, the `SC.[W/D]` instruction will write the flag of its execution success (or simply the `LLbit` value seen when the `SC` instruction is executed) into the general register `rd` and return.
+
+During the execution of the paired `LLSC`, the following events will clear the `LLbit` to `0`:
+
+* The `ERTN` instruction is executed and the `KL0` bit in `CSR.LLBCTL` is not equal to `1` when executed;
+
+* Other processor cores or Cache Coherent I/O masters perform a store operation on the Cache line where the address corresponding to the `LLbit` is located.
+
+If the storage access attribute of the `LLSC` instruction to the access address is not Cached, then the execution result is uncertain.

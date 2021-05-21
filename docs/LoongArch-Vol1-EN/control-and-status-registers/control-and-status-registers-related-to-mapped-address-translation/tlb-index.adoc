@@ -1,0 +1,62 @@
+[[tlb-index]]
+==== TLB Index (`TLBIDX`)
+
+This register contains information such as the index associated with the TLB-related instruction when executing TLB-related instructions.
+The length of the `Index` field in the table depends on implementation, although LoongArch allows for an `Index` length of no more than `16` bits.
+
+This register also contains the information related to the `PS` and `P` fields in the TLB table entry when executing TLB-related instructions.
+
+[[definition-of-tlb-index-register]]
+.Definition of TLB index register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|n-1:0
+|Index
+|RW
+|When executing the `TLBRD` and `TLBWR` instructions, the index of the access TLB table entry comes from here.
+
+When executing the `TLBSRCH` instruction, if it hits, the index of the hit entry is recorded here.
+
+For the correspondence between index values and TLB table entries, refer to the relevant section in <<tlb-maintenance-instructions,TLB Maintenance Instructions>>.
+
+|15:n
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|23:16
+|0
+|RO
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+
+|29:24
+|PS
+|RW
+|When executing the `TLBRD` instruction, the value read from the `PS` field of the TLB table entry is recorded here.
+
+When executing the `TLBWR` and `TLBFILL` instructions with `CSR.TLBRERA.IsTLBR=0`, the value written to the `PS` field of the TLB table entry comes from here.
+
+|30
+|0
+|RO
+|Reserved field.
+Return `0` if read this field and the software does not allow to change its value.
+
+|31
+|NE
+|RW
+|`1` means the TLB table entry is empty (invalid TLB table entry), and `0` means the TLB table entry is non-empty (valid TLB table entry)
+
+When executing the `TLBSRCH` instruction, this bit is recorded as `0` if there is a hit entry, otherwise it is recorded as `1`.
+
+When executing the `TLBRD` instruction, the `E` bit read from the TLB table entry is inverted and recorded here.
+
+When executing the `TLBWR` instruction, and when `CSR.TI.BRFPC.IsTT.BR=0`, the value written to the `E` bit of the TLB entry is written after it is inverted.
+If `CSR.TLBRERA.IsTLBR=1`, then the `E` bit of the TLB entry being written is always set to `1`, regardless of the value of that bit.
+|===

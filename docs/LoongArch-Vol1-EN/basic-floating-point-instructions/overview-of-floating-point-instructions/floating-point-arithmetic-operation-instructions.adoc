@@ -1,0 +1,405 @@
+[[floating-point-arithmetic-operation-instructions]]
+==== Floating-Point Arithmetic Operation Instructions
+
+===== `F{ADD/SUB/MUL/DIV}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fadd.s      fd, fj, fk
+fadd.d      fd, fj, fk
+fsub.s      fd, fj, fk
+fsub.d      fd, fj, fk
+fmul.s      fd, fj, fk
+fmul.d      fd, fj, fk
+fdiv.s      fd, fj, fk
+fdiv.d      fd, fj, fk
+----
+
+The `FADD.{S/D}` instruction performs the operation that the single-precision/double-precision floating-point number in the floating-point register `fj` plus the single-precision/double-precision floating-point number in the floating-point register `fk`; then writes the result of the single-precision/double-precision floating-point number to floating-point register `fd`.
+Floating-point addition operation follows the specification of `addition(x,y)` operation in the IEEE 754-2008 standard.
+
+[source]
+----
+FADD.S:
+    FR[fd][31:0] = FP32_addition(FR[fj][31:0], FR[fk][31:0])
+
+FADD.D:
+    FR[fd] = FP64_addition(FR[fj], FR[fk])
+----
+
+The `FSUB.{S/D}` instruction performs the operation that the single-precision/double-precision floating-point number in the floating-point register `fj` minus the single-precision/double-precision floating-point number in the floating-point register `fk`, and write the result of the single-precision/double-precision floating-point number to floating-point register `fd`.
+The floating-point subtraction operation follows the `subtraction(xy)` operation specification in the IEEE 754-2008 standard.
+
+[source]
+----
+FSUB.S:
+    FR[fd][31:0] = FP32_subtraction(FR[fj][31:0], FR[fk][31:0])
+
+FSUB.D:
+    FR[fd] = FP64_subtraction(FR[fj], FR[fk])
+----
+
+The `FMUL.{S/D}` instruction performs the operation that multiplies the single-precision/double-precision floating-point number in the floating-point register `fj` by the single-precision/double-precision floating-point number in the floating-point register `fk`, and writes the result of the single-precision/double-precision floating-point number To the floating-point register `fd`.
+The floating-point multiplication operation follows the `multiplication(xy)` operation specification in the IEE 754-2008 standard.
+
+[source]
+----
+FMUL.S:
+    FR[fd][31:0] = FP32_multiplication(FR[fj][31:0], FR[fk][31:0])
+
+FMUL.D:
+    FR[fd] = FP64_multiplication(FR[fj], FR[fk])
+----
+
+The `FDIV.{S/D}` instruction performs the operation that divides the single-precision/double-precision floating-point number in the floating-point register `fj` by the single-precision/double-precision floating-point number in the floating-point register `fk`, and writes the result of the single-precision/double-precision floating-point number To the floating-point register `fd`.
+The floating-point division operation follows the `division(x, y)` operation specification in the IEEE 754-2008 standard.
+
+[source]
+----
+FDIV.S:
+    FR[fd][31:0] = FP32_division(FR[fj][31:0], FR[fk][31:0])
+
+FDIV.D:
+    FR[fd] = FP64_division(FR[fj], FR[fk])
+----
+
+When the operand is a single-precision floating-point number, the upper 32 bits of the resulting floating-point register can be any value.
+
+===== `F{MADD/MSUB/NMADD/NMSUB}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fmadd.s     fd,fj,fk,fa
+fmadd.d     fd,fj,fk,fa
+fmsub.s     fd,fj,fk,fa
+fmsub.d     fd,fj,fk,fa
+fnmadd.s    fd,fj,fk,fa
+fnmadd.d    fd,fj,fk,fa
+fnmsub.s    fd,fj,fk,fa
+fnmsub.d    fd,fj,fk,fa
+----
+
+The `FMADD.{S/D}` instruction performs the operation that multiplies the single-precision/double-precision floating point number in floating point register `fj` with the single-precision/double-precision floating point number in floating point register `fk`.
+The result is added to the single-precision/double-precision floating point number in the floating point register `fa`.
+The result of the single-precision/double-precision floating point number is written to the floating point register `fd`
+
+[source]
+----
+FMADD.S:
+    FR[fd][31:0] = FP32_fusedMultiplyAdd(FR[fj][31:0], FR[fk][31:0], FR[fa][31:0])
+
+FMADD.D:
+    FR[fd] = FP64_fusedMultiplyAdd(FR[fj], FR[fk], FR[fa])
+----
+
+The `FMSUB.{S/D}` instruction performs the operation that multiplies the single-precision/double-precision floating-point number in the floating-point register `fj` with the single-precision/double-precision floating-point number in the floating-point register `fk`, the result minus the floating-point register `fa` Single-precision/double-precision floating-point numbers, the single-precision/double-precision floating-point number results obtained are written into the floating-point register `fd`.
+
+[source]
+----
+FMSUB.S:
+    FR[fd][31:0] = FP32_fusedMultiplyAdd(FR[fj][31:0], FR[fk][31:0], -FR[fa][31:0])
+
+FMSUB.D:
+    FR[fd] = FP64_fusedMultiplyAdd(FR[fj], FR[fk], -FR[fa])
+----
+
+The `FNMADD.{S/D}` instruction performs the operation that multiplies the single-precision/double-precision floating-point number in the floating-point register `fj` with the single-precision/double-precision floating-point number in the floating-point register `fk`, the result plus the single-precision/double-precision floating-point number in the floating-point register `fa` Precision/double-precision floating-point number, the obtained single-precision/double-precision floating-point number result is negative and written into the floating-point register `fd`.
+
+[source]
+----
+FNMADD.S:
+    FR[fd][31:0] = -FP32_fusedMultiplyAdd(FR[fj][31:0], FR[fk][31:0], FR[fa][31:0])
+
+FNMADD.D:
+    FR[fd] = -FP64_fusedMultiplyAdd(FR[fj], FR[fk], FR[fa])
+----
+
+The `FNMSUB.{S/D}` instruction performs the operation that multiplies the single-precision/double-precision floating-point number in the floating-point register `fj` with the single-precision/double-precision floating-point number in the floating-point register `fk`, the result minus the floating-point register `fa` Single-precision/double-precision floating-point number, the result of the single-precision/double-precision floating-point number obtained is negative and written into the floating-point register `fd`.
+
+[source]
+----
+FNMSUB.S:
+    FR[fd][31:0] = -FP32_fusedMultiplyAdd(FR[fj][31:0], FR[fk][31:0], -FR[fa][31:0])
+
+FNMSUB.D:
+    FR[fd] = -FP64_fusedMultiplyAdd(FR[fj], FR[fk], -FR[fa])
+----
+
+The above four floating-point fusion multiply-add operations follow the specification of the fusedMultiplyAdd(xy,z) operation in the IEEE 754-2008 standard.
+
+===== `F{MAX/MIN}{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fmax.s      fd, fj, fk
+fmax.d      fd, fj, fk
+fmin.s      fd, fj, fk
+fmin.d      fd, fj, fk
+----
+
+The `FMAX.{S/D}` instruction selects the larger of the single-precision/double-precision floating-point number in the floating-point register `fj` and the single-precision/double-precision floating-point number in the floating-point register `fk` to write into the floating-point register `fd`.
+The operation of these two instructions follows the specification of `maxNum(x,y)` operation in the IEEE 754-2008 standard.
+
+[source]
+----
+FMAX.S:
+    FR[fd][31:0] = FP32_maxNum(FR[fj][31:0], FR[fk][31:0])
+
+FMAX.D:
+    FR[fd] = FP64_maxNum(FR[fj], FR[fk])
+----
+
+The `FMIN.{S/D}` instruction selects the smaller of the single-precision/double-precision floating-point number in the floating-point register `fj` and the single-precision/double-precision floating-point number in the floating-point register `fk` to write into the floating-point register `fd`.
+The operation of these two instructions follows the `minNum(x,y)` operation specification in the IEEE 754-2008 standard.
+
+[source]
+----
+FMIN.S:
+    FR[fd][31:0] = FP32_minNum(FR[fj][31:0], FR[fk][31:0])
+
+FMIN.D:
+    FR[fd] = FP64_minNum(FR[fj], FR[fk])
+----
+
+===== `F{MAXA/MINA}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fmaxa.s     fd, fj, fk
+fmaxa.d     fd, fj, fk
+fmina.s     fd, fj, fk
+fmina.d     fd, fj, fk
+----
+
+The `FMAXA.{S/D}` instruction selects the larger absolute value of the single-precision/double-precision floating-point number in the floating-point register `fj` and the single-precision/double-precision floating-point number in the floating-point register `fk` to write to the floating-point register `fd`.
+The floating-point addition operation follows the specification of `maxNumMag(x.v)` operation in IEEE 754-2008 standard.
+
+[source]
+----
+FMAXA.S:
+    FR[fd][31:0] = FP32_maxNumMag(FR[fj][31:0], FR[fk][31:0])
+
+FMAXA.D:
+    FR[fd] = FP64_maxNumMag(FR[fj], FR[fk])
+----
+
+The `FMINA.{S/D}` instruction selects the smaller absolute value of the single-precision/double-precision floating-point number in the floating-point register `fj` and the single-precision/double-precision floating-point number in the floating-point register `fk` to write to the floating-point register `fd`.
+The floating-point addition operation follows the specification of `minNumMag(x,y)` operation in IEEE 754-2008 standard.
+
+[source]
+----
+FMINA.S:
+    FR[fd][31:0] = FP32_minNumMag(FR[fj][31:0], FR[fk][31:0])
+
+FMINA.D:
+    FR[fd] = FP64_minNumMag(FR[fj], FR[fk])
+----
+
+===== `F{ABS/NEG}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fabs.s      fd, fj
+fabs.d      fd, fj
+fneg.s      fd, fj
+fneg.d      fd, fj
+----
+
+The `FABS.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj`, takes its absolute value(that is, the symbol position is 0, and other parts remain unchanged), and writes it into the floating-point register `fd`.
+Floating-point addition operations follow the specification of `abs(x)` operation in the EEE 754-2008 standard.
+
+[source]
+----
+FABS.S:
+    FR[fd][31:0] = FP32_abs(FR[fj][31:0])
+
+FABS.D:
+    FR[fd] = FP64_abs(FR[fj])
+----
+
+The `FNEG.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj`, takes the opposite number(that is, inverts the sign bit, and other parts remain unchanged), and writes it into the floating-point register `fd`.
+Floating-point addition operations follow the negate(x) operation specification in the EEE 754-2008 standard.
+
+[source]
+----
+FNEG.S:
+    FR[fd][31:0] = FP32_negate(FR[fj][31:0])
+
+FNEG.D:
+    FR[fd] = FP64_negate(FR[fj])
+----
+
+===== `F{SQRT/RECIP/RSQRT}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fsqrt.s         fd, fj
+fsqrt.d         fd, fj
+frecip.s        fd, fj
+frecip.d        fd, fj
+frsqrt.s        fd, fj
+frsqrt.d        fd, fj
+----
+
+These instructions are operations related to square root and reciprocal.
+
+The `FSQRT.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj`, and writes the single-precision/double-precision floating-point number obtained after the square root to the floating-point register `fd`.
+The floating-point root operation follows the `squareRoot(x)` operation specification in the IEEE 754-2008 standard.
+
+[source]
+----
+FSQRT.S:
+    FR[fd][31:0] = FP32_squareRoot(FR[fj][31:0])
+
+FSQRT.D:
+    FR[fd] = FP64_squareRoot(FR[fj])
+----
+
+The `FRECIP.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj`, divides the floating-point number by 1.0, and writes the resulting single-precision/double-precision floating-point number into the floating-point register `fd`.
+It is equivalent to the `division(1.0, x)` operation in the IEEE 754-2008 standard.
+
+[source]
+----
+FRECIP.S:
+    FR[fd][31:0] = FP32_division(1.0,FR[fj][31:0])
+
+FRECIP.D:
+    FR[fd] = FP64_division(1.0,FR[fj])
+----
+
+The `FRSQRT.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj`, takes its square root and then divides the obtained single-precision/double-precision floating-point number by 1.0, and the obtained single-precision/double-precision floating-point number is written to the floating-point register `fd`.
+The floating-point squared-inverse operation follows the specification of `rSqrt(x)` operation in IEEE 754-2008 standard.
+
+[source]
+----
+FRSQRT.S:
+    FR[fd][31:0] = FP32_division(1.0, FP_squareRoot(FR[fj][31:0]))
+
+FRSQRT.D:
+    FR[fd] = FP64_division(1.0, FP_squareRoot(R[fj]))
+----
+
+===== `F{SCALEB/LOGB/COPYSIGN}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fscaleb.s       fd, fj, fk
+fscaleb.d       fd, fj, fk
+flogb.s         fd, fj
+flogb.d         fd, fj
+fcopysign.s     fd, fj, fk
+fcopysign.d     fd, fj, fk
+----
+
+The `FSCALEB.{S/D}` instruction selects the single-precision/double-precision floating point number a in the floating point register `fj`,
+Then take the word/double word integer `N` in the floating point register `fk`, and calculate a*2N,
+The obtained single-precision/double-precision floating point number is written to the floating point register `fd`.
+These two instructions follow the IEEE754- 2008 standard `scaleB(x, N)` operation specification.
+
+
+Translated with www.DeepL.com/Translator (free version)
+
+[source]
+----
+FSCALEB.S:
+    FR[fd][31:0] = FP32_scaleB(FR[fj][31:0], FR[fk][31:0])
+
+FSCALEB.D:
+    FR[fd] = FP64_scaleB(FR[fj], FR[fk])
+----
+
+The `FLOGB.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj`, calculates its logarithm based on 2, and writes the obtained single-precision/double-precision floating-point number into the floating-point register `fd` .
+Floating-point exponential operations follow the specification of `logB(x)` operation in the IEEE 754-2008 standard.
+
+[source]
+----
+FLOGB.S:
+    FR[fd][31:0] = FP32_logB(FR[fj][31:0])
+
+FLOGB.D:
+    FR[fd] = FP64_logB(FR[fj])
+----
+
+The `FCOPYSIGN.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj`, and changes its sign bit to the sign bit of the single-precision/double-precision floating-point number in the floating-point register `fk`, and the new one is obtained Single-precision/double-precision floating-point numbers are written into the floating-point register `fd`.
+The floating-point copy sign operation follows the specification of `copySign(x, y)` operation in the IEEE 754-2008 standard.
+
+[source]
+----
+FCOPYSIGN.S:
+    FR[fd][31:0] = FP32_copySign(FR[fi][31:01, FR[fk][31:0]])
+
+FCOPYSIGN.D:
+    FR[fd] = FP64_copySign(FR[fj], FR[fk])
+----
+
+===== `FCLASS.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fclass.s    fd, fj
+fclass.d    fd, fj
+----
+
+This instruction judges the category of the floating-point number in the floating-point register `fj`.
+The result of the judgment is composed of 10 bits of information.
+The meaning of each bit is shown in the following table:
+
+[[results-of-floating-point-classification]]
+.Results of floating-point classification
+[%header,cols="10*^1"]
+|===
+|Bit `0`
+|Bit `1`
+|Bit `2`
+|Bit `3`
+|Bit `4`
+|Bit `5`
+|Bit `6`
+|Bit `7`
+|Bit `8`
+|Bit `9`
+
+.2+|SNaN
+.2+|QNaN
+4+|Negative value
+4+|Positive value
+
+|`&#8734;`
+|Normal
+|Subnormal
+|`0`
+
+|`&#8734;`
+|Normal
+|Subnormal
+|`0`
+|===
+
+When the determined data meets the condition corresponding to a certain bit, the corresponding bit of the result information vector will be set to 1.
+This instruction corresponds to the `class(x)` function in the IEEE-754-2008 standard.
+
+[source]
+----
+FCLASS.S:
+    FR[fd][31:0] = FP32_class(FR[fj][31:0])
+
+FCLASS.D:
+    FR[fd] = FP64_class(FR[fj])
+    sedMultiplyAdd(FR[fj], FR[fk], FR[fa])
+----

@@ -1,0 +1,41 @@
+[[pre-exception-mode-information]]
+==== Pre-exception Mode Information (`PRMD`)
+
+When an exception is triggered, if the exception type is not TLB refill exception and machine error exception, the hardware will save the processor core's privilege level, global interrupt enable bit and watchpoint enable bit at that time to the pre-exception mode information register for restoring the processor core to the context when the exception returns.
+
+[[definition-of-pre-exception-mode-information-register]]
+.Definition of pre-exception mode information register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|1:0
+|PPLV
+|RW
+|When an exception is triggered, the hardware records the old value of the `PLV` field in `CSR.CRMD` in this field if the exception type is not a TLB refill exception and a machine error exception.
+
+When the exception being processed is neither a TLB refill exception (`CSR.TLBRERA.IsTLBR=0`) nor a machine error exception (`CSR.MERRCTL.IsMERR=0`), the hardware restores the value of this field to the `PLV` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|2
+|PIE
+|RW
+|When an exception is triggered, the hardware records the old value of the `IE` field in `CSR.CRMD` in this field if the exception type is not a TLB refill exception and a machine error exception.
+
+When the exception being processed is neither a TLB refill exception (`CSR.TLBRERA.IsTLBR=0`) nor a machine error exception (`CSR.MERRCTL.IsMERR=0`), the hardware restores the value of this field to the `IE` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|3
+|PWE
+|RW
+|When an exception is triggered, the hardware records the old value of the `WE` field in `CSR.CRMD` in this field if the exception type is not a TLB refill exception and a machine error exception.
+
+When the exception being processed is neither a TLB refill exception (`CSR.TLBRERA.IsTLBR=0`) nor a machine error exception (`CSR.MERRCTL.IsMERR=0`), the hardware restores the value of this field to the `WE` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|31:4
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and the software does not allow to change its value.
+|===

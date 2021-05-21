@@ -1,0 +1,34 @@
+[[barrier-instructions]]
+==== Barrier Instructions
+
+===== `DBAR`
+
+Instruction formats:
+
+[source]
+----
+dbar        hint
+----
+
+The `DBAR` instruction is used to complete the barrier function between load/store memory access operations.
+The immediate hint it carries is used to indicate the synchronization object and synchronization degree of the barrier.
+
+A hint value of `0` is mandatory by default, and it indicates a fully functional synchronization barrier.
+Only after all previous load/store access operations are completely executed, the `DBAR 0` instruction can be executed; and only after the execution of `DBAR 0` is completed, all subsequent load/store access operations can be executed.
+
+If there is no special function implementation, all other hint values must be executed according to `hint=0`.
+
+===== `IBAR`
+
+Instruction formats:
+
+[source]
+----
+ibar        hint
+----
+
+The `IBAR` instruction is used to complete the synchronization between the store operation and the instruction fetch operation within a single processor core.
+The immediate hint it carries is used to indicate the synchronization object and synchronization degree of the barrier.
+
+A hint value of 0 is mandatory by default.
+It can ensure that the instruction fetch after the `IBAR 0` instruction must be able to observe the execution effect of all store operations before the `IBAR 0` instruction.

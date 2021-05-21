@@ -1,0 +1,6 @@
+[[length-of-control-and-status-registers-in-la32-and-la64]]
+==== Length of Control and Status Registers in LA32 and LA64
+
+The length of all status control registers is either fixed 32 bits, or it depends on whether the implementation is LA32 or LA64.
+For the first type of registers, when they are accessed by CSR instructions in LA64, retrun values of reading these registers are symbolic expansion to 64 bits, and bits higher than 32 bits of values of writing to them are automatically ignored by hardware.
+For the second type, the definitions will clearly indicate the difference between LA32 and LA64.

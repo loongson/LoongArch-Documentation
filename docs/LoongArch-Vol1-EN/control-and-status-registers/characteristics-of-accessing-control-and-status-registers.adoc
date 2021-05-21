@@ -1,0 +1,8 @@
+[[characteristics-of-accessing-control-and-status-registers]]
+=== Characteristics of Accessing Control and Status Registers
+
+include::characteristics-of-accessing-control-and-status-registers/attributes-of-reading-and-writing.adoc[]
+
+include::characteristics-of-accessing-control-and-status-registers/length-of-control-and-status-registers-in-la32-and-la64.adoc[]
+
+include::characteristics-of-accessing-control-and-status-registers/access-effects-of-undefined-and-unimplemented-control-and-status-registers.adoc[]

@@ -1,0 +1,104 @@
+[[instruction-formats]]
+=== Instruction formats
+
+All LoongArch instructions are fixed 32 bits and required to be aligned on 4-byte boundaries.
+If the address of an instruction is not aligned, address error exception will be triggered.
+
+The style of instruction encoding is that all register operand fields are placed in order from low to high starting from the 0th bit, while the opcode field is placed in order from the 31st bit from high to low.
+The immediate field, which has different lengths according to different instruction types, is located between the register field and the opcode field if the instruction contains an immediate operand.
+Specifically, it contains 9 typical instruction formats, including 3 formats without immediate data (2R, 3R, and 4R), and 6 formats with immediate data (2RI8, 2RI12, 2RI14, 2RI16, 1RI21, and I26).
+The table below lists the specific definitions of these 9 typical formats.
+There are a few instructions whose encoding style is not completely equivalent to these 9 typical instruction formats.
+However, the number of such instructions is small and the instructions change little, which will not be inconvenient for compiler developers.
+
+[[typical-instruction-formats-in-loongarch]]
+.Typical Instruction Formats in LoongArch
+[%header,cols="4,32*^1m"]
+|===
+|
+|31
+|30
+|29
+|28
+|27
+|26
+|25
+|24
+|23
+|22
+|21
+|20
+|19
+|18
+|17
+|16
+|15
+|14
+|13
+|12
+|11
+|10
+|09
+|08
+|07
+|06
+|05
+|04
+|03
+|02
+|01
+|00
+
+|2R-type
+22+|opcode
+5+|rj
+5+|rd
+
+|3R-type
+17+|opcode
+5+|rk
+5+|rj
+5+|rd
+
+|4R-type
+12+|opcode
+5+|ra
+5+|rk
+5+|rj
+5+|rd
+
+|2RI8-type
+14+|opcode
+8+|I8
+5+|rj
+5+|rd
+
+|2RI12-type
+10+|opcode
+12+|I12
+5+|rj
+5+|rd
+
+|2RI14-type
+8+|opcode
+14+|I14
+5+|rj
+5+|rd
+
+|2RI16-type
+6+|opcode
+16+|I16
+5+|rj
+5+|rd
+
+|1RI21-type
+6+|opcode
+16+|I21[15:0]
+5+|rj
+5+|I21[20:16]
+
+|I26-type
+6+|opcode
+16+|I26[15:0]
+10+|I26[25:16]
+|===

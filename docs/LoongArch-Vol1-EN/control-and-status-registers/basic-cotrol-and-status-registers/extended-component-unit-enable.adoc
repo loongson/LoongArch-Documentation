@@ -1,0 +1,47 @@
+[[extended-component-unit-enable]]
+==== Extended Component Unit Enable (`EUEN`)
+
+In addition to the base integer instruction set and the privileged instruction set, the base floating-point instruction set, the binary translation extension instruction set, the 128-bit vector extension instruction set, and the 256-bit vector extension instruction set each have software-configurable enable bits.
+When these enable controls are disabled, execution of the corresponding instruction will trigger the corresponding instruction unavailable exception.
+Software uses this mechanism to determine the scope when saving the context.
+Hardware implementations can also use the control bits here to implement circuit power control.
+
+[[definition-of-extended-component-unit-enable-register]]
+.Definition of extended component unit enable register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|FPE
+|RW
+|The base floating-point instruction enable bit.
+When this bit is `0`, execution of the base floating-point instruction as described in <<overview-of-floating-point-instructions,Overview of Floating-Point Instructions>> will trigger a floating-point instruction disable exception (FPD).
+
+|1
+|SXE
+|RW
+|The 128-bit vector expansion instruction enable bit.
+When this bit is `0`, execution of the 128-bit vector expansion instruction as described in Volume 2 will trigger the 128-bit vector expansion instruction disable exception (SXD).
+
+|2
+|ASXE
+|RW
+|The 256-bit vector expansion instruction enables the control bit.
+When this bit is `0`, execution of the 256-bit vector expansion instruction as described in Volume 2 will trigger the 256-bit vector expansion instruction disable exception (ASXD).
+
+|3
+|BTE
+|RW
+|Binary translation expansion instruction enable bit.
+When this bit is `0`, execution of the binary translation expansion instruction described in Volume 2 will trigger the binary translation expansion instruction disable exception (BTD).
+
+|31:4
+|0
+|R0
+|Reserved field.
+Return `0` if read this field, and software is not allowed to change its value.
+|===

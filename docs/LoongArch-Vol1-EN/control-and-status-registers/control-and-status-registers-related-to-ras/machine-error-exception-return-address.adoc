@@ -1,0 +1,20 @@
+[[machine-error-exception-return-address]]
+==== Machine Error Exception Return Address (`MERRERA`)
+
+This register is used to record the `PC` of the instruction that triggered the machine error exception.
+
+[[definition-of-machine-error-exception-return-address-register]]
+.Definition of machine error exception return address register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|PC
+|RW
+|The `PC` of the instruction that triggered the machine error exception is recorded.
+The value stored here is used as the return address when the `ERTN` instruction is executed to return from the machine error exception handler (when `CSR.MERRCTL.IsMERR=1`).
+|===

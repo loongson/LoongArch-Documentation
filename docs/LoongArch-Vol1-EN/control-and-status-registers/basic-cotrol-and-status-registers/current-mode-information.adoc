@@ -1,0 +1,117 @@
+[[current-mode-information]]
+==== Current Mode Information (`CRMD`)
+
+The information in this register is used to determine the the processor core's privilege level, global interrupt enable bit, watchpoint enable bit, and address translation mode at that time.
+
+[[definition-of-current-mode-information-register]]
+.Definition of current mode information register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|1:0
+|PLV
+|RW
+|Current privilege level.
+The legal value range is `0` to `3`, where `0` is the highest privilege level and `3` is the lowest privilege level.
+
+When an exception is triggered, the hardware sets the value of this field to `0` to ensure that it is at the highest privilege level after being caught.
+
+When the `ERTN` instruction is executed to return from the exception handler, if `CSR.MERRCTL.IsMERR=1`, the hardware restores the value of the `PPLV` field of `CSR.MERRCTL` to here;
+
+otherwise, if `CSR.TLBRERA.IsTLBR=1`, the hardware restores the value of the `PPLV` field of `CSR.TLBRPRMD` to here; otherwise, the hardware restores the value of the `PPLV` field of `CSR.TLBRPRMD` to here;
+
+otherwise, the hardware restores the value of the `PPLV` field of `CSR.TLBRPRMD` to here.
+Hardware restores the value of the `PPLV` field of `CSR.PRMD` to here.
+
+|2
+|IE
+|RW
+|Current global interrupt enable bit, which is active high.
+
+When an exception is triggered, the hardware sets the value of this field to `0`, to ensure that the interrupt is masked when caught.
+This field needs to be explicitly set to `1` when the exception handler decides to re-open the interrupt response.
+
+When the `ERTN` instruction is executed to return from the exception handler,
+if `CSR.MERRCTL.IsMERR=1`, the hardware restores the value of the PIE field of `CSR.MERRCTL` to this field;
+
+Otherwise, if `CSR.TLBRERA.IsTLBR=1`, the hardware restores the value of the `PIE` field of `CSR.TLBRPRMD` here;
+
+Otherwise, the hardware restores the value of the `PIE` field of `CSR.PRMD` to here.
+
+|3
+|DA
+|RW
+|Direct address translation mode enable bit, which is active high.
+
+The hardware sets this field to `1` when a TLB refill exception or a machine error exception is triggered.
+
+If `CSR.MERRCTL.IsMERR=1`, the hardware restores the value of the `PDA` field of `CSR.MERRCTL` when the `ERTN` instruction is executed and returns from the exception handler;
+
+otherwise, if `CSR.TLBRERA.IsTLBR=1`, the hardware sets this field to `0`.
+
+The legal combination of `DA` and `PG` bits is `0`, `1` or `1`, `0`.
+The result is uncertain when the software is configured for other combinations.
+
+|4
+|PG
+|RW
+|Mapped address translation mode enable bit, which is active high.
+
+The hardware sets this field to `0` when a TLB refill exception or a machine error exception is triggered.
+
+When the `ERTN` instruction is executed to return from an exception handler,
+
+if `CSR.MERRCTL.IsMERR=1`, the hardware restores the value of the `PPG` field of `CSR.MERRCTL` to this;
+
+otherwise, if `CSR.TLBRERA.IsTLBR=1`, the hardware sets this field to `1`.
+
+The legal combination of `PG` and `DA` bits is `0`, `1` or `1`, `0`.
+The result is uncertain when the software is configured for other combinations.
+
+|6:5
+|DATF
+|RW
+|The type of storage access for fetch operations when in direct address translation mode.
+
+The hardware sets this field to `0` when a machine error exception is triggered.
+
+When the execution of the `ERTN` instruction returns from the exception handler and `CSR.MERRCTL.IsMERR=1`, the hardware restores the value of the `PDATF` field of `CSR.MERRCTL` to here.
+
+In the case of using software to handle TLB refill, when the software sets `PG` to `1`, it needs to set the `DATF` field to `0b01` at the same time, which is the consistent cacheable type.
+
+|8:7
+|DATM
+|RW
+|The type of storage access for load and store operations when in direct address translation mode.
+
+The hardware sets this field to `0` when a machine error exception is triggered.
+
+When the execution of the `ERTN` instruction returns from the exception handler and `CSR.MERRCTL.IsMERR=1`, the hardware restores the value of the `PDATM` field of `CSR.MERRCTL` to here.
+
+In the case of using software to handle TLB refill, when the software sets `PG` to `1`, it needs to set `DATM` to `0b01` at the same time, i.e., consistent cacheable type.
+
+|9
+|WE
+|RW
+|Instruction and data watchpoints enable bit, which is active high.
+
+The hardware sets the value of this field to `0` when an exception is triggered.
+
+When the `ERTN` instruction is executed to return from the exception handler.
+
+If `CSR.MERRCTL.IsMERR=1`, the hardware restores the value of the `PWE` field of `CSR.MERRCTL` to here;
+
+otherwise, if `CSR.TLBRERA.IsTLBR=1`, the hardware restores the value of the `PWE` field of `CSR.TLBRPRMD` to here;
+
+Otherwise, the hardware restores the value of the `PWE` field of `CSR.PRMD` here.
+
+|31:10
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and the software does not allow to change its value.
+|===

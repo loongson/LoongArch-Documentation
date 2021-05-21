@@ -1,0 +1,31 @@
+[[assembly-instruction-mnemonic-formats]]
+=== Assembly Instruction Mnemonic Formats
+
+The assembly instruction mnemonic mainly includes the instruction name and the operand.
+LoongArch considers the prefix and suffix of instruction names and operands to make it easier for assembly programmers and compiler developers to use.
+
+First, non-vector instructions and vector instructions, as well as integer and floating-point instructions, can be distinguished by the prefix of instruction name.
+The instruction name of a 128-bit vector instruction begins with the letter `V`; the instruction name of a 256-bit vector instruction begins with the letter `XV`.
+The instruction name of a non-vector floating-point instruction begins with the letter `F`; the instruction name of a 128-bit vector floating-point instruction begins with `VF`; the instruction name of a 256-bit vector floating-point instruction begins with `XVF`.
+
+Secondly, most instructions use a suffix in the form of `.XX` in the instruction name to indicate the operand type of the instruction.
+This form of suffix is only used to characterize the type of the instruction operand.
+If the operand is an integer, the suffixes of the instruction name include `.B` (signed byte), `.H` (signed half word), `.W` (signed word), `.D` (signed double word), `.BU` (unsigned byte), `.HU` (unsigned half word), `.WU` (unsigned word), and `.DU` (unsigned double word).
+An exception is that if whether the operand is signed or unsigned does not affect the result of the operation, the suffix of the instruction name will not carry `U`.
+In this case, the suffix does not limit the operand to the signed number.
+If operand is a floating-point number, the suffixes of the instruction name are `.H` (half precision), `.S` (single-precision), `.D` (double-precision), `.W` (signed word), `.L` (signed double word), `.WU` (unsigned word), `.LU` (unsigned double word).
+In addition, for instructions involving vector operations, the suffix `.V` of the instruction name indicates that the entire vector data is operated as a whole.
+An exception is that if the length of the operand of an instruction is determined by whether the processor is 32-bit or 64-bit, the instruction name has no suffix, such as `SLT` instruction and `SLTU` instruction.
+Privileged instructions for operating CSRs, TLB, and Cache, and instructions for moving data between different register files have no suffix.
+
+If the length and sign of the source operand and the destination operand are the same, the instruction name will have only one suffix.
+If the length and sign of all source operands are the same, but not the same as the destination operand, the instruction name will have two suffixes.
+From left to right, the first suffix decorates the destination operand, and the second suffix decorates the source operand.
+If the source operation and destination operand are more complicated, the instruction name will list the destination operand and each source operand in order from left to right.
+The order is consistent with the order of the subsequent operands in the instruction mnemonic.
+For example, in the instruction `MULW.D.WU rd, rj, rk`, `.D` decorates the destination operand `rd`, and `.WU` decorates the source operands `rj` and `rk`; this means that the multiplication is to multiply two unsigned words to obtain a double word result which will be written into `rd`.
+For another example, in the instruction `CRC.WBW rd, rj, rk`, the first `.W` decorates `rd`, `.B` decorates `rj`, and the second `.W` decorates `rk`; this means that the CRC check operation is to use the byte message in `rj` and the 32-bit original check value in `rk` to generate a new 32-bit check value which will be written into `rd`.
+
+Register operands distinguish register files by the first letter.
+`rN` refers to general registers; `fN` refers to floating-point registers; `vN` refers to 128-bit vector registers; `xN` refers to 256-bit vector registers.
+Among them, `N` is a number that represents the ``N``th register.

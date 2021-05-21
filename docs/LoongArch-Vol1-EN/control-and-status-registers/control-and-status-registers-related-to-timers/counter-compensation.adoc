@@ -1,0 +1,23 @@
+[[counter-compensation]]
+==== Counter Compensation (`CNTC`)
+
+This register can be configured by the software to correct the timer's readout value.
+The final readout value will be the original timer count value plus the timer compensation value.
+It is important to note that configuring this register does not directly change the timer's count value.
+
+In LA32, this register is 32-bit and its value will be sign extended to `64` bits and then added to the original counter value.
+
+[[definition-of-counter-compensation-register]]
+.Definition of counter compensation register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|Compenstaion
+|RW
+|Software-configurable counter compensation values.
+|===

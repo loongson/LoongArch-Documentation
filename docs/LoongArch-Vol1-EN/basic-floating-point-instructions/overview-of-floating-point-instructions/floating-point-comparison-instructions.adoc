@@ -1,0 +1,165 @@
+[[floating-point-comparison-instructions]]
+==== Floating-Point Comparison Instructions
+
+===== `FCMP.cond.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fcmp.cond.s    cc, fj, fk
+fcmp.cond.d    cc, fj, fk
+----
+
+This is a floating-point comparison instruction, which stores the result of the comparison into the specified status code (CC).
+There are `22` types of cond for this instruction.
+These comparison conditions and judgment standards are listed in the following table.
+
+[[floating-point-comparison-conditions-and-judgment-standards]]
+.Floating-point comparison conditions and judgment standards
+[%header,cols="2*^1,^2,2*^1,^4"]
+|===
+|Mnemonic
+|Cond
+|Meaning
+|True Condition
+|QNaN Exception
+|IEEE 754-2008 Funtion
+
+|`CAF`
+|`0x0`
+|None
+|None
+.11+|No
+|
+
+|`CUN`
+|`0x8`
+|Incomparable
+|`UN`
+|`compareQuietUnordered`
+
+|`CEQ`
+|`0x4`
+|Equal
+|`EQ`
+|`compareQuietEqual`
+
+|`CUEQ`
+|`0xC`
+|Equal or incomparable
+|`UN EQ`
+|
+
+|`CLT`
+|`0x2`
+|Less than
+|`IT`
+|`compareQuietLess`
+
+|`CULT`
+|`0xE`
+|Less than or incomparable
+|`UN LT`
+|`compareQuietLessUnordered`
+
+|`CLE`
+|`0x6`
+|Less than or equal to
+|`LT EQ`
+|`compareQuietLessEqual`
+
+|`CULE`
+|`0xE`
+|Less than or equal to or incomparable
+|`UN LT EQ`
+|`compareQuietNotGreater`
+
+|`CNE`
+|`0x10`
+|Vary
+|`GT LT`
+|
+
+|`COR`
+|`0x14`
+|Orderly
+|`GT LT EQ`
+|
+
+|`CUNE`
+|`0x18`
+|Incomparable or unequal
+|`UN GT LT`
+|`compareSignalingNotEqual`
+
+|`SAF`
+|`0x1`
+|None
+|None
+.11+|Yes
+|
+
+|`SUN`
+|`0x9`
+|Is not greater than or equal to
+|`UN`
+|
+
+|`SEQ`
+|`0x5`
+|equal
+|`EQ`
+|`compareSignalingEqual`
+
+|`SUEQ`
+|`0xD`
+|Not greater than or less than
+|`UN EQ`
+|
+
+|`SLT`
+|`0x3`
+|Less than
+|`IT`
+|`compareSignalingLess`
+
+|`SULT`
+|`0xB`
+|Is not greater than or equal to
+|`UN LT`
+|`compareSignalingLessUnordered`
+
+|`SLE`
+|`0x7`
+|Less than or equal to
+|`IT EQ`
+|`compareSignalingLessEqual`
+
+|`SULE`
+|`0xF`
+|Not greater than
+|`UN LT EQ`
+|`compareSignalingNotGreater`
+
+|`SNE`
+|`0x11`
+|Vary
+|`GT LT`
+|
+
+|`SOR`
+|`0x15`
+|Orderly
+|`GT LT EQ`
+|
+
+|`SUNE`:
+|`0x19`
+|Incomparable or unequal
+|`UN GT LT`
+|
+|===
+
+Note: `UN` means no comparison, `EQ` means equal, `IT` means less than.
+When there is at least one `NaN` in two operands, the two numbers cannot be compared.

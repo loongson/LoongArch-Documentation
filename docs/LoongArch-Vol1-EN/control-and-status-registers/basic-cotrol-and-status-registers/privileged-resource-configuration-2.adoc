@@ -1,0 +1,20 @@
+[[privileged-resource-configuration-2]]
+==== Privileged Resource Configuration 2 (`PRCFG2`)
+
+This register contains the privileged resources information.
+
+[[definition-of-privileged-resource-configuration-2-register]]
+.Definition of privileged resource configuration 2 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|PSAVL
+|R
+|Indicates the page size that the TLB can support (Page Size).
+When bit `i` is `1`, it indicates that a page size of `2^i^` bytes is supported.
+|===

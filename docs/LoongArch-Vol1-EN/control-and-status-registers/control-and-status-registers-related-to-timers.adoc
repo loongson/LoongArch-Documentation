@@ -1,0 +1,12 @@
+[[control-and-status-registers-related-to-timers]]
+=== Control and Status Registers Related to Timers
+
+include::control-and-status-registers-related-to-timers/timer-identity.adoc[]
+
+include::control-and-status-registers-related-to-timers/timer-configuration.adoc[]
+
+include::control-and-status-registers-related-to-timers/timer-value.adoc[]
+
+include::control-and-status-registers-related-to-timers/counter-compensation.adoc[]
+
+include::control-and-status-registers-related-to-timers/timer-interrupt-clearing.adoc[]

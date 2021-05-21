@@ -1,0 +1,52 @@
+[[tlb-refill-exception-entry-base-address]]
+==== TLB Refill Exception Entry Base Address (`TLBRENTRY`)
+
+This register is used to configure the entry base address of the TLB refill exception.
+Since the processor core will enter direct address translation mode after the TLB refill exception is triggered, the entry base address filled here should be a physical address.
+
+[[definition-of-tlb-refill-exception-entry-base-address-register-in-la64]]
+.Definition of TLB refill exception entry base address register in LA64
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|11:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|PALEN-1:12
+|PPN
+|RW
+|The `[PALEN-1:12]` bits of the entry base address of the TLB refill exception entry base address.
+The address filled in here by the system software should be the physical address.
+
+|63:PALEN
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+|===
+
+[[definition-of-tlb-refill-exception-entry-base-address-register-in-la32]]
+.Definition of TLB refill exception entry base address register in LA32
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|11:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|31:12
+|PPN
+|RW
+|The `[31:12]` bits of the entry base address of the TLB refill exception entry base address.
+The address filled in here by the system software should be the physical address.
+|===

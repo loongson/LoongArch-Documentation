@@ -1,0 +1,15 @@
+[[memory-address-space]]
+==== Memory Address Space
+
+Only the virtual address space visible to the application is involved here.
+The translation of virtual memory addresses to physical memory addresses is determined by the runtime environment.
+These contents relate to the relevant specifications of privileged resources in the architecture and will be introduced in the second half of this manual.
+The memory address space on LoongArch is a continuous linear address space, which is addressed in bytes.
+
+In LA32, the specification of the memory address space that application can access is: `0`–`2^31^-1`.
+
+In LA64, the range of memory address space accessible by application is: `0`–`2^VALEN-1^-1`.
+Generally `VALEN` is in the range of `[40,48]`.
+Application can determine the specific value of `VALEN` by executing the `CPUCFG` instruction to read the `VALEN` field of the `0x1` configuration word.
+
+When the virtual address of the instruction fetch or memory access instruction in the application exceeds the above range, ADEF or ADEM will be triggered.

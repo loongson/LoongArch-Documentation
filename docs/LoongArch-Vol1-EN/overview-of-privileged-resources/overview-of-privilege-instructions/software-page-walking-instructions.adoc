@@ -1,0 +1,43 @@
+[[software-page-walking-instructions]]
+==== Software page walking Instructions
+
+===== `LDDIR`
+
+Instruction formats:
+
+[source]
+----
+lddir   rd, rj, level
+----
+
+The `LDDIR` instruction is used for accessing directory entries during software page table walking.
+
+The 5-bit immediate level in the `LDDIR` instruction indicates which page table is currently being accessed.
+`level=1` corresponds to `Dir0` in `PWCL`, `level=2` corresponds to `Dirl` in `PWCL`, `level=3` corresponds to `Dir2` in `PWCH`, and `level=4` corresponds to `Dir3` in `PWCH`.
+
+If bit `[6]` of the general register `rj` is `0`, it means that the content of `rj` is the physical address of the base address of the level page table at this time.
+In this case, the `LDDIR` instruction will access the level page table according to the current TLB refill address, retrieve the base address of the corresponding `level+1` page table, and write it to the general register `rd`.
+
+If bit `[6]` of general register `rj` is `1`, it means that the content in `rj` is a large page (Huge Page) page table entry.
+In this case, after executing the `LDDRI` instruction, the value in the general register `rj` will be written directly to the general register `rd`.
+
+===== `LDPTE`
+
+Instruction formats:
+
+[source]
+----
+ldpte   rj, req
+----
+
+The `LDPTE` instruction is used for page table entry accesses during software page table walking.
+
+The immediate number seq in the `LDPTE` instruction is used to indicate whether an even or odd number of pages are being accessed.
+The result is written to `CSR.TLBRELO0` when an even page is accessed.
+The result will be written to `CSR.TLBRELO1` when an odd page is accessed.
+
+If bit `[6]` of the general register `rj` is `0`, the content of `rj` is the physical address of the base address of the page table at that level of the PTE.
+In this case, the `LDPTE` instruction will access the PTE level page table according to the currently processed TLB refill address, retrieve the page table entry and write it to the corresponding CSR.
+
+If bit `[6]` of the general register `rj` is `1`, it means that the content of `rj` is a large page (Huge Page) page table entry.
+In this case, the `LDPTE` instruction is executed, and the value in general register `rj` is directly converted into the final page table entry format and written to the corresponding CSR.

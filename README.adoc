@@ -20,7 +20,7 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 
 * https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN[LoongArch Reference Manual - Volume 1: Basic Architecture]: This manual describes the basic part of the LoongArch architecture.
 +
-You can view the original document https://github.com/loongson/LoongArch-Documentation/docs/CN/LoongArch-Vol1-v1.00-CN.pdf[here].
+You can view the original document https://github.com/loongson/LoongArch-Documentation/blob/main/docs/CN/LoongArch-Vol1-v1.00-CN.pdf[here].
 
 * LoongArch Reference Manual - Volume 2: Vector Extensions: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture.
 

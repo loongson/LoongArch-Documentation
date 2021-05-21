@@ -1,0 +1,148 @@
+[[miscellaneous-controller]]
+==== Miscellaneous Controller (`MISC`)
+
+This register contains a number of control bits for the operating behavior of the processor core at different privilege levels, including whether to enable 32-bit address mode, whether to allow partially privileged instructions at non-privileged levels, whether to enable address non-alignment check, and whether to enable page table write protection check.
+
+[[definition-of-miscellaneous-controller-register]]
+.Definition of miscellaneous controller register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|0
+|RO
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+
+|1
+|VA32L1
+|RW
+|Whether to enable 32-bit address mode at the PLV1 privilege level.
+`0` - disable, `1` - enable.
+This bit can be read and written only in LA64, at the LA32 privilege level, this attribute is R0.
+
+|2
+|VA32L2
+|RW
+|Whether to turn on 32-bit address mode at the PLV2 privilege level.
+`0` - disable, `1` - enable.
+This bit is read/write only in LA64, and at the LA32 privilege level, this attribute is R0.
+
+|3
+|VA32L3
+|RW
+|Whether to enable 32-bit address mode at the PLV3 privilege level.
+`0` - disable, `1` - enable.
+This bit is read/write only in LA64, and at the LA32 privilege level, this attribute is R0.
+
+|4
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+
+|5
+|DRDTL1
+|RW
+|Whether to disable RDTIME-like instructions at the PLV1 privilege level.
+When this bit is `1`, execution of an RDTIME-like instruction at the PLV1 privilege level will trigger an instruction privilege level error exception (IPE).
+
+|6
+|DRDTL2
+|RW
+|Whether to disable RDTIME-like instructions at the PLV2 privilege level.
+When this bit is `1`, execution of RDTIME-like instructions at PLV2 privilege level will trigger instruction privilege level error exception (IPE).
+
+|7
+|DRDTL3
+|RW
+|Whether to disable RDTIME class instructions at the PLV3 privilege level.
+When this bit is `1`, execution of RDTIME-like instructions at the PLV3 privilege level will trigger an instruction privilege level error exception (IPE).
+
+|8
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+
+|9
+|RPCNTL1
+|RW
+|Whether to allow software reads of the performance counter at the PLV1 privilege level.
+When this bit is `1`, the PLV1 privilege level `PCNT` will not trigger an instruction privilege level error exception (IPE), if the `CSRRD` instruction is used to access any of the implemented performance counters at the PLV1 privilege level.
+
+|10
+|RPCNTL2
+|RW
+|Whether software reads of the performance counter are allowed at the PLV2 privilege level.
+When this bit is `1`, the PLV2 privilege level When this bit is `1`, accessing any implemented performance counter `PCNT` with `CSRRD` instruction at the PLV2 privilege level does not trigger instruction privilege level error exception (IPE).
+
+|11
+|RPCNTL3
+|RW
+|Whether software reads of the read performance counter are allowed at the PLV3 privilege level.
+When this bit is `1`, the PLV3 privilege level When this bit is `1`, accessing any implemented performance counter `PCNT` with the `CSRRD` instruction at the PLV3 privilege level does not trigger an instruction privilege level error exception (IPE).
+
+|12
+|ALCL0
+|RW
+|Whether to perform a non-alignment check for non-vector load/store instructions that are allowed to be non-aligned at PLV0 privilege level.
+`1` indicates that the check is performed, and an address alignment error exception is triggered if illegal.
+This bit is read/write only if the hardware implementation supports non-aligned addresses for these non-vector load/store instructions.
+Otherwise, the bit is a read-only constant `1`.
+
+|13
+|ALCL1
+|RW
+|Whether to perform a non-alignment check for non-vector load/store instructions{empty}footnote:instructions[The instructions affected by this control bit include `+LD[X].{H[U]/W[U]/D}+`, `+ST[X].{H/W/D}+`, `+LDPTR.{W/D}+`, `+STPTR.{W/D}+`, `+FLD[X].{S/D}+`, `+FST[X].{S/D}+`, `+LDPTE+`, `+LDDIR+`, `+IOCSRRD.{H/W/D}+` and `+IOCSRWR.{H/WD}+`.] that are allowed to be non-aligned at the PLV1 privilege level.
+`1` indicates that the check is performed and triggers an address alignment error exception if illegal.
+
+This bit is read/write only if the hardware implementation supports non-aligned addresses for these non-vector load/store instructions.
+Otherwise, the bit is a read-only constant `1`.
+
+|14
+|ALCL2
+|RW
+|Whether to perform a non-alignment check for non-vector load/store instructions{empty}footnote:instructions[] that are allowed to be non-aligned at the PLV2 privilege level.
+`1` indicates that the check is performed and triggers an address alignment error exception if illegal.
+
+This bit is read/write only if the hardware implementation supports non-aligned addresses for these non-vector load/store instructions.
+Otherwise, the bit is a read-only constant `1`.
+
+|15
+|ALCL3
+|RW
+|Whether to perform a non-alignment check for non-vector load/store instructions{empty}footnote:instructions[] that are allowed to be non-aligned at the PLV3 privilege level.
+`1` indicates that the check is performed and triggers an address alignment error exception if illegal.
+
+This bit is read/write only if the hardware implementation supports non-aligned addresses for these non-vector load/store instructions.
+Otherwise, the bit is a read-only constant `1`.
+
+|16
+|DWPL0
+|RW
+|Whether to disable the check of the page table entry write protection during TLB virtual and real address translation at the PLV0 privilege level.
+When this bit is `1`, the store instruction will not trigger a page modification exception even if it accesses a page table entry with `D=0`.
+
+|17
+|DWPL1
+|RW
+|Whether to disable the check of the page table entry write protection during TLB virtual and real address translation at the PLV1 privilege level.
+When this bit is `1`, the store instruction will not trigger a page modification exception even if it accesses a page table entry with `D=0`.
+
+|18
+|DWPL2
+|RW
+|Whether to disable the check of the page table entry write protection during TLB virtual and real address translation at the PLV2 privilege level.
+When this bit is `1`, the store instruction will not trigger a page modification exception even if it accesses a page table entry with `D=0`.
+
+|31:19
+|0
+|RO
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

@@ -1,0 +1,58 @@
+[[tlb-entry-high-order-bits]]
+==== TLB Entry High-order Bits (`TLBEHI`)
+
+This register contains the information related to the virtual page number of the high-order bits of the TLB table entry during ececuting TLB-related instructions.
+Since the length of the `VPPN` field contained in the high-order bits of the TLB table entry is related to the range of valid virtual addresses supported by the implementation, the definition of the relevant register field is expressed separately.
+
+[[definition-of-tlb-entry-high-order-bits-register-in-la64]]
+.Definition of TLB entry high order bits register in LA64
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|12:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|VALEN-1:13
+|VPPN
+|RW
+|When executing the `TLBRD` instruction, the value of the `VPPN` field read from the TLB table entry is recorded here.
+
+If `CSR.TLBRERA.IsTLBR=0`, the `VPPN` value used to query TLB when executing `TLBSRCH` instruction and the value of `VPPN` field written to TLB table entry when executing `TLBWR` and `TLBFILL` instructions come from here.
+
+When the page invalid exception for load operation, page invalid exception for store operation, page invalid exception for fetch operation, page modification exception, page non-readable exception, page non-executable exception, and page privilege level ilegal exception are triggered, the `[VALEN-1:13]` bits of the virual address that triggered the exception are recorded here.
+
+|63:VALEN
+|Sign_Ext
+|R
+|Return a signed extension value of the highest bits of the `VPPN` field if read this field and writing to this field is ignored.
+|===
+
+[[definition-of-tlb-entry-high-order-bits-register-in-la32]]
+.Definition of TLB entry high order bits register in LA32
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|12:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|31:13
+|VPPN
+|RW
+|When executing the `TLBRD` instruction, the value of the `VPPN` field read from the TLB table entry is recorded here.
+
+If `CSR.TLBRERA.IsTLBR=0`, the `VPPN` value used to query TLB when executing `TLBSRCH` instruction and the value of `VPPN` field written to TLB table entry when executing `TLBWR` and `TLBFILL` instructions come from here.
+
+When the page invalid exception for load operation, page invalid exception for store operation, page invalid exception for fetch operation, page modification exception, page non-readable exception, page non-executable exception, and page privilege level ilegal exception are triggered, the `[31:13]` bits of the virual address that triggered the exception are recorded here.
+|===

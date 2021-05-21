@@ -1,0 +1,25 @@
+[[control-and-status-registers-related-to-watchpoints]]
+=== Control and Status Registers Related to Watchpoints
+
+LoongArch defines hardware watchpoint functions for fetch and load/store operations.
+After the software configures the watchpoints for fetch and load/store, the processor hardware will monitor the access addresses of the fetch and load/store operations and trigger a watchpoint exception when the watchpoint setting conditions are met.
+
+The control and status registers associated with the watchpoints are used as interfaces for software to configure the watchpoints for fetch and load/store operations.
+Load/store watchpoints and fetch watchpoints each have a similar layout of control and status registers, a register for the overall configuration of all watchpoints, a register for the status of all watchpoints, and the four registers.
+The address of the overall configuration register of the load/store watchpoint is `0x300`, the address of the overall status register of the load/store watchpoint is `0x301`, and the addresses of the four configuration registers from `1` to `4` of the ``n``th load/store watchpoint are `0x310+8n`, `0x311+8n`, `0x312+8n`, and `0x313+8n`, respectively.
+The address of the overall configuration register of the fetch instruction watchpoint is `0x380`, the address of the overall status register of the fetch instruction watchpoint is `0x381`, and the addresses of the four configuration registers `1`–`4` of the ``n``th fetch instruction watchpoint are `0x390+8n`, `0x391+8n`, `0x392+8n`, `0x393+8n` in order.
+
+The maximum number of load/store watchpoints and fetch instruction watchpoints is `14` each, and the actual number is determined by the implementation.
+The software can determine how many hardware watchpoints can be used by reading the values of `CSR.MWPC.Num` and `CSR.FWPC.Num`.
+
+include::control-and-status-registers-related-to-watchpoints/memory-load-store-watchpoint-overall-controller.adoc[]
+
+include::control-and-status-registers-related-to-watchpoints/memory-load-store-watchpoint-overall-status.adoc[]
+
+include::control-and-status-registers-related-to-watchpoints/memory-load-store-watchpoint-n-configuration.adoc[]
+
+include::control-and-status-registers-related-to-watchpoints/fetch-watchpoint-overall-controller.adoc[]
+
+include::control-and-status-registers-related-to-watchpoints/fetch-watchpoint-overall-status.adoc[]
+
+include::control-and-status-registers-related-to-watchpoints/fetch-watchpoint-n-configuration.adoc[]

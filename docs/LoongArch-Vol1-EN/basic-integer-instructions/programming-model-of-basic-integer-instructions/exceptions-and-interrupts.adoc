@@ -1,0 +1,23 @@
+[[exceptions-and-interrupts]]
+==== Exceptions and interrupts
+
+Exceptions and interrupts will interrupt the currently executing program and switch the control flow to the entry of the exception/interrupt handler to start execution.
+Exceptions are caused by abnormal conditions that occur during the execution of the instruction, and interrupts are caused by external events (such as interrupt signal input).
+In the manual, it will strictly distinguish the two concepts of "`generating an exception/interrupt`" and "`triggering an exception/interrupt`".
+The difference between the two is that the former does not necessarily cause a change in the control flow, while the latter must change the current control flow to an entry point of the exception/interrupt handler.
+
+The handling specifications for exceptions and interrupts belong to the privileged resource handling part of the architecture.
+Here is a brief introduction to the exceptions that the application can perceive.
+
+* **SYS**tem call exception (SYS): the execution of the SYSCALL instruction will trigger the system call exception immediately.
+
+* **B**r**E**a**K**point exception (BEK): executing the BREAK instruction will trigger a breakpoint exception immediately.
+
+* **I**nstruction **N**on-defined **E**xception (INE): if the executed instruction code is not defined in the architecture, or the architecture specification defines the instruction as not existing in the current context, then the instruction non-defined exception will be triggered immediately.
+
+* **I**nstruction **P**rivilege error **E**xception (IPE): in addition to the special circumstances listed in <<running-privilege-levels,Running Privilege Levels>>, executing a privileged instruction in the application software will definitely trigger the instruction privilege level error exception immediately.
+
+* **AD**dress error **E**xception (ADE): when the program has a functional error that causes the address of the instruction fetch or memory access instruction to appear illegal (such as the instruction fetch address is not aligned on 4-byte boundaries, and the privileged address space is accessed), **AD**dress error **E**xception for **F**etching instructions (ADEF) or **AD**dress error **E**xception for **M**emory access instructions (ADEM) will be triggered.
+
+* **F**loating-**P**oint error **E**xception (FPE): when the floating-point number instruction is executed, special processing is required for data exceptions, which can generate or trigger the basic floating-point error exception.
+See <<floating-point-move-instructions,Floating-Point Move Instructions>> for more information.

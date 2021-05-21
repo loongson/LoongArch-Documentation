@@ -1,0 +1,28 @@
+[[csr-access-instructions]]
+==== CSR Access Instructions
+
+Instruction formats:
+
+[source]
+----
+csrrd       rd, csr_num
+csrwr       rd, csr_num
+csrxchg     rd, rj, csr_num
+----
+
+The `CSRRD`, `CSRWR`, and `CSRXCHG` instructions are used to access the CSRs in software.
+The `CSRRD` instruction writes the value of the specified CSR to the general register rd.
+The `CSRWR` instruction writes the old value of the general register `rd` to the specified CSR and updates the old value of the specified CSR to the general register `rd`.
+The `CSRXCHG` instruction writes the old value of the general register `rd` to the bits of the specified CSR corresponding to the write mask `1` according to the write mask information stored in the general register `rj`.
+The `CSRXCHG` instruction writes the old value of the general register `rd` to the bits of the specified CSR corresponding to the write mask of `1` according to the write mask information stored in the general register `rj`.
+The rest of the bits in the CSR remain unchanged, and the old value of the CSR is updated to the general register `rd`.
+
+All CSRs are addressed independently.
+The addressable value of the CSRs in the above instruction is derived from the 14-bit immediate `csr_num` in the instruction.
+`csr_num` for CSR 0 is `0`, `csr_num` for CSR 1 is `1`, and so on.
+
+The length of all CSR registers is either `32` bits or equal to the length of `GR` in the architecture, so CSR access instructions do not distinguish between lengths.
+In LA32, all CSRs are naturally `32` bits wide.
+In LA64, CSRs with a fixed 32-bit length in the definition are always written to the general purpose register `rd` after symbolic expansion.
+
+When a CSR access instruction accesses a CSR that is not defined in the architecture or not implemented in hardware, the read operation returns an all `0` values and the write operation does not modify any software-visible state of the processor.

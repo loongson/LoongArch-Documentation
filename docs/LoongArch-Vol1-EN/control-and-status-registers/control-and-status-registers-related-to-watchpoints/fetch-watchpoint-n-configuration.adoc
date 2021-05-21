@@ -1,0 +1,136 @@
+[[fetch-watchpoint-n-configuration]]
+==== Fetch Watchpoint n Configuration (`FWPnCFG1`–`FWPnCFG3`)
+
+The information contained in the configuration `1` to `3` registers of each fetch instruction watchpoint is used directly for comparison judgments of watchpoint checks.
+The process of judging the hit of each watchpoint is as follows:
+
+. If `CSR.CRMD.WE=0`, the judgment is terminated, otherwise turn `2`;
+
+. If the current is not in debug mode but the `DMOnly` bit of `FWPCFG3` is equal to `1`, the judgment is terminated, otherwise turn to `3`;
+
+. If the bit corresponding to the current privilege level in `PLV0`–`PLV3` of `FWPCFG3` is equal to `0`, judge and terminate, otherwise turn to `4`;
+
+. If the `LCL` bit in `FWPCFG3` is equal to `1`, but the `CSR.ASID.ASID` is not equal to the `ASID` in `FWPCFG4`, the judgment is terminated, otherwise turn `6`;
+
+. If `(pc & (~FWPCFG2.Mask)) != (FWPCFG1.VAddr & (~FWPCFG2.Mask))`, that is, the address comparison is not equal, the judgment is terminated, otherwise the watchpoint is considered hit.
+
+[[definition-of-fetch-watchpoint-n-configuration-1-register]]
+.Definition of fetch watchpoint n configuration 1 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|VAddr
+|RW
+|the virtual address of the fatch watchpoint to be compared.
+|===
+
+[[definition-of-fetch-watchpoint-n-configuration-2-register]]
+.Definition of fetch watchpoint n configuration 2 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|Mask
+|RW
+|the mask bit of the fetch watchpoint address comparison.
+If bit `i` (`0 &#8804; i < GRLEN`) is `1`, it means that bit i of the address is not involved in the comparison.
+|===
+
+[[definition-of-fetch-watchpoint-n-configuration-3-register]]
+.Definition of fetch watchpoint n configuration 3 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|DMOnly
+|RW
+|A bit of `1` indicates that the fetch point is only available in debug mode.
+Here "available" contains two meanings:
+First, the configuration register of the fetch watchpoint can be modified by software in this mode, and second, the check hit of the watchpoint will trigger a watchpoint exception and mark the status of the watchpoint only in this mode.
+
+This bit can only be modified in debug mode (`CSR.DBG.DM=1`).
+This means that the (Host) software running in debug mode has the priority to use the watchpoint.
+
+|1
+|PLV0
+|RW
+|This watchpoint triggers the enable of the watchpoint exception at the PLV0 privilege level.
+`1` - enable, `0` - disable.
+
+|2
+|PLV1
+|RW
+|The watchpoint triggers the watchpoint exception enable at PLV1 privilege level.
+`1` - enable, `0` - disable.
+
+|3
+|PLV2
+|RW
+|The watchpoint triggers the enable of the watchpoint exception at the PLV2 privilege level.
+`1` - enable, `0` - disable.
+
+|4
+|PLV3
+|RW
+|This watchpoint triggers the enablement of the watchpoint exception at the PLV3 privilege level.
+`1` - enable, `0` - disable.
+
+|6:5
+|0
+|R
+|If virtualization extensions are not implemented, the field is read-only constant to `0` and writes are ignored.
+
+|7
+|LCL
+|RW
+|`1` indicates that the comparison of ASIDs is performed during the watchpoint check.
+
+|31:8
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===
+
+[[definition-of-fetch-watchpoint-n-configuration-4-register]]
+.Definition of fetch watchpoint n configuration 4 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|9:0
+|ASID
+|RW
+|The ASID being compared
+
+|15:10
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|23:16
+|0
+|R
+|If the virtualization extension is not implemented, the field is read-only constant `0` and writing to this field is ignored.
+
+|31:24
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+|===

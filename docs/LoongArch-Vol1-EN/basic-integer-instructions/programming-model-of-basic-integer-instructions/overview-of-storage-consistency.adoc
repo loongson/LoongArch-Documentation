@@ -1,0 +1,18 @@
+[[overview-of-storage-consistency]]
+==== Overview of Storage Consistency
+
+The storage consistency model of the LoongArch uses the **W**eak **C**onsistency (WC) model.
+This section only gives a brief description of the weak consistency model adopted by the architecture.
+
+In the weak consistency model, synchronization operations need to be distinguished from ordinary memory accesses.
+The programmer must use the synchronization operations defined by the architecture to protect the access to the write shared unit to ensure that multiple processor cores have access to the write shared unit mutually exclusive.
+The following restrictions are imposed on the sequence of memory access events:
+
+* The execution of the synchronization operation satisfies the sequence consistency condition.
+That is, synchronization operations are executed in all processor cores strictly in the order in which they appear in the program, and the next synchronization operation cannot be started until the current synchronization operation is completely completed.
+
+* Before any ordinary memory access operation is allowed to be executed, all synchronization operations prior to this memory access operation in the same processor core have been completed.
+
+* Before any synchronization operation is allowed to be executed, all ordinary memory access operations that precede this synchronization operation in the same processor have been completed.
+
+The instructions that can generate synchronous operations in LoongArch include `DBAR`, `IBAR`, `AM` atomic memory access instructions with `DBAR` function, and `LL`-`SC` instruction pairs.

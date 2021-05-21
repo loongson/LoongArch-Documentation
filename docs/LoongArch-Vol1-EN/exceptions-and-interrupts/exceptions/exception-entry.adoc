@@ -1,0 +1,19 @@
+[[exception-entry]]
+==== Exception Entry
+
+The entry for the TLB refill exception comes from `CSR.TLBRENTRY`.
+
+The entry for the machine error exception comes from `CSR.MERRENTRY`.
+
+Exceptions other than the above two exceptions are called general exceptions, and their entries are calculated by `address|offset`.
+Here `|` is a bitwise OR operation.
+
+All general exception entries have the same base address from `CSR.EENTRY`.
+
+The offset of the general exception entry is determined by both the mode of the interrupt offset and the exception number (ecode), which is equal to `2^(CSR.ERG.V+2)^&#215;(ecode+64)`.
+See the ecode column in <<table-of-exception-encoding,Table of exception encoding>> for general exceptions except interrupts; the ecode for interrupts is its int number plus `64`.
+
+When `CSR.ECFG.VS=0`, all general exceptions have the same entry, and the software needs to determine the specific exception type by `Ecode` and `IS` fields in `CSR.ESTA`.
+When `CSR.ECFG.VS!=0`, different interrupt sources have different exception entries and the software does not need to confirm the exception type by `CSR.ESTA`.
+
+Since the exception entry is an offset on the base address calculated by bitwise OR operation, when `CSR.ECFG.VS!=0`, during assigning the exception entry base address, the software needs to ensure that all possible offsets do not exceed the boundary alignment space corresponding to the low bit of the entry base address.

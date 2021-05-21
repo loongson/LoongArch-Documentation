@@ -1,0 +1,127 @@
+[[tlb-based-translation-of-virtual-addresses-to-physical-addresses]]
+==== TLB-based Translation of Virtual Addresses to Physical Addresses
+
+The TLB-based translation of virtual addresses to physical addresses is described here.
+For the convenience of description, the following is presented in pseudocode form with STLB first and MTLB second, while the hardware implementation of the processor can look up STLB and MTLB at the same time.
+
+[source]
+----
+# va: virtual address to be found.
+# mem_type: memory acess type. FETCH refers to fetch operation, LOAD refers to load operation, and STORE refers to store operation.
+# plv: current privilege level, i.e., CSR.CRMD.PLV.
+# pa: physical addresses after translation.
+# mat: memory acess type after translation.
+# VALEN: number of valid bits of the virtual address.
+# PALEN: number of valid bits of the physical address.
+# STLB[][]: STLB[N][M] refers to the Nth way and the Mth entry of STLB.
+# STLB_WAY: number of ways of STLB.
+# STLB_INDEX: the power of 2 of the number of groups in each way of STLB, i.e., each way has 2STLB_INDEX groups.
+# MTLB[]: MTLB[N] refers to the Nth entry of MTLB.
+# MTLB_ENTRIES: number of entries of MTLB.
+
+# look up STLB
+stlb_found = 0
+stlb_ps = CSR.STLBPS.PS
+stlb_idx = va[stlb_ps+STLB_INDEX-1:stlb_ps]
+for way in range(STLB_WAY):
+    if (STLB[way][stlb_idx].E == 1) and
+    ((STLB[way][stlb_idx].G == 1) or (STLB[way][stlb_idx].ASID == CSR.ASID.ASID))
+ and
+    (STLB[way][stlb_idx].VPPN[VALEN-1:stlb_ps+1]==va[VALEN-1:stlb_ps+1]):
+    if (stlb_found == 0):
+        stlb_found = 1
+        if (va[stlb_s] == 0):
+            sfound_v = STLB[way][stlb_idx].V0
+            sfound_d = STLB[way][stlb_idx].D0
+            sfoundnr = STLB[way][stlb_idx].NR0
+            sfound_ne = STLB[way][stlb_idx].NE0
+            sfound_mat = STLB[way][stlb_idx].MAT0
+            sfound_plv = STLB[way][stlb_idx].PLV0
+            sfound_rplv = STLB[way][stlb_idx].RPLV0
+            sfound_pfn = STLB[way][stlb_idx].PFN0
+        else:
+            sfound_v = STLB[way][stlb_idx].V1
+            sfound_d = STLB[way][stlb_idx].D1
+            sfound_nr = STLB[way][stlb_idx].NR1
+            sfound_ne = STLB[way][stlb_idx].NE1
+            sfound_mat = STLB[way][stlb_idx].MAT1
+            sfound_plv = STLB[way][stlb_idx].PLV1
+            sfound_rplv = STLB[way][stlb_idx].RPLV1
+            sfound_pfn = STLB[way][stlb_idx].PFN1
+        else:
+            # There are multiple hits, so the processor behavior will be undefined.
+
+# look up MTLB
+mtlb_found = 0
+for i in range (MTLB_ENTRIES):
+    if (MTLB[i].E == 1) and
+    ((MTLB[i].G == 1) or (MTLB[i].ASID == CSR.ASID.ASID)) and
+    (MTLB[i].VPPN[VALEN-1:MTLB[i].PS+1] == va[VALEN-1:MTLB[i].PS+1]):
+    if (mtlb_found == 0):
+            mtlb_found = 1
+            mfound_ps - MTLB[i].PS
+        if (va[mfound_ps] == 0):
+            mfound_v = MTLB[i].V0
+            mfound_d = MTLB[i].DO
+            mfound_nr = MTLB[i].NRO
+            mfound_ne - MTLB[i].NEO
+            mfound_mat = MTLB[i].MATO
+            mfound_plv = MTLB[i].PLV0
+            mfound_rplv = MTLB[i].RPLVO
+            mfound_pfn = MTLB[i].PFNO
+        else:
+            mfound_v = MTLB[i].V1
+            mfound_d = MTLB[i].D1
+            mfound_nr = MTLB[i].NR1
+            mfound_ne = MTLB[i].NE1
+            mfound_mat = MTLB[i].MAT1
+            mfound_plv = MTLB[i].PLV1
+            mfound_rplv = MTLB[i].RPLV1
+            mfound_pfn = MTLB[i].PFN1
+    else:
+        # There are multiple hits, so the processor behavior will be undefined.
+
+if (stlb_found == 1) and (mtlb_found == 1):
+    # There are multiple hits, so the processor behavior will be undefined.
+elif (stlb_found == 1):
+    found_v = sfound_v
+    found_d = sfound_d
+    found_nr = sfound_nr
+    found_ne = sfound_ne
+    found_mat = sfound_mat
+    found_plv = sfound_plv
+    found_rplv = sfound_rplv
+    found_pfn = sfound_pfn
+    found_ps = stlb_ps
+elif (mtlb_found == 1):
+    found_v = mfound_v
+    found_d = mfound_d
+    found_nr = mfound_nr
+    found_ne = mfound_ne
+    found_mat = mfound_mat
+    found_plv = mfound_plv
+    found_rplv = mfound_rplv
+    found_pfn = mfound_pfn
+    found_ps = mfound_ps
+else:
+    SignalException(TLBRD)    # Trigger TLB refill exception.
+
+if (found_v == 0):
+    case mem_type:
+    FETCH : SignalException(PIF)    # Trigger page invalid exception for fetch operation.
+    LOAD : SignalException(PIL)     # Trigger page invalid exception for load operation.
+    STORE : SignalException(PIS)    # Trigger page invalid exception for store operation.
+elif (mem_type == FETCH) and (found_ne == 1):
+    SignalException(PNX)    # Trigger page non-executable exception.
+elif ((found_rplv == 0) and (plv > found_plv)) or
+     ((found_rplv == 1) and (plv != found_plv)):
+    SignalException(PPE)    # Trigger page privilege level ilegal exception.
+elif (mem_type == L0AD) and (found_nr == 1):
+    SignalException(PNR)    # Trigger page non-readable exception.
+elif (mem_type == STORE) and (found_d == 0)
+     and ((plv == 3) or (CSR.MISC[16+plv] == 0)) :    # The function that disable the check of write protection is not enabled.
+    SignalException(PME)    # Trigger page modify exception.
+else:
+    pa = {found_pfn[PALEN-1:found_ps], va[found.ps-1:0]}
+    mat = found_mat
+----

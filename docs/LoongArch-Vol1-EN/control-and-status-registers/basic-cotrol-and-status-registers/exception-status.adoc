@@ -1,0 +1,212 @@
+[[exception-status]]
+==== Exception Status (`ESTAT`)
+
+This register records the status information of the exceptions, including the first and second level encoding of the triggered exceptions, and the status of each interrupt.
+
+[[definition-of-exception-status-register]]
+.Definition of exception status register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|1:0
+|IS[1:0]
+|RW
+|The status bits of the two software interrupts.
+Bit `0` and `1` correspond to `SWI0` and `SWI1` respectively.
+
+Software interrupt setting is also done by these two bits, writing `1` sets the interrupt, and writing `0` clears the interrupt.
+
+|12:2
+|IS[12:2]
+|R
+|The interrupt status bit.
+`1` indicates that the corresponding interrupt is set up.
+There is 1 inter-processor interrupt (IPI), 1 timer interrupt (TI), 1 performance counter overflow interrupt (PCOV), 8 hardware interrupts (HWI0–HWI7).
+
+In line-based interrupt mode, the hardware only records each interrupt source per clock cycle to these bits.
+The requirement that all interrupts must be level interrupts at this time is guaranteed by the interrupt source and is not maintained here.
+
+|15:13
+|0
+|R0
+|Reserved field.
+Return `0` if read this field, and software is not allowed to change its value.
+
+|21:16
+|Ecode
+|R
+|Exception encoding.
+When an exception is triggered: if it is a TLB refill exception or a machine error exception, this field remains unchanged; otherwise, the hardware writes the value defined in the `Ecode` column in the following table to this field according to the exception type.
+
+|30:22
+|EsubCode
+|R
+|Exception sub encoding.
+When an exception is triggered: if it is a TLB refill exception or a machine error exception, the field remains unchanged; otherwise, the hardware writes the value defined in the `EsubCode` column in the following table to this field according to the exception type.
+
+|31
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===
+
+[[table-of-exception-encoding]]
+.Table of exception encoding
+[%header,cols="3*^1m,3"]
+|===
+|Ecode
+|EsubCode
+d|Exception Code
+|Exception Type
+
+|0x0
+|
+|INT
+|Only when `CSR.ECFG.VS=0`, it means it is an **INT**errupt.
+
+|0x1
+|
+|PIL
+|**P**age **I**nvalid exception for **L**oad operation
+
+|0x2
+|
+|PIS
+|**P**age **I**nvalid exception for **S**tore operation
+
+|0x3
+|
+|PIF
+|**P**age **I**nvalid exception for **F**etch operation
+
+|0x4
+|
+|PME
+|**P**age **M**odification **E**xception
+
+|0x5
+|
+|PNR
+|**P**age **N**on-**R**eadable exception
+
+|0x6
+|
+|PNX
+|**P**age **N**on-e**X**ecutable exception
+
+|0x7
+|
+|PPI
+|**P**age **P**rivilege level **I**llegal exception
+
+.2+|0x8
+|0
+|ADEF
+|**AD**dress error **E**xception for **F**etching instructions
+
+|1
+|ADEM
+<d|**AD**dress error **E**xception for **M**emory access instructions
+
+|0x9
+|
+|ALE
+|**A**ddress a**L**ignment fault **E**xception
+
+|0xA
+|
+|BCE
+|**B**oundary **C**onstraint check failed **E**xception
+
+|0xB
+|
+|SYS
+|**SYS**tem call exception
+
+|0xC
+|
+|BRK
+|**BR**ea**K**point exception
+
+|0xD
+|
+|INE
+|**I**nstruction **N**on-defined **E**xception
+
+|0xE
+|
+|IPE
+|**I**nstruction **P**rivilege error **E**xception
+
+|0xF
+|
+|FPD
+|**F**loating-**P**oint instruction **D**isable exception
+
+|0x10
+|
+|SXD
+|128-bit vector (**S**IMD instructions) e**X**pansion instruction **D**isable exception
+
+|0x11
+|
+|ASXD
+|256-bit vector (**A**dvanced **S**IMD instructions) e**X**pansion instruction **D**isable exception
+
+.2+|0x12
+|0
+|FPE
+|**F**loating-**P**oint error **E**xception
+
+|1
+|VFPE
+<d|**V**ecctor **F**loating-**P**oint error **E**xception
+
+.2+|0x13
+|0
+|WPEF
+|**W**atch**P**oint **E**xception for **F**etch watchpoint
+
+|1
+|WPEM
+<d|**W**atch**P**oint **E**xception for **M**emory load/store watchpoint
+
+|0x14
+|
+|BTD
+|**B**inary **T**ranslation expansion instruction **D**isable exception
+
+|0x15
+|
+|BTE
+|**B**inary **T**ranslation related exceptions
+
+|0x16
+|
+|GSPR
+|**G**uest **S**ensitive **P**rivileged **R**esource exception
+
+|0x17
+|
+|HVC
+|**H**yper**V**isor **C**all exception
+
+.2+|0x18
+|0
+|GCSC
+|**G**uest **C**SR **S**oftware **C**hange exception
+
+|1
+|GCHC
+<d|**G**uest **C**SR **H**ardware **C**hange exception
+
+|0x1A-0x3E
+|
+|
+|Reserved Codes
+|===

@@ -1,0 +1,23 @@
+[[machine-error-exception-data-save-register]]
+==== Machine Error Exception Data Save Register (`MERRSAVE`)
+
+This register is used to store data temporarily for the system software.
+Each dava save register can hold the data of one general-purpose register.
+
+The reason for the additional `SAVE` register for the machine error exception handler is that the timing of the machine error exception cannot be predicted and controlled by the software, and it may occur during the processing of any other exception.
+
+[[definition-of-machine-error-exception-data-save-register]]
+.Definition of machine error exception data save register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|DATA
+|RW
+|Data for software to read and write only.
+The hardware will not modify the contents of this field except for the execution of CSR instructions.
+|===

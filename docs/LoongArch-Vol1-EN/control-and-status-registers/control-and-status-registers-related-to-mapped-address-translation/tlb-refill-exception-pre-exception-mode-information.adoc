@@ -1,0 +1,43 @@
+[[tlb-refill-exception-pre-exception-mode-information]]
+==== TLB Refill Exception Pre-exception Mode Information (`TLBRPRMD`)
+
+When a TLB refill exception is triggered, the hardware saves the processor core's privilege level, Guest mode, global interrupt enable bit, and watchpoint enable bit into this register at that time, which is used to restore the processor core to the field when the exception returns.
+
+[[definition-of-tlb-refill-exception-pre-exception-mode-information-register]]
+.Definition of TLB refill exception pre-exception mode information register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|1:0
+|PPLV
+|RW
+|When the TLB refill exception is triggered, the hardware records the old value of the `PLV` field in `CSR.CRMD` in this field.
+When `CSR.TLBRERAIsTLBR=1`, the hardware restores the value of this field to the `PLV` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|2
+|PIE
+|RW
+|When the TLB refill exception is triggered, the hardware records the old value of the `IE` field in the `CSR.CRMD` in this field.
+When `CSR.TLBRERAIsTLBR=1`, the hardware restores the value of this field to the `IE` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|3
+|0
+|R
+|If the virtualization extension is not implemented, this bit is read-only constant to `0` and writes are ignored.
+
+|4
+|PWE
+|RW
+|When the TLB refill exception is triggered, the hardware records the old value of the `WE` field in the `CSR.CRMD` in this field.
+When `CSR.TLBRERAIsTLBR=1`, the hardware restores the value of this field to the `WE` field of `CSR.CRMD` when the `ERTN` instruction is executed to return from the exception handler.
+
+|31:5
+|0
+|R0
+|Reserved field.
+Return `0` if read this field, and software is not allowed to change its value.
+|===

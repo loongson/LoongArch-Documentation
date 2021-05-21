@@ -1,0 +1,51 @@
+[[chapter-other-miscellaneous-instructions]]
+==== Other Miscellaneous Instructions
+
+===== `ERTN`
+
+Instruction formats:
+
+[source]
+----
+ertn
+----
+
+The `ERTN` instruction is used to return from exception processing.
+
+If the exception being processed is a debug exception clear the `DM` bit in the `CSR.DEBUG` to `0`, and jump to the address stored in the `CSR.DEBUG` to start fetching.
+
+If the exception being processed is something other than a debug exception, update the `PPLV`, `PIE`, and `PWE` information corresponding to the exception to `CSR.CRMD`, update the `PVM` in `CSR.VMCTL` to `CSR.VMCTL.VM`, and jump to the `ERA` corresponding to the exception to start fetching instructions.
+
+If the exception processed is an error-related exception, the `PPLV`, `PIE` and `PWE` information corresponding to the exception is from `CSR.MERRCTL`, and the `ERA` corresponding to the exception is from `CSR.MERRERA`.
+In addition, the `PDA`, `PPG`, `PDCAF` and `PDCAM` information in `CSR.MERRCTL` should be updated to `CSR.CRMD`.
+
+If the exception being processed is a TLB refill exception, the `PPLV`, `PIE`, and `PWE` information corresponding to the exception is from CSR.
+`TLBRSAVE`, and the `ERA` corresponding to the exception is from `CSR.TLBRERA`.
+In addition, it is necessary to clear `DA` field `0` and `PG` field `1` in `CSR.CRMD`.
+
+If the exception being handled is not a debug exception, an error-related exception, or a TLB refill exception, then the `pplv.pie` and `PWE` information corresponding to the exception is from `CSR.PRMD`, and the `ERA` corresponding to the exception is from `CSR.ERA`.
+
+When executing the `ERTN` instruction, if the `KL0` bit in `CSR.LLBCTL` is not equal to `1`, then the `LLbit` is set to `0`, otherwise the `LLbit` is not modified.
+
+===== `DBCL`
+
+Instruction formats:
+
+[source]
+----
+dbcl        code
+----
+
+Executing `DBCL` instruction will immediately enter debug mode.
+
+===== `IDLE`
+
+Instruction formats:
+
+[source]
+----
+idle        hint
+----
+
+After executing the `IDLE` instruction, the processor core will stop fetching instructions and enter the wait state until it is woken up by an interrupt or is reset.
+After waking up from the wait state by an interrupt, the first instruction executed by the processor core is the one after `IDLE`.

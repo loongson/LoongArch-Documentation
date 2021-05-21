@@ -1,0 +1,10 @@
+[[basic-integer-instructions]]
+== Basic Integer Instructions
+
+According to the context of the software runtime, the non-privileged instruction set of the basic part of LoongArch includes basic integer instructions and basic floating-point instructions.
+This chapter will describe the integer instruction part.
+The basic integer instruction part is the most basic part of the non-privileged instruction subset.
+
+include::basic-integer-instructions/programming-model-of-basic-integer-instructions.adoc[]
+
+include::basic-integer-instructions/overview-of-basic-integer-instructions.adoc[]

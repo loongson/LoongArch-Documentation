@@ -1,0 +1,14 @@
+[[basic-floating-point-instructions]]
+== Basic Floating-Point Instructions
+
+This chapter will introduce the floating-point number instructions in the basic part of the non-privileged subset of LoongArch.
+The function definition of the basic floating-point instructions in LoongArch follows the IEEE 754-2008 standard.
+
+Basic floating-point instructions cannot be implemented separately from basic integer instructions.
+Generally speaking, it recommends that implementing both basic integer instructions and basic floating-point instructions at the same time.
+However, for some embedded applications that are cost-sensitive and have extremely low floating-point processing performance requirements, the architecture specification also allows not to implement basic floating-point instructions, or only implement single-precision floating-point numbers and word integers in basic floating-point instructions.
+Whether the implementation of basic floating-point instructions includes instructions for operating double-precision floating-point numbers and double-word integers has nothing to do with whether the architecture is LA32 or LA64.
+
+include::basic-floating-point-instructions/programming-model-of-basic-floating-point-instructions.adoc[]
+
+include::basic-floating-point-instructions/overview-of-floating-point-instructions.adoc[]

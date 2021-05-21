@@ -1,0 +1,188 @@
+[[boundary-check-memory-access-instructions]]
+==== Boundary Check Memory Access Instructions
+
+===== `LD{GT/LE}.{B/H/W/D}`, `ST{GT/LE}.{B/H/W/D}`
+
+Instruction formats:
+
+[source]
+----
+ldgt.b      rd, rj, rk
+ldgt.h      rd, rj, rk
+ldgt.w      rd, rj, rk
+ldgt.d      rd, rj, rk
+ldle.b      rd, rj, rk
+ldle.h      rd, rj, rk
+ldle.w      rd, rj, rk
+ldle.d      rd, rj, rk
+stgt.b      rd, rj, rk
+stgt.h      rd, rj, rk
+stgt.w      rd, rj, rk
+stgt.d      rd, rj, rk
+stle.b      rd, rj, rk
+stle.h      rd, rj, rk
+stle.w      rd, rj, rk
+stle.d      rd, rj, rk
+----
+
+`LDGT/LDLE.B/H/W/D` fetches a byte/half word word/double word data symbol extension from memory and writes it to the general register `rd`.
+
+`STGT/STLE.B/H/W/D` writes the `[7:0]`/`[15:0]`/`[31:0]`/`[63:0]` bits of data from the general register `rd` to memory.
+
+The access addresses of the above instructions come directly from the values in the general register `rj`.
+The access addresses of the above instructions are required to be naturally aligned, otherwise a non-alignment exception will be triggered.
+
+`B/H/W/D` and `STGT.B/H/W/D` instructions check whether the value in general register `rj` is greater than the value in general register `rk`, and terminate the access operation and trigger the boundary check exception if the condition is not satisfied; `B/H/W/D` and `STLE.B/H/W/D` instructions check whether the value in general register `rj` is less than or equal to the value in general register `rk`, and if the condition is not satisfied, the access operation is terminated and the boundary check exception is triggered.
+
+[source]
+----
+LDGT.B:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        byte = MemoryLoad(paddr, BYTE)
+        GR[rd] = SignExtend(byte, GRLEN)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+LDGT.H:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        halfword = MemoryLoad(paddr, HALFWORD)
+        GR[rd] = SignExtend(halfword, GRLEN)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+LDGT.W:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        word = MemoryLoad(paddr, WORD)
+        GR[rd] = SignExtend(word, GRLEN)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+LDGT.D:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        GR[rd] = MemoryLoad(paddr, DOUBLEWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+LDLE.B:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        byte = MemoryLoad(paddr, BYTE)
+        GR[rd] = SignExtend(byte, GRLEN)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+LDLE.H:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        halfword = MemoryLoad(paddr, HALFWORD)
+        GR[rd] = SignExtend(halfword, GRLEN)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+LDLE.W:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        word = MemoryLoad(paddr, WORD)
+        GR[rd] = SignExtend(word, GRLEN)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+LDLE.D:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        GR[rd] = MemoryLoad(paddr, DOUBLEWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+STGT.B:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        MemoryStore(GR[rd][7:0], paddr, BYTE)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+STGT.H:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        MemoryStore(GR[rd][15:0], paddr, HALFWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+STGT.W:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        MemoryStore(GR[rd][31:0], paddr, WORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+STGT.D:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        MemoryStore(GR[rd][63:0], paddr, DOUBLEWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+STLE.B:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        MemoryStore(GR[rd][7:0], paddr, BYTE)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+STLE.H:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        MemoryStore(GR[rd][15:0], paddr, HALFWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+STLE .W:
+    vaddr = GR[rij]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        MemoryStore(GR[rd][31:0], paddr, WORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+STLE.D:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        MemoryStore(GR[rd][63:0], paddr, DOUBLEWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+----

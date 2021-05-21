@@ -1,0 +1,9 @@
+[[unaligned-storage-access]]
+==== Unaligned Storage Access
+
+The fetch addresses of all instruction fetches must be aligned on 4-byte boundaries, otherwise the ADEF will be triggered.
+
+Except for <<atomic-memory-access-instructions,atomic memory access instructions>>, <<boundary-check-memory-access-instructions,integer boundary check memory access instructions>> and <<floating-point-boundary-check-memory-access-instructions,floating-point boundary check memory access instructions>>, other load/store memory access instructions can be implemented to allow memory access addresses to be unaligned.
+However, in an implementation that allows memory access address misalignment, the system mode software can configure the `ALCL0`–`ALCL3` control bits in <<miscellaneous-controller,`CSR.MISC`>> to address these load/store memory access instructions at the privilege levels of PLV0–PLV3.
+Alignment check is needed, too.
+For memory accessed instructions that require address alignment checks, if the address accessed is not naturally aligned, an **A**ddress a**L**ignment fault **E**xception (ALE) will be triggered.

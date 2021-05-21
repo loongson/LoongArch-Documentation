@@ -1,0 +1,19 @@
+[[debug-exception-return-address]]
+==== Debug Exception Return Address (`DERA`)
+
+[[definition-of-debug-exception-return-address-register]]
+.Definition of debug exception program counter register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|63:0
+|PC
+|RW
+|When a debug exception is triggered in non-debug mode, the hardware records the `PC` that triggered the exception here.
+
+When `CSR.DBG.DM=1`, the return address is fetched from here when the `ERTN` instruction is executed.
+|===

@@ -1,0 +1,41 @@
+[[timer-configuration]]
+==== Timer Configuration (`TCFG`)
+
+This register is the interface to the software configuration timer.
+The number of valid bits of the timer is determined by the implementation, so the length of the `TimeVal` field in this register will change accordingly.
+
+[[definition-of-timer-configuration-register]]
+.Definition of timer configuration register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|En
+|RW
+|Timer enable bit.
+Only when this bit is `1`, the timer will perform countdown self decrement and set up the timing interrupt signal when it decrements to `0` value.
+
+|1
+|Periodic
+|RW
+|Timer cycle mode control bit.
+If this bit is `1`, when the timer decreases to `0`, the timer will set up the timer interrupt signal and reload the timer to the initial value configured in the TimeVal field, and then continue to decrement itself in the next clock cycle.
+If this bit is `0`, the timer will stop counting until the software configures the timer again when the countdown reaches `0`.
+
+|n-1:2
+|InitVal
+|RW
+|The initial value of the timer countdown self decrement count.
+This initial value must be an integer multiple of `4`.
+The hardware will automatically fill in the lowest bit of the field value.
+Two bits of `0` are added before it is used.
+
+|GRLEN-1:n
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+|===

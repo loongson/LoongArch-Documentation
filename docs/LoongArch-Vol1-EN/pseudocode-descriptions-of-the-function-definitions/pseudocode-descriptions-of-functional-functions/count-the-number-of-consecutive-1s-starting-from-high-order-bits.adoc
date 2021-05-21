@@ -1,0 +1,13 @@
+[[count-the-number-of-consecutive-1s-starting-from-high-order-bits]]
+==== Count the Number of Consecutive ``1```'s Starting from High Order Bits
+
+[source]
+----
+{bits(N)} CLO(bits(N) x):
+    cnt = 0
+    for i in range(N):
+        if x[N-1-i] == 1'b0:
+            return cnt
+        else:
+            cnt = cnt + 1
+----

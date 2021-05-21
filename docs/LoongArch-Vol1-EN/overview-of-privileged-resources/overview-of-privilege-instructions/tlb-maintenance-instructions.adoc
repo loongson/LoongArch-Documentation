@@ -1,0 +1,151 @@
+[[tlb-maintenance-instructions]]
+==== TLB Maintenance Instructions
+
+===== `TLBSRCH`
+
+Instruction formats:
+
+[source]
+----
+tlbsrch
+----
+
+The functional definition of the `TLBSRCH` instruction without implementing the LVZ extension is given here.
+
+Use the information of `CSR.ASID` and `CSR.TLBEHI` to query TLB.
+If there is a hit entry, the index of the hit entry is written to the `Index` field of `CSR.TLBIDX`, and the `INV` field of `CSR.TLBIDX` is set to `0`; if there is no hit entry, the `INV` field of `CSR.TLBIDX` is set to `1`.
+
+The rules for calculating the index of each entry in the TLB are, starting from `0`, incremental numbering, first STLB and then MTLB, STLB from the ``0``th line to the last line of the ``0``th way, then the ``0``th line to the last line of the ``1``st way, until the last line of the last way, MTLB from the ``0``th line to the last line.
+
+===== `TLBRD`
+
+Instruction formats:
+
+[source]
+----
+tlbrd
+----
+
+The functional definition of the `TLBRD` instruction without implementing the LVZ extension is given here.
+
+The value of the Index field of `CSR.TLBIDX` is used as the index to read the specified entry in the TLB.
+If the specified location is a valid TLB entry, the page table information of the TLB entry is written to `CSR.TLBEHI`, `CSR.TLBELO0`, `CSR.TLBELO1` and `CSR.TLBIDX.PS`, and the `INV` field of `CSR.TLBIDX` is set to `0`; if the specified location is an invalid TLB entry, then `CSR.TLBEHI`, `CSR.TLBELO0` and `CSR.TLBELO1` is set to `0`; and the `INV` field of `CSR.TLBIDX` is set to `1`; `TLBIDX.PS` is set to `0` and the `INV` field of `CSR.TLBIDX` is set to `1`.
+
+Note that valid/invalid TLB entries and valid/invalid page table entries in the TLB are two concepts.
+
+If the index used for the access exceeds the range of the TLB, the behavior of the processor is undefinded.
+
+===== `TLBWR`
+
+Instruction formats:
+
+[source]
+----
+tlbwr
+----
+
+The functional definition of the `TLBWR` instruction without implementing the LVZ extension is given here.
+
+The `TLBWR` instruction fills the page table entry information stored in the TLB-related CSRs into the TLB.
+The page table entry information to be populated comes from `CSR.TLBEHI`, `CSR.TLBELO0`, `CSR.TLBELO1` and `CSR.TLBIDX_PS`.
+If `CSR.TLBIDX.NE=1`, then the TLB is populated with an invalid TLB entry; only if `CSR.TLBIDX.NE=0`, the TLB is populated with a valid TLB entry.
+
+The location where the page table entry is written to the TLB is specified by the value of the Index field of `CSR.TLBIDX`.
+Please refer to the `TLBSRCH` instruction for the calculation rules of each index in the TLB for the specific corresponding rules.
+If a page table entry is to be written to the STLB, but a conflict occurs between the value of the Index field of `CSR.TLBIDX` and `VPPN` and `CSR.TLBIDX.PS` in `CSR.TLBEHI`, the behavior of the processor is undefinded.
+
+===== `TLBFILL`
+
+The functional definition of the `TLBFILL` instruction without implementing the LVZ extension is given here.
+
+The `TLBFILL` instruction fills the page table entry information stored in the TLB-related CSRs into the TLB.
+The page table entry information to be populated comes from `CSR.TLBEHI`, `CSR.TLBELO0`, `CSR.TLBELO1` and `CSR.TLBIDX_PS`.
+If `CSR.TLBIDX.NE=1`, then the TLB is populated with an invalid TLB entry; only if `CSR.TLBIDX.NE=0`, the TLB is populated with a valid TLB entry.
+
+Whether to write to STLB or MTLB is first made based on the page size of the page table entry being filled.
+When the page size of the page table entry being filled is equal to the page size configured for STLB (`CSR.STLBPS`) it will be filled to STLB, otherwise it will be filled to MTLB.
+Which way the page table entry is filled to STLB, or which entry is filled to MTLB is randomly selected by the hardware.
+
+===== `TLBCLR`
+
+Instruction formats:
+
+[source]
+----
+tlbclr
+----
+
+The contents of the TLB are invalidated according to the information of the TLB-related CSRs to maintain the consistency of the page table data between the TLB and the memory.
+The functional definition of the `TLBCLR` instruction without implementing the LVZ extension is given here.
+
+When `CSR.index.index` falls within the range of MTLB (greater than or equal to the number of STLB entries), `TLBCLR` is executed to invalidate all page table entries in MTLB with `G=0` and `ASID` equal to `CSR.ASID.ASID`.
+
+When `CSR.index.index` falls within the STLB range (less than the number of STLB entries), execute a `TLBCLR` to invalidate all page table entries in the STLB that are equal to `G=0` and `ASID` equal to `CSR.ASID.ASID` in the group indicated by the low bit of `CSR.index.index`.
+
+===== `TLBFLUSH`
+
+Instruction formats:
+
+[source]
+----
+tlbflush
+----
+
+The contents of the TLB are invalidated according to the information of the TLB-related CSRs to maintain the consistency of the page table data between the TLB and the memory.
+The functional definition of `TLBCLR` instruction without implementing LVZ extension is given here.
+
+When `CSR.index.index` falls within the MTLB range (greater than or equal to the number of STLB entries), `TLBCLR` is executed to invalidate all page table entries in the MTLB.
+
+When `CSR.index.index` falls within the STLB range (less than the number of STLB entries), a `TLBCLR` is executed to invalidate all page table entries in the group indicated by the low `CSR.index.index` in the STLB.
+
+===== `INVTLB`
+
+Instruction formats:
+
+[source]
+----
+invtlb  op, rj, rk
+----
+
+The `INVTLB` instruction is used to invalidate the contents of the TLB to maintain consistency of the page table data between the TLB and memory.
+The functional definition of the `INVTLB` instruction is given here for the case where the LVZ extension is not implemented.
+
+Of the three source operands of the instruction, op is a 5-bit immediate number to indicate the type of operation.
+
+The `[9:0]` bits of the general register `rj` hold the `ASID` information required for the invalid operation (called "`register specified `ASID``"), and the remaining bits must be filled with `0`.
+When the operation indicated by op does not require an ASID, the general register `rj` should be set to `r0`.
+
+The general register `rk` is used to store the virtual address information required for invalid operations (called "`register specified `VA``").
+When the operation indicated by the op does not require virtual address information, the general register `rk` should be set to `r0`.
+
+The operations corresponding to each op are shown in the following table, and the op that does not appear in the table will trigger a reserved instruction exception.
+
+[[operations-corresponding-to-each-op-in-the-invtlb-instruction]]
+.Operations corresponding to each `op` in the `INVTLB` instruction
+[%header,cols="^1m,7"]
+|===
+|op
+|Operation
+
+|0x0
+|Clear all page table entries
+
+|0x1
+|Clears all page table entries.
+The effect of this operation is exactly the same as op=0.
+
+|0x2
+|Clears all `G=1` page table entries.
+
+|0x3
+|Clears all page table entries with `G=0`.
+
+|0x4
+|Clears all page table entries with `G=0` and `ASID` equal to the `ASID` specified in the register.
+
+|0x5
+|Clear all page table entries with `G=0` and `ASID` equal to the register specified `ASID`, and VA equal to the register specified `VA`.
+
+|0x6
+|Clear all page table entries where `G=1` or `ASID` is equal to the `ASID` specified in the register and `VA` is equal to the `VA` specified in the register.
+|===

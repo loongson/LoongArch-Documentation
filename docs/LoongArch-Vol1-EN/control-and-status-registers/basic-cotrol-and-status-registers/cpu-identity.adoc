@@ -1,0 +1,28 @@
+[[cpu-identity]]
+==== CPU Identity (`CPUID`)
+
+This register contains the processor core number information.
+
+[[definition-of-cpu-identity-register]]
+.Definition of CPU identity register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|8:0
+|CoreID
+|R
+|The number of the processor core.
+This information is used by the software to distinguish the individual processor cores in a multi-core system.
+When the system is integrated, the processor core number information for each processor core is set by the hardware according to the specific implementation.
+It is recommended that the processor core number be incremented from `0` in the system.
+
+|31:9
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

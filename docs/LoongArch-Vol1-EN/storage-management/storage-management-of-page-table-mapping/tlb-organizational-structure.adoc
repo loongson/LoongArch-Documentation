@@ -1,0 +1,12 @@
+[[tlb-organizational-structure]]
+==== TLB Organizational Structure
+
+The TLB in LoongArch is divided into two parts, one is **S**ingular-Page-Size *TLB* (STLB) which has the same page size for all table entries, and the other is **M**ultiple page size *TLB* (MTLB) which supports different page sizes for different table entries.
+
+The page size is the same as the page size configured in the STLB, and it is up to the implementation to decide whether a page table entry can enter the MTLB, with no restrictions in the architecture specification.
+
+During the translation of a virtual address to a physical address, the STLB and the MTLB look up simultaneously.
+Accordingly, the software needs to ensure that there are no simultaneous hits of MTLB and STLB, otherwise the processor behavior will be undefined.
+
+The MTLBs are fully associative, and the STLBs are multi-way set associative.
+For STLB, if it has `2^INDEX^` groups and the configured page size is `2^PS^` bytes, the hardware querying STLB is using the `[PS+INDEX:PS]` bits of the virtual address as the index of each way.

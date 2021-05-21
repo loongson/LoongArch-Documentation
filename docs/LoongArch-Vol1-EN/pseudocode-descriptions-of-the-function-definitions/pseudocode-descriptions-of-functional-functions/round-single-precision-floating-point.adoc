@@ -1,0 +1,17 @@
+[[round-single-precision-floating-point]]
+==== Round Single Precision Floating-point
+
+[source]
+----
+{bits(32)} FP32_roundToInteger(bits(N) x, bits(1) I_en, bits(2) rm):
+    if (I_en):
+        return FP32_roundToIntegralExact(x)
+    elif (rm == 0):
+        return FP32_roundToIntegerTiesToEven(x)
+    elif (rm == 1):
+        return FP32_roundToIntegerTowardZero(x)
+    elif (rm == 2):
+        return FP32_roundToIntegerTowardPositive(x)
+    elif (rm == 3):
+        return FP32_roundToIntegerTowardNegative(x)
+----

@@ -1,0 +1,282 @@
+[[overview-of-control-and-status-registers]]
+=== Overview of Control and Status Registers
+
+[[table-overview-of-control-and-status-registers]]
+.Overview of Control and Status Registers
+[%header,cols="^1,3,1m"]
+|===
+|Address
+2+^|Name
+
+m|0x0
+|**C**u**R**rent **M**o**D**e information
+|CRMD
+
+m|0x1
+|**PR**e-exception **M**o**D**e information
+|PRMD
+
+m|0x2
+|**E**xtended component **U**nit **EN**able
+|EUEN
+
+m|0x3
+|**MISC**ellaneous controller
+|MISC
+
+m|0x4
+|**E**xception **C**on**F**i**G**uration
+|ECFG
+
+m|0x5
+|**E**xception **STAT**us
+|ESTAT
+
+m|0x6
+|**E**xception **R**eturn **A**ddress
+|ERA
+
+m|0x7
+|*BAD* virtual **A**ddress
+|BADV
+
+m|0x8
+|*BAD* **I**nstruction
+|BADI
+
+m|0xC
+|Exception *ENTRY* address
+|EENTRY
+
+m|0x10
+|*TLB* **I**n**D**e**X**
+|TLBIDX
+
+m|0x11
+|*TLB* **E**ntry **HI**gh-order bits
+|TLBEHI
+
+m|0x12
+|*TLB* **E**ntry **LO**w-order bits *0*
+|TLBELO0
+
+m|0x13
+|*TLB* **E**ntry **LO**w-order bits *1*
+|TLBELO1
+
+m|0x18
+|**A**ddress **S**pace **ID**entifier
+|ASID
+
+m|0x19
+|**P**age **G**lobal **D**irectory base address for **L**ower half address space
+|PGDL
+
+m|0x1A
+|**P**age **G**lobal **D**irectory base address for **H**igher half address space
+|PGDH
+
+m|0x1B
+|**P**age **G**lobal **D**irectory base address
+|PGD
+
+m|0x1C
+|**P**age **W**alk **C**ontroller for **L**ower half address space
+|PWCL
+
+m|0x1D
+|**P**age **W**alk **C**ontroller for **H**igher half address space
+|PWCH
+
+m|0x1E
+|*STLB* **P**age **S**ize
+|STLBPS
+
+m|0x1F
+|**R**educed **V**irtual **A**ddress **C**on**F**i**G**uration
+|RVACFG
+
+m|0x20
+|*CPU* **ID**entity
+|CPUID
+
+m|0x21
+|**P**rivileged **R**esource **C**on**F**i**G**uration *1*
+|PRCFG1
+
+m|0x22
+|**P**rivileged **R**esource **C**on**F**i**G**uration *2*
+|PRCFG2
+
+m|0x23
+|**P**rivileged **R**esource **C**on**F**i**G**uration *3*
+|PRCFG3
+
+m|0x30+n (0 &#8804; n &#8804; 15)
+|Data *SAVA* register
+|SAVEn
+
+m|0x40
+|**T**imer **ID**entity
+|TID
+
+m|0x41
+|**T**imer **C**on**F**i**G**uration
+|TCFG
+
+m|0x42
+|**T**imer **VAL**ue
+|TVAL
+
+m|0x43
+|**C**ou**NT**er **C**ompensation
+|CNTC
+
+m|0x44
+|**T**imer **I**nterrupt **CL**ea**R**ing
+|TICLR
+
+m|0x60
+|**LLB**it **C**on**T**ro**L**ler
+|LLBCTL
+
+m|0x80
+|**IMP**lementation-specific **C**on**T**ro**L**ler *1*
+|IMPCTL1
+
+m|0x81
+|**IMP**lementation-specific **C**on**T**ro**L**ler *2*
+|IMPCTL2
+
+m|0x88
+|*TLB* **R**efill exception *ENTRY* address
+|TLBRENTRY
+
+m|0x89
+|*TLB* **R**efill exception *BAD* **V**irtual address
+|TLBRBADV
+
+m|0x8A
+|*TLB* **R**efill **E**xception **R**eturn **A**ddress
+|TLBRERA
+
+m|0x8B
+|*TLB* **R**efill exception data *SAVE* register
+|TLBRSAVE
+
+m|0x8C
+|*TLB* **R**efill exception **E**ntry **LO**w-order bits *0*
+|TLBRELO0
+
+m|0x8D
+|*TLB* **R**efill exception **E**ntry **LO**w-order bits *1*
+|TLBRELO1
+
+m|0x8E
+|*TLB* **R**efill exception **E**ntry **HI**gh-order bits
+|TLBREHI
+
+m|0x8F
+|*TLB* **R**efill exception **PR**e-exception **M**o**D**e information
+|TLBRPRMD
+
+m|0x90
+|**M**achine **ERR**or **C**on**T**ro**L**ler
+|MERRCTL
+
+m|0x91
+|**M**achine **ERR**or **INFO**rmation *1*
+|MERRINFO1
+
+m|0x92
+|**M**achine **ERR**or **INFO**rmation *2*
+|MERRINFO2
+
+m|0x93
+|**M**achine **ERR**or exception *ENTRY* address
+|MERRENTRY
+
+m|0x94
+|**M**achine **ERR**or **E**xception **R**eturn **A**ddress
+|MERRERA
+
+m|0x95
+|**M**achine **ERR**or exception data *SAVE* register
+|MERRSAVE
+
+m|0x98
+|**C**ache **TAG**s
+|CTAG
+
+m|0x180+n (0 &#8804; n &#8804; 3)
+|**D**irect **M**apping configuration **W**indow *n*
+|DMWn
+
+m|0x200+2n (0 &#8804; n &#8804; 31)
+|**P**erformance **M**onitor **C**on**F**i**G**uration *n*
+|PMCFGn
+
+m|0x201+2n (0 &#8804; n &#8804; 31)
+|**P**erformance **M**onitor overall **C**ou**NT**er *n*
+|PMCNTn
+
+m|0x300
+|**M**emory load/store **W**atch**P**oint overall **C**ontroller
+|MWPC
+
+m|0x301
+|**M**emory load/store **W**atch**P**oint overall **S**tatus
+|MWPS
+
+m|0x310+8n (0 &#8804; n &#8804; 7)
+|**M**emory load/store **W**atch**P**oint *n* **C**on**F**i**G**uration *1*
+|MWPnCFG1
+
+m|0x311+8n (0 &#8804; n &#8804; 7)
+|**M**emory load/store **W**atch**P**oint *n* **C**on**F**i**G**uration *2*
+|MWPnCFG2
+
+m|0x312+8n (0 &#8804; n &#8804; 7)
+|**M**emory load/store **W**atch**P**oint *n* **C**on**F**i**G**uration *3*
+|MWPnCFG3
+
+m|0x313+8n (0 &#8804; n &#8804; 7)
+|**M**emory load/store **W**atch**P**oint *n* **C**on**F**i**G**uration *4*
+|MWPnCFG4
+
+m|0x380
+|**F**etch **W**atch**P**oint overall **C**ontroller
+|FWPC
+
+m|0x381
+|**F**etch **W**atch**P**oint overall **S**tatus
+|FWPS
+
+m|0x390+8n (0 &#8804; n &#8804; 7)
+|**F**etch **W**atch**P**oint *n* **C**on**F**i**G**uration *1*
+|FWPnCFG1
+
+m|0x391+8n (0 &#8804; n &#8804; 7)
+|**F**etch **W**atch**P**oint *n* **C**on**F**i**G**uration *2*
+|FWPnCFG2
+
+m|0x392+8n (0 &#8804; n &#8804; 7)
+|**F**etch **W**atch**P**oint *n* **C**on**F**i**G**uration *3*
+|FWPnCFG3
+
+m|0x393+8n (0 &#8804; n &#8804; 7)
+|**F**etch **W**atch**P**oint *n* **C**on**F**i**G**uration *4*
+|FWPnCFG4
+
+m|0x500
+|**D**e**B**u**G** register
+|DBG
+
+m|0x501
+|**D**ebug **E**xception **R**eturn **A**ddress
+|DERA
+
+m|0x502
+|**D**ebug data *SAVE* register
+|DSAVE
+|===

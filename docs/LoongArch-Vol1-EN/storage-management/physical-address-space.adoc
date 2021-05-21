@@ -1,0 +1,10 @@
+[[physical-address-space]]
+=== Physical Address Space
+
+The physical address space range of memory is `0`–`2^PALEN^-1`.
+
+In LA32, `PALEN` is theoretically a positive integer not exceeding `32`, and its specific value is determined by the implementation, which is usually recommended to be `32`.
+
+In LA64, `PALEN` is theoretically a positive integer not exceeding `60`, and its specific value is determined by the implementation.
+
+The system software can determine the specific value of `PALEN` by reading the `PALEN` field of the `0x1` configuration word with the `CPUCFG` instruction.

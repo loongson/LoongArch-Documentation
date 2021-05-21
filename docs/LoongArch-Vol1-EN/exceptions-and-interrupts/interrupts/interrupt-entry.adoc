@@ -1,0 +1,7 @@
+[[interrupt-entry]]
+==== Interrupt Entry
+
+Interrupts are treated as an exception once they are marked to the instruction by the processor, so the calculation of interrupt entries follows the rules for calculating general exception entries.
+See <<exception-entry,Exception Entry>> for the rules of calculating the general exception entries.
+The exception number for an interrupt is its own int number plus `64`.
+The exception number for interrupt SWI0 is `64`, the exception number for interrupt SWI1 is `65`, ... , and so on.

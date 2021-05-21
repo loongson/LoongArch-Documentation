@@ -1,0 +1,10 @@
+[[reverse-the-order-of-the-bit-string]]
+==== Reverse the Order of the Bit String
+
+[source]
+----
+{bits(N)} BITREV(bits(N) x):
+    for i in range(N):
+        res[i] = x[N-1-i]
+    return res
+----

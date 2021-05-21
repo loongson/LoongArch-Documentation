@@ -1,0 +1,54 @@
+[[privileged-resource-configuration-3]]
+==== Privileged Resource Configuration 3 (`PRCFG3`)
+
+This register contains the privileged resources information.
+
+[[definition-of-privileged-resource-configuration-3-register]]
+.Definition of privileged resource configuration 3 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|3:0
+|TLBType
+|R
+|Indicates how the TLB is organized:
+
+`0`: No TLB;
+
+`1`: a fully associated **M**ultiple page size *TLB* (MTLB)
+
+`2`: One fully associative **M**ultiple page size *TLB* (MTLB) + one group associative **S**ingular-Page-Size *TLB* (STLB);
+
+Other values: Reserved.
+
+|11:4
+|MTLBEntries
+|R
+|When `TLBType=0`, the field is read-only constant `0`;
+
+When `TLBType=1` or `TLBType=2`, the value of this field is the number of entries in the fully associative multipage size TLB minus `1`.
+
+|19:12
+|STLBWays
+|R
+|When `TLBType=0` or `TLBType=1`, the field is read-only constant at `0`;
+
+When `TLBType=2`, the value of this field is the number of ways in the group associative singular-page-size TLB minus `1`.
+
+|25:20
+|STLBSets
+|R
+|When `TLBType=0` or `TLBType=1`, the field is read-only constant to `0`;
+
+When `TLBType=2`, the value of this field is the power of the number of entries per way in the group associative singular-page-size TLB, i.e., `2^STLBSets^` entries per way.
+
+|31:26
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and the software is not allowed to change its value.
+|===

@@ -1,0 +1,6 @@
+[[overview-of-privileged-resources]]
+== Overview of Privileged Resources
+
+include::overview-of-privileged-resources/privilege-levels.adoc[]
+
+include::overview-of-privileged-resources/overview-of-privilege-instructions.adoc[]

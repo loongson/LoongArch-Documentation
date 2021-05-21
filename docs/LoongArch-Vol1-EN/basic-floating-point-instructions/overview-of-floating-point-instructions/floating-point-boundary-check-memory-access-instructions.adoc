@@ -1,0 +1,112 @@
+[[floating-point-boundary-check-memory-access-instructions]]
+==== Floating-Point Boundary Check Memory Access Instructions
+
+===== `FLD{GT/LE}.{S/D}, FST{GT/LE}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fldgt.s     fd, rj, rk
+fldgt.d     fd, rj, rk
+fldle.s     fd, rj, rk
+fldle.d     fd, rj, rk
+fstgt.s     fd, rj, rk
+fstgt.d     fd, rj, rk
+fstle.s     fd, rj, rk
+fstle.s     fd, rj, rk
+----
+
+`FLD{GT/LE}.{S/D}` determines if the valid address is out of bounds and writes the value from memory to the floating-point register.
+
+`FLD{GT/LE}.S` checks if the value in general register `rj` is greater/less than/equal to the value in general register `rk`, and if the condition is met, fetches a word of data from memory and writes it to the lower 32 bits of floating-point register `fd`.
+If the floating-point register is 64 bits wide, the high 32-bit value of fd is not determined.
+
+`FLD{GT/LE}.D` checks if the value in general register `rj` is greater than/less than/equal to the value in general register `rk`, and if the condition is met, fetches a double word of data from memory and writes it to floating-point register `fd`.
+
+`FST{GT/LE}.{S/D}` determines if the valid address is out of bounds, and writes the value of the floating-point register to memory.
+
+`FST{GT/LE}.S` checks if the value in general register `rj` is greater/less than/equal to the value in general register `rk`, and if the condition is met, writes the low 32-bit word data in floating-point register `fd` to memory.
+
+`FST{GT/LE}.D` checks if the value in general register `rj` is greater than/less than or equal to the value in general register `rk`, and if the condition is satisfied, writes the double word data in floating-point register `fd` to memory.
+
+The access address of the above instruction comes directly from the value in general register `rj`.
+The access addresses of the above instructions are required to be naturally aligned, otherwise a non-alignment exception will be triggered.
+The above instruction terminates the access operation and triggers the boundary check exception if the check condition is not satisfied.
+
+[source]
+----
+FLDGT.S:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        word = MemoryLoad(paddr, WORD)
+        FR[fd][31:0] = word
+    else:
+        RaiseExcepti on (BCE)    # Bound Check Exception
+
+FLDGT.D:
+    vaddr = GR [rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        FR[fd] = MemoryLoad(paddr, DOUBLEWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+FLDLE.S:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        word = MemoryLoad(paddr, WORD)
+        FR[fd][31:0] = word
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+FLDLE.D:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        FR[fd] = MemoryLoad(paddr, DOUBLEWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+FSTGT.S:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        MemoryStore(FR[fd][31:0], paddr, WORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+FSTGT.D:
+    vaddr = GR[rij]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] > GR[rk]:
+        MemoryStore(FR[fd][63:0], paddr, DOUBLEWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+FSTLE.S:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        MemoryStore(FR[fd][31:0], paddr, WORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+
+FSTLE.D:
+    vaddr = GR[rj]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    if GR[rj] <= GR[rk]:
+        MemoryStore(FR[fd][63:0], paddr, DOUBLEWORD)
+    else:
+        RaiseException(BCE)    # Bound Check Exception
+----

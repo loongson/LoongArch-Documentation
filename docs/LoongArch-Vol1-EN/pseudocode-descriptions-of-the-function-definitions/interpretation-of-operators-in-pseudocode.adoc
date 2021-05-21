@@ -1,0 +1,354 @@
+[[interpretation-of-operators-in-pseudocode]]
+=== Interpretation of Operators in Pseudocode
+
+This section lists the meaning of the statement keywords and various operators involved in pseudocode, as well as the operator precedence relationships.
+In addition, the common conventions for different binary representations of numeric values in pseudocode are as follows:
+
+* No prefix or `'d` or `+##'d+` prefix for decimal numbers, where the `+##'d+` prefix means that the decimal number is `+##+` bits wide;
+
+* The prefix `'b` or `+##'b+` is used for binary numbers, where the prefix `+##'b+` indicates that the length of the binary number is `+##+` bits;
+
+* The prefix `'h` or `+##'h+` indicates the hexadecimal number, where the prefix `+##'h+` indicates that the hexadecimal number is `+##+` bits wide, and the hexadecimal value of `A`–`F` uses uppercase letters.
+
+[[interpretation-of-semantic-keyword]]
+.Interpretation of semantic keyword
+[%header,cols="1a,1"]
+|===
+^d|Operators
+^|Meaning
+
+|
+[source]
+----
+Return_Type Function_Name(Variable, ...):
+    Function_Body
+return Return_Value
+----
+|Function Definition
+
+|
+[source]
+----
+if Condition1:
+    Statement1
+elif Condition2:
+    Statement2
+else:
+    Statement3
+----
+|Conditional Statements
+
+|
+[source]
+----
+case Variable of:
+    value1: Statement1
+    value2: Statement2
+    default: Default_Statement
+----
+|case conditional statement
+
+|
+[source]
+----
+Condition ? TRUE_Statement: FALSE_Statement
+----
+|Conditional Judgment Statements
+
+|
+[source]
+----
+for Variable in Sequence:
+    Statements
+----
+|for loop statement
+
+|
+[source]
+----
+range(N)
+----
+|A sequence of integers from `0` to `N-1` in steps of `1`
+
+|
+[source]
+----
+range(Start, End, Step)
+----
+|Sequence of specified step values from the start value (inclusive) to the end value (exclusive)
+
+|
+[source]
+----
+break
+----
+|Terminate the current loop
+
+|
+[source]
+----
+signed(...)
+----
+|Signed integers
+
+|
+[source]
+----
+unsigned(...)
+----
+|Unsigned integers
+
+|
+[source]
+----
+fp16(...)
+----
+|Half-precision floating-point numbers
+
+|
+[source]
+----
+fp32(...)
+----
+|Single-precision floating-point numbers
+
+|
+[source]
+----
+fp64(...)
+----
+|Double-precision floating-point numbers
+
+|
+[source]
+----
+boolean
+----
+|Boolean Type
+
+|
+[source]
+----
+bit
+----
+|Bit type
+
+|
+[source]
+----
+integer
+----
+|Integer type
+
+|
+[source]
+----
+bits(N)
+----
+|``N``-bit type
+
+|
+[source]
+----
+ZeroExtend(Variable, N)
+----
+|Variable zero extended to `N` bits
+
+|
+[source]
+----
+SignExtend(Variable, N)
+----
+|Variable sign extended to `N` bits
+
+|
+[source]
+----
+isSNaN(Variable)
+----
+|`TRUE` if the variable is a signaling NaN number, `FALSE` otherwise
+
+|
+[source]
+----
+isQNaN(Variable)
+----
+|`TRUE` if the variable is quiet NaN number, `FALSE` otherwise
+
+|
+[source]
+----
+SignalException(Exception)
+----
+|Trigger exception
+
+|
+[source]
+----
+#
+----
+|Single line comment
+
+|
+[source]
+----
+=
+----
+|Assignment
+|===
+
+[[interpretation-of-bit-string-operators]]
+.Interpretation of bit string operators
+[%header,cols="1m,1"]
+|===
+^d|Operators
+^|Meaning
+
+|[M:N]
+|Bit `N` to bit `M` of the bit string
+
+|{N{M}}
+|Copy bit string `M` `N` times and splice them
+
+|{N, M, ...}
+|Splice bit strings `N`, `M`, ...  in order
+|===
+
+[[interpretation-of-arithmetic-operators]]
+.Interpretation of arithmetic operators
+[%header,cols="1m,1"]
+|===
+^d|Operators
+^|Meaning
+
+|+
+|Add
+
+|-
+|Subtract
+
+|*
+|Multiply
+
+|/
+|Divide
+
+|%
+|Modulo
+
+|**
+|Power
+|===
+
+[[interpretation-of-comparison-operators]]
+.Interpretation of comparison operators
+[%header,cols="1m,1"]
+|===
+^d|Operators
+^|Meaning
+
+|==
+|equal to
+
+|!=
+|Not equal to
+
+|>
+|Greater than
+
+|<
+|Less than
+
+|>=
+|Greater than or equal to
+
+|&#60;&#61;
+|Less than or equal to
+|===
+
+[[interpretation-of-bit-operators]]
+.Interpretation of bit operators
+[%header,cols="1m,1"]
+|===
+^d|Operators
+^|Meaning
+
+|&
+|Bitwise AND
+
+|&#124;
+|Bitwise OR
+
+|^
+|Bitwise XOR
+
+|~
+|Bitwise INVERSE
+
+|<<
+|Logical Left Shift
+
+|>>
+|Logical Right Shift
+
+|>>>
+|Arithmetic Right Shift
+|===
+
+[[interpretation-of-logical-operators]]
+.Interpretation of logical operators
+[%header,cols="1m,1"]
+|===
+^d|Operators
+^|Meaning
+
+|and
+|Logical AND
+
+|or
+|Logical OR
+
+|not
+|Logical NOT
+|===
+
+[[operator-priority]]
+.Operator priority
+[%header,cols="1m,1"]
+|===
+^d|Operators
+^|Meaning
+
+|**
+|Power
+
+|-
+|Inverse by place
+
+|*, /, %
+|Multiply, Divide, Modulo
+
+|+, -
+|Add, Subtract
+
+|<<, >>, >>>
+|Logical left shift, logical right shift, arithmetic right shift
+
+|&
+|Bitwise AND
+
+|^, &#124;
+|Bitwise XOR, bitwise OR
+
+|>, <, >=, &#60;&#61;
+|Greater than, less than, greater than or equal to, less than or equal to
+
+|==, !=
+|Equal to, not equal to
+
+|not
+|Logical NOT
+
+|and, or
+|Logical AND, logical OR
+|===

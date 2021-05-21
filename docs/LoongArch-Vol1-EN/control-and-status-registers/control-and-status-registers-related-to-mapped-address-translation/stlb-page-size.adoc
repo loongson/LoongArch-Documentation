@@ -1,0 +1,26 @@
+[[stlb-page-size]]
+==== STLB Page Size (`STLBPS`)
+
+This register is used to configure the size of the page in the STLB.
+
+[[definition-of-stlb-page-size-register]]
+.Definition of STLB page size register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|5:0
+|PS
+|RW
+|The STLB is a power of `2` of the page size.
+For example, if the page size is `16KB`, then `PS=0xE`.
+
+|31:6
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

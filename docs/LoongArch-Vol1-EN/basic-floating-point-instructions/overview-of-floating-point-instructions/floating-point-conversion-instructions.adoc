@@ -1,0 +1,300 @@
+[[floating-point-conversion-instructions]]
+==== Floating-Point Conversion Instructions
+
+===== `FCVT.S.D`, `FCVT.D.S`
+
+Instruction formats:
+
+[source]
+----
+fcvt.s.d    fd, fj
+fcvt.d.s    fd, fj
+----
+
+The `FCVT.S.D` instruction performs the operation that the double-precision floating-point number in the floating-point register `fj` to be converted into a single-precision floating-point number, and the obtained single-precision floating-point number is written into the floating-point register `fd`.
+
+[source]
+----
+FCVT.S.D:
+    FR[fd][31:0] = FP32_convertFormat(FR[fj], FP64)
+----
+
+The `FCVT.D.S` instruction performs the operation that the single-precision floating-point number in the floating-point register `fj` to be converted into a double-precision floating-point number, and the obtained double-precision floating-point number is written into the floating-point register `fd`.
+
+[source]
+----
+FCVT.D.S:
+    FR[fd] = FP64_convertFormat(FR[fj][31:0], FP32)
+----
+
+The floating-point format conversion operation follows the specification of the `convertFormat(x)` operation in the IEEE 754-2008 standard.
+
+===== `FFINT{S/D}.{W/L}`, `FTINT.{W/L}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+ffint.s.w       fj
+ffint.s.I       fj
+ffint.d.w       fj
+ffint.d.I       fj
+ftint.w.s       fj
+ftint.w.d       fj
+ftint.l.s       fj
+ftint.l.d       fj
+----
+
+The `FFINT{S/D}.{W/L}` instruction selects the integer/long-integer fixed-point number in the floating-point register `fj` and converts it into a single-degree/double-precision floating-point number, and the obtained single-precision/double-precision floating-point number is written to Floating-point register `fd`.
+This floating-point format conversion operation follows the `convertFromInt(x)` operation specification in the EEE 754-2008 standard.
+
+[source]
+----
+FFINT.S.W:
+    FR[fd][31:0] = FP32_convertFromInt(FR[fj][31:0], SINT32)
+
+FFINT.S.L:
+    FR[fd][31:0] = FP32_convertFromInt(FR[fj], SINT64)
+
+FFINT.D.W:
+    FR[fd] = FP64_convertFromInt(FR[fj][31:0], SINT32)
+
+FFINT.D.L:
+    FR[fd] = FP64_convertFromInt(FR[fj], SINT64)
+----
+
+`FTINT{W/L}.{S/D}` instruction selects the single-degree/double-precision floating-point number in the floating-point register `fj` to be converted into an integer/long-integer fixed-point number, and the obtained integer/long-integer fixed-point number is written To the floating-point memory `fd`.
+According to the different states in `FCSR`, the operations in the IEEE 754-2008 standard followed by this floating-point format conversion operation are shown in the following table.
+
+[[standard-for-converting-to-integer]]
+.Standard for converting to integer
+[%header,cols="2*^1,^2"]
+|===
+|Rounding mode
+|Whether to report floating-point imprecision exceptions
+|IEEE 754-2008 Function
+
+|Round to the nearest even number
+.4+|Yes
+|`convertToIntegerTiesToEven(X)`
+
+|Round towards zero
+|`convertToIntegerTowardZero(x)`
+
+|Round towards positive infinity
+|`convertToIntegerTowardPositive(x)`
+
+|Round towards negative infinity
+|`converrtToIntegerTowardNegative(x)`
+
+|Round to the nearest even number
+.4+|No
+|`convertToIntegerExactTiesToEven(x)`
+
+|Round towards zero
+|`convertToIntegerExactTowardZero(x)`
+
+|Round towards positive infinity
+|`convertToIntegerExactTowardPositive(x)`
+
+|Round towards negative infinity
+|`convertToIntegerExactTowardNegative(x)`
+|===
+
+[source]
+----
+FTINT.W.S:
+    FR[fd][31:0] = FP32convertToSint32(FR[fj][31:0], FCSR.Enables.I, FCSR.RM)
+
+FTINT.W.D:
+    FR[fd] = FP64convertToSint32(FR[fj], FCSR.Enables.I, FCSR.RM)
+
+FTINT.L.S:
+    FR[fd][31:0] = FP32convertToSint64(FR[fj][31:0], FCSR.Enables.I, FCSR.RM)
+
+FTINT.L.D:
+    FR[fd] = FP64convertToSint64(FR[fj], FCSR.Enables.I, FCSR.RM)
+----
+
+===== `FTINT{RM/RP/RZ/RNE}.{W/L}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+ftintrm.w.s     fd, fj
+ftintrm.w.d     fd, fj
+ftintrm.l.s     fd, fj
+ftintrm.l.d     fd, fj
+ftintrp.w.s     fd, fj
+ftintrp.w.d     fd, fj
+ftintrp.l.s     fd, fj
+ftintrp.l.d     fd, fj
+ftintrz.w.s     fd, fj
+ftintrz.w.d     fd, fj
+ftintrz.l.s     fd, fj
+ftintrz.l.d     fd, fj
+ftintrne.w.s    fd, fj
+ftintrne.w.d    fd, fj
+ftintrne.l.s    fd, fj
+ftintrne.l.d    fd, fj
+----
+
+These instructions convert floating-point numbers to fixed-point numbers with the specified rounding pattern.
+`FTINTRM.{W/L}.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj` and converts it to integer-type long integer-type fixed point number, and the resulting integer-type/long integer-type fixed point number is written to the floating-point register `fd`, using the "`round to negative infinity`" mode.
+
+[source]
+----
+FTINTRM.W.S:
+    FR[fd][31:0] = FP32convertToSint32(FR[fj][31:0], FCSR.Enables.I, 3)
+
+FTINTRM.W.D:
+    FR[fd] = FP64convertToSint32(FR[fj], FCSR.Enables.I, 3)
+
+FTINTRM.L.S:
+    FR[fd][31:0] = FP32convertToSint64(FR[fj][31:0], FCSR.Enables.I, 3)
+
+FTINTRM.L.D:
+    FR[fd] = FP64convertToSint64(FR[fj], FCSR.Enables.I, 3)
+----
+
+`FTINTRP.{W/L}.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj`, converts it to integer/long-integer fixed point number, and writes the integer/long-integer fixed point number into the floating-point register `fd`, using the "rounding to positive infinity" method.
+
+[source]
+----
+FTINTRP.W.S:
+    FR[fd][31:0] = FP32convertToSint32(FR[fj][31:0], FCSR.Enables.I, 2)
+
+FTINTRP.W.D:
+    FR[fd] = FP64convertToSint32(FR[fj], FCSR.Enables.I, 2)
+
+FTINTRP.L.S:
+    FR[fd][31:0] = FP32convertToSint64(FR[fj][31:0], FCSR.Enables.I, 2)
+
+FTINTRP.L.D:
+    FR[fd] = FP64convertToSint64(FR[fj], FCSR.Enables.I, 2)
+----
+
+`FTINTRZ.{W/L}.{S/D}` instruction selects the single-degree/double-precision floating-point number in floating-point register `fj`, converts it to integer/long-integer fixed-point number, and writes the obtained integer/long-integer fixed-point number to floating-point register `fd`, using the "rounding to zero" method.
+
+[source]
+----
+FTINTRZ.W.S:
+    FR[fd][31:0] = FP32convertToSint32(FR[fj][31:0], FCSR.Enables.I, 1)
+
+FTINTRZ.W.D:
+    FR[fd] = FP64convertToSint32(FR[fj], FCSR.Enables.I, 1)
+
+FTINTRZ.L.S:
+    FR[fd][31:0] = FP32convertToSint64(FR[fj][31:0], FCSR.Enables.I, 1)
+
+FTINTRZ.L.D:
+    FR[fd] = FP64convertToSint64(FR[fj], FCSR.Enables.I, 1)
+----
+
+`FTINTRNE.{W/L}{S/D}` instruction selects the single-precision/double-precision floating-point number in floating-point register `fj`, converts it to integer long integer fixed point number, and writes the obtained integer/long-integer fixed point number to floating-point register `fd`, using the "rounding to the nearest even number" method.
+
+[source]
+----
+FTINTRNE.W.S:
+    FR[fd][31:0] = FP32convertToSint32(FR[fj][31:0], FCSR.Enables.I, 0)
+
+FTINTRNE.W.D:
+    FR[fd] = FP64convertToSint32(FR[fj], FCSR.Enables.I, 0)
+
+FTINTRNE.L.S:
+    FR[fd][31:0] = FP32convertToSint64(FR[fj][31:0], FCSR.Enables.I, 0)
+
+FTINTRNE.L.D:
+    FR[fd] = FP64convertToSint64(FR[fj], FCSR.Enables.I, 0)
+----
+The operations in the IEEE 754-2008 standard that the above four floating-point format conversion operations follow are shown in the following table.
+
+[[standard-for-floating-point-conversion]]
+.Standard for floating-point conversion
+[%header,cols="2*^1,^2"]
+|===
+|Instruction name
+|Whether to report floating-point imprecision exceptions
+|IEEE 754-2008 Function
+
+|`FTINTRNE.{W/L}.{S/D}`
+.4+|Yes
+|`convertToIntegerExactTiesToEven(x)`
+
+|`FTINTRZ.{W/L}.{S/D}`
+|`convertToIntegerExactTowardZero(x)`
+
+|`FTINTRP.{W/L}.{S/D}`
+|`convertToIntegerExactTowardPositive(x)`
+
+|`FTINTRM.{W/L}{S/D}`
+|`convertToIntegerExactTowardNegative(x)`
+
+|`FTINTRNE.{W/L}.{S/D}`
+.4+|No
+|`convertToIntegerTiesToEven(x)`
+
+|`FTINTRZ.{W/L}.{S/D}`
+|`convertToIntegerTowardZero(x)`
+
+|`FTINTRP{W/L}.{S/D}`
+|`convertToIntegerTowardPositive(x)`
+
+|`FTINTRM.{W/L}.{S/D}`
+|`convertToIntegerTowardNegative(x)`
+|===
+
+===== `FRINT.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+frint.s    fd, fj
+frint.d    fd, fj
+----
+
+The `FRINT.{S/D}` instruction selects the single-precision/double-precision floating-point number in the floating-point register `fj` and converts it to a single-precision/double-precision floating-point number with integer value, and the resulting single-precision/double-precision floating-point number is written to the floating-point register `fd`.
+According to the different states in `FCSR`, this floating-point format conversion operation follows the operation in IEEE 7542008 standard as shown in the following table.
+
+[[standard-for-rounding-to-integer]]
+.Standard for rounding to integer
+[%header,cols="2*^1,^2"]
+|===
+|Rounding mode
+|Whether to report floating-point imprecision exceptions
+|IEEE 754-2008 Function
+
+|Round to the nearest even number
+.4+|Yes
+.4+|`roundToIntegralExact(x)`
+
+|Round towards zero
+
+|Round towards positive infinity
+
+|Round towards negative infinity
+
+|Round to the nearest even number
+.4+|No
+|`roundToIntegerTiesToEven(x)`
+
+|Round towards zero
+|`roundToIntegerTowardZero(x)`
+
+|Round towards positive infinity
+|`roundToIntegerTowardPositive(x)`
+
+|Round towards negative infinity
+|`roundToInteger TowardNegative(x)`
+|===
+
+[source]
+----
+FRINT.S:
+    FR[fd][31:0] = FP32_roundToInteger(FR[fj], FCSR.Enables.I, FCSR.RM)
+
+FRINT.D:
+    FR[fd] = FP64_roundToInteger(FR[fj], FCSR.Enables.I, FCSR.RM)
+----

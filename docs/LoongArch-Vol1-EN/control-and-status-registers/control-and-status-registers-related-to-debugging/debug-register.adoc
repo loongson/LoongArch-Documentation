@@ -1,0 +1,67 @@
+[[debug-register]]
+==== Debug Register (`DBG`)
+
+[[definition-of-debug-data-save-register]]
+.Definition of debug data save register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|DST
+|R
+|`1` to indicate that it is currently in debug mode.
+
+The hardware sets this bit to `1` when a debug exception is triggered in non-debug mode.
+
+When this bit is `1`, the `ERTN` instruction is executed to clear this bit to `0`.
+
+|7:1
+|DRev
+|R
+|The version number of the debugging mechanism.
+`1` is the initial version.
+
+|8
+|DEI
+|R
+|`1` indicates that the debug exception type caught in debug mode is **DE**bug **I**nterrupt (DEI).
+
+|9
+|DCL
+|R
+|`1` indicates that the type of debug exception caught in debug mode is a **D**ebug **C**a**L**l exception (DCL).
+
+|10
+|DFW
+|R
+|`1` indicates that the type of debug exception caught in debug mode is the **D**ebug **F**etch **W**atchpoint exception (DFW).
+
+|11
+|DMW
+|R
+|`1` indicates that the debug exception type caught in debug mode is the **D**ebug load/store (**M**emory) **W**atchpoint exception (DMW).
+
+|15:12
+|0
+|R0
+|Read only as `0`.
+
+|21:16
+|Ecode
+|R
+a|When a non-debug exception occurs in debug mode, the exception type code is recorded here.
+The meaning of the codes here is basically the same as the definitions in <<table-of-exception-encoding,Table of exception encoding>>, with only three differences:
+
+* The TLB refill exception reuses the `0x7` exception code;
+* The debug call exception uses the `0xC` exception code;
+* The machine error exception uses the `0xE` exception code.
+
+|31:22
+|0
+|R0
+|Read only as `0`.
+|===

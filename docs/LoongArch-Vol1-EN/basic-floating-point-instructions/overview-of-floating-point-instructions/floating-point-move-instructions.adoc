@@ -1,0 +1,193 @@
+[[floating-point-move-instructions]]
+==== Floating-Point Move Instructions
+
+===== `FMOV.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+fmov.s      fd, fj
+fmov.d      fd, fj
+----
+
+`FMOV{S/D}` writes the value of the floating-point register `fj` into the floating-point register `fd` in the single-precision/double-precision floating-point number format.
+If the value of `fj` is not in the single-precision/double-precision floating-point number format, the result is uncertain.
+
+[source]
+----
+FMOV.S:
+    FR[fd][31:0] = FR[fj][31:0]
+
+FMOV.d:
+    FR[fd] = FR[fj]
+----
+
+The above instruction operations are non-arithmetic and will not cause IEEE 754 exceptions, nor will they modify the Cause and Flags fields of the floating-point control and status register.
+
+===== `FSEl`
+
+Instruction formats:
+
+[source]
+----
+fsel        fd, fj, fk, ca
+----
+
+The `FSEL` instruction performs conditional assignment operations.
+
+When `FSEL` is executed, if the value of the condition flag register ca is equal to 0, the value of the floating-point register `fj` is written into the floating-point register `fd`, otherwise the value of the floating-point register fk is written into the floating-point register `fd`.
+
+[source]
+----
+FSEL:
+    FR[fd] = CFR[ca] ? FR[fk] : FR[fj]
+----
+
+===== `MOVGR2FR.{W/D}`, `MOVGR2FRH.W`
+
+Instruction formats:
+
+[source]
+----
+movgr2fr.w      fd, rj
+movgr2fr.d      fd, rj
+movgr2frh.w     fd, rj
+----
+
+`MOVGR2FR.W` writes the low 32-bit value of the general register `rj` into the low 32-bit of the floating-point register `fd`.
+If the length of the floating-point register is 64 bits, the high 32-bit value of fd is uncertain.
+
+[source]
+----
+MOVGR2FR.W:
+    FR[fd][31:0] = GR[rj][31:0]
+----
+
+`MOVGR2FRH.W` writes the low 32-bit value of the general register `rj` into the high 32-bit of the floating-point register `fd`, and the low 32-bit value of the floating-point register `fd` remains unchanged.
+
+[source]
+----
+MOVGR2FRH.W:
+    FR[fd][63:32] = GR[rj][31:0]
+    FR[fd][31: 0] = FR[fd][31:0]
+----
+
+`MOVGR2FR.D` writes the 64-bit value of general register `rj` into floating-point register `fd`.
+
+[source]
+----
+MOVGR2FR.D:
+    FR[fd] = GR[rj]
+----
+
+===== `MOVFR2GR.{S/D}`, `MOVFRH2GR.S`
+
+Instruction formats:
+
+[source]
+----
+movfr2gr.s      rd, fj
+movfr2gr.d      rd, fj
+movfrh2gr.s     rd, fj
+----
+
+`MOVFR2GRMOVFRH2GR.S` sign extensions the low/high 32-bit value of the floating-point register `fj` and writes it into the general register `rd`.
+
+[source]
+----
+MOVFR2GR.S:
+    GR[rd] = SignExtend(FR[fj][31: 0], GRLEN)
+
+MOVFRH2GR.S:
+    GR[rd] = SignExtend(FR[fj][63:32], GRLEN)
+----
+
+`MOVFR2GR.D` writes the 64-bit value of the floating-point register `fj` into the general register `rd`.
+
+[source]
+----
+MOVFR2GR.D:
+    GR[rd] = FR[fj]
+----
+
+===== `MOVGR2FCSR`, `MOVFCSR2GR`
+
+Instruction formats:
+
+[source]
+----
+movgr2fcsr      fcsr, rj
+movfcsr2gr      rd,   fcsr
+----
+
+`MOVGR2FCSR` modifies the value of the software writable field corresponding to the floating-point control and status register indicated by fcsr according to the value of the lower 32 bits of the general register `rj`.
+If the `MOVGR2FCSR` instruction modifies `FCSR0` so that the bits of the Cause field and the corresponding Enables bit are both 1, or modify the Enables field of `FCSR1` and the Cause field of `FCSR2` so that the Cause bit and the corresponding Enables bit are both 1, the `M0VGR2FCSR` instruction itself No floating-point exception will be triggered.
+
+[source]
+----
+MOVGR2FCSR:
+    FCSR[fcsr] = GR[rd][31:0]
+----
+
+`MOVFCSR2GR` sign extensions the 32-bit value of the floating-point control and status register indicated by `fcsr` and writes it into the general register `rd`.
+
+[source]
+----
+MOVFCSR2GR:.
+    GR[rd] = SignExtend(FCSR[fcsr], GRLEN)
+----
+
+If the floating-point control and status register indicated by fcsr in the above instruction does not exist, the result is uncertain.
+
+===== `MOVFR2CF`, `MOVCF2FR`
+
+Instruction formats:
+
+[source]
+----
+movfr2cf        cd, fj
+movcf2fr        fd, cj
+----
+
+`MOVFR2CF` writes the value of the lowest bit of the floating-point register `fj` into the condition flag register `cd`.
+
+[source]
+----
+MOVFR2CF:
+    CFR[cd] = FR[fj][0]
+----
+
+`MOVCF2FR` writes the value of the condition flag register `cj` into the lowest bit of the floating-point register `fd`.
+
+[source]
+----
+MOVCF2FR:
+    FR[fd][0] = CFR[cj]
+----
+
+===== `MOVGR2CF`, `MOVCF2GR`
+
+Instruction formats:
+
+[source]
+----
+movgr2cf    cd, rj
+movcf2gr    rd, cj
+----
+
+`MOVGR2CF` writes the value of the lowest bit of the general register `rj` into the condition flag register `cd`.
+
+[source]
+----
+MOVGR2CF:
+    CFR[cd] = GR[rj][0]
+----
+
+`MOVCF2GR` writes the value of the condition flag register `cj` into the lowest bit of the general register `rd`.
+
+[source]
+----
+MOVCF2GR:
+    GR[rd][0] = CFR[cj]
+----

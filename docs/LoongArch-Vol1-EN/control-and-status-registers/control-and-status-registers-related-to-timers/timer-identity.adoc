@@ -1,0 +1,22 @@
+[[timer-identity]]
+==== Timer Identity (`TID`)
+
+Each timer in the processor has a unique identifiable number, which is configured by the software in this register.
+Each timer also uniquely corresponds to a timer, and when the software reads the timer value using the `RDTIME` instruction, the timer ID number that is returned along with it is the corresponding timer number.
+
+[[definition-of-timer-identity-register]]
+.Definition of timer identity register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|31:0
+|TID
+|RW
+|Timer number.
+It can be configured via software.
+During a processor core reset, the hardware can reset it to the same value as the `CoreID` in `CSR.CPUID`.
+|===

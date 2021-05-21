@@ -1,0 +1,47 @@
+[[memory-load-store-watchpoint-overall-status]]
+==== Memory Load/Store Watchpoint Overall Status (`MWPS`)
+
+[[definition-of-memory-load-store-watchpoint-overall-status-register]]
+.Definition of memory load/store watchpoint overall status register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|n-1:0
+|Status
+|RW1{empty}footnote:[Translator`'s note: This may be the fifth attribute not listed in <<attributes-of-reading-and-writing,Attributes of Reading and Writing>>.]
+|The hit status of the load/store watchpoint.
+It corresponds to the watchpoint one by one, and bit `i` corresponds to watchpoint `i`.
+
+When an address with a load/store operation hits a watchpoint, the corresponding bit is set to `1`.
+The hardware does not clear the bits in this field except during a reset.
+
+The software can only clear them by writing `1`, writing `0` is ignored.
+
+|15:n
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|16
+|Skip
+|RW
+|The software notifies the hardware to ignore the next load/store watchpoint hit by setting this location to `1`.
+By ignoring, it means that neither the corresponding bit in the Stauts field of this register is set to `1` nor the watchpoint exception is triggered.
+This function can avoid endlessly triggering the same watchpoint repeatedly without canceling it, thus simplifying the handling of watchpoint exceptions.
+
+When the Skip bit is `1`, if the hardware encounters a loadjstore hit, it will ignore the hit and clear the Skip bit to 0.
+This means that each time the software sets the Skip bit to `1`, the hardware will ignore at most one hit.
+This feature also causes the software to write `1` to this bit and then read out the value which may not be `1`.
+
+This Skip bit corresponds to all load/store watchpoints.
+If the software modifies the configuration of the breakpoint and replaces it, do not set this bit, or even write `0` to clear it for safety reasons.
+
+|31:17
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+|===

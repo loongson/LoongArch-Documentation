@@ -1,0 +1,52 @@
+[[machine-error-exception-entry-base-address]]
+==== Machine Error Exception Entry Base Address (`MERRENTRY`)
+
+This register is used to configure the entry base address of the machine error exception.
+Since the processor core will enter the direct address translation mode after the machine error exception is triggered, the entry base address filled here should be the physical address.
+
+[[definition-of-machine-error-exception-entry-base-address-register-in-la64]]
+.Definition of machine error exception entry base address register in LA64
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|11:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|PALEN-1:12
+|PPN
+|RW
+|The `[PALEN-1:12]` bits of the entry base address of the machine error exception.
+The address filled in here by the system software should be the physical address.
+
+|63:PALEN
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+|===
+
+[[definition-of-machine-error-exception-entry-base-address-register-in-la32]]
+.Definition of machine error exception entry base address register in LA32
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|11:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|31:12
+|PPN
+|RW
+|The `[31:12]` bits of the entry base address of the machine error exception.
+The address entered here by the system software should be a physical address.
+|===

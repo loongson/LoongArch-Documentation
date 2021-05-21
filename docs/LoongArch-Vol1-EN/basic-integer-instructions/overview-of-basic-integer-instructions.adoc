@@ -1,0 +1,67 @@
+[[overview-of-basic-integer-instructions]]
+=== Overview of Basic Integer Instructions
+
+This section will describe the functions of application-level basic integer instructions in LA64.
+For LA32, it only needs to implement a subset of them.
+The instruction list contained in this subset is shown in the table.
+Because the length of GR in LA32 is only 32 bits, the sign extension operation in "`sign extend the 32-bit result into the general register `rd``" in the subsequent instruction description is not required.
+
+[[application-level-basic-integer-instructions-in-la32]]
+.Application-level basic integer instructions in LA32
+[cols="1s,4m"]
+|===
+|Arithmetic operation instructions
+|ADD.W, SUB.W, ADDIW, ALSL.W, LU12L.W, SLT, SLTU, SLTI, SLTUI,
+
+PCADDI, PCADDU12I, PCALAU12I,
+
+AND, OR, NOR, XOR, ANDN, ORN, ANDI, ORI, XORI,
+
+MUL.W, MULH.W, MULH.WU, DIV.W, MOD.W, DIV.WU, MOD.WU
+
+|Bit-shift instructions
+|SLL.W, SRL.W, SRA.W, ROTR.W, SLLI.W, SRLI.W, SRAI.W, ROTRI.W
+
+|Bit-manipulation instructions
+|EXT.W.B, EXT.W.H, CLO.W, CLZ.W, CTO.W, CTZ.W, BYTEPICK.W,
+
+REVB.2H, BITREV.4B, BITREV.W, BSTRINS.W, BSTRPICK.W, MASKEQZ, MASKNEZ
+
+|Branch instructions
+|BEQ, BNE, BLT, BGE, BLTU, BGEU, BEQZ, BNEZ, B, BL, JIRL
+
+|Memory access instructions
+|LD.B, LD.H, LD.W, LD.BU, LD.HU, ST.B, ST.H, STW, PRELD
+
+|Atomic memory access instructions
+|LIL.W, SC.W
+
+|Barrier instructions
+|DBAR, IBAR
+
+|Other instructions
+|SYSCALL, BREAK, RDTIMEL.W, RDTIMEH.W, CPUCFG
+|===
+
+In addition, for those instructions whose data length of the operation object is GR length, the operation length is 32 bits in LA32 and 64 bits in LA64.
+Unless there are special circumstances, no special instructions will be given in the instruction function description.
+
+include::overview-of-basic-integer-instructions/arithmetic-operation-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/bit-shift-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/bit-manipulation-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/branch-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/common-memory-access-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/boundary-check-memory-access-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/atomic-memory-access-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/barrier-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/crc-check-instructions.adoc[]
+
+include::overview-of-basic-integer-instructions/other-miscellaneous-instructions.adoc[]

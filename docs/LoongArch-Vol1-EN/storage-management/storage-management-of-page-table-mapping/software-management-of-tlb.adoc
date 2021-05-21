@@ -1,0 +1,80 @@
+[[software-management-of-tlb]]
+==== Software Management of TLB
+
+The management of TLBs in LoongArch involves software work.
+In the current version of this architecture specification, TLB refill and consistent maintenance between TLB and page tables are still all led by software.
+
+===== TLB-related Exceptions
+
+The TLB performs translation of virtual addresses to physical addresses automatically by hardware.
+However, when there is no match in the TLB, or when the page table entry is invalid or illegally accessed despite the match, an exception needs to be triggered and handed over to the OS kernel or other supervisory programs.
+The exception is further handled by software to maintain the content of the TLB or to make a final ruling on the legality of the program execution.
+The exceptions related to TLB management in LoongArch are as follows:
+
+* TLB refill exception: This exception is triggered when the virtual address of an access operation does not have a match in the TLB, which notifies the system software to perform a TLB refill.
+This exception has a separate exception entry, a separate CSR for maintaining the exception context, and a separate set of CSRs as TLB access interface; that means the exception is allowed to be triggered during the processing of other exceptions.
+While the TLB refill exception being caught, `CRMD` will be set to `1` and `PG` will be set to `0`.
+This means the hardware will enter the direct address translation mode automatically, so that the TLB refill exception handler itself will not trigger the TLB refill exception again, and the exception context will not be saved and recovered.
+In order to distinguish CSRs used by the TLB refill exception and CSRs available for other exceptions, the hardware will automatically set `CSR.TLBRERA.ISTLBR` to `1` while the exception is caught.
+
+* Page invalid exception for load operation: This exception is triggered when the virtual address of the load operation finds a match in the TLB with `V=0`.
+
+* Page invalid exception for store operation: This exception is triggered when the virtual address of the store operation finds a match in the TLB with `V=0`.
+
+* Page invalid exception for fetch operation: This exception is triggered when the virtual address of the fetch operation finds a match in the TLB with `V=0`.
+
+* Page privilege level ilegal exception: This exception is triggered when the virtual address of the access operation finds a matching entry in the TLB with `V=1`, but the privilege level of the access is illegal.
+The privilege level is illegal when `RPLV=0` and `CSR.CRMD.PLV` is greater than the `PLV` in the page table entry, or when `RPLV=1` and `CSR.CRMD.PLV` is not equal to the `PLV` in the page table entry.
+
+* Page modify exception: This exception is triggered when the virtual address of the store operation finds a match in the TLB with `V=1` and privilege level is legal and `D=0`.
+
+* Page non-readable exception: This exception is triggered when the virtual address of the load operation finds a match in the TLB with `V=1` and privilege level is legal and `NR=1`.
+
+* Page non-executable exception: This exception is triggered when the virtual address of the fetch operation finds a match in the TLB with `V=1` and privilege level is legal and `NX=1`.
+
+===== TLB-related Instructions
+
+The TLB-related instructions mainly involve operations such as lookup, read, write, and invalidate the TLB for filling, updating, and consistency maintenance of the TLB.
+See <<tlb-maintenance-instructions,TLB Maintenance Instructions>> and <<software-page-walking-instructions,Software page walking Instructions>> for specific instruction definitions.
+
+===== TLB-related CSRs
+
+TLB-related CSRs are divided into three categories according to their functions.
+The first category is used for the interactive interface of TLBs other than TLB refill exceptions.
+The second category is used for software and hardware page walking.
+The third category is used for TLB refill exceptions.
+
+The first category includes:
+
+* `BADV`
+* `TLBEHI`
+* `TLBELO0`
+* `TLBELO1`
+* `TLBIDX`
+* `ASID`
+* `STLBPS`
+
+The second category includes:
+
+* `PGDL`
+* `PGDH`
+* `PGD`
+* `PWCL`
+* `PWCH`
+
+The third category includes:
+
+* `TLBRENTRY`
+* `TLBRERA`
+* `TLBRBADV`
+* `TLBREHI`
+* `TLBRELO0`
+* `TLBRELO1`
+* `TLBRPRMD`
+* `TLBRSAVE`
+
+See <<basic-cotrol-and-status-registers,Basic Cotrol and Status Registers>> for details of how each CSR register above interacts with the TLB.
+
+===== Initialization of TLB
+
+LoongArch allows not to implement the hardware initialization of the TLB, but to let the software in the boot phase perform this function by executing `INVTLB r0, r0`.

@@ -1,0 +1,36 @@
+[[pseudocode-descriptions-of-functional-functions]]
+=== Pseudocode Descriptions of Functional Functions
+
+The pseudocode involved in the instruction descriptions in this manual is defined as follows.
+
+include::pseudocode-descriptions-of-functional-functions/logical-left-shift.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/logical-right-shift.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/arithmetic-right-shift.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/circular-right-shift.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/count-the-number-of-consecutive-1s-starting-from-high-order-bits.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/count-the-number-of-consecutive-0s-starting-from-high-order-bits.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/count-the-number-of-consecutive-1s-starting-from-low-order-bits.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/count-the-number-of-consecutive-0s-starting-from-low-order-bits.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/reverse-the-order-of-the-bit-string.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/crc-32-checksum-calculation.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/single-precision-floating-point-to-signed-word-integer.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/single-precision-floating-point-to-signed-double-word-integer.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/double-precision-floating-point-to-signed-word-integer.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/double-precision-floating-point-to-signed-double-word-integer.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/round-single-precision-floating-point.adoc[]
+
+include::pseudocode-descriptions-of-functional-functions/round-double-precision-floating-point.adoc[]

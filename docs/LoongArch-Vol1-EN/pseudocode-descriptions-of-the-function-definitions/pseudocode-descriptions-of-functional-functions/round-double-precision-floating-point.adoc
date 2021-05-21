@@ -1,0 +1,17 @@
+[[round-double-precision-floating-point]]
+==== Round Double Precision Floating-point
+
+[source]
+----
+{bits(64)} FP64_roundToInteger(bits(N) x, bits(1) I_en, bits(2) rm):
+    if (I_en):
+        return FP64_roundToIntegralExact(x)
+    elif (rm=0):
+        return FP64_roundToIntegerTi esToEven(x)
+    elif (rm=1):
+        return FP64_roundToIntegerTowardZero(x)
+    elif (rm=2):
+        return FP64_roundToIntegerTowardPositive(x)
+    elif (rm=3):
+        return FP64_roundToIntegerTowardNegative(x)
+----

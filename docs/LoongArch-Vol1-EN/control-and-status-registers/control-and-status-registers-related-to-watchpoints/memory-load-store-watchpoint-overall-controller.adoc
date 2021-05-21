@@ -1,0 +1,32 @@
+[[memory-load-store-watchpoint-overall-controller]]
+==== Memory Load/Store Watchpoint Overall Controller (`MWPC`)
+
+This register contains configuration information to inform the software of the exact number of load/store watchpoints.
+
+It is important to note that the global enable control signal for all watchpoints is in the `WE` bit of `CSR.CRMD`.
+
+[[definition-of-memory-load-store-watchpoint-overall-controller-register]]
+.Definition of memory load/store watchpoint overall controller register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|5:0
+|Num
+|R
+|The number of load/store watchpoints.
+
+|19:16
+|0
+|R
+|If no virtualization extension is implemented, the field is read-only constant to `0` and writes are ignored.
+
+|31:20
+|0
+|R0
+|Reserved field.
+Reads return `0` and the software does not allow to change its value.
+|===

@@ -1,0 +1,32 @@
+[[iocsr-access-instructions]]
+==== IOCSR Access Instructions
+
+===== `IOCSR{RD/WR}.{B/H/W/D}`
+
+Instruction formats:
+
+[source]
+----
+iocsrrd.b       rd, rj
+iocsrrd.h       rd, rj
+iocsrrd.w       rd, rj
+iocsrrd.d       rd, rj
+iocsrwr.b       rd, rj
+iocsrwr.h       rd, rj
+iocsrwr.w       rd, rj
+iocsrwr.d       rd, rj
+----
+
+`I0CSR{RD/WR}.{B/H/W/D}` instructions are used to access the IOCSR.
+
+All IOCSR registers use independent addressing space, and the basic unit of addressing is byte.
+All data is stored in the IOCSR space in a little-endian storing `{B/H/W/D}` instruction's IOCSR address is from the general register `rj`.
+
+The `IOCSRRD.{B/H/W/D}` instruction fetches byte/half-word/word/double-word length data from the specified address in the IOCSR space, and writes it to the general register `rd` after symbolic expansion.
+
+The `IOCSRWR.{B/H/W/D}` instruction writes the `[7:0]`/`[15:0]`/`[31:0]`/`[63:0]` bits of data in the general register `rd` to the beginning of the specified address in the IOCSR space.
+
+The `IOCSRRD.D` and `IOCSRWR.D` instructions appear only in LA64.
+
+IOCSR registers can typically be accessed by multiple processor cores simultaneously.
+The execution of IOCSR access instructions on multiple processor cores satisfies the sequential consistency condition.

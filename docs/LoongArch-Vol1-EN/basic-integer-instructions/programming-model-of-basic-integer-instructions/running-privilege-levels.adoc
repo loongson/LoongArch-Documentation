@@ -1,0 +1,17 @@
+[[running-privilege-levels]]
+==== Running Privilege Levels
+
+LoongArch defines 4 running **P**rivilege **L**e**V**els (PLV), namely PLV0–PLV3.
+The specific privilege level of the application is determined by the system software at runtime, and the application cannot accurately aware this.
+In LoongArch, the application usually runs on PLV3.
+For more information about privilege levels, see <<privilege-levels,Privilege Levels>>.
+
+===== Privileged Resources Accessible by Applications
+
+Generally speaking, privileged resources cannot be directly accessed by application running at a non-privileged level, but when `RPCNTL1`/`RPCNTL2`/`RPCNTL3` in `CSR.MISC` is set, the `CSRRD` instruction can be executed at the privilege level of PLV1/PLV2/PLV3 to read performance monitor counters.
+For more information about performance monitor counters, see <<control-and-status-registers-related-to-performance-monitoring,Control and Status Registers Related to Performance Monitoring>>.
+
+===== Disabling of Some Non-privileged Functions
+
+Some non-privileged functions that are enabled by default after power-on reset can be disabled by the system software during execution.
+By setting the `DRDTL1`/`DRDTL2`/`DRDTL3` bits in `CSR.MISC` to `1`, the execution of `RDTIME` instructions at the PLV1/PLV2/PLV3 level can be prohibited, or will trigger the **I**nstruction **P**rivilege error **E**xception (IPE).

@@ -1,0 +1,27 @@
+[[floating-point-branch-instructions]]
+==== Floating-Point Branch Instructions
+
+===== `BCEQZ, BCNEZ`
+
+Instruction formats:
+
+[source]
+----
+bceqz   cj, offs21
+bcnez   cj, offs21
+----
+
+`BCEQZ` judges the value of the condition flag register `cj`, if it is equal to 0, jump to the target address, otherwise it does not jump.
+`BCNEZ` judges the value of the condition flag register `cj`, if it is not equal to 0, jump to the target address, otherwise it does not jump.
+The jump target address of the above two branch instructions is to logically shift the 21-bit immediate offs21 in the instruction code to the left by 2 bits and then sign extension, and the resulting offset value plus the `PC` of the branch instruction.
+
+[source]
+----
+BCEQZ:
+    if CFR[cj] == 0:
+        PC = PC + SignExtend({offs21, 2'b0}, GRLEN)
+
+BCNEZ:
+    if CFR[cj] != 0:
+        PC = PC + SignExtend({offs21, 2'b0}, GRLEN)
+----

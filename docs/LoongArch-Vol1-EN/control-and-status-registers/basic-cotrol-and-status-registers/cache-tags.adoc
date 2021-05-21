@@ -1,0 +1,5 @@
+[[cache-tags]]
+==== Cache Tags (`CTAG`)
+
+This register is used when the `CACOP` instruction accesses the Cache directly, to store the contents read from the `CacheTag` or the contents to be written to the `CacheTag`.
+The format and the meaning of each field are defined by the implementation.

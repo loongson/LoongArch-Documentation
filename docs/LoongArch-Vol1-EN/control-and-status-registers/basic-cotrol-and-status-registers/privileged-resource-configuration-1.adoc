@@ -1,0 +1,35 @@
+[[privileged-resource-configuration-1]]
+==== Privileged Resource Configuration 1 (`PRCFG1`)
+
+This register contains the privileged resources information.
+
+[[definition-of-privileged-resource-configuration-1-register]]
+.Definition of privileged resource configuration 1 register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|3:0
+|SAVENum
+|R
+|The number of `SAVE` control and status registers.
+
+|11:4
+|TimerBits
+|R
+|The number of valid bits of the timer minus `1`.
+
+|14:12
+|VSMax
+|R
+|The maximum value that can be set for the exception and interrupt vector entry spacing (`CSR.ECTL.VS`).
+
+|31:15
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

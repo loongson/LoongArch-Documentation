@@ -1,0 +1,40 @@
+[[cache-maintenance-instructions]]
+==== Cache Maintenance Instructions
+
+===== `CACOP`
+
+Instruction formats:
+
+[source]
+----
+cacop   op, rj, si12
+----
+
+The `CACOP` instruction is mainly used for Cache initialization and cache-consistency maintenance.
+
+The value of the general register `rj`, plus the sign-extended 12-bit immediate number `si12`, gives the virtual address `VA` used by the `CACOP` instruction, which is used to indicate the location of the Cache line being operated on.
+
+Which Cache is accessed by the `CACOP` instruction and what Cache operation is performed is determined by the 5-bit op in the instruction.
+`op[2:0]` indicates the Cache object to be operated on, and `op[4:3]` indicates the type of operation.
+
+The Cache object indicated by `op[2:0]` is in the same order as the Cache identified in `CPUCFG10`.
+For example, when `CPUCFG10=0x02C3D`, `op[2:0]=0` indicates operation of the first-level private instruction Cache, `op[2:0]=1` indicates operation of the first-level private data Cache, `op[2:0]=2` indicates operation of the second-level private mixed Cache, and `op[2:0]=3` indicates operation of the third-level shared mixed Cache.
+
+`op[4:3]=0` is used for Cache initialization (`StoreTag`), mainly to write the contents of the `CSR.CTAG` to the tag of the specified Cache row using direct address indexing.
+Suppose the Cache to be accessed has `(1<<Way)` ways, each ways has `(1<<Index)` Cache line, and each Cache line size is `(1<<0ffset)` bytes, then the direct address indexing method means that the `VA[Index+offset1.0ffset]` of the `VA[Way-1:0]` way of the Cache is `[operated: 0ffset]` line of the Cache.
+
+`op[4:3]=1` means that the cache-consistency (Index Invalidate / Invalidate and Writeback) is maintained by direct address indexing.
+See the previous paragraph for a definition of the direct address indexing method.
+The operation to maintain consistency is an invalidate and writeback operation on the specified Cache.
+If the operation is on the instruction Cache, then only the invalidation operation is performed, not the writing back of the data in the Cache row.
+The data written back into which level of storage is determined by the specific implementation of the Cache hierarchy and the inclusion or mutually exclusive relationship between the levels.
+For data Cache or mixed Cache, it is up to the implementation to decide whether to write back the data in the Cacche row only if it is dirty.
+
+`op[4:3]=2` means that Cache consistency is maintained by query indexing (Hit Invalidate / Invalidate and Writeback).
+
+The operation of maintaining Cache consistency here is the same as described in the above paragraph.
+The so-called query index approach treats the `VA` of the `CACOP` instruction as a normal load instruction to access the Cache to be operated on, and if it hits, it operates on the hit Cache row, otherwise it does not do any operation.
+Since this query process may involve virtual-to-real address translation, the CACOP instruction may trigger TLB-related exceptions in this case.
+However, since the CACOP instruction operates on Cache rows, there is no need to consider address alignment or not in this case.
+
+`op[4:3]=3` is an implementation of a custom Cache operation and is not explicitly functionally defined in the architecture specification.

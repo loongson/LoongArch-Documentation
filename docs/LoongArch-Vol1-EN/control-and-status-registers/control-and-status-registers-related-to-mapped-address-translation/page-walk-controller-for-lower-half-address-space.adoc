@@ -1,0 +1,56 @@
+[[page-walk-controller-for-lower-half-address-space]]
+==== Page Walk Controller for Lower Half Address Space (`PWCL`)
+
+The information in this register and the `CSR.PWCH` register together define the page table structure used in the operating system.
+This information will be used to instruct software or hardware to perform page table walking.
+See <<section-multi-level-page-table-structure-supported-by-page-walking,Multi-level Page Table Structure Supported by page walking>> for an illustration of the page table structure and walking process.
+
+`PWCL` is implemented in LA32 only, for which the `PWCL` register must contain all the information needed to describe the page table structure, resulting in the last page table and the lowest two levels of the directory starting at no more than `32` bits, a restriction that still exists in LA64.
+
+[[definition-of-page-walk-controller-for-lower-half-address-space-register]]
+.Definition of page walk controller for lower half address space register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|4:0
+|PTbase
+|RW
+|The start address of the last page table.
+
+|9:5
+|PTwidth
+|RW
+|The number of index bits of the last level page table.
+
+|14:10
+|Dirl_base
+|RW
+|The starting address of the lowest level directory.
+
+|19:15
+|Dirl_width
+|RW
+|The number of index bits of the lowest level directory.
+`0` means there is no such level.
+
+|24:20
+|Dir2_base
+|RW
+|The starting address of the next lower level directory.
+
+|29:25
+|Dir2_width
+|RW
+|The number of index bits of the next lowest level directory.
+`0` means there is no such level.
+
+|31:30
+|PTEWidth
+|RW
+|The length of each page table entry in the memory.
+`0` - `64` bit; `1` - `128` bit; `2` - `192` bit; `3` - `256` bit.
+|===

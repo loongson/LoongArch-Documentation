@@ -1,0 +1,86 @@
+[[chapter-registers]]
+==== Registers
+
+Floating-point instruction programming involves registers such as **F**loating-point **R**egister (FR), **C**ondition **F**lag **R**egister (CFR) and **F**loatingpoint **C**ontrol and **S**tatus **R**egister (FCSR).
+
+===== Floating-point Registers
+
+There are 32 FRs, denoted as `f0`–`f31`, each of which can be read and written.
+Only when only floating-point instructions that manipulate single-precision floating-point numbers and word integers are implemented, the length of FR is 32 bits.
+Under normal circumstances, the length of FR is 64 bits, regardless of the LA32 or LA64.
+There is an "`orthogonal`" relationship between basic floating-point instructions and floating-point registers, that is, from an architectural perspective, any floating-point register operand in these instructions can use any one of the 32 FRs.
+
+[[floating-point-registers]]
+.Floating-point Registers
+image::floating-point-registers.png[]
+
+When the floating-point register records a single-precision floating-point number or word integer, the data always appears in the `[31:0]` bits of the floating-point register, at this time the `[63:32]` bits of the floating-point register can be any value.
+
+===== Condition Flag Register
+
+There are 8 CFRs, denoted as `fcc0`–`fcc7`, each of which can be read and written.
+The length of CFR is 1 bit.
+The result of the floating-point comparison will be written into the condition flag register.
+When the comparison result is true, it is set to `1`, otherwise it is set to `0`.
+The judgment condition of the floating-point branch instruction comes from the condition register.
+
+===== Floating-point Control and Status Register
+
+There are 4 FCSRs, denoted as `fcsr0`–`fcsr3`.
+Among them, `fcsr1`–`fcsr3` are aliases of some fields in `fcsr0`, that is, accessing `fcsrl`–`fcsr3` is actually accessing some fields of `fcsr0`.
+When the software writes `fcsr1`–`fcsr3`, the corresponding field in `fcsr0` is modified while the remaining bits remain unchanged.
+The definition of each field of `fcsr0` is shown in the table.
+
+[[definitions-of-fcsr0-register-fields]]
+.Definitions of FCSR0 Register Fields
+[%header,cols="3*^1,6"]
+|===
+|Bits
+|Name
+|Read&write
+|Description
+
+|`4:0`
+|Enables
+|RW
+|The floating-point operation `VZOUI` exceptions each allow the enable bit to trigger the exception trap.
+
+Bit `4` corresponds to `V`, bit `3` corresponds to `Z`, bit `2` corresponds to `O`, bit `1` corresponds to `U`, and bit `0` corresponds to `I`.
+
+|`9:8`
+|RM
+|RW
+|Rounding mode control.
+It contains 4 legal values, each with the following meaning:
+
+`0`: RNE, corresponding to roundTiesToEven in IEEE 754-2008;
+
+`1`: RZ, corresponding to roundTowardZero in IEE 754-2008;
+
+`2`: RP, corresponding to roundTowardsPositive in IEEE 754-2008;
+
+`3`: RM, corresponding to roundTowardsNegative in IEEE 754-2008.
+
+|`20:16`
+|Flags
+|RW
+|Since the last time the Flags field was cleared by the software, the cumulative status of various floating-point operations `VZOUI` exceptions that were generated but not caught.
+
+Bit `20` corresponds to `V`, bit `19` corresponds to `Z`, bit `18` corresponds to `O`, bit `17` corresponds to `U`, and bit `16` corresponds to `I`.
+
+|`28:24`
+|Cause
+|RW
+|The `VZOUI` exception caused by the last floating-point operation.
+
+Bit `28` corresponds to `V`, bit `27` corresponds to `Z`, bit `26` corresponds to `O`, bit `25` corresponds to `U`, and bit `24` corresponds to `I`.
+|===
+
+`FCSR1` is the alias of the `Enables` field in `FCSR0`.
+Its location is the same as in `FCSR0`.
+
+`FCSR2` is the alias of the `Cause` and `Flags` fields in `FCSR0`.
+The location of each field is consistent with `FCSR0`.
+
+`FCSR3` is the alias of the `RM` field in `FCSR0`.
+Its location is the same as in `FCSR0`.

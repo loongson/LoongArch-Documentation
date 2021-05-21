@@ -1,0 +1,6 @@
+[[access-effects-of-undefined-and-unimplemented-control-and-status-registers]]
+==== Access Effects of Undefined and Unimplemented Control and Status Registers
+
+When software uses CSR instructions to access CSR objects that are not defined in the architecture specification or that are implementable entries defined in the architecture specification but not implemented by the specific hardware, the return value of reading can be any value, but the write operation will not change the software-visible processor state.
+
+Although software writes to these undefined or unimplemented status control registers do not change the software-visible processor state, software should not write to these registers if it wants to ensure backward compatibility.

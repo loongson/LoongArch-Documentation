@@ -1,0 +1,30 @@
+[[reduced-virtual-address-configuration]]
+==== Reduced Virtual Address Configuration (`RVACFG`)
+
+This register is used to control the length of the address being reduced in the virtual address reduction mode.
+
+[[definition-of-reduced-virtual-address-configuration-register]]
+.Definition of reduced virtual address configuration register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|3:0
+|RBits
+|RW
+|The number of the high order bits of the address to be reduced in the virtual address reduction mode.
+It can be configured to a value between `0` and `8`.
+
+`0` is a special configuration value that means that the virtual address reduction mode is disabled.
+
+If the configured value is greater than `8`, the processor behavior is undefined.
+
+|31:4
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

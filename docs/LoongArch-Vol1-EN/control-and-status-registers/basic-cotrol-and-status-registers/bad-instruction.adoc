@@ -1,0 +1,20 @@
+[[bad-instruction]]
+==== Bad Instruction (`BADI`)
+
+This register is used to record the instruction code of the instruction that triggers the synchronous-related exception.
+The so-called synchronous-related exceptions are all exceptions except the **INT**errupt (INT), the **G**uest **C**SR **H**ardware **C**hange exception (GCHC), and the **M**achine **ERR**or exception (MERR).
+
+[[definition-of-bad-instruction-register]]
+.Definition of bad instruction register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|31:0
+|Inst
+|R
+|When a synchronous-related exception is triggered, the hardware records the instruction code that triggered the exception here.
+|===

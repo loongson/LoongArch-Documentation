@@ -1,0 +1,70 @@
+[[tlb-entry]]
+==== TLB Entry
+
+The table entry formats of STLB and MTLB is basically the same, the only difference is that each table entry of MTLB contains the page size information, while STLB does not need to store the page size information repeatedly because it is the same page size.
+For STLB, the page size of the page table entry is configured by the system software in the `PS` field of the `CSR.STLBPS` register.
+
+The format of each TLB table entry is shown in the figure and contains two parts: the comparison part and the physical translation part.
+
+[[tlb-entry-formats]]
+.TLB entry formats
+image::tlb-entry-formats.png[]
+
+The comparison part of TLB table entries includes:
+
+* **E**xistence bit (`E`), `1` bit.
+When this bit is set, it indicates that the page table entry exists and can participate in lookup matching.
+
+* **A**ddress **S**pace **ID**entifier (`ASID`), `10` bits.
+`ASID` is used to distinguish the same virtual address in different processes and to avoid performance loss caused by clearing the entire TLB during process switching.
+The operating system assigns a unique `ASID` to each process, and the TLB needs to match the `ASID` in addition to the address when performing lookups.
+
+* **G**lobal flag bit (`G`), `1` bit.
+When this bit is set, the lookup is not checked for ASID consistency.
+If the operating system needs to share the same virtual address among all processes, this bit can be set.
+
+* **P**age **S**ize (`PS`), `6` bits.
+`PS` appears only in the MTLB.
+It is used to specify the size of the pages stored in this page table entry.
+The value is a power of `2` of the page size.
+That is, for a page size of `16KB`, `PS=14`.
+
+* **V**irtual **P**air of **P**age frames **N**umber (`VPPN`), `(VALEN-13)` bits.
+The physical translation part holds the translation information for a adjacent odd even pair of page tables, so the virtual page number stored in the TLB page table entry is the content of the virtual page number divided by `2` in the operating system.
+The lowest bit of the virtual page number does not need to be stored.
+When searching for the TLB, the lowest bit of the virtual page number is used to decide whether to select the odd-numbered page or the even-numbered page for physical translation.
+
+The physical translation part of the table entry holds the translation information for a adjacent odd even pair of page tables, and the information for each page includes:
+
+* **V**alid bit (`V`), `1` bit.
+This bit is set when the page table entry is valid.
+Note the difference between the P bit when performing lookups.
+The P bit refers to whether a page table entry on the TLB table entry is present.
+A page table entry is present even if it is invalid (`V=0`).
+
+* **D**irty bit (`D`), `1` bit.
+This bit is set when there is dirty data on the address space where the page table entry is located.
+
+* **N**on-**R**eadable bit (`NR`), `1` bit.
+This bit is set when no load operation is allowed on the address space where this page table entry is located.
+This control bit is only exist in LA64.
+
+* **N**on-e**X**ecutable bit (`NX`), `1` bit.
+This bit is set when a fetch operation is not allowed on the address space where this page table entry is located.
+This control bit is only exist in LA64.
+
+* **M**emory **A**ccess **T**ype (`MAT`), `2` bits.
+`MAT` controls the type of storage access that falls on the address space where the page table entry is located.
+See <<section-storage-access-types,Storage Access Types>> for the specific meaning of each value.
+
+* **P**rivilege **L**e**V**el (`PLV`), `2` bits.
+`PLV` refers to the privilege level corresponding to this page table entry.
+When `RPLV=0`, the page table entry can be accessed by any program whose privilege level is not lower than `PLV`; when `RPLV=1`, the page table entry can only be accessed by programs whose privilege level is equal to `PLV`.
+
+* **R**estricted **P**rivilege **L**e**V**el (`RPLV`), `1` bit.
+`RPLV` refers to whether a page table entry is accessed only by programs corresponding to the privilege level.
+See above in `PLV`.
+This control bit is only exist in LA64.
+
+* **P**hysical **P**age **N**umber (`PPN`), `(PALEN-12)` bits.
+When the page size is larger than `4KB`, the `[log~2~PS-1:12]` bits of the `PPN` stored in the TLB can be any value.

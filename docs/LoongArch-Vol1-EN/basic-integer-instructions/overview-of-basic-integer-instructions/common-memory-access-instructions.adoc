@@ -1,0 +1,319 @@
+[[common-memory-access-instructions]]
+==== Common Memory Access Instructions
+
+===== `LD.{B[U]/H[U]/W[U]/D}`, `ST.{B/H/W/D}`
+
+Instruction formats:
+
+[source]
+----
+ld.b        rd, rj, si12
+ld.h        rd, rj, si12
+ld.w        rd, rj, si12
+ld.d        rd, rj, si12
+ld.bu       rd, rj, si12
+ld.hu       rd, rj, si12
+ld.wu       rd, rj, si12
+st.b        rd, rj, si12
+st.h        rd, rj, si12
+st.w        rd, rj, si12
+st.d        rd, rj, si12
+----
+
+`LD.{B/H/W/D}` retrieves the data of one byte/halfword/word/double word from the internal sign extension and writes it into the general register `rd`.
+
+[source]
+----
+LD.B:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    byte = MemoryLoad(paddr, BYTE)
+    GR[rd] = SignExtend(byte, GRLEN)
+
+LD.H:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    halfword = MemoryLoad(paddr, HALFWORD)
+    GR[rd] = SignExtend(halfword, GRLEN)
+
+LD.W:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    word = MemoryLoad(paddr, WORD)
+    GR[rd] = SignExtend(word, GRLEN)
+
+LD.D:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    GR[rd] = MemoryLoad(paddr, DOUBLEWORD)
+----
+
+`LD.{BU/HU/WU}` retrieves one byte/halfword/word data from the memory and writes it into the general register `rd` after zero extension.
+
+[source]
+----
+LD.BU:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    byte = MemoryLoad(paddr, BYTE)
+    GR[rd] = ZeroExtend(byte, GRLEN)
+
+LD.HU:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressCompli anceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    halfword = MemoryLoad(paddr, HALFWORD)
+    GR[rd] = ZeroExtend(halfword, GRLEN)
+
+LD.WU:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    word = MemoryLoad(paddr, WORD)
+    GR[rd] = ZeroExtend(word, GRLEN)
+----
+
+`ST.{B/H/W/D}` writes `[7:0]`/`[15:0]`/`[31:0]`/`[63:0]` bit data in general register `rd` into the memory.
+
+[source]
+----
+ST.B:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][7:0], paddr, BYTE)
+
+ST.H:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][15:0], paddr, HALFWORD)
+
+ST.W:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][31:0], paddr, WORD)
+
+ST.D:
+    vaddr = GR[rj] + SignExtend(si12, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][63:0], paddr, DOUBLEWORD)
+----
+
+The memory access address calculation method of the above instruction is sum the value in the general register `rj` and the sign extension 12-bit immediate value `sil2`.
+
+For `LD.{H[U]/W[U]/D}` and `ST.{B/H/W/D}` instructions, no matter what kind of hardware implementation and environmental configuration, as long as their memory access addresses are naturally aligned When the memory access address is not naturally aligned, if the hardware implementation supports non-aligned memory access and the current computing environment is configured to allow non-aligned memory access, then the non-aligned exception will not be triggered, otherwise a non-aligned exception will be triggered.
+
+===== `LDX.{B[U]/H[U]/W[U]/D}`, `STX.{B/H/W/D}`
+
+Instruction formats:
+
+[source]
+----
+ldx.b       rd, rj, rk
+ldx.h       rd, rj, rk
+ldx.w       rd, rj, rk
+ldx.d       rd, rj, rk
+ldx.bu      rd, rj, rk
+ldx.hu      rd, rj, rk
+ldx.wu      rd, rj, rk
+stx.b       rd, rj, rk
+stx.h       rd, rj, rk
+stx.w       rd, rj, rk
+sbx.d       rd, rj, rk
+----
+
+`LDX.{B/H/W/D}` retrieves the data of one byte/halfword/word/double word from the internal sign extension and writes it into the general register `rd`.
+
+[source]
+----
+LDX.B:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    byte = MemoryLoad(paddr, BYTE)
+    GR[rd] = SignExtend(byte, GRLEN)
+
+LDX.H:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    halfword = MemoryLoad(paddr, HALFWORD)
+    GR[rd] = SignExtend(halfword, GRLEN)
+
+LDX.W:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    word = MemoryLoad(paddr, WORD)
+    GR[rd] = SignExtend(word, GRLEN)
+
+LDX.D:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    GR[rd] = MemoryLoad(paddr, DOUBLEWORD)
+----
+
+`LDX.{BU/HU/WU}` retrieves one byte/halfword/word data from the internal zero extension and writes it into the general register `rd`.
+
+[source]
+----
+LDX.BU:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    byte = MemoryLoad(paddr, BYTE)
+    GR[rd] = ZeroExtend(byte, GRLEN)
+
+LDX.HU:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    halfword = MemoryLoad(paddr, HALFWORD)
+    GR[rd] = ZeroExtend(halfword, GRLEN)
+
+LDX.WU:
+    vaddr = GR[rj] + GR[rk]
+    AddressCompli anceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    word = MemoryLoad(paddr, WORD)
+    GR[rd] = ZeroExtend(word, GRLEN)
+----
+
+`STX.{B/H/W/D}` writes `[7:0]`, `[15:0]`, `[31:0]` and `[63:0]` bits of data in the general register `rd` into the memory.
+
+[source]
+----
+STX.B:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][7:0], paddr, BYTE)
+
+STX.H:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][15:0], paddr, HALFWORD)
+
+STX.W:
+    vaddr = GR[rj] + GR[rk]
+    AddressCompli anceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][31:0], paddr, WORD)
+
+STX.D:
+    vaddr = GR[rj] + GR[rk]
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][63:0], paddr, DOUBLEWORD)
+----
+
+The memory access address calculation method of the above instruction is the value in the general register `rj` and the value in the general register `rk`.
+For `LDX.{H[U]/W[U]/D}` and `STX.{B/H/W/D}` instructions, no matter what kind of hardware implementation and environment configuration, as long as its memory access address is natural Aligned, will not trigger non-aligned exception; when the fetch address is not naturally aligned, if the hardware implementation supports non-aligned memory access and the current computing environment is configured to allow non-aligned memory access, then the non-aligned exception will not be triggered, otherwise a non-aligned exception will be triggered.
+
+===== `LDPTR.{W/D}`, `STPTR.{W/D}`
+
+Instruction formats:
+
+[source]
+----
+ldptr.w     rd, rj, si14
+ldptr.d     rd, rj, si14
+stptr.w     rd, rj, si14
+stptr.d     rd, rj, si14
+----
+
+`LDPTR.{W/D}` retrieves the data of a word/double word from the internal sign extension and writes it into the general register `rd`.
+
+[source]
+----
+LDPTR.W:
+    vaddr = GR[rj] + SignExtend({si14, 2'b0}, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    word = MemoryLoad(paddr, WORD)
+    GR[rd] = SignExtend(word, GRLEN)
+
+LDPTR.D:
+    vaddr = GR[rj] + SignExtend({si14, 2'b0}, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    GR[rd] = MemoryLoad(paddr, DOUBLEWORD)
+----
+
+`STPTR.{W/D}` Write the data of bits `[31:0]`/`[63:0]` in the general register rd into the memory.
+
+[source]
+----
+STPTR.W:
+    vaddr = GR[rj] + SignExtend({si14, 2'b0}, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][31:0], paddr, WORD)
+
+STPTR.D:
+    vaddr = GR[rj] + SignExtend({si14, 2'b0}, GRLEN)
+    AddressComplianceCheck(vaddr)
+    paddr = AddressTranslation(vaddr)
+    MemoryStore(GR[rd][63:0], paddr, DOUBLEWORD)
+----
+
+The memory access address calculation method of the above instruction is to logical left shift the 14-bit immediate data `si14` by 2 bits, sign extension, and then sum the value in the general register `rj`.
+
+For `LDPTR.{W/D}` and `STPTR.{W/D}` instructions, no matter what kind of hardware implementation and environmental configuration, as long as the memory access address is naturally aligned, the non-aligned exception will not be triggered; when the memory address is not naturally aligned, if the hardware implementation supports unaligned memory access and the current computing environment is configured to allow unaligned memory access, then the unaligned exception will not be triggered, otherwise it will trigger the unaligned exception.
+
+`LDPTR.{W/D}`, `STPTR.{W/D}` instructions are used in conjunction with `ADDU16I.D` instructions to accelerate GOT table-based access in position-independent codes.
+
+===== `PRELD`
+
+Instruction formats:
+
+[source]
+----
+preld       hint, rj, si12
+----
+
+`PRELD` Reads a cache-line of data from memory in advance into the Cache.
+The access address is the 12bit immediate number of the value in the general register rj plus the symbol extension.
+
+The processor learns from the hint in the `PRELD` instruction what type will be acquired and which level of Cache the data to be taken back fill in, hint has 32 optional values (0 to 31), `0` represents load to level 1 Cache, and `8` represents store to level 1 Cache.
+The remaining hint values are not defined and are processed for nop instructions when the processor executes.
+
+If the Cache attribute of the access address of the `PRELD` instruction is not cached, then the instruction cannot generate a memory access action and is treated as a `NOP` instruction.
+The `PRELD` instruction will not trigger any exceptions related to MMU or address.
+
+===== `PRELDX`
+
+Instruction formats:
+
+[source]
+----
+preldx      hint, rj, rk
+----
+
+The `PRELDX` instruction continuously prefetches data from memory into the Cache according to the configuration parameters, and the continuously prefetched data is a block (block) of length `block_size` starting from the specified base address (base) with a number of (`block_num`) spacing stride.
+The base address is the sum of the `[63:0]` bits in the general register `rj` and the sign extension `[15:0]` bits in the general register `rk`.
+The `[I16]` bits in general register `rk` are the address sequence ascending and descending flag bits, with `0` indicating address ascending and `1` indicating address descending.
+The value of bits `[25:20]` in general register rk is `block_size`, the basic unit of `block_size` is 16 bytes, so the maximum length of a single block is 1KB.
+The value of bits `[39:32]` in general register `rk` is `block_num-1`, so a single instruction can prefetch up to 256 blocks.
+The value of bits `[59:44]` in the block general register `rk` is treated as a signed number and defines the stride between adjacent blocks, the basic unit of stride is 1 byte.
+The value of bits `[39:32]` in rk is `block.num-1`, so a single instruction can prefetch up to 256 blocks.
+The value of bits `[59:44]` in general register `rk` is regarded as a signed number, which defines the corresponding The basic unit of stride and stride between adjacent blocks is 1 byte.
+
+`hint` in the `PRELDX` instruction indicates the type of prefetch and the level of Cache into which the fetched data is to be filled.
+hint has 32 selectable values from 0 to 31.
+Currently, `hint=0` is defined as load prefetch to level 1 data Cache, `hint=2` is defined as load prefetch to level 3 Cache, `hint-8` is defined as store prefetch to level 1 data Cache.
+The meaning of the rest of hint values is not defined yet, and the processor executes it as `NOP` instruction.
+
+If the Cache attribute of the access address of the `PRELDX` instruction is not cached, then the instruction cannot generate a memory access action and is treated as a `NOP` instruction.
+
+The `PRELDX` instruction does not trigger any exceptions related to MMU or address.

@@ -1,0 +1,4 @@
+[[conflicts-caused-by-control-and-status-registers]]
+=== Conflicts Caused by Control and Status Registers
+
+Conflicts caused by the control and status register are maintained by the hardware, and the software does not need to add barrier-type instructions for avoiding conflict.

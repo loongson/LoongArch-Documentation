@@ -1,0 +1,126 @@
+[[tlb-refill-exception-entry-low-order-bits]]
+==== TLB Refill Exception Entry Low-order Bits (`TLBRELO0`, `TLBRELO1`)
+
+The `TLBRELO0`/`TLBRELO1` registers are used to store the information related to the physical page number of the low-order bits of the TLB table entry during executing the TLB-related instructions (when the TLB refill exception context `CSR.TLBRERA.IsTLBR=1`).
+The format of `TLBRELO0`/`TLBRELO1` registers and the meaning of each field are the same as `TLBELO0`/`TLBELO1` registers.
+
+However, the `TLBRELO0`/`TLBRELO1` registers are not an exact copy of the `TLBELO0`/`TLBELO1` registers in the case of `CSR.TLBRERA.IsTLBR=1`.
+This is reflected in two points:
+
+* Regardless of the value of `CSR.TLBRERA.IsTLBR`, the `TLBRD` instruction updates only the `TLBELO0`/`TLBELO1` registers.
+
+* Regardless of the value of `CSR.TLBRERA.IsTLBR`, the `LDPTE` instruction updates only the `TLBRELO0`/`TLBRELO1` registers.
+
+[[definition-of-tlb-refill-exception-entry-low-order-bits-register-in-la64]]
+.Definition of TLB refill exception entry low order bits register in LA64
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|V
+|RW
+|**V**alid bit (`V`) of the page table entry.
+
+|1
+|D
+|RW
+|**D**irty bit (`D`) of the page table entry.
+
+|3:2
+|PLV
+|RW
+|**P**rivilege **L**e**V**el (`PLV`) of the page table entry.
+
+|5:4
+|MAT
+|RW
+|**M**emory **A**ccess **T**ype (`MAT`) of the page table entry.
+
+|6
+|G
+|RW
+|**G**lobal flag bit (`G`) of the page table entry.
+
+When executing the `TLBFILL` and `TLBWR` instructions, the `G` bit of the page table entry filled into the TLB is `1` only when the `G` bit in both `TLBELO0` and `TLBELO1` is `1`.
+
+|11:7
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|PALEN-1:12
+|PPN
+|RW
+|**P**hysical **P**age **N**umber (`PPN`) of the page table.
+
+|60:PALEN
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|61
+|NR
+|RW
+|**N**on-**R**eadable bit (`NR`) of the page table entry.
+
+|62
+|NX
+|RW
+|**N**on-e**X**ecutable bit (`NX`) of the page table entry.
+
+|63
+|RPLV
+|RW
+|**R**estricted **P**rivilege **L**e**V**el enable (`RPLV`) for the page table.
+When `RPLV=0`, the page table entry can be accessed by any program whose privilege level is not lower than `PLV`; when `RPLV=1`, the page table entry can only be accessed by programs whose privilege level is equal to `PLV`.
+|===
+
+[[definition-of-tlb-refill-exception-entry-low-order-bits-register-in-la32]]
+.Definition of tlb refill exception entry low order bits register in LA32
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|V
+|RW
+|**V**alid bit (`V`) of the page table entry.
+
+|1
+|D
+|RW
+|**D**irty bit (`D`) of the page table entry.
+
+|3:2
+|PLV
+|RW
+|**P**rivilege **L**e**V**el of the page table entry (`PLV`).
+
+|5:4
+|MAT
+|RW
+|**M**emory **A**ccess **T**ype (`MAT`) of the page table entry.
+
+|6
+|G
+|RW
+|**G**lobal flag bit (`G`) of the page table entry.
+When executing `TLBFILL` and `TLBWR` instructions, the `G` bit of the page table entry filled into the TLB is `1` only when the `G` bits in both `TLBELO0` and `TLBELO1` are `1`.
+
+|11:7
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|31:12
+|PPN
+|RW
+|**P**hysical **P**age **N**umber (`PPN`) of the page table.
+|===

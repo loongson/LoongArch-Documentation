@@ -1,0 +1,43 @@
+[[tlb-refill-exception-return-address]]
+==== TLB Refill Exception Return Address (`TLBRERA`)
+
+This register is used to record the `PC` of the instruction that triggered the TLB refill exception.
+In addition, this register contains flag bits to identify the current exception as a TLB refill exception.
+
+[[definition-of-tlb-refill-exception-return-address-register]]
+.Definition of TLB refill exception program counter register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|IsTLBR
+|RW
+a|`1` indicates that it is currently in the context of TLB refill exception processing.
+
+The hardware sets this bit to `1` when a TLB refill exception is triggered.
+
+When this bit is `1`, execution of the `ERTN` instruction will clear it to `0` only if `CSR.MERRCTL.IsMERR=0`, otherwise it remains unchanged.
+
+Because the architecture defines a separate set of CSRs for TLB refill exceptions, when this bit is `1`.
+
+* When `ERTN` returns, the information used to recover `CSR.CRMD` will come from `CSR.TLBRPRMD`;
+* `ERTN` return address will come from `CSR.TLBRERA`;
+* The table entries to be written by `TLBWR` and `TLBFILL` instructions will come from `CSR.TLBREHI`, `CSR.TLBELO0` and `CSR.TLBELO1`;
+* TLBSRCH instruction queries information from `CSR.TLBREHI`;
+* The bad virtual address required for `LDDIR` and `LDPTE` instruction execution will come from `CSR.TLBRBADV`.
+
+|1
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|GRLEN-1:2
+|PC
+|RW
+|Record the `[GRLEN-1:2]` bits of the `PC` of the instruction that triggered the TLB refill exception.
+When the execution of `ERTN` instruction returns from the TLB refill exception handler (at this time, this register `IsTLBR=1` and `CSR.MERRCTL.IsMERR=0`).
+|===

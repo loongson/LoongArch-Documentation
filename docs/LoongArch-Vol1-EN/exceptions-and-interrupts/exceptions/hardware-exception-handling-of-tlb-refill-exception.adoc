@@ -1,0 +1,26 @@
+[[hardware-exception-handling-of-tlb-refill-exception]]
+==== Hardware Exception Handling of TLB Refill Exception
+
+When the TLB refill exception is triggered, the processor does the following:
+
+* Store `PLV` and `IE` in CSR.CRMD to `PPLV` and `PIE` in `CSR.TLBRPRMD`, then set `PLV` in `CSR.CRMD` to `0`, `IE` to `0`, `DA` to `1` and `PG` to `0`.
+
+* For implementations that support the Watch function, also store `WE` in `CSR.CRMD` to `PWE` in `CSR.TLBRPRMD`, and then set `WE` in `CSR.CRMD` to `0`;
+
+* Record the `[GRLEN-1:2]` bits of the `PC` that triggered the exception instruction by `ERA` in `CSR.TLBRERA`, and set `IsTLBR` in `CSR.TLBRERA` to `1`;
+
+* Record the virtual memory access address that triggered the exception (or `PC` if triggered by fetching instructions) by `CSR.TLBRBADV` and the `[PALEN-1:13]` bits of address by `VPPN` in `CSR.TLBREHI`;
+
+* Jump to the exception entry configured by `CSR.TLBRENTRY` to fetch instructions.
+
+When software executes the `ERTN` instruction to return from TLB refill exception, the processor does the following:
+
+* Restore `PPLV` and `PIE` in `CSR.TLBRPRMD` to `PLV` and `IE` in `CSR.CRMD`;
+
+* For implementations that support the Watch function, restore `PWE` in `CSR.TLBRPRMD` to `WE` in `CSR.CRMD`;
+
+* Set `DA` in `CSR.CRMD` to `0` and `PG` to `1`;
+
+* Set `IsTLBR` in `CSR.TLBRERA` to 0;
+
+* Jump to the address recorded by `CSR.TLBRERA` to fetch instructions.

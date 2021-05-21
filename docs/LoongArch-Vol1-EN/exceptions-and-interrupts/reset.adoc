@@ -1,0 +1,32 @@
+[[reset]]
+=== Reset
+
+A reset will reset all logic in the processor core and place the circuit in a determined state.
+The definition of the state of the processor after reset is given here.
+
+The `PC` after the reset is `0x1C000000`.
+Since the MMU must be in direct address translation mode after the reset, the physical address of the first instruction fetched after reset is also `0x1000000`.
+
+After the reset, the contents of the registers in the determined state are:
+
+* `PLV` in `CSR.CRMD` is `0`, `IE` is `0`, `DA` is `1`, `PG` is `0`, `DATF` is `0`, `DATM` is `0`, and `WE` is `0`;
+* `FPUen`, `VPUen`, `XVPUen` and `BTUen` in `CSR.PUCTL` are all `0` values;
+* All configurable bits in `CSR.MISC` are `0`;
+* `VS` and `LIE` in `CSR.ECFG` are `0`;
+* All bits of `IS[1:0]` in `CSR.ESTA` are `0`;
+* `RDVA` in `CSR.RVACFG` is `0`;
+* `En` in `CSR.TCFG` is `0`;
+* `KLO` in `CSR.LLBCTL` is `0`;
+* `IsTLBR` in `CSR.TLBRERA` is `0`;
+* `IsMERR` in `CSR.MERRCTL` is `0`;
+* `PLV0`–`PLV3` in all implemented ``CSR.DMW``s are `0`;
+* All configurable bits except `EvCode` in all implemented ``CSR.PMCFG``s are `0`;
+* All configurable bits in all implemented data breakpoint CSRs are `0`;
+* All configurable bits in all implemented instruction breakpoint CSRs are `0`;
+* `DST` in `CSR.DEBUG` is `0`.
+
+In addition to what is specified above, the values of all other software-visible registers in the processor are undefinded after the reset.
+The software has to set their values before they can be used.
+
+Whether TLB and Cache need to do a hardware reset during the reset is decided by the implementation.
+The software responsible for booting determines whether to do a software reset via the processor configuration information.

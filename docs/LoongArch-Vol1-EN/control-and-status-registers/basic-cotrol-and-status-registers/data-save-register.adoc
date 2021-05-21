@@ -1,0 +1,27 @@
+[[data-save-register]]
+==== Data Save Register (`SAVE`)
+
+The data save registers are used to temporarily store data for the system software.
+Each data save register can store data from one general-purpose register.
+
+The minimum number of data save registers is `1`, and the maximum number is `16`.
+The exact number of registers can be found in `CSR.PRCFG1.SAVENum`.
+Starting from `SAVE0`, the addresses of each `SAVE` register are `0x30`, `0x31`, ... , `0x30+SAVENum-1`.
+
+All data save control and status registers have the same format, as shown in the table.
+
+[[definition-of-data-save-register]]
+.Definition of data save register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|Data
+|RW
+|Data for software to read and write only.
+The hardware does not modify the contents of this field except for the execution of CSR instructions.
+|===

@@ -1,0 +1,22 @@
+[[attributes-of-reading-and-writing]]
+==== Attributes of Reading and Writing
+
+The definition of the "`read/write`" attribute for each field is described later in this manual in the control and status register field definition.
+The "`read/write`" attributes are defined primarily from the perspective of software and are divided into four types:
+
+* RW - readable and writable.
+Software can write any value, except for illegal values that are explicitly stated in the definition and lead to uncertainty in the processor's execution.
+Normally, software writes to these fields before it reads them, and what is read should be the value written.
+However, when the accessed field can be updated by hardware, or when an interrupt occurs between the two instructions executing the read and write operation, it is possible that the read value is not consistent with the written value.
+
+* R - read-only.
+Software writes to these fields will not update their contents, and will have no side effects.
+
+* R0 - always return `0` if read these fields.
+But at the same time software must ensure that either it avoids updating these fields by setting the CSR write mask bit, or it must write `0` when updating these fields.
+This requirement is to ensure software backward compatibility.
+For hardware implementations, fields marked with this attribute will prohibit software writing.
+
+* W1 - write `1` is valid.
+Software writes `0` to these fields will not clear them to `0` and will have no side effects.
+Also, the read values of these fields have no real meaning and software should ignore these values.

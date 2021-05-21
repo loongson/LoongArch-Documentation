@@ -1,0 +1,45 @@
+[[address-space-identifier]]
+==== Address Space Identifier (`ASID`)
+
+This register contains the **A**ddress **S**pace **ID**entifier (ASID) information for access operations and TLB-related instructions.
+The length of the `ASID` may increase further as the architecture specification evolves, and this information is given directly to facilitate software to specify the length of the `ASID`.
+
+[[definition-of-address-space-identifier-register]]
+.Definition of address space identifier register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|9:0
+|ASID
+|RW
+|The address space identifier corresponding to the currently executing program.
+
+It is used as the ASID key value information for querying the TLB when fetching instructions and executing the load/store instructions.
+
+When executing the `TLBSRCH`, `TLBCLR` and `INVTLB` instructions, it is used as the ASID key value information for querying the TLB.
+
+When executing the `TLBWR` or `TLBFILL` instructions, the value written to the ASID field of the TLB table entry is derived from this.
+
+The contents of the `ASID` field read from the TLB table entry when executing the `TLBRD` instruction are recorded here.
+
+|15:0
+|0
+|R
+|Read-only constant `0`, writing to this field is ignored.
+
+|23:16
+|ASIDBITS
+|R
+|The length of the `ASID` field.
+It is directly equal to the value of this field.
+
+|31:24
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

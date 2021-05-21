@@ -1,0 +1,25 @@
+[[registers]]
+==== Registers
+
+The registers involved in basic integer instructions include General Registers (GR) and Program Counters (PC), as shown in the figure.
+
+[[gr-and-pc]]
+.GR and PC
+image::gr-and-pc.png[]
+
+===== General-purpose Registers
+
+There are 32 **G**eneral purpose **R**egisters (GR), denoted as `r0`–`r31`, and the value of register `r0` is always `0`.
+The length of GR is recorded as GRLEN.
+The length of GR in LA32 is 32 bits, and the length of GR in LA64 is 64 bits.
+There is an orthogonal relationship between basic integer instructions and general registers.
+That is, from an architectural point of view, any register operand in this instruction can use any of the 32 GRs.
+The only exception is that the destination register implicit in the `BL` instruction must be `r1`.
+In the standard LoongArch **A**pplication **B**inary **I**nterface (ABI), `r1` is as storing the return address of a function call.
+
+===== PC
+
+There is only one PC, which records the address of the current instruction.
+The `PC` register cannot be modified directly by instructions, it can only be modified indirectly by branch instructions, exception trap and exception return instructions.
+However, the `PC` register can be directly read as the source operand of some non-branch instructions.
+The length of `PC` is always the same as the length of GR.

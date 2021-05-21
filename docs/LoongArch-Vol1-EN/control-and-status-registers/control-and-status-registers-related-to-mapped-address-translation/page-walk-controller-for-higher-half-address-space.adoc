@@ -1,0 +1,46 @@
+[[page-walk-controller-for-higher-half-address-space]]
+==== Page Walk Controller for Higher Half Address Space (`PWCH`)
+
+This register and the information in the `CSR.PWCL` register together define the page table structure used in the operating system.
+This information will be used to instruct software or hardware to perform page table walking.
+See <<section-multi-level-page-table-structure-supported-by-page-walking,Multi-level Page Table Structure Supported by page walking>> for an illustration of the page table structure and walking process.
+
+This register is only defined in LA64.
+
+[[definition-of-page-walk-controller-for-higher-half-address-space-register]]
+.Definition of page walk controller for higher half address space register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|5:0
+|Dir3_base
+|RW
+|The starting address of the next higher level directory.
+
+|11:6
+|Dir3_width
+|RW
+|The number of index bits of the next higher level directory.
+`0` means there is no such level.
+
+|17:12
+|Dir4_base
+|RW
+|The starting address of the highest level directory.
+
+|23:18
+|Dir4_width
+|RW
+|The number of index bits of the highest level directory.
+`0` means there is no such level.
+
+|31:24
+|0
+|R0
+|Reserved field.
+Return `0` if read this field, and the software does not allow to change its value.
+|===

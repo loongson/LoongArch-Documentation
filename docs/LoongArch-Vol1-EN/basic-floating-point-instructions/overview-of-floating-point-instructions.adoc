@@ -1,0 +1,18 @@
+[[overview-of-floating-point-instructions]]
+=== Overview of Floating-Point Instructions
+
+The instructions described in this section, except for `FLDX.{S/D}`, `FSTX.{S/D}`, `FLD{GT/LE}.{S/D}` and `FST{GT/LE}.{S/D}` these 12 The floating-point memory access instructions only belong to the LA64, and all other floating-point instructions are applicable to both LA32 and LA64.
+
+include::overview-of-floating-point-instructions/floating-point-arithmetic-operation-instructions.adoc[]
+
+include::overview-of-floating-point-instructions/floating-point-comparison-instructions.adoc[]
+
+include::overview-of-floating-point-instructions/floating-point-conversion-instructions.adoc[]
+
+include::overview-of-floating-point-instructions/floating-point-move-instructions.adoc[]
+
+include::overview-of-floating-point-instructions/floating-point-branch-instructions.adoc[]
+
+include::overview-of-floating-point-instructions/floating-point-common-memory-access-instructions.adoc[]
+
+include::overview-of-floating-point-instructions/floating-point-boundary-check-memory-access-instructions.adoc[]

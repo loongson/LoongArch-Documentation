@@ -1,0 +1,7 @@
+[appendix]
+[[pseudocode-descriptions-of-the-function-definitions]]
+== Pseudocode Descriptions of the Function Definitions
+
+include::pseudocode-descriptions-of-the-function-definitions/interpretation-of-operators-in-pseudocode.adoc[]
+
+include::pseudocode-descriptions-of-the-function-definitions/pseudocode-descriptions-of-functional-functions.adoc[]

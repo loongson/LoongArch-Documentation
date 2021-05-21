@@ -1,0 +1,7 @@
+[[section-32-bit-address-mode-in-la64]]
+==== 32-bit Address Mode in LA64
+
+When the binary application in LA32 runs on the processor that implements LA64, the calculation involving address in the instruction needs to be handled specially in order to obtain the same operation result, which is the 32-bit address mode control in LA64.
+When `VA32L1`/`VA32L2`/`VA32L3` in `CSR.MISC` is set to `1`, the software running at PLV1/PLV2/PLV3 level will run in 32-bit address mode.
+At this time, the virtual address will be zero extended to 64 bits.
+The 32-bit results of executing instructions like `BL`, `JIRL` and `PCADD` will also be sign extended to 64 bits.

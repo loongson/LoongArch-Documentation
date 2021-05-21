@@ -1,0 +1,25 @@
+[[programming-model-of-basic-integer-instructions]]
+=== Programming Model of Basic Integer Instruction
+
+The basic integer instruction programming model described in this section only involves the operating environment of the application software, which is always related to some privileged resources.
+Therefore, the concept of privileged resources will be introduced where necessary to ensure the completeness of the description.
+Although the content of privileged resources is covered here, it will not be expanded in detail.
+Readers who need a comprehensive and in-depth understanding can refer to the relevant chapters in the manual according to the prompts in the text.
+
+include::programming-model-of-basic-integer-instructions/data-types.adoc[]
+
+include::programming-model-of-basic-integer-instructions/registers.adoc[]
+
+include::programming-model-of-basic-integer-instructions/running-privilege-levels.adoc[]
+
+include::programming-model-of-basic-integer-instructions/exceptions-and-interrupts.adoc[]
+
+include::programming-model-of-basic-integer-instructions/memory-address-space.adoc[]
+
+include::programming-model-of-basic-integer-instructions/endian.adoc[]
+
+include::programming-model-of-basic-integer-instructions/storage-access-types.adoc[]
+
+include::programming-model-of-basic-integer-instructions/unaligned-storage-access.adoc[]
+
+include::programming-model-of-basic-integer-instructions/overview-of-storage-consistency.adoc[]

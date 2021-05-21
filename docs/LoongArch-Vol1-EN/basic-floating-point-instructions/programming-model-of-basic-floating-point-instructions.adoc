@@ -1,0 +1,13 @@
+[[programming-model-of-basic-floating-point-instructions]]
+=== Programming Model of Basic Floating-Point Instructions
+
+The basic floating-point instruction programming model described in this section only involves the content that application software developers need to pay attention to.
+When software personnel use basic floating-point instructions to program, they are on the basis of the basic integer instruction programming model, and then proceed to involve the content described in this section.
+
+include::programming-model-of-basic-floating-point-instructions/floating-point-data-types.adoc[]
+
+include::programming-model-of-basic-floating-point-instructions/fixed-point-data-types.adoc[]
+
+include::programming-model-of-basic-floating-point-instructions/registers.adoc[]
+
+include::programming-model-of-basic-floating-point-instructions/floating-point-exceptions.adoc[]

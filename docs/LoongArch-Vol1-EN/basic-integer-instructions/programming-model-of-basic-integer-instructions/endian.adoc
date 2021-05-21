@@ -1,0 +1,4 @@
+[[endian]]
+==== Endian
+
+LoongArch bit designations are always little-endian.

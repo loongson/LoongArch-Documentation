@@ -1,0 +1,16 @@
+[[single-precision-floating-point-to-signed-word-integer]]
+==== Single Precision Floating-point to Signed Word Integer
+
+[source]
+----
+{bits(32)} FP32convertToSint32(bits(32) x, bits(1) I_en, bits(2) rm):
+    case {I_en, rm} of:
+        {1'b1, 2'd0}: return Sint32_convertToIntegerExactTiesToEven(x)
+        {1'b1, 2'd1}: return Sint32_convertToIntegerExactTowardZero(x)
+        {1'b1, 2'd2}: return Sint32_convertToIntegerExactTowardPositive(x)
+        {1'b1, 2'd3}: return Sint32_convertToIntegerExactTowardNegative(x)
+        {1'b0, 2'd0}: return Sint32_convertToIntegerTiesToEven(x)
+        {1'b0, 2'd1}: return Sint32_convertToIntegerTowardZero(x)
+        {1'b0, 2'd2}: return Sint32_convertToIntegerTowardPositive(x)
+        {1'b0, 2'd3}: return Sint32_convertToIntegerTowardNegative(x)
+----

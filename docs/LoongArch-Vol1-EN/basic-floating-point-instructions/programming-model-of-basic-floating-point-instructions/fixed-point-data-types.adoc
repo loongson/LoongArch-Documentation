@@ -1,0 +1,5 @@
+[[fixed-point-data-types]]
+==== Fixed-Point Data Types
+
+Some floating-point instructions (such as floating-point conversion instructions) also manipulate fixed-point data, including **W**ord (W, length 32b), and **L**ongword (L, length 64b).
+Both word and longword data types use two's complement encoding.

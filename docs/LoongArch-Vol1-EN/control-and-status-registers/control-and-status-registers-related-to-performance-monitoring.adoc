@@ -1,0 +1,16 @@
+[[control-and-status-registers-related-to-performance-monitoring]]
+=== Control and Status Registers Related to Performance Monitoring
+
+LoongArch defines a hardware performance monitoring mechanism to support software performance analysis.
+The main body of this mechanism is a series of performance monitors.
+At least one performance monitor is implemented, and up to 32 monitors are implemented, the number is determined by the implementation.
+The software can determine how many performance monitors are available by reading the `CPUCFG.6.PMNUM[bit7:4]`.
+
+Each performance monitor contains two CSRs: a **P**erformance **M**onitoring **C**on**F**i**G**uration register (`PMCFG`) and a **P**erformance **M**onitoring **C**ou**NT**er register (`PMCNT`).
+
+All CSRs related to performance monitoring are alternately addressed starting at address `0x200`, with the ``n``th performance monitoring configuration register at address `0x200+n`, and the ``n``th performance monitoring counter at address `0x201+n`.
+The format of all performance monitoring configuration registers is the same, as described in <<performance-monitor-configuration-n,Performance Monitor Configuration n (`PMCFG`)>>; the format of all performance monitoring counters is the same, as described in <<performance-monitor-overall-counter-n,Performance Monitor Overall Counter n (`PMCNT`)>>.
+
+include::control-and-status-registers-related-to-performance-monitoring/performance-monitor-configuration-n.adoc[]
+
+include::control-and-status-registers-related-to-performance-monitoring/performance-monitor-overall-counter-n.adoc[]

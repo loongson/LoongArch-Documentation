@@ -1,0 +1,57 @@
+[[crc-check-instructions]]
+==== CRC Check Instructions
+
+===== `CRC[C].W.{B/H/W/D}.W`
+
+Instruction formats:
+
+[source]
+----
+crc.w.b.w       rd, rj, rk
+crc.w.h.w       rd, rj, rk
+crc.w.w.w       rd, rj, rk
+crc.w.d.w       rd, rj, rk
+crcc.w.b.w      rd, rj, rk
+crcc.w.h.w      rd, rj, rk
+crcc.w.w.w      rd, rj, rk
+crcc.w.d.w      rd, rj, rk
+----
+
+`CRC[C]W.{B/H/W/D}.W` is used to calculate the CRC-32 checksum, which stores the 32-bit cumulative CRC checksum stored in the general register `rk` in the general register `rj` `[7:0]`/`[15:0]`/`[31:0]`/`[63:0]` bit message, get a new 32-bit CRC checksum according to the CRC-32 checksum generation algorithm, and write it after sign extension into the general register `rd`.
+The difference is that `CRC.W.{B/H/W/D}.W` uses IEEE802.3 polynomial (polynomial value is `0xEDB88320`), `CRC.W.{B/H/W/D}.W` uses Castagnoli polynomial (polynomial value is `0x82F63B78`).
+The CRC instructions defined in this manual only support the "`LSB first`" (little endian) standard, which means that the lowest bit of data (little endian) is transmitted first, and the lowest bit of the data is mapped to the coefficient of the most significant term of the message polynomial.
+
+[source]
+----
+CRC.W.B.W:
+    chksum = CRC32(GR[rk][31:0], GR[rj][7:0], 8, 0xEDB88320)
+    GR[rd] = SignExtend(chksum, GRLEN)
+
+CRC.W.H.W:
+    chksum = CRC32(GR[rk][31:0], GR[rj][15:0], 16, 0xEDB88320)
+    GR[rd] = SignExtend(chksum, GRLEN)
+
+CRC.W.W.W:
+    chksum = CRC32(GR[rk][31:0], GR[rj][31:0], 32, 0xEDB88320)
+    GR[rd] = SignExtend(chksum, GRLEN)
+
+CRC.W.D.W:
+    chksum = CRC32(GR[rk][31:0], GR[rj][63:0], 64, 0xEDB88320)
+    GR[rd] = SignExtend(chksum, GRLEN)
+
+CRCC.W.B.W:
+    chksum = CRC32(GR[rk][31:0], GR[rj][7:0], 8, 0x82F63B78)
+    GR[rd] = SignExtend(chksum, GRLEN)
+
+CRCC.W.H.W:
+    chksum = CRC32(GR[rk][31:0], GR[rj][15:0], 16, 0x82F63B78)
+    GR[rd] = SignExtend(chksum, GRLEN)
+
+CRCC.W.W.W:
+    chksum = CRC32(GR[rk][31:0], GR[rj][31:0], 32, 0x82F63B78)
+    GR[rd] = SignExtend(chksum, GRLEN)
+
+CRCC.W.D.W:
+    chksum = CRC32(GR[rk][31:0], GR[rj][63:0], 64, 0x82F63B78)
+    GR[rd] = SignExtend(chksum, GRLEN)
+----

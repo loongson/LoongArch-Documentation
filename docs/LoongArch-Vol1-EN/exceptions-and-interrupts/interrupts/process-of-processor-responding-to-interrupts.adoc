@@ -1,0 +1,9 @@
+[[process-of-processor-responding-to-interrupts]]
+==== Process of Processor Responding to Interrupts
+
+The interrupt signal from each interrupt source is recorded by the processor in the `CSR.ESTA.IS` field.
+The value of this field and the value of the local interrupt enable field configured by software in the `CSR.ECFG.LIE` field perform the bitwise AND operation to obtain a 13-bit interrupt vector (`int_vec`).
+When `CSR.CRMD.IE=1` and `int_vec` is not all `0` values, the processor considers that there is an interrupt that needs to be responded to.
+So the processor picks an instruction from the executed instruction stream and marks it with a special kind of exception — interrupt exception.
+
+The subsequent process of the processor is the same as that of the general exception, see the description in <<general-hardware-exception-handling-of-general-exceptions,General Hardware Exception Handling of General Exceptions>>.

@@ -1,0 +1,63 @@
+[[tlb-refill-exception-entry-high-order-bits]]
+==== TLB Refill Exception Entry High-order Bits (`TLBREHI`)
+
+When in the TLB refill exception context (`CSR.TLBRERA.IsTLBR=1`), the `TLBREHI` register stores the information related to the physical page number of the low-order bits of the TLB table entry during executing TLB-related instructions, etc.
+The format of the `TLBREHI` register and the meaning of each field are the same as the `TLBEHI` register.
+
+However, the `TLBREHI` register is not an exact replica of the `TLBEHI` register in the case of `CSR.TLBRERA.IsTLBR=1`.
+This is reflected in:
+
+* Regardless of the value of `CSR.TLBRERA.IsTLBR` equals, the execution of the `TLBRD` instruction updates only the `TLBEHI` register.
+
+[[definition-of-tlb-refill-exception-entry-high-order-bits-register-in-la64]]
+.Definition of TLB refill exception entry high order bits register in LA64
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|5:0
+|PS
+|RW
+|Page size specified by TLB refill exception.
+That is, when `CSR.TLBRERA.IsTLBR=1`, when executing `TLBWR` and `TLBFILL` instructions and the value of the `PS` field of the written TLB table entry comes from this.
+
+|12:0
+|0
+|R
+|The read-only constant is `0`, and writes are ignored.
+
+|VALEN-1:13
+|VPPN
+|RW
+|When `CSR.TLBRERA.IsTLBR=1`, the value of `VPPN` used for querying TLB when executing `TLBSRCH` instruction, and the value of `VPPN` field of TLB table entry written when executing `TLBWR` and `TLBFILL` instructions come from here.
+When a TLB refill exception is triggered, the `[VALEN-1:13]` bits of the virtual address that triggered the exception are recorded here.
+
+|63:VALEN
+|Sign_Ext
+|R
+|The return value read from these bits is a signed extension of the highest bits of the `VPPN` field; writing to these bits is ignored.
+|===
+
+[[definition-of-tlb-refill-exception-entry-high-order-bits-register-in-la32]]
+.Definition of tlb refill exception entry high order bits register in LA32
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|12:0
+|0
+|R
+|Read-only is constant to `0`, and writes are ignored.
+
+|31:13
+|VPPN
+|RW
+|With `CSR.TLBRERA.ISTLBR=1`, the `VPPN` value used to query the TLB when executing the `TLBSRCH` instruction, and the value of the `VPPN` field written to the TLB table entry when executing the `TLBWR` and `TLBFILL` instructions come from here.
+When a TLB refill exception is triggered, the `[31:13]` bits of the virtual address that triggered the exception are recorded here.
+|===

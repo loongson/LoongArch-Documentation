@@ -1,0 +1,368 @@
+[[bit-manipulation-instructions]]
+==== Bit-manipulation Instructions
+
+===== `EXT.W{B/H}`
+
+Instruction formats:
+
+[source]
+----
+ext.wb      rd, rj
+ext.w.h     rd, rj
+----
+
+The `EXT.W.B` instruction performs the operation that will sign extension the bit data of `[7:0]` in the general register `rj` and write it into the general register `rd`.
+
+[source]
+----
+EXT.W.B:
+    GR[rd] = SignExtend(GR[rj][7:0], GRLEN)
+----
+
+The `EXT.W.H` instruction performs the operation that will sign extension the bit data of `[15:0]` in the general register `rj` and write it into the general register `rd`.
+
+[source]
+----
+EXT.W.H:
+    GR[rd] = SignExtend(GR[rj][15:0], GRLEN)
+----
+
+===== `CL{O/Z}.{W/D}`, `CT{O/Z}.{W/D}`
+
+Instruction formats:
+
+[source]
+----
+clo.w       rd, rj
+clo.d       rd, rj
+clz.w       rd, rj
+clz.d       rd, rj
+cto.w       rd, rj
+cto.d       rd, rj
+ctz.w       rd, rj
+ctz.d       rd, rj
+----
+
+The `CLO.W` instruction performs the operation that for the data of bit `[31:0]` in the general register `rj`, the number of continuous bits `1` is measured from bit `31` to bit `0`, and the result is written into the universal register `rd`.
+
+[source]
+----
+CLO.W:
+    GR[rd] = CLO(GR[rj][31:0])
+----
+
+The `CLZ.W` instruction performs the operation that for the data of bit `[31:0]` in the general register `rj`, the number of continuous bits `0` is measured from bit `31` to bit `0`, and the result is written into the universal register `rd`.
+
+[source]
+----
+CLZ.W:
+    GR[rd] = CLZ(GR[rj][31:0])
+----
+
+The `CTO.W` instruction performs the operation that for the data of bit `[31:0]` in the general register `rj`, the number of continuous bits `1` is measured from bit `0` to bit `31`, and the result is written into the universal register `rd`.
+
+[source]
+----
+CTO.W:
+    GR[rd] = CTO(GR[rj][31:0])
+----
+
+The `CTZ.W` instruction performs the operation that for the data of bit `[31:0]` in the general register `rj`, the number of continuous bits `0` is measured from bit `0` to bit `31`, and the result is written into the universal register `rd`.
+
+[source]
+----
+CTZ.W:
+    GR[rd] = CTZ(GR[rj][31:0])
+----
+
+The `CLO.D` instruction performs the operation that for the data of bit `[63:0]` in the general register `rj`, the number of continuous bits `1` is measured from bit `63` to bit `0`, and the result is written into the universal register `rd`.
+
+[source]
+----
+CLO.D:
+    GR[rd] = CL0(GR[rj][63:0])
+----
+
+The `CLZ.D` instruction performs the operation that for the data of bit `[63:0]` in the general register `rj`, the number of continuous bits `1` is measured from bit `0` to bit `63`, and the result is written into the universal register `rd`.
+
+[source]
+----
+CLZ.D:
+    GR[rd] = CLZ(GR[rj][63:0])
+----
+
+The `CTO.D` instruction performs the operation that for the data of bit `[63:0]` in the general register `rj`, the number of continuous bits `0` is measured from bit `0` to bit `63`, and the result is written into the universal register `rd`.
+
+[source]
+----
+CTO.D:
+    GR[rd] = CTO(GR[rj][63:0])
+----
+
+The `CTZ.D` instruction performs the operation that for the data of bit `[63:0]` in the general register `rj`, the number of continuous bits `0` is measured from bit `0` to bit `63`, and the result is written into the universal register `rd`.
+
+[source]
+----
+CTZ.D:
+    GR[rd] = CTZ(GR[rj][63:0])
+----
+
+===== `BYTEPICK.{W/D}`
+
+Instruction formats:
+
+[source]
+----
+bytepick.w  rd, rj, rk, sa2
+bytepick.d  rd, rj, rk, sa3
+----
+
+The `BYTEPICK.W` instruction performs the operation that splice `[31:0]` bits in the general register `rj` behind `[31:0]` bits in the general register `rk`, and intercepts 4 consecutive bytes starting from the leftmost `sa2` byte, and writes the 32-bit bit string symbol into universal register `rd` after expansion.
+
+[source]
+----
+BYTEPICK.W:
+    tmp = {GR[rk][8*(4-sa2):0], GR[rj][31:8*(4-sa2)]}
+    GR[rd] = SignExtend(tmp[31:0], GRLEN)
+----
+
+The `BYTEPICK.D` instruction performs the operation that splice `[63:0]` bits in the general register rj behind `[63:0]` bits in the general register `rk`, and intercepts 8 consecutive bytes starting from the leftmost `sa3` byte, and writes the 64-bit bit string symbol into universal register `rd` after expansion.
+
+[source]
+----
+BYTEPICK.D:
+    GR[rd] = {GR[rk][8*(8-sa3):0], GR[rj][63:8*(8-sa3)]}
+----
+
+===== `REVB.{2H/4H/2W/D}`
+
+Instruction formats:
+
+[source]
+----
+revb.2h     rd, rj
+revb.4h     rd, ri
+revb.2w     rd, rj
+revb.d      rd, rj
+----
+
+The `REVB.2H` instruction performs the operation that arranges the 2 bytes in the `[15:0]` bits in the general register `rj` in reverse order to form the `[15:0]` bits of the intermediate result, and reverses the 2 bytes in the `[31:16]` in the general register `rj` Arrange the `[31:16]` bits of the intermediate result, and write the 32-bit intermediate result sign extended to the general register `rd`.
+
+[source]
+----
+REVB.2H:
+    tmp0 = {GR[rj][ 7: 0], GR[rj][15: 8]}
+    tmp1 = {GR[rj][23:16], GR[rj][31:24]}
+    GR[rd] = SignExtend({tmp1, tmp0}, GRLEN)
+----
+
+The `REVB.4H` instruction performs the operation that arranges the 2 bytes in the `[15:0]` bits of the general register `rj` in reverse order and writes them into the `[15:0]` bits of the general register `rd`, and writes 2 words in the `[31:16]` bits of the general register `rj`.
+Write the sections in reverse order to bits `[31:16]` of the general register `rd`, and write the 2 bytes of bits `[47:32]` in the general register `rj` in reverse order to bits `[47:32]` of the general register rd.
+The 2 bytes in the `[63:48]` bits in the register `rj` are written in the `[63:48]` bits in the general register rd in reverse order.
+
+[source]
+----
+REVB.4H:
+    tmp0 = {GR[rj][ 7: 0], GR[rj][15: 8]}
+    tmp1 = {GR[rj][23:16], GR[rj][31:24]}
+    tmp2 = {GR[rj][39:32], GR[rj][47:40]}
+    tmp3 = {GR[rj][55:48], GR[rj][63:56]}
+    GR[rd] = {tmp3, tmp2, tmp1, tmp0}
+----
+
+The `REVB.2W` instruction performs the operation that writes the 4 bytes in the `[31:0]` bits of the general register `rj` into the `[31:0]` bits of the general register `rd` in reverse order, and writes 4 of the `[63:32]` bits in the general register `rj`.
+Write the byte in reverse order to bits `[63:32]` of the general register `rd`.
+
+[source]
+----
+REVB.2W:
+    tmp0 = {GR[rj][ 7: 0], GR[rj][15: 8], GR[rj][31:24], GR[rj][23:16]}
+    tmp1 = {GR[rj][39:32], GR[rj][47:40], GR[rj][55:48], GR[rj][63:56]}
+    GR[rd] = {tmp1, tmp0}
+----
+
+`REVB.D` writes the 8 bytes in the `[63:0]` bits in the general register `rj` into the general register `rd` in reverse order.
+
+[source]
+----
+REVB.D:
+    GR[rd] = {GR[rj][ 7: 0], GR[rj][15: 8], GR[rj][31:24], GR[rj][23:16],
+            GR[rj][39:32], GR[rj][47:40], GR[rj][55:48], GR[rj][63:56]}
+----
+
+===== `REVH.{2W/D}`
+
+Instruction formats:
+
+[source]
+----
+revh.2w     rd, rj
+revh.d      rd, rj
+----
+
+The `REVH.2W` instruction performs the operation that writes two half-words in bit `[31:0]` of general purpose register `rj` into bit `[31:0]` of general purpose register `rd`, and two half-words in bit `[63:32]` of general purpose register `rj` into bit `[63:32]` of general purpose register `rd`.
+
+[source]
+----
+REVH.2W:
+    tmp0 = {GR[rj][15: 0], GR[rj][31:16]}
+    tmp1 = {GR[rj][47:32], GR[rj][63:48]}
+    GR[rd] = {tmp1, tmp0}
+----
+
+The `REVH.D` instruction performs the operation that write four half-words in `[63:0]` bit of universal register `rj` in reverse order to universal register `rd`.
+
+[source]
+----
+REVH.D:
+    GR[rd] = {GR[rj][15:0], GR[rj][31:16], GR[rj][47:32], GR[rj][63:48]}
+----
+
+===== `BITREV.{4B/8B}`
+
+Instruction formats:
+
+[source]
+----
+bitrev.4b   rd, rj
+bitrev.8b   rd, rj
+----
+
+The BITREV.4B instruction performs the operation that the `[7:0]` bit in general register `rj` is arranged in reverse order, the `[15:8]` bit in general register `rj` is arranged in reverse order, the `[23:16]` bit in general register `rj` is arranged in reverse order, and the `[31:24]` bit in general register `rj` is arranged in reverse order; the 32-bit intermediate result sign extension is written into general register `rd` in turn.
+
+[source]
+----
+BITREV.4B:
+    bstr32[31:24] = BITREV(GR[rj][31:24])
+    bstr32[23:16] = BITREV(GR[rj][23:16])
+    bstr32[15: 8] = BITREV(GR[rj][15: 8])
+    bstr32[ 7: 0] = BITREV(GR[rj][ 7: 0])
+    GR[rd] = SignExtend(bstr32, GRLEN)
+----
+
+The `BITREV.8B` instruction performs the operation that the `[7:0]` bit in general register `rj` is arranged in reverse order, the `[15:8]` bit in general register `rj` is arranged in reverse order, the `[23:16]` bit in general register `rj` is arranged in reverse order, the `[31:24]` bit in general register `rj` is arranged in reverse order; the `[39:32]` bit in general register `rj` is arranged in reverse order; the `[47:40]` bit in general register `rj` is arranged in reverse order; the `[55:48]` bit in general register `rj` is arranged in reverse order; the `[63:56]` bit in general register `rj` is arranged in reverse order; the 32-bit intermediate result sign extension is written into general register `rd` in turn.
+
+[source]
+----
+BITREV.8B:
+    GR[rd][63:56] = BITREV(GR[rj][63:56])
+    GR[rd][55:48] = BITREV(GR[rj][55:48])
+    GR[rd][47:40] = BITREV(GR[rj][47:40])
+    GR[rd][39:32] = BITREV(GR[rj][39:32])
+    GR[rd][31:24] = BITREV(GR[rj][31:24])
+    GR[rd][23:16] = BITREV(GR[rj][23:16])
+    GR[rd][15: 8] = BITREV(GR[rj][15: 8])
+    GR[rd][ 7: 0] = BITREV(GR[rj][ 7: 0])
+----
+
+===== `BITREV,{W/D}`
+
+Instruction formats:
+
+[source]
+----
+bitrev.w        rd, rj
+bitrev.d        rd, rj
+----
+
+The `BITREV.W` instruction performs the operation that the `[31:0]` bit in general register `rj` is arranged in reverse order; the 32-bit intermediate result sign extension is written into general register `rd` in turn.
+
+[source]
+----
+BITREV.W:
+    bstr32[31:0] = BITREV(GR[rj][31:0])
+    GR[rd] = SignExtend(bstr32, GRLEN)
+----
+
+The `BITREV.D` instruction performs the operation that the `[63:0]` bit in general register `rj` is arranged in reverse order; the 32-bit intermediate result sign extension is written into general register `rd` in turn.
+
+[source]
+----
+    BITREV.D:
+    GR[rd] = BITREV(GR[rj][63:0])
+----
+
+===== `BSTRINS.{W/D}`
+
+Instruction formats:
+
+[source]
+----
+bstrins.w       rd, rj, msbw, lsbw
+bstrins.d       rd, rj, msbd, lsbd
+----
+
+The `BSTRINS.W` instruction performs the operation that replaces the `[msbw:lsbw]` bit in the lowest 32 bits of the general register `rd` with the `[msbw-lsbw:0]` bit in the general register `rj`, and the resulting 32-bit result is sign extension and written into the general register `rd`.
+
+[source]
+----
+BSTRINS.W:
+    bstr32[31:msbw+1] = GR[rd][31: msbw+1]
+    bstr32[msbw:lsbw] = GR[rj][msbw-lsbw:0]
+    bstr32[lsbw-1:0] = GR[rd][lsbw-1:0]
+    GR[rd] = SignExtend(bstr32[31:0], GRLEN)
+----
+
+The `BSTRINS.D` instruction performs the operation that replaces the `[msbd:lsbd]` bit in the general register `rd` with the `[msbd-lsbd:0]` bit in the general register `rj`, and the rest of the general register `rd` remains unchanged.
+
+[source]
+----
+BSTRINS.D:
+    GR[rd][63:msbd+1] = GR[rd][63:msbd+1]
+    GR[rd][msbd:lsbd] = GR[rj][msbd-lsbd:0]
+    GR[rd][lsbd-1:0] = GR[rd][lsbd-1:0]
+----
+
+===== `BSTRPICK.{W/D}`
+
+Instruction formats:
+
+[source]
+----
+bstrpick.w  rd, rj, msbw, lsbw
+bstrpick.d  rd, rj, msbd, lsbd
+----
+
+`BSTRPICK.W` extracts the `[msbw:Isbw]` bit in the general register `rj` and zero-extends it to 32 bits, and the formed 32-bit intermediate result is sign extension and written into the general register `rd`.
+
+[source]
+----
+BSTRPICK.W:
+    bstr32[31:0] = ZeroExtend(GR[rj][msbw:lsbw], 32)
+    GR[rd] = SignExtend(bstr32[31:0], GRLEN)
+----
+
+`BSTRPICK.D` extracts the `[msbd:Isbd]` bit in the general register `rj` and zero-extends it to 64 bits and writes it into the general register `rd`.
+
+[source]
+----
+BSTRPICK.D:
+    GR[rd] = ZeroExtend(GR[rj][msbd:lsbd], 64)
+----
+
+===== `MASKEQZ`, `MASKNEZ`
+
+Instruction formats:
+
+[source]
+----
+maskeqz     rd, rj, rk
+masknez     rd, rj, rk
+----
+
+`MASKEQZ` and `MASKNEZ` instructions perform conditional assignment operations.
+When `MASKEQZ` is executed, if the value of the general register `rk` is equal to `0`, the general register `rd` is set to `0`, otherwise it is assigned to the value of the `rj` register.
+
+[source]
+----
+MASKEQZ:
+    GR[rd] = (GR[rk] == 0) ? 0 : GR[rj]
+----
+
+When `MASKNEZ` is executed, if the value of the general register `rk` is not equal to `0`, the general register `rd` is set to `0`, otherwise it is assigned to the value of the `rj` register.
+
+[source]
+----
+MASKNEZ:
+    GR[rd] = (GR[rk] != 0) ? 0 : GR[rj]
+----

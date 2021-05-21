@@ -1,0 +1,171 @@
+[[floating-point-data-types]]
+==== Floating-Point Data Types
+
+Floating-point data types include single-precision floating-point numbers and double-precision floating-point numbers, both of which follow the definition in the IEEE 754-2008 standard specification.
+
+===== Single-precision Floating-point
+
+Single-precision floating-point numbers have a length of 32 bits and are organized into the following format:
+
+[[single-precision-floating-point-number-format]]
+.Single-precision floating-point number format
+image::single-precision-floating-point-number-format.png[]
+
+According to the different values of the fields of `S`, `Exponent` and `Fraction`, the floating-point number values represented are shown in the table:
+
+[[single-precision-floating-point-number-calculation-method]]
+.Single-precision floating-point number calculation method
+[%header,cols="4*^1,^4"]
+|===
+|`Exponent`
+|`Fraction`
+|`S`
+|`bit[22]`
+|`V`
+
+.2+|`0`
+.2+|`0`
+|`0`
+|`0`
+|`+0`
+
+|`1`
+|`0`
+|`-0`
+
+.2+|`0`
+.2+|`!=0`
+|`0`
+|Any value
+|Denormalized number, the value is `+2^-126^&#215;(0.Fraction)`
+
+|`1`
+|Any value
+|Denormalized number, the value is `-2^-126^&#215;(0.Fraction)`
+
+.2+|`[1,0xFE]`
+.2+|Any value
+|`0`
+|Any value
+|Normalized number, the value is `+2^Exponent-127^&#215;(1.Fraction)`
+
+|`1`
+|Any value
+|Normalized number, the value is `-2^Exponent-127^&#215;(1.Fraction)`
+
+.2+|`0xFF`
+.2+|`0`
+|`0`
+|`0`
+|`+&#8734;`
+
+|`1`
+|`0`
+|`-&#8734;`
+
+.2+|`0xFF`
+.2+|`!=0`
+|Any value
+|`0`
+|Signaling Not a Number, SNaN
+
+|Any value
+|`1`
+|Quiet Not a Number, QNaN
+|===
+
+For the specific meaning of &#177;&#8734;, SNaN and QNaN, please refer to the IEEE 754-2008 standard specification.
+
+===== Double-precision Floating-point
+
+[[double-precision-floating-point-number-format]]
+.Double-precision floating-point number format
+image::double-precision-floating-point-number-format.png[]
+
+According to the different values of the fields of `S`, `Exponent` and `Fraction`, the floating-point number values represented are shown in the table:
+
+[[double-precision-floating-point-number-calculation-method]]
+.Double-precision floating-point number calculation method
+[%header,cols="4*^1,^4"]
+|===
+|`Exponent`
+|`Fraction`
+|`S`
+|`bit[51]`
+|`V`
+
+.2+|`0`
+.2+|`0`
+|`0`
+|`0`
+|`+0`
+
+|`1`
+|`0`
+|`-0`
+
+.2+|`0`
+.2+|`!=0`
+|`0`
+|Any value
+|Denormalized number, the value is `+2^-1022^&#215;(0.Fraction)`
+
+|`1`
+|Any value
+|Denormalized number, the value is `-2^-1022^&#215;(0.Fraction)`
+
+.2+|`[1,0x7FE]`
+.2+|Any value
+|`0`
+|Any value
+|Normalized number, the value is `+2^Exponent-1023^&#215;(1.Fraction)`
+
+|`1`
+|Any value
+|Normalized number, the value is `-2^Exponent-1023^&#215;(1.Fraction)`
+
+.2+|`0x7FF`
+.2+|`0`
+|`0`
+|`0`
+|`+&#8734;`
+
+|`1`
+|`0`
+|`-&#8734;`
+
+.2+|`0x7FF`
+.2+|`!=0`
+|Any value
+|`0`
+|Signaling Not a Number, SNaN
+
+|Any value
+|`1`
+|Quiet Not a Number, QNaN
+|===
+
+For the specific meaning of &#177;&#8734;, SNaN and QNaN, please refer to the IEEE 754-2008 standard specification.
+
+===== Non-numerical Result of Instructions
+
+The non-numerical results produced by floating-point number instructions either come from NaN propagation or are directly generated.
+There are two situations where NaN propagation is required.
+
+Case 1: When the instruction generates an Invalid Operation floating-point exception due to a source operand containing SNaN, but the InvalidOperation floating-point exception enable is invalid, a QNaN result will be generated at this time.
+The value of this QNaN is to select the SNaN with the highest priority in the source operand and propagate it to the corresponding NaN.
+
+The rule for determining the priority of the source operand is: if there are two source operands `fj` and `fk`, then the priority of `fj` is higher than `fk`; if there are three source operands `fa`, `fj` and `fk`, then the priority of fa is higher than `fj`, `fj` have higher priority than `fk`.
+
+The value generation rules for propagation of SNaN to QNaN are as follows:
+
+* If the result is the same length as the source operand, then the highest position of the SNaN mantissa will be propagated to `1`, and the remaining bits remain unchanged.
+If the result is narrower than the source operand, then keep the high bits of the mantissa, discard the low bits that exceed the range, and finally set the highest bit of the mantissa to `1`.
+
+* If the result is wider than the source operand, then the lowest bit of the mantissa will be filled with `0`, and finally the highest position of the mantissa will be `1`.
+
+Case 2: When there is no SNaN in the source operand but QNaN exists, the QNaN with the highest priority is selected as the result of this instruction.
+At this time, the way of judging the priority of the source operand is the same as in the above situation.
+
+Except for the above two cases, other cases that need to produce QNaN results will be directly set to the default QNaN value.
+The default single-precision QNaN value is `0x7FC00000`, and the default double-precision QNaN value is `0x7FF8000000000000`.

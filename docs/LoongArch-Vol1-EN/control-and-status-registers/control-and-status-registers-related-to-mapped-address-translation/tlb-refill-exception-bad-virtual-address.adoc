@@ -1,0 +1,20 @@
+[[tlb-refill-exception-bad-virtual-address]]
+==== TLB Refill Exception Bad Virtual Address (`TLBRBADV`)
+
+This register is used to record the bad virtual address that triggered the TLB refill exception.
+
+[[definition-of-tlb-refill-exception-bad-virtual-address-register]]
+.Definition of TLB refill exception bad virtual address register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|GRLEN-1:0
+|VAddr
+|RW
+|When the TLB refill exception is triggered, the hardware records the bad virtual address here.
+For LA64, in this case, if the privilege level that triggered the exception is in 32-bit address mode, then the high `32` bits of the recorded virtual address will be set to `0`.
+|===

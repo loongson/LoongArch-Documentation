@@ -1,0 +1,26 @@
+[[timer-interrupt-clearing]]
+==== Timer Interrupt Clearing (`TICLR`)
+
+The software clears the timed interrupt signal set by the timer by writing `1` to bit `0` of this register.
+
+[[definition-of-timer-interrupt-clearing-register]]
+.Definition of timer interrupt clearing register
+[%header,cols="2*^1m,^1,5"]
+|===
+d|Bits
+d|Name
+|Read/Write
+|Description
+
+|0
+|CLR
+|W1
+|When `1` is written to this bit, the clock interrupt flag is cleared.
+The value read from this register is always `0`.
+
+|31:1
+|0
+|R0
+|Reserved field.
+Return `0` if read this field and software is not allowed to change its value.
+|===

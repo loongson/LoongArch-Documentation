@@ -1,0 +1,40 @@
+[[section-multi-level-page-table-structure-supported-by-page-walking]]
+==== Multi-level Page Table Structure Supported by page walking
+
+Whether the LDDIR and LDPTE instructions are used to implement software page walking or hardware page walking, the supported multi-level page table structure is the same, as shown in the figure.
+
+[[multi-level-page-table-structure-supported-by-page-walking]]
+.Multi-level page table structure supported by page walking
+image::multi-level-page-table-structure-supported-by-page-walking.png[]
+
+The base address of the top-level directory (global directory) of the traversed page table called PGD is determined by the `(PALEN-1)` bit of the queried virtual address.
+When this bit is `0`, the PGD comes from `CSR.PGDL`; when this bit is 1, the PGD comes from `CSR.PGDH`.
+This means that the entire page table structure is `(PALEN-1)` bits.
+
+The specifications of each level of directory entries and page table entries are configured by the system software in `CSR.PWCL` and `CSR.PWCH`.
+
+Whether the LDDIR and LDPTE instructions are used to implement software page walking or hardware page walking, the system software needs to define the page table entries in the following format.
+
+[[table-entry-format-for-common-pages]]
+.Table entry format for common pages
+image::table-entry-format-for-common-pages.png[]
+
+[[table-entry-format-for-huge-pages]]
+.Table entry format for huge pages
+image::table-entry-format-for-huge-pages.png[]
+
+In the above definition of the page table entry format, the main differences between the page table entry of a huge page and the page table entry of a common page are:
+
+. Bit `6` of the directory entry is the huge page table entry flag bit, and `1` indicates that the directory entry actually stores the page table entry of a huge page at this time;
+. The `G` bit of the common page table entry is in bit `6`, while the `G` bit of the huge page table entry is in bit `12`.
+
+Bits not defined in either of these formats are automatically ignored by the `LDDIR` and `LDPTE` instructions or hardware page walking.
+
+The `P` field defined in the above page table entry format represents whether the physical page exists, and the `W` field represents whether the page is writable.
+This information is not filled in the TLB table entry, but is used during the page walking.
+
+Due to the double-page storage structure of the TLB table entries, for the huge page table entries (which has only one), the hardware page table refill or the software LDPTE instruction will automatically split the two page table entries in half according to the information of the huge page table entries and then fill in the TLB.
+For example, if the standard page size is `16KB`, the size of the first-level huge page size is usually `32MB`.
+After the `LDPTE rj, 0` and `LDPTE rj, 1` instructions are executed during page walking, The TLB will be filled with two page table entries (page size is `16MB`) without special software intervention.
+
+Because the address mapping is in direct address translation mode during *TLB* **R**efill exception (TLBR), the addresses configured in the `PGD` and in the directory entries of the page table in memory must be physical addresses.

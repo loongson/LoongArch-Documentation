@@ -1,0 +1,171 @@
+[[branch-instructions]]
+==== Branch Instructions
+
+===== `BEQ`, `BNE`, `BLT[U]`, `BGE[U]`
+
+Instruction formats:
+
+[source]
+----
+beq     rj, rd, offs16
+bne     rj, rd, offs16
+blt     rj, rd, offs16
+bge     rj, rd, offs16
+bltu    rj, rd, offs16
+bgeu    rj, rd, offs16
+----
+
+The `BEQ` instruction performs the operation that compares the values of general register `rj` and general register `rd`, if the two are equal, jump to the target address, otherwise it does not jump.
+
+[source]
+----
+BEQ:
+    if GR[rj] == GR[rd]:
+        PC = PC + SignExtend({offs16, 2'b0}, GRLEN)
+----
+
+The `BNE` instruction performs the operation that compares the values of general register `rj` and general register `rd`, if the two are not equal, jump to the target address, otherwise it does not jump.
+
+[source]
+----
+BNE:
+    if GR[rj] != GR[rd]:
+        PC = PC + SignExtend({offs16, 2'b0}, GRLEN)
+----
+
+The `BLT` instruction performs the operation that compares the values of general register `rj` and general register `rd` as signed numbers.
+If the former is smaller than the latter, it jumps to the target address, otherwise it does not jump.
+
+[source]
+----
+BLT:
+    if signed(GR[rj]) < signed(GR[rd]):
+        PC = PC + SignExtend({offs16, 2'b0}, GRLEN)
+----
+
+The `BGE` instruction performs the operation that compares the values of general register `rj` and general register `rd` as signed numbers.
+If the former is greater than or equal to the latter, it jumps to the target address, otherwise it does not jump.
+
+[source]
+----
+BGE:
+    if signed(GR[rj]) >= signed(GR[rd]):
+        PC = PC + SignExtend({offs16, 2'b0}, GRLEN)
+----
+
+The `BLTU` instruction performs the operation that compares the values of general register `rj` and general register `rd` as unsigned numbers.
+If the former is less than the latter, it jumps to the target address, otherwise it does not jump.
+
+[source]
+----
+BLTU:
+    if unsigned(GR[rj]) < unsigned(GR[rd]):
+        PC = PC + SignExtend({offs16, 2'b0}, GRLEN)
+----
+
+The `BGEU` instruction performs the operation that compares the values of general register `rj` and general register `rd` as unsigned numbers.
+If the former is greater than or equal to the latter, it jumps to the target address, otherwise it does not jump.
+
+[source]
+----
+BGEU:
+    if unsigned(GR[rj]) >= unsigned(GR[rd]):
+        PC = PC + SignExtend({offs16, 2'b0}, GRLEN)
+----
+
+The calculation method of the jump target address of the above-mentioned six branch instructions is to logically shift the 16-bit immediate `offs16` in the instruction code by 2 bits and then sign expand, and the resulting offset value is added to the PC of the branch instruction.
+
+===== `BEQZ`, `BNEZ`
+
+Instruction formats:
+
+[source]
+----
+beqz        rj, offs21
+bnez        rj, offs21
+----
+
+The `BEQZ` instruction performs the operation that judges the value of the general register `rj`, if it is equal to `0`, jump to the target address, otherwise it does not jump.
+
+[source]
+----
+BEQZ:
+    if GR[rj] == 0:
+        PC = PC + SignExtend({offs21, 2'b0}, GRLEN)
+----
+
+The `BNEZ` instruction performs the operation that judges the value of the general register `rj`, if it is not equal to `0`, it jumps to the target address, otherwise it does not jump.
+
+[source]
+----
+BNEZ:
+    if GR[rj] != 0:
+        PC = PC + SignExtend({offs21, 2'b0}, GRLEN)
+----
+
+The jump target address of the above two branch instructions is to logical left shift the 21-bit immediate `offs21` in the instruction code by 2 bits and then sign extension, and the resulting offset value is added to the `PC` of the branch instruction.
+
+===== `B`
+
+Instruction formats:
+
+[source]
+----
+b       offs26
+----
+
+The `B` instruction performs the operation that jumps to the target address unconditionally.
+The jump target address is to logical left shift the 26-bit immediate `offs26` in the instruction code by 2 bits and then sign extension, and the resulting offset value is added to the `PC` of the branch instruction.
+
+[source]
+----
+B:
+    PC = PC + SignExtend({offs26, 2' b0}, GRLEN)
+----
+
+===== `BL`
+
+Instruction formats:
+
+[source]
+----
+bl      offs26
+----
+
+The `BL` instruction performs the operation that jumps to the target address unconditionally, and writes the result of adding `4` to the `PC` value of the instruction into the No.1 general register `r1`.
+
+The jump target address of the instruction is to shift the 26-bit immediate `offs26` in the instruction code to the left by 2 bits and then sign extend it.
+The shift value is added to the PC of the branch instruction.
+
+[source]
+----
+BL:
+    GR[1] = PC + 4
+    PC = PC + SignExtend({offs26, 2'b0}, GRLEN)
+----
+
+In LA ABI, the No.1 general register `r1` serves as the return address register `ra`.
+
+===== `JIRL`
+
+Instruction formats:
+
+[source]
+----
+jirl        rd, rj, offs16
+----
+
+`JIRL` jumps to the target address unconditionally, and the `PC` value of the instruction plus `4`; then writes the result into the general register `rd`.
+
+The jump target address of the instruction is to logically shift the 16-bit immediate `offs16` in the instruction code by 2 bits to the left and then sign extension, and the resulting offset value is added to the value in the general register `rj`.
+
+[source]
+----
+JIRL:
+    GR[rd] = PC + 4
+    PC = GR[rj] + SignExtend({offs16, 2'b0}, GRLEN)
+----
+
+When `rd` is equal to `0`, the function of `JIRL` is a common non-call indirect jump instruction.
+
+`JIRL` with rd equal to `0`, `rj` equal to `1` and `offs16` equal to `0` is often used as an indirect jump from call return.

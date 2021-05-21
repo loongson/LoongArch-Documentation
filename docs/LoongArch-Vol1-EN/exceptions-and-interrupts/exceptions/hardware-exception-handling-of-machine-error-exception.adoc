@@ -1,0 +1,26 @@
+[[hardware-exception-handling-of-machine-error-exception]]
+==== Hardware Exception Handling of Machine Error Exception
+
+When the machine error exception is triggered, the processor does the following:
+
+* Store `PLV`, `IE`, `DA`, `PG`, `DATF` and `DATM` in `CSR.CRMD` to `PPLV`, `PIE`, `PDA`, `PPG`, `PDATF` and `PDATM` in `CSR.MERRCTL`, then set `PLV` in `CSR.CRMD` to `0`, `IE` to `0`, `DA` to `1`, `PG` to `0`, `DATF` to `0`, and `DATM` to `0`;
+
+* For implementations that support the Watch function, also store `WE` in `CSR.CRMD` to `PWE` in `CSR.MERRCTL`, and then set `WE` in `CSR.CRMD` to `0`;
+
+* Record `PC` that triggered the exception instruction by `CSR.MERRERA`;
+
+* Set `IsMERR` in `CSR.MERRCTL` to `1`;
+
+* Record the specific error message by `CSR.ERRINFO` and `CSR.MERRINFO1`;
+
+* Jump to the exception entry configured by `CSR.MERRENTRY` to fetch instructions.
+
+When the software executes the `ERTN` instruction returning from the machine error exception, the processor does the following:
+
+* Restore `PPLV`, `PIE`, `PDA`, `PPG`, `PDATF` and `PDATM` in `CSR.MERRCTL`;
+
+* For implementations that support the Watch function, also restore `PWE` in `CSR.MERRCTL` to `WE` in `CSR.CRMD`;
+
+* Set the `IsMERR` in CSR.TLBRERA to `0`;
+
+* Jump to the address recorded by `CSR.MERRERA` to fetch instructions.

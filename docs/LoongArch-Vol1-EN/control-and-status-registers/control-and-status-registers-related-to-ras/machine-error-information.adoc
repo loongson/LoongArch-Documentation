@@ -1,0 +1,5 @@
+[[machine-error-information]]
+==== Machine Error Information (`MERRINFO1`, `MERRINFO2`)
+
+When a machine error exception is triggered, the hardware will store more information related to that error into these two registers for system software diagnostic purposes.
+The format and the meaning of each field are defined by the implementation.
