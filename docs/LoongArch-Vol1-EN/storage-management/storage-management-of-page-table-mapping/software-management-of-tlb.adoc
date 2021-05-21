@@ -73,7 +73,7 @@ The third category includes:
 * `TLBRPRMD`
 * `TLBRSAVE`
 
-See <<basic-cotrol-and-status-registers,Basic Cotrol and Status Registers>> for details of how each CSR register above interacts with the TLB.
+See <<basic-control-and-status-registers,Basic Control and Status Registers>> for details of how each CSR register above interacts with the TLB.
 
 ===== Initialization of TLB
 

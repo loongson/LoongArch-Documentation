@@ -7,7 +7,7 @@ include::control-and-status-registers/characteristics-of-accessing-control-and-s
 
 include::control-and-status-registers/conflicts-caused-by-control-and-status-registers.adoc[]
 
-include::control-and-status-registers/basic-cotrol-and-status-registers.adoc[]
+include::control-and-status-registers/basic-control-and-status-registers.adoc[]
 
 include::control-and-status-registers/control-and-status-registers-related-to-mapped-address-translation.adoc[]
 
