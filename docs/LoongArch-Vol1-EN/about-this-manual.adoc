@@ -39,7 +39,7 @@ include::../../LICENSE[]
 === Contributors
 
 Since the release of the project, we have gotten several errata and content changes donated.
-Here are all the people who have contributed to https://loongson.github.io/LoongArch-Documentation[LoongArch Documentation] as an open source project.
+Here are all the people who have contributed to https://github.com/loongson/LoongArch-Documentation[LoongArch Documentation] as an open source project.
 Thank you everyone for helping make this a better book for everyone.
 
 The contributors are listed in alphabetical order.
