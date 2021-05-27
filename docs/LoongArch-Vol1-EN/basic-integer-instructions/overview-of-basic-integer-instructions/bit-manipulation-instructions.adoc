@@ -278,7 +278,7 @@ The `BITREV.D` instruction performs the operation that the `[63:0]` bit in gener
 
 [source]
 ----
-    BITREV.D:
+BITREV.D:
     GR[rd] = BITREV(GR[rj][63:0])
 ----
 

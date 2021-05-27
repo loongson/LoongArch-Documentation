@@ -168,7 +168,7 @@ STLE.H:
     else:
         RaiseException(BCE)    # Bound Check Exception
 
-STLE .W:
+STLE.W:
     vaddr = GR[rij]
     AddressComplianceCheck(vaddr)
     paddr = AddressTranslation(vaddr)

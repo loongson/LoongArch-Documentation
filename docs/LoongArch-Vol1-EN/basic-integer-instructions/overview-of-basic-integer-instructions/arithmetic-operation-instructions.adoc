@@ -147,7 +147,7 @@ The LU12I.W instruction performs the operation that splice the 12-bit 0 behind t
 
 [source]
 ----
-    LU12I.W:
+LU12I.W:
     GR[rd] = SignExtend({si20, 12'b0}, GRLEN)
 ----
 
@@ -155,7 +155,7 @@ The `LU32I.D` instruction performs the operation that splice the bit data `[31:0
 
 [source]
 ----
-    LU32I.D:
+LU32I.D:
     GR[rd] = {SignExtend(si20, 32), GR[rd][31:0]}
 ----
 
@@ -163,7 +163,7 @@ The `LU52I.D` instruction performs the operation that splice the `[51:0]` bit da
 
 [source]
 ----
-    LU52I.D:
+LU52I.D:
     GR[rd] = {si12, GR[rd][51:0]}
 ----
 

@@ -308,10 +308,7 @@ fcopysign.d     fd, fj, fk
 The `FSCALEB.{S/D}` instruction selects the single-precision/double-precision floating point number a in the floating point register `fj`,
 Then take the word/double word integer `N` in the floating point register `fk`, and calculate a*2N,
 The obtained single-precision/double-precision floating point number is written to the floating point register `fd`.
-These two instructions follow the IEEE754- 2008 standard `scaleB(x, N)` operation specification.
-
-
-Translated with www.DeepL.com/Translator (free version)
+These two instructions follow the IEEE754-2008 standard `scaleB(x, N)` operation specification.
 
 [source]
 ----

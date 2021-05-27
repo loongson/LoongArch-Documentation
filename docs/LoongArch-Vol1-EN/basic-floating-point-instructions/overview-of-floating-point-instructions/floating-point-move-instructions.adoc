@@ -19,7 +19,7 @@ If the value of `fj` is not in the single-precision/double-precision floating-po
 FMOV.S:
     FR[fd][31:0] = FR[fj][31:0]
 
-FMOV.d:
+FMOV.D:
     FR[fd] = FR[fj]
 ----
 
@@ -134,7 +134,7 @@ MOVGR2FCSR:
 
 [source]
 ----
-MOVFCSR2GR:.
+MOVFCSR2GR:
     GR[rd] = SignExtend(FCSR[fcsr], GRLEN)
 ----
 
