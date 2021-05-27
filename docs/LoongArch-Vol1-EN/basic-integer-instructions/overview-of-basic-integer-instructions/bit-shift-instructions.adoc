@@ -163,7 +163,7 @@ The `SLII.D` instruction performs the operation that logicalleft shifts the bit 
 
 [source]
 ----
-SLL.D:
+SLLI.D:
     GR[rd] = SLL(GR[rj][63:0], ui6)
 ----
 
@@ -171,7 +171,7 @@ The `SRLI.D` instruction performs the operation that logical right shifts the bi
 
 [source]
 ----
-SRL.D:
+SRLI.D:
     GR[rd] = SRL(GR[rj][63:0], ui6)
 ----
 
@@ -179,7 +179,7 @@ The `SRAI.D` instruction performs the operation that arithmetically right shifts
 
 [source]
 ----
-SRA.D:
+SRAI.D:
     GR[rd] = SRA(GR[rj][63:0], ui6)
 ----
 
@@ -187,7 +187,7 @@ The `ROTRI.D` instruction performs the operation that cyclical right shifts the 
 
 [source]
 ----
-ROTR.D:
+ROTRI.D:
     GR[rd] = ROTR(GR[rj][63:0], ui6)
 ----
 
