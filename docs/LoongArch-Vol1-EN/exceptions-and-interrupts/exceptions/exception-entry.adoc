@@ -16,4 +16,4 @@ See the ecode column in <<table-of-exception-encoding,Table of exception encodin
 When `CSR.ECFG.VS=0`, all general exceptions have the same entry, and the software needs to determine the specific exception type by `Ecode` and `IS` fields in `CSR.ESTA`.
 When `CSR.ECFG.VS!=0`, different interrupt sources have different exception entries and the software does not need to confirm the exception type by `CSR.ESTA`.
 
-Since the exception entry is an offset on the base address calculated by bitwise OR operation, when `CSR.ECFG.VS!=0`, during assigning the exception entry base address, the software needs to ensure that all possible offsets do not exceed the boundary alignment space corresponding to the low bit of the entry base address.
+Since the exception entry is an offset on the base address calculated by bitwise OR operation, when `CSR.ECFG.VS!=0`, during assigning the exception entry base address, the software needs to ensure that all possible offsets do not exceed the bound alignment space corresponding to the low bit of the entry base address.

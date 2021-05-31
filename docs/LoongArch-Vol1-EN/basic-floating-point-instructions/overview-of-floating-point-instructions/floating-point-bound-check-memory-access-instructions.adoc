@@ -1,5 +1,5 @@
-[[floating-point-boundary-check-memory-access-instructions]]
-==== Floating-Point Boundary Check Memory Access Instructions
+[[floating-point-bound-check-memory-access-instructions]]
+==== Floating-Point Bound Check Memory Access Instructions
 
 ===== `FLD{GT/LE}.{S/D}, FST{GT/LE}.{S/D}`
 
@@ -32,7 +32,7 @@ If the floating-point register is 64 bits wide, the high 32-bit value of fd is n
 
 The access address of the above instruction comes directly from the value in general register `rj`.
 The access addresses of the above instructions are required to be naturally aligned, otherwise a non-alignment exception will be triggered.
-The above instruction terminates the access operation and triggers the boundary check exception if the check condition is not satisfied.
+The above instruction terminates the access operation and triggers the bound check exception if the check condition is not satisfied.
 
 [source]
 ----
@@ -44,7 +44,7 @@ FLDGT.S:
         word = MemoryLoad(paddr, WORD)
         FR[fd][31:0] = word
     else:
-        RaiseExcepti on (BCE)    # Bound Check Exception
+        RaiseException(BCE)    # Bound Check Exception
 
 FLDGT.D:
     vaddr = GR [rj]

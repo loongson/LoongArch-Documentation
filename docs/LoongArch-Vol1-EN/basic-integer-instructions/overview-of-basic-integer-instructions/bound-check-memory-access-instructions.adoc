@@ -1,5 +1,5 @@
-[[boundary-check-memory-access-instructions]]
-==== Boundary Check Memory Access Instructions
+[[bound-check-memory-access-instructions]]
+==== Bound Check Memory Access Instructions
 
 ===== `LD{GT/LE}.{B/H/W/D}`, `ST{GT/LE}.{B/H/W/D}`
 
@@ -32,7 +32,7 @@ stle.d      rd, rj, rk
 The access addresses of the above instructions come directly from the values in the general register `rj`.
 The access addresses of the above instructions are required to be naturally aligned, otherwise a non-alignment exception will be triggered.
 
-`B/H/W/D` and `STGT.B/H/W/D` instructions check whether the value in general register `rj` is greater than the value in general register `rk`, and terminate the access operation and trigger the boundary check exception if the condition is not satisfied; `B/H/W/D` and `STLE.B/H/W/D` instructions check whether the value in general register `rj` is less than or equal to the value in general register `rk`, and if the condition is not satisfied, the access operation is terminated and the boundary check exception is triggered.
+`B/H/W/D` and `STGT.B/H/W/D` instructions check whether the value in general register `rj` is greater than the value in general register `rk`, and terminate the access operation and trigger the bound check exception if the condition is not satisfied; `B/H/W/D` and `STLE.B/H/W/D` instructions check whether the value in general register `rj` is less than or equal to the value in general register `rk`, and if the condition is not satisfied, the access operation is terminated and the bound check exception is triggered.
 
 [source]
 ----

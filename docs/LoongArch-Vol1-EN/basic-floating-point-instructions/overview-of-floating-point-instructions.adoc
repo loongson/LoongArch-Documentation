@@ -15,4 +15,4 @@ include::overview-of-floating-point-instructions/floating-point-branch-instructi
 
 include::overview-of-floating-point-instructions/floating-point-common-memory-access-instructions.adoc[]
 
-include::overview-of-floating-point-instructions/floating-point-boundary-check-memory-access-instructions.adoc[]
+include::overview-of-floating-point-instructions/floating-point-bound-check-memory-access-instructions.adoc[]

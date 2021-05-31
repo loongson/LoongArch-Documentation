@@ -2,7 +2,7 @@
 ==== Page Global Directory Base Address for Higher Half Address Space (`PGDH`)
 
 This register is used to configure the base address of the global directory for the higher half address space.
-The base address of the global directory must be aligned to the `4KB` boundary address, so the lowest `12` bits of this register are not configurable by software and are read-only constant `0`.
+The base address of the global directory must be aligned to the `4KB` bound address, so the lowest `12` bits of this register are not configurable by software and are read-only constant `0`.
 
 [[definition-of-page-global-directory-base-address-for-higher-half-address-space-register]]
 .Definition of page global directory base address for higher half address space register

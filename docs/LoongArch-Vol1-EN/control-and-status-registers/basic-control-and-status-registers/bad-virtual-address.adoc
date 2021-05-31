@@ -7,7 +7,7 @@ Such exceptions include:
 * **AD**dress error **E**xception for **F**etching instructions (ADEF), at this time the `PC` of the instruction is recorded
 * **AD**dress error **E**xception for **M**emory access instructions (ADEM)
 * **A**ddress a**L**ignment fault **E**xception (ALE)
-* **B**oundary **C**onstraint check failed **E**xception (BCE)
+* **B**ound **C**heck **E**xception (BCE)
 * **P**age **I**nvalid exception for **L**oad operation (PIL)
 * **P**age **I**nvalid exception for **S**tore operation (PIS)
 * **P**age **I**nvalid exception for **F**etch operation (PIF)

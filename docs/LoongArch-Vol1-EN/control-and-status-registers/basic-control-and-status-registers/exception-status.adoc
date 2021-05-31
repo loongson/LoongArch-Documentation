@@ -121,7 +121,7 @@ d|Exception Code
 |0xA
 |
 |BCE
-|**B**oundary **C**onstraint check failed **E**xception
+|**B**ound **C**heck **E**xception
 
 |0xB
 |

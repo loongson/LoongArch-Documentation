@@ -38,7 +38,7 @@ asrtgt.d        rj, rk
 ----
 
 The value in general register `rj` and general register `rk` are compared as signed numbers.
-If the comparison conditions are not met, an exception for address boundary checking is triggered.
+If the comparison conditions are not met, an exception for address bound checking is triggered.
 For the `ASRTLE.D` instruction, if the value in the general register `rj` is greater than the value in the general register `rk`, an exception is triggered; for the `ASRTGT.D` instruction, if the value in the general register `rj` is less than or equal to the value in the general register `rk`, an exception is triggered.
 
 ===== `RDTIME{L/H}.W`, `RDTIME.D`

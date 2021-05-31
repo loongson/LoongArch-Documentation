@@ -2,7 +2,7 @@
 ==== Page Global Directory Base Address for Lower Half Address Space (`PGDL`)
 
 This register is used to configure the base address of the global directory for the lower half address space.
-It is required that the base address of the global directory must be aligned to a `4KB` boundary address.
+It is required that the base address of the global directory must be aligned to a `4KB` bound address.
 
 This register also contains the information related to the `PS` and `P` fields in the TLB table entry when executing the TLB-related instructions.
 
