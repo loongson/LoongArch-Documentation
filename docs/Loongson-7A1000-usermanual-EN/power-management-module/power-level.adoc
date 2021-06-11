@@ -1,0 +1,30 @@
+[[power-level]]
+=== Power Level
+
+[[description-of-acpi-status]]
+.Description of ACPI status
+[%header,cols="1,3"]
+|===
+|`G0`/`S0`
+|Work all.
+The system works all in this mode
+
+|`G1`/`S1`
+|Not supported at the moment
+
+|`G1`/`S3`
+|Suspend to RAM (STR).
+Context saving to memory
+
+|`G1`/`S4`
+|Suspend to Disk (STD).
+Save to hard disk, except wake-up circuit all power down
+
+|`G2`/`S5`
+|Soft off.
+Only the wake-up circuit is powered on
+
+|`G3`
+|Mechanical off.
+All power supply failures
+|===

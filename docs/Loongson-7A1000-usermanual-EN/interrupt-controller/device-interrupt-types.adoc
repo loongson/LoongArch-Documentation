@@ -1,0 +1,10 @@
+[[device-interrupt-types]]
+=== Device Interrupt Types
+
+For the bridge chip, AC97 DMA interrupts are edge triggered, gpio interrupts can be configured to be level triggered or edge triggered as needed, and the rest of the interrupts are level triggered and active high.
+
+For PCIE devices, one way is to use the interrupt line of the PCIE controller inside the bridge to transmit the interrupt; 
+the other way is to use the MSI interrupt of the PCIE device directly.
+
+In the PCIE MSI interrupt method, when the PCIE controller inside the bridge receives an MSI interrupt, it converts it directly into an HT interrupt message packet to send to the HT controller. 
+Therefore, the software needs to be careful to distinguish the MSI interrupt vector of the PCIE device from the HT interrupt vector configured by the internal device of the bridge. 

@@ -1,0 +1,115 @@
+[[section-pll0-configuration-register]]
+=== `PLL0` Configuration Register
+
+Please refer to Section 2.5 PLL Configuration Method for the specific usage of PLL.
+This register is used to set PLL0, where output clock 1 is used to generate the 125MHz clock required by the GMAC, and output clock 0
+
+is used to generate the controller clock for USB/SATA.
+
+Offset Address: `0480`-`0483h`
+
+Attribute: R/W
+
+Default value: `0000_0000h`
+
+Size: `32` bits
+
+This register contains configuration information related to pin multiplexing.
+
+[[pll0-configuration-register-1]]
+.PLL0 configuration register 1
+[%header,cols="^1m,^2m,^1,3"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:30
+|Reserved
+|R/W
+|Reserved
+
+|29:21
+|pll_loopc
+|R/W
+|`PLL` Multiplier
+
+|20:14
+|pll_div_out2
+|R/W
+|`PLL` output clock `2` divisions
+
+|13:7
+|pll_div_out1
+|R/W
+|`PLL` output clock `1` division
+
+|6:0
+|pll_div_out0
+|R/W
+|`PLL` output clock `0` divisions
+|===
+
+Offset Address: `0484`-`0487h`
+
+Attribute: R/W
+
+Default value: `0000_0000h`
+
+Size: `32` bits
+
+[[pll0-configuration-register-2]]
+.PLL0 configuration register 2
+[%header,cols="^1m,^2m,^1,3"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:14
+|Reserved
+|R/W
+|Reserved
+
+|13
+|pll_pd
+|R/W
+|PLL powerdown
+
+|12
+|pll_bypass
+|R/W
+|PLL internal bypass
+
+|11
+|set_pll_param
+|R/W
+|Set `PLL` configuration parameters
+
+|10
+|sel_pll_out2
+|R/W
+|Select `PLL` output clock `2`
+
+|9
+|sel_pll_out1
+|R/W
+|Select `PLL` output clock `1`
+
+|8
+|sel_pll_out0
+|R/W
+|Select `PLL` Output Clock `0`
+
+|7
+|pll_locked
+|RO
+|`PLL` Lock
+
+|6:0
+|pll_div_ref
+|R/W
+|`PLL` Input Frequency Division Number
+|===

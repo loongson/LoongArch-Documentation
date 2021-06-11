@@ -1,0 +1,8 @@
+[[gmac-controller]]
+== GMAC Controller (`D3:F0`, `D3:F1`)
+
+The bridge integrates two GMAC controllers, which have the same functions.
+
+Note: See <<notes-on-the-use-of-the-software,Notes on the Use of the Software>> for software enablement of 64-bit DMA for the GMAC controllers.
+
+include::gmac-controller/gmac-configuration-register.adoc[]

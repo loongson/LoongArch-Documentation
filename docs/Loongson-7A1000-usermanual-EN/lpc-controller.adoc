@@ -1,0 +1,21 @@
+[[lpc-controller]]
+== LPC Controller (`D23:F0`)
+
+The LPC controller has the following features.
+
+* Compliant with LPC1.1 specification
+* Supports LPC access timeout counter
+* Supports Memory Read/Write access type
+* Supports Firmware Memory Read/Write access type (single byte)
+* Support I/O read/write access type
+* Support TPM I/O read/write access type
+* Support Memory access type address conversion
+* Support Serial IRQ specification, support 17 interrupt sources
+
+include::lpc-controller/lpc-configuration-register.adoc[]
+
+include::lpc-controller/lpc-access-address.adoc[]
+
+include::lpc-controller/lpc-interrupt.adoc[]
+
+include::lpc-controller/lpc-control-register.adoc[]

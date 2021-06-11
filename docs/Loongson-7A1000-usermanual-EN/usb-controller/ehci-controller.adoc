@@ -1,0 +1,4 @@
+[[ehci-controller]]
+=== EHCI Controller
+
+include::ehci-controller/ehci-configuration-register.adoc[]

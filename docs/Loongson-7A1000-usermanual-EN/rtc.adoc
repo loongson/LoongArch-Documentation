@@ -1,0 +1,16 @@
+[[rtc]]
+== RTC
+
+The **R**eal **T**ime **C**lock (RTC) unit can be configured when the motherboard is powered up, and when the motherboard is powered down, the unit still operates and can run normally on the on-board battery power alone.
+The RTC unit operates with only a few microamps of current.
+
+The RTC contains an oscillator, which in combination with an external `32.768KHZ` crystal generates the operating clock.
+This clock is used for time information maintenance and is used to maintain time information and to generate various timing and counting interrupts.
+
+The RTC module contains two counters, the TOY (Time of Year) counter and the RTC counter.
+The TOY counter counts in years, months, hours, minutes and seconds with an accuracy of `0.1s`.
+The RTC counter counts at `32.768KHz` and is 32-bit length.
+
+include::rtc/access-address.adoc[]
+
+include::rtc/description-of-registers.adoc[]

@@ -1,0 +1,601 @@
+[[description-of-registers-2]]
+=== Description of Registers
+
+*Data register (DAT)*
+
+Offset: `0x00`
+
+Reset value: `0x00`
+
+[[table-uart-function-reuse]]
+.UART function reuse
+[%header,cols="1m,^1m,^1,3m"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7:0
+|Tx FIFO
+|8
+|W
+|Data Transfer Register
+|===
+
+*Interrupt enable register (IER)*
+
+Offset: `0x01`
+
+Reset value: `0x00`
+
+[[interrupt-enable-register-ier]]
+.Interrupt enable register (IER)
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7:4
+|Reserved
+|4
+|R/W
+|Reserved
+
+|3
+|IME
+|1
+|R/W
+|Modem Status Interrupt Enable
+
+`0`: off
+
+`1`: On
+
+|2
+|ILE
+|1
+|R/W
+|Receiver line status interrupt enable
+
+`0`: off
+
+`1`: Open
+
+|1
+|ITxE
+|1
+|R/W
+|Transmission save register is air break enable
+
+`0`: off
+
+`1`: open
+
+|0
+|IRxE
+|1
+|R/W
+|Receive valid data interrupt enable
+
+`0`: off
+
+`1`: Open
+|===
+ 
+*Interrupt identification register (IIR)*
+
+Offset: `0x02`
+
+Reset value: `0xc1`
+
+[[interrupt-identification-register-iir]]
+.Interrupt identification register (IIR)
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7:4
+|Reserved
+|4
+|R
+|Reserved
+
+|3:1
+|II
+|3
+|R
+|Interrupt source indication bits, see the following table for details
+
+|0
+|INTp
+|1
+|R
+|Interrupt bits
+|===
+
+Interrupt control menu
+
+[[interrupt-control-menu]]
+.Interrupt control menu
+[%header,cols="1m,^1m,^1m,^1m,2,2,2"]
+|===
+|Bit 3
+|Bit 2
+|Bit 1
+|Priority
+|Interrupt Type
+|Interrupt Source
+|Interrupt Reset Control
+
+|0
+|1
+|1
+|1st
+|Receive line status
+|parity, overflow or frame errors.
+|Read LSR
+
+|0
+|1
+|0
+|2nd
+|Valid data received
+|or interrupt interrupt
+|The number of characters in the FIFO is lower than the value of the trigger
+
+|1
+|1
+|0
+|2nd
+|Receive timeout
+|The number of characters in the FIFO reaches the level of a trigger
+|Read the receive FIFO
+
+|0
+|0
+|1
+|3rd
+|Transmission save register is empty
+|There is at least one character in the FIFO, but no operation, including read and write operations, within 4 characters
+|Write data to THR or multi-IIR
+
+|0
+|0
+|0
+|4th
+|Modem Status
+|Transfer save register is empty
+|Read MSR
+|===
+
+*FIFO control register (FCR)*
+
+Offset: `0x02`
+
+Reset value: `0xc0`
+
+[[fifo-control-register-fcr]]
+.FIFO control register (FCR)
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7:6
+|TL
+|2
+|W
+|Receive trigger value for interrupt request from FIFO
+
+`00b`: `1` byte
+
+`01b`: `4` bytes
+
+`10b`: `8` bytes
+
+`11b`: `14` bytes
+
+|5:3
+|Reserved
+|3
+|W
+|Reserved
+
+|2
+|Txset
+|1
+|W
+|Clears the contents of the transmit FIFO and resets its logic
+
+|1
+|Rxset
+|1
+|W
+|Clears the contents of the receive FIFO and resets its logic
+
+|0
+|Reserved
+|1
+|W
+|Reserved
+|===
+
+*Line control register (LCR)*
+
+Offset: `0x03`
+
+Reset value: `0x03`
+
+[[line-control-register-lcr]]
+.Line control register (LCR)
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7
+|dlab
+|1
+|R/W
+|Crossover latch access bits
+
+`1`: Access to operate the divider latch.
+
+`0`: Access to operate the normal register.
+
+|6
+|bcb
+|1
+|R/W
+|Interrupt control bit
+
+`1`: The output of the serial port is set to `0` (interrupt state) at this time.
+
+`0`: Normal operation.
+
+|5
+|spb
+|1
+|R/W
+|Specify the parity bit
+
+`0`: No parity bit is specified.
+
+`1`: If the `LCR[4]` bit is `1`, the transmit and check parity bit is `0`. If the LCR[4] bit is `0`, the transmit and check parity bit is 1. If the `LCR[4]` bit is `0`, then the transmit and check parity bit is `1`.
+
+|4
+|eps
+|1
+|R/W
+|Parity Bit Selection
+
+`0`: Odd number of 1's per character (including data and parity bits).
+
+`1`: Even 1's in each character.
+
+|3
+|pe
+|1
+|R/W
+|Parity bit enable
+
+`0`: No parity bit.
+
+`1`: Parity bit is generated at output, and parity bit is judged at input.
+
+|2
+|sb
+|1
+|R/W
+|Define the number of bits to generate stop bits
+
+`0`: `1` stop bit.
+
+`1`: `1.5` stop bits at `5-bit` character length, `2` stop bits at other lengths.
+
+
+|1:0
+|bec
+|2
+|R/W
+|Set the number of bits per character
+
+`00b`: `5` bits.
+
+`01b`: `6` bits.
+
+`10b`: `7` bits.
+
+`11b`: `8` bits.
+|===
+
+*MODEM control register (MCR)*
+
+Offset:`0x04`
+
+Reset value:`0x00`
+
+[[modem-control-register-mcr]]
+.MODEM control register (MCR)
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7:5
+|Reserved
+|3
+|W
+|Reserved
+
+|4
+|Loop
+|1
+|W
+|Loopback mode control bits
+
+`0`: Normal operation.
+
+`1`: Loopback mode.
+
+In loopback mode, the TXD output is always 1 and the output shift register is connected directly to the input shift register. Other connections are as follows: DTR - DSR
+RTS - CTS Out1 - RI
+Out2 - DCD
+
+|3
+|OUT2
+|1
+|W
+|Connects to the DCD input in loopback mode
+
+|2
+|OUT1
+|1
+|W
+|Connects to the RI input in loopback mode
+
+|1
+|RTSC
+|1
+|W
+|RTS signal control bit
+
+|0
+|DTRC
+|1
+|W
+|DTR signal control bit
+|===
+
+*Line status register (LSR)*
+
+Offset:`0x05`
+
+Reset value:`0x00`
+
+[[line-status-register-lsr]]
+.Line status register (LSR)
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7
+|ERROR
+|1
+|R
+|Error indication bit
+
+`0`: No errors.
+
+`1`: At least one of parity bit error, frame error or interrupt interrupt.
+one.
+
+|6
+|TE
+|1
+|R
+|Transfer to empty indicates bit
+
+`0`: Data is available.
+
+`1`: Both the transmit FIFO and the transmit shift register are empty. Clear when writing data to the transfer
+FIFO is cleared when writing data to the FIFO.
+
+|5
+|TFE
+|1
+|R
+|Transfer FIFO bit null indicates bit
+
+`0`: Data is available.
+
+`1`: The current transmit FIFO is empty and is cleared when writing data to the transmit FIFO.
+
+|4
+|BI
+|1
+|R
+|Interrupt interrupt indication bit
+
+`0`: No interrupt.
+
+`1`: Received Start bit + data + parity bit + stop bit are
+`0`, i.e., there is an interrupt interrupt .
+
+|3
+|FE
+|1
+|R
+|Frame error indication bits
+`0`: There are no errors.
+`1`: The received data has no stop bit.
+
+|2
+|PE
+|1
+|R
+|Parity bit error indication bit
+
+`0`: There is no parity error.
+
+`1`: There is a parity error in the current received data.
+
+|1
+|OE
+|1
+|R
+|Data overflow indication bit
+
+`0`: No overflow.
+
+`1`: There is data overflow.
+ 
+
+
+|0
+|DR
+|1
+|R
+|Receive data valid indication bit
+
+`0`: No data in the FIFO.
+
+`1`: There is data in the FIFO.
+|===
+
+When reading this register, LSR[4:1] and LSR[7] are cleared to zero, LSR[6:5] is cleared when writing data to the transmit FIFO, and LSR[0] is judged for the receive FIFO.
+
+*MODEM status register (MSR)*
+
+Offset: `0x06`
+
+Reset value: `0x00`
+
+[[modem-status-register-msr]]
+.MODEM status register (MSR)
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7
+|CDCD
+|1
+|R
+|The inverse of the DCD input value, or to Out2 in loopback mode
+
+|6
+|CRI
+|1
+|R
+|The inverse of the RI input value, or to OUT1 in loopback mode
+
+|5
+|CDSR
+|1
+|R
+|The inverse of the DSR input value, or to DTR in loopback mode
+
+|4
+|CCTS
+|1
+|R
+|The inverse of the `CTS` input value, or to RTS in loopback mode
+
+|3
+|DDCD
+|1
+|R
+|DDCD indication bit
+
+|2
+|TERI
+|1
+|R
+|RI edge detection, `RI` state changes from low to high
+
+|1
+|DDSR
+|1
+|R
+|DDSR indication bit
+
+|0
+|DCTS
+|1
+|R
+|DCTS indication bit
+|===
+
+
+*Frequency divider latch*
+
+Offset: `0x00`
+
+Reset value: `0x00`
+
+[[frequency-divider-latch-1]]
+.Frequency divider latch 1
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7:0
+|LSB
+|8
+|R/W
+|Store the lower `8` bits of the divider latch
+|===
+
+
+Offset:0x01
+
+Reset value:0x00
+
+[[frequency-divider-latch-2]]
+.Frequency divider latch 2
+[%header,cols="1m,^1m,^1m,^1,4"]
+|===
+|Bit Field
+|Name
+|Length
+|Read/Write
+|Description
+
+|7:0
+|MSB
+|8
+|R/W
+|Store the high `8` bits of the divider latch
+|===
+
+The value of the crossover latch `{MSB,LSB}` is calculated as 50MHz/16/baud rate. For example, if you want to configure a serial port baud rate of 115200, the value of the divider latch = 50,000,000/16/115,200 &#8776; 27.

@@ -1,0 +1,398 @@
+[[description-of-registers-1]]
+=== Description of Registers
+
+[[hpet-register-list]]
+.HPET register list
+[%header,cols="^2m,5"]
+|===
+|Register Offset Address
+|Description
+
+|000-007h
+|General Capabilities and ID Register
+
+|008-00Fh
+|Reserved
+
+|010-017h
+|General Configuration Register
+
+|018-01Fh
+|Reserved
+
+|020-027h
+|General Interrupt Status Register
+
+|028-0EFh
+|Reserved
+
+|0F0-0F7h
+|Main Counter Value Register
+
+|100-107h
+|Timer `0` Configuration and Capability Register
+
+|108-10Fh
+|Timer `0` Comparator Value Register
+
+|110-11Fh
+|Reserved
+
+|120-127h
+|Timer `1` Configuration and Capability Register
+
+|128-12Fh
+|Timer `1` Comparator Value Register
+
+|130-13Fh
+|Reserved
+
+|140-147h
+|Timer `2` Configuration and Capability Register
+
+|148-14Fh
+|Timer `2` Comparator Value Register
+
+|150-15Fh
+|Reserved
+|===
+
+*General Capabilities and ID Register*
+
+Address Offset: `00`-`07h`
+
+Attribute: RO
+
+Default value: See description
+
+Size:`8`
+
+[[general-capabilities-and-id-register]]
+.General capabilities and id register
+[%header,cols="^1m,^1m,3,1"]
+|===
+|Bit Field
+|Name
+|Description
+|Read/Write
+
+|63:32
+|COUNTER_CLK_PERIOD
+|Timing frequency of the master timer in fps (`10^-15s`).
+Default value: `1312D00h` (`20ns` clock period).
+|RO
+
+|31:16
+|VENDOR_ID
+|Manufacturer ID. value: `0014h`
+|RO
+
+|15:14
+|Reserved
+|Reserved
+|RO
+
+|13
+|COUNT_SIZE_CAP
+|The width of the master timer. This chip is a `64`-bit master timer. Value: `1b`.
+
+`0`: `32` bits 
+
+`1`: `64` bits
+|RO
+
+|12:8
+|NUM_TIM_CAP
+|Number of timers; the value of this field indicates the number of the last timer. This chip contains `3` timers.
+
+This chip contains `3` timers. Value: `2h`.
+|RO
+
+|7:0
+|REV_ID
+|Version number; value: `02h`
+|RO
+|===
+
+*General Configuaration Register*
+
+Address Offset: `10`-`17h`
+
+Attribute: RO, R/W
+
+Default value: 0h
+
+Size:8
+
+[[general-configuaration-register]]
+.General configuaration register
+[%header,cols="^1m,^1m,3,1"]
+|===
+|Bit Field
+|Name
+|Description
+|Read/Write
+
+|63:1
+|Reserved
+|Reserved
+|RO
+
+|0
+|ENABLE_CNF
+|HPET enable control.
+
+`0`: the main timer stops timing and all timers are no longer generating interrupts.
+
+`1`: the main timer counts and the timers are allowed to generate interrupts.
+|
+|R/W
+|===
+
+*General Interrupt Status Register*
+
+Address Offset: `20`-`27h`
+
+Attribute: RO, R/WC
+
+Default value: `0h`
+
+Size:8
+
+[[general-interrupt-status-register]]
+.General interrupt status register
+[%header,cols="^1m,^1m,3,1"]
+|===
+|Bit Field
+|Name
+|Description
+|Read/Write
+
+|63:3
+|Reserved
+|Reserved
+|RO
+
+|2
+|T2_INT_STS
+|Timer `2` interrupt status. Same function as `T0_INT_STS`.
+|R/WC
+
+|1
+|T1_INT_STS
+|Timer `1` interrupt status. Same function as `T0_INT_STS`.
+|R/WC
+
+
+|0
+|T0_INT_STS
+|Timer `0` interrupt state.
+
+When the timer's interrupt trigger mode is level-triggered, this timer defaults to `0`.
+When the corresponding timer interrupt occurs, then the hardware will set it to `1`. Once set, software writing `1` to this timer will clear it. Once it is set, software writing `1` to this timer will clear this timer. Writing `0` to this timer will be meaningless.
+When the interrupt triggering mode of the timer is edge triggering mode.
+Software will ignore this bit. Software usually writes `0` to this bit.
+|R/WC
+|===
+
+The interrupt trigger mode of each timer is determined by the `Tn_TYPE_CNF` bit of the respective Configuartion and Capability register.
+
+*Main Counter Value Register*
+
+Address Offset: `F0`-`F7h`
+
+Attribute: R/W
+
+Default value: `0h`
+
+Size:`8`
+
+[[main-counter-value-register]]
+.Main counter value register
+[%header,cols="^1m,^1m,3,1"]
+|===
+|Bit Field
+|Name
+|Description
+|Read/Write
+
+|63:0
+|Main_Counter
+|Master timer. Modifying the value of this register is only allowed when the main timer stops timing.
+|R/W
+|===
+
+*Timer 0 Configuration and Capabilities Registe*
+
+Address Offset: `100`-`107h`
+
+Attribute: RO, R/W
+
+Default value: `10h`
+
+Size:`8`
+
+[[timer-0-configuration-and-capabilities-registe]]
+.Timer 0 configuration and capabilities registe
+[%header,cols="^1m,^1m,3,1"]
+|===
+|Bit Field
+|Name
+|Description
+|Read/Write
+
+|63:9
+|Reserved
+|Reserved
+|RO
+
+|8
+|T0_32MODE_CNF
+|Timer `0` 32-bit mode configuration. When the timer is 64-bit, the software
+writes 1 to this bit to use the timer as a 32-bit. This version of the timer does not support 64-bit, and the bit is not writable.
+|RO
+
+|7
+|Reserved
+|Reserved
+|RO
+
+|6
+|T0_VAL_SET_CNF
+|Timer `0` value setting. Only timers that can generate periodic interrupts will use this field. By writing `1` to this field, software can directly modify the periodic
+The software can directly modify the accumulator for the periodic period by writing `1` to this field. Software does not need to clear `0` to this field.
+|R/W
+
+|5
+|T0_SIZE_CAP
+|Timer 0 Width indication.
+
+`0`: 32-bit width
+
+`1`: 64-bit width
+|RO
+
+|4
+|T0_PER_INT_CAP
+|Timer `0` Periodic interrupt indication.
+
+`1`: the timer is capable of generating periodic interrupts.
+
+`0`: the timer is not capable of generating periodic interrupts.
+|RO
+ 
+|3
+|T0_TYPE_CNF
+|Timer 0 cycle interrupt configuration.
+If the corresponding `T0_PER_INT_CAP` bit is `0`, then this bit is read-only and defaults to `0`.
+If the corresponding `T0_PER_INT_CAP` bit is `1`, then this bit is readable and writable. It is used to enable the corresponding timer to generate periodic interrupts.
+`1`: Enable the timer to generate periodic interrupts
+
+`0`: Enable the timer to generate non-periodic interrupts
+|R/W
+
+|2
+|T0_INT_ENB_CNF
+|Enable Timer `0` to generate interrupts
+|R/W
+
+|1
+|T0_INT_TYPE_CNF
+|Timer `0` interrupt type configuration.
+
+`0`: The interrupt triggering mode of the timer is edge triggered; this means that the corresponding timer will generate an edge triggered interrupt. If another interrupt is generated, then another edge will be generated.
+`1`: The interrupt trigger mode of the timer is level triggered; this means that the corresponding timer will generate a level triggered interrupt. This interrupt will remain active
+until it is cleared by software (General Interrupt Status Register).
+|R/W
+
+|0
+|Reserved
+|Reserved
+|RO
+|===
+
+*Timer 0 Comparator Value Register*
+
+Address Offset: `108`-`10Fh`
+
+Attribute: R/W
+
+Default value: `FFFFFFFFh`
+
+Size:`8`
+
+[[timer-0-comparator-value-register]]
+.Timer 0 comparator value register
+[%header,cols="^1m,^1m,3,1"]
+|===
+|Bit Field
+|Name
+|Description
+|Read/Write
+
+|63:32
+|Reserved
+|Reserved
+|RO
+
+|31:0
+|T0_Com_VAL
+|The value of the timer `0` comparator.
+When the corresponding timer is configured in non-periodic mode.
+the value of this register will be compared with the value of the main timer register.
+If the value of the main timer is equal to the value of the comparator, a timing interrupt is generated (if; the corresponding interrupt enable is on).
+The comparator value will not change due to the interrupt generation If the corresponding timer is configured in periodic mode.
+interrupt is generated when the value of the comparator in the value field of the main timer is equal (if; the corresponding interrupt enable is turned on).
+If an interrupt is generated, then the comparator value is accumulated from the last software write to the comparator. For example, when the comparator value is written to `0x0123h`
+then an interrupt is generated when the value of the main timer is 0x123h; the comparator value is modified by hardware to `0x246h`.
+When the value of the main timer reaches `0x246h`, another interrupt is generated; the comparator value is modified by hardware to `0x369h`.
+Whenever an interrupt is generated, the comparator value will be accumulated; until the comparator value reaches the maximum (`0xffffffff`), then the accumulator value will continue to accumulate. For example, when the comparator value is `FFFF0000h`, and the last time the comparator was written by software, the value is `20000`.
+When the interrupt occurs, the comparator value becomes `00010000h`.
+|R/W
+|===
+
+*Timer 1 Configuration and Capabilities Registe*
+
+Address Offset: `120`-`127h`
+
+Attribute: RO, R/W
+
+Default value: `00h`
+
+Size:`8`
+Timer 1 configuration and function registers. Same as Timer 0.
+
+*Timer 1 Comparator Value Register*
+
+Address Offset: `128`-`12Fh`
+
+Attribute: R/W
+
+Default value: `FFFFFFFFh`
+
+Size:`8`
+Timer 1 comparator value. Same as Timer 0.
+
+*Timer 2 Configuration and Capabilities Registe*
+
+Address Offset: `140`-`147h`
+
+Attribute: RO, R/W
+ 
+Default value: `00h`
+
+Size:`8`
+
+Timer 2 configuration and function registers. Same as Timer 0.
+
+*Timer 2 Comparator Value Register*
+
+Address Offset: `148`-`14Fh`
+
+Attribute: R/W
+
+Default value: `FFFFFFFFh`
+
+Size:`8`
+
+Timer 2 comparator value. Same as Timer 0. 

@@ -1,0 +1,12 @@
+[[bridge-and-system-clock]]
+== Bridge and System Clock
+
+include::bridge-and-system-clock/bridge-clock.adoc[]
+
+include::bridge-and-system-clock/clock-related-configuration-pins.adoc[]
+
+include::bridge-and-system-clock/description-of-clock-function.adoc[]
+
+include::bridge-and-system-clock/description-of-pll-function.adoc[]
+
+include::bridge-and-system-clock/configuration-method-of-pll.adoc[]

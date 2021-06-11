@@ -1,0 +1,313 @@
+[[pin-multiplexing-configuration-register]]
+=== Pin Multiplexing Configuration Register
+
+Offset Address: `0440`-`0443h`
+
+Attribute: R/W
+
+Default value: `FFFF_FFFFh`
+
+Size: `32` bits
+
+This register contains configuration information related to pin multiplexing.
+
+[[table-pin-multiplexing-configuration-register]]
+.Pin multiplexing configuration register
+[%header,cols="^1m,^2m,^1,3"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31	
+|uart3_enable	
+|R/W
+|`UART` operating mode selection for pin `UART_RI/DCD` (when selected as `UART` mode)
+
+`0`: use or not is determined by bit28
+
+`1`: Operates in two-wire UART3 mode
+
+|30	
+|uart2_enable	
+|R/W
+|UART operating mode selection for pin UART_DTR/DSR (when selected as UART mode)
+
+`0`: use or not is determined by bit28
+
+`1`: Operates in two-wire UART2 mode
+
+|29	
+|uart1_enable	
+|R/W
+|UART operating mode selection for pin UART_RTS/CTS (when selected as UART mode)
+
+`0`: use or not is determined by bit28
+
+`1`: Operates in two-wire UART1 mode
+
+|28	
+|uart0_full_func	
+|R/W
+|UART operating mode selection for pin UART_TXD/RXD (when UART mode is selected)
+
+`0`: Operates in two-wire UART0 mode
+
+`1`: Working in full-function UART0 mode
+
+When bit[31:29] is not equal to 0, regardless of the value of this bit, UART_TXD/RXD
+
+operates in two-wire UART mode regardless of the value of the bit.
+
+|27	
+|clkoutflex_sel	
+|R/W
+|Operating mode selection for pin CLKOUTFLEX
+
+`0`: working in GPIO mode
+
+`1`: Operates in CLKOUTFLEX mode
+
+|26	
+|clkout25m_sel	
+|R/W
+|Operating mode selection for pin CLKOUT25M
+
+`0`: working in GPIO mode
+
+`1`: Operating in CLKOUT25M mode
+
+|25	
+|lpc_sel	
+|R/W
+|Operating mode selection for LPC pins (LPC_AD0–3/LPC_SERIRQ/LPC_FRAMEn)
+
+`0`: working in GPIO mode
+
+`1`: Working in LPC mode
+
+|24	
+|uart_dtr_dsr_sel_i2 c	
+|R/W
+|Operating mode selection for pin UART_DTR/DSR (determined together with bit20)
+
+[bit24, bit20].
+
+00b: working in GPIO mode
+
+x1b: working in UART mode (decided by bit[31:28] whether to work in full function mode)
+
+10b: working in I2C mode
+
+|23	
+|uart_ri_dcd_sel_i2c	
+|R/W
+|Operating mode selection for pin UART_RI/DCD (determined together with bit19)
+
+[bit23, bit19].
+
+00b: working in GPIO mode
+
+x1b: working in UART mode (decided by bit[31:28] whether to work in full function mode)
+
+10b: working in I2C mode
+
+|22
+|uart_txd_rxd_sel_u art	
+|R/W
+|Operating mode selection for pin UART_TXD/RXD
+
+`0`: working in GPIO mode
+
+`1`: working in UART mode (the bit[31:28] determines whether to work in full function mode)
+
+|21
+|uart_rts_cts_sel_ua rt	
+|R/W
+|Operating mode selection for pin UART_RTS/CTS
+
+`0`: working in GPIO mode
+
+`1`: working in UART mode (determined by bit[31:28] whether to work in full function mode)
+
+|20	
+|uart_dtr_dsr_sel_u art	
+|R/W
+|Operating mode selection for pin UART_DTR/DSR (determined together with bit24)
+
+[bit24, bit20].
+
+00b: working in GPIO mode
+
+x1b: working in UART mode (decided by bit[31:28] whether to work in full function mode)
+
+10b: working in I2C mode
+
+|19	
+|uart_ri_dcd_sel_uar t	
+|R/W
+|Operating mode selection for pin UART_RI/DCD (determined together with bit23)
+
+[bit23, bit19].
+
+00b: working in GPIO mode
+
+x1b: working in UART mode (decided by bit[31:28] whether to work in full function mode)
+
+10b: working in I2C mode
+
+|18	
+|usb_oc2_sel	
+|R/W
+|Operating mode selection for pin `USB_OC2`
+
+`0`: working in `GPIO` mode
+
+`1`: Working in `USB_OC` mode
+
+|17	
+|usb_oc1_sel	
+|R/W
+|Operating mode selection for pin USB_OC1
+
+`0`: working in `GPIO` mode
+
+`1`: Working in `USB_OC` mode
+
+|16	
+|usb_oc0_sel	
+|R/W
+|Operating mode selection for pin USB_OC0
+
+`0`: working in `GPIO` mode
+
+`1`: working in `USB_OC` mode
+
+|15	
+|sata2_ledn_sel	
+|R/W
+|Operating mode selection for pin SATA2_LEDn
+
+`0`: working in `GPIO` mode
+
+`1`: Operates in `SATA` mode
+
+|14	
+|sata1_ledn_sel	
+|R/W
+|Operating mode selection for pin `SATA1_LEDn`
+
+`0`: working in `GPIO` mode
+
+`1`: Operates in `SATA` mode
+
+|13	
+|sata0_ledn_sel	
+|R/W
+|Operating mode selection for pin `SATA0_LEDn`
+
+`0`: working in `GPIO` mode
+
+`1`: Operates in `SATA` mode
+
+|12:11	
+|hda_ac97_sel	
+|R/W
+|Operating mode selection for `HDA` pins. For the pins
+
+`HDA_BITCLK/HDA_SYNC/HDA_RESETn/HDA_SDO/HDA_SDI0`, the operating mode is determined by bit`[12:11]`: `00b`: `GPIO` mode
+
+`10b`: `AC97` mode
+
+`x1b`: `HDA` mode
+
+For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`: GPIO mode
+
+`1`: `HDA` mode
+
+|10	
+|spi_sel	
+|R/W
+|Operating mode selection for pin `SPI_SCK/SDI/SDO`
+
+`0`: Operates in `GPIO` mode
+
+`1`: Operates in `SPI` mode
+
+|9:8	
+|spi_csn_23_sel_spi	
+|R/W
+|Operating mode selection for pin `SPI_CSn2/3 00b`: operates in GPIOmode
+
+`x1b`: working in `SPI` mode
+
+`10b`: Operating in `I2C` mode
+
+|7:6	
+|spi_csn_01_sel_spi	
+|R/W
+|Operating mode selection for pin `SPI_CSn0/1` 00b: Operates in GPIO mode
+
+`x1b`: working in `SPI` mode
+
+`10b`: Operating in `I2C` mode
+
+|5	
+|i2c1_sel	
+|R/W
+|Operating mode selection for pin `I2C1_SCL/SDA`
+
+`0`: working in GPIO mode
+
+`1`: Working in I2C mode
+
+|4	
+|i2c0_sel	
+|R/W
+|Operating mode selection for pin `I2C0_SCL/SDA`
+
+`0`: working in `GPIO` mode
+
+`1`: Working in `I2C` mode
+
+|3	
+|pwm3_sel	
+|R/W
+|Operating mode selection for pin `PWM3`
+
+`0`: Operates in `GPIO` mode
+
+`1`: Operates in `PWM` mode
+
+|2	
+|pwm2_sel	
+|R/W
+|Operating mode selection for pin `PWM2`
+
+`0`: Operates in `GPIO` mode
+
+`1`: Operates in `PWM` mode
+
+|1	
+|pwm1_sel	
+|R/W
+|Operating Mode Selection for Pin `PWM1`
+
+`0`: Operates in `GPIO` mode
+
+`1`: Operates in `PWM` mode
+
+|0	
+|pwm0_sel	
+|R/W
+|Operating mode selection for pin `PWM0`
+
+`0`: Operates in `GPIO` mode
+
+`1`: Operates in `PWM` mode
+|===
+
+The multiplexing relationship between the VSB_GATEn pin and GPIO01 is configured by the internal register (PMCON_RESUME) of the power management module, see 12.3 Register Description.
+
+See the chip pin multiplexing table in Appendix 1 for a cross-reference to the chip pin multiplexing table.

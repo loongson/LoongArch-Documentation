@@ -28,7 +28,9 @@ You can view the original document https://github.com/loongson/LoongArch-Documen
 
 * Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
 
-* Loongson 7A1000 Bridge User Manual: This manual describes the overall bridge architecture, clock structure, address space, configuration registers, and individual functional interfaces, primarily for BIOS and kernel developers.
+* https://loongson.github.io/LoongArch-Documentation/Loongson-7A1000-usermanual-EN[Loongson 7A1000 Bridge User Manual]: This manual describes the overall bridge architecture, clock structure, address space, configuration registers, and individual functional interfaces, primarily for BIOS and kernel developers.
++
+You can view the original document https://github.com/loongson/LoongArch-Documentation/blob/main/docs/CN/Loongson-7A1000-usermanual-v2.0-CN.pdf[here].
 
 == Translator`'s Note
 

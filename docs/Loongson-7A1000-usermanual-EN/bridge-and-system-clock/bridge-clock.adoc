@@ -1,0 +1,97 @@
+[[bridge-clock]]
+=== Bridge Clock
+The bridge requires a `100Mhz` clock and a `32.768` K crystal as reference clock input (and a `33Mhz` clock input if using the LPC bus)
+
+[[bridge-block-input]]
+.Bridge clock
+[%header,cols="^2m,^1m,3"]
+|===
+|Clock
+|Frequency
+|Description
+
+|RTC_XO
+|32.768KHz
+|`32.768KHz` Crystal Output
+
+|TESTCLK
+|-
+|Reserved
+
+|LPC_CLKIN
+|33Mhz
+|LPC `33Mhz` reference clock, unconnected when not using LPC interface
+
+|HTCLKp/n
+|200Mhz
+|HT `200Mhz` differential reference clock, unconnected
+
+|PCIE_F0_CLKINp/n
+|100Mhz
+|PCIE_F0 `100Mhz` differential reference clock, unconnected
+
+|PCIE_F1_CLKINp/n
+|100Mhz
+|PCIE_F1 `100Mhz` differential reference clock, unconnected
+
+|PCIE_H_CLKINp/n
+|100Mhz
+|PCIE_H `100Mhz` differential reference clock, unconnected
+
+|PCIE_G0_CLKINp/n
+|100Mhz
+|PCIE_G0 `100Mhz` differential reference clock, can be left unconnected
+
+|PCIE_G1_CLKINp/n
+|100Mhz
+|PCIE_G1 `100Mhz` differential reference clock, unconnectable
+
+|SATA0_CLKINp/n
+|100Mhz
+|SATA0 `100Mhz` differential reference clock, do not connect
+
+|SATA1_CLKINp/n
+|100Mhz
+|SATA1 `100Mhz` differential reference clock, do not connect
+
+|SATA2_CLKINp/n
+|100Mhz
+|SATA2 `100Mhz` differential reference clock, do not connect
+
+|USB_XI
+|12Mhz
+|Reserved
+
+|USB_CLKIN
+|12Mhz
+|12Mhz crystal input
+|===
+
+Note: Input clocks not provided need to be grounded through a 10Kohm resistor.
+
+[[bridge-block-output]]
+.Birge clock output
+[%header,cols="^2m,^1m,3"]
+|===
+|Clock
+|Frequency
+|Description
+
+|CLKOUT33M
+|33.3MHz
+|33.3Mhz single-ended clock output. Can be used as a memory reference clock for the Loongson 3 processor.
+
+|CLKOUT100M
+|100Mhz
+|`100Mhz` single-ended clock output. Can be used as a reference clock for the HT for the Loongson 3 processor.
+
+|CLKOUT25M1
+|25Mhz
+|`25Mhz` single-ended clock output. Can be used as a core reference clock for the Loongson 3 processor.
+
+|CLKOUTFLEX1
+|Variable
+|Variable frequency single-ended clock output. Default is `100Mhz`.
+|===
+
+Note: 1. The CLKO`UT25M and `CLKOUTFLEX` pins can be multiplexed as GPIO functions.

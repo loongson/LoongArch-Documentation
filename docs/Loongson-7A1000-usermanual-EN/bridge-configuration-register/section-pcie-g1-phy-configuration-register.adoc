@@ -1,0 +1,54 @@
+[[section-pcie-g1-phy-configuration-register]]
+=== `PCIE_G1 PHY` Configuration Register
+This set of registers contains the control signals for PCIE_G1 PHY.
+
+Address Offset: `0608`-`060Bh`
+
+Attribute: `R/W,RO`
+
+Default value: `0006_0000h`
+
+Size: `32` bits
+
+[[pcie-g1-phy-configuration-register]]
+.PCIE_G1 PHY configuration register
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|31:30
+|Reserved
+|R/W
+|Reserved
+
+|27
+|cfg_x4_mode_en
+|R/W
+|Enable software to configure the operating mode of PCIE_G1
+
+0: the operating mode is determined by the hardware pins
+
+1: The operating mode is determined by the software configuration (bit26)
+
+|26
+|cfg_x4_mode
+|R/W
+|Software configuration of PCIE_G1 operating modes
+
+0: working in x8 mode
+
+1: working in x4 mode
+
+|25
+|phy_powerdown_hi
+|R/W
+|Set the high four bits of PHY to enter the low-power mode
+
+|24
+|phy_powerdown_lo
+|R/W
+|Set PHY low four bits to enter low-power mode
+|===

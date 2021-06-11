@@ -1,0 +1,73 @@
+[[section-sata1-phy-configuration-register]]
+=== `SATA1 PHY` Configuration Register
+
+This register is used to configure some control parameters of SATA1 PHY.
+
+Address Offset: `0750`-`0753h`
+
+Attribute: R/W
+
+Default value: `FF9F_0403h`
+
+Size: `32` bits
+
+[[sata1-phy-configuration-register-1]]
+.SATA1 PHY Configuration Register 1
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|3
+|Port_reset
+|R/W
+|Link Reset
+
+|2
+|PHY_reset
+|R/W
+|PHY Software Reset
+
+`0`: Release reset
+
+`1`: Hold reset
+
+|1
+|ref_use_pad
+|R/W
+|PHY Reference Clock Selection
+
+`0`: Use internal reference clock
+
+`1`: Use external reference clock
+
+|0
+|Reserved
+|R/W
+|Reserved
+|===
+
+Address Offset: `0754`-`0757h`
+
+Attribute: R/W
+
+Default value: `7FFF_FFFFh`
+
+Size: `32` bits
+
+[[sata1-phy-configuration-register-2]]
+.SATA1 PHY Configuration Register 2
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|31
+|Phy_power_down
+|R/W
+|PHY Powerdown
+|===

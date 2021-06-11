@@ -1,0 +1,21 @@
+[[usb-controller]]
+== USB Controller (`D4:F0/1`, `D5:F0/1`)
+
+The bridge contains two USB controllers, each containing three ports.
+
+The USB ports of the bridge have the following features.
+
+* Compatible with USB Rev 1.1, USB Rev 2.0 protocols
+* Compatible with OHCI Rev 1.0, EHCI Rev 1.0 protocols
+* Supports LS (Low Speed), FS (Full Speed) and HS (High Speed) USB devices
+* Works in Host mode, OTG mode is not supported
+
+Each USB controller module of the bridge includes an EHCI controller and an OHCI controller, with each EHCI controller and OHCI controller supporting 3 ports.
+The EHCI controller is used by default, and control is transferred to the OHCI controller only when the hooked up device is a full-speed or low-speed device.
+When a full-speed or low-speed device is unplugged, control is returned to the EHCI controller.
+
+Note: The `Memory Space Enable` control for the OHCI and EHCI device headers of USB devices requires special handling, see <<notes-on-the-use-of-the-software,Notes on the Use of the Software>>.
+
+include::usb-controller/ehci-controller.adoc[]
+
+include::usb-controller/ohci-controller.adoc[]

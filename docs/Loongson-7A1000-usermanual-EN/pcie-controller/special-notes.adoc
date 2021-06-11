@@ -1,0 +1,21 @@
+[[special-notes]]
+=== Special Notes
+
+*PCIE Capability*
+
+The maximum MPS (Max Payload Size) and MRRS (Max Read Request Size) supported by the integrated PCIE controller of the bridge are both 256 bytes.
+The MPS setting can be set under the BIOS through the PCI negotiation mechanism.
+Since there is no negotiation mechanism for MRRS, BIOS developers need to set the MRRS value of the device to a value no larger than 256 bytes.
+
+*PCIE MSI*
+
+On 3A+7A systems, the destination address for PCI MSI interrupts is `0xfdf8000000` or `0x2ff00000`.
+The bridge converts the MSI message packets sent by the device to these two address segments into HT interrupt message packets and sends them to the processor.
+
+*PCIE Controller Performance*
+
+The PCIE controllers integrated in the bridge are x8, x4, and x1.
+The P0 control port of `PCIE_G0`/`G1`/`H` is the x8 controller, the P0 port of `PCIE_F0`/`F1` and the P1 port of `PCIE_G0`/`G1`/`H` are the x4 controllers, and the P1/P2/P3 port of `PCIE_F0` and the P1 port of `PCIE_F1` are the x1 controllers.
+
+These three controllers have different numbers of internal flow-controlled buffers, with x8, x4, and x1 controllers decreasing in order, so for some high-bandwidth PCIE devices, using a controller with a larger number of flow-controlled buffers for the same data width will result in a performance improvement.
+Therefore, it is recommended to give preference to controllers with larger number of flow control buffers.

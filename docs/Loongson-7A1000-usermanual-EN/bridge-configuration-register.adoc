@@ -1,0 +1,243 @@
+[[bridge-configuration-register]]
+== Bridge Configuration Register
+
+The bridge chip sets up registers to configure certain features of the bridge chip that are not specific to a particular interface (PCIE, USB, etc.). These registers are arranged uniformly in the bridge's configuration register space (not the PCI configuration access space). The address space size of the bridge configuration registers is 64KB, and the starting address (internal space of the bridge) is configured by the BIOS.
+
+The bridge chip configuration registers contain the following.
+
+. Bridge chip general configuration (`0x0` – `0x47f`).
+
+. PLL configuration (0x480 – 0x4cf).
+
+. PCIE controller and PHY configuration (`0x580` – `0x617`).
+
+. SATA controller and PHY configuration (`0x740` – `0x76f`).
+
+. Memory capacity configuration registers (`0x3838` – `0x383f`).
+
+. Bridge ID (0x3ff8 – 0x3fff).
+
+[[bridge-configuration-register-list]]
+.Bridge configuration register list
+[%header,cols="^1m,^2m,^1,3"]
+|===
+|Address Offset
+|Name
+|Read/Write
+|Description
+
+|0x0418
+|HT_ROUTE
+|R/W
+|`HT` Routing Configuration
+
+|0x0420
+|FUNC_CONFIG0
+|R/W
+|General Configuration Register `0`
+
+|0x0430
+|FUNC_CONFIG1
+|R/W
+|General Configuration Register `1`
+
+|0x0440
+|PAD_CONFIG
+|R/W
+|`PAD` Multiplexing Configuration
+
+|0x0480
+|PLL_0
+|R/W
+|`PLL0` Configuration
+
+|0x0490
+|PLL_1
+|R/W
+|`PLL1` Configuration
+
+|0x04a0
+|PLL_2
+|R/W
+|`PLL2` Configuration
+
+|0x04b0
+|PLL_PIX_0
+|R/W
+|`PLL_PIX0` Configuration
+
+|0x04c0
+|PLL_PIX_1
+|R/W
+|`PLL_PIX1` Configuration
+
+|0x04d0
+|FREQSCALE
+|R/W
+|Device Frequency Division Configuration
+
+|0x0580
+|PCIE_F0_REG
+|R/W
+|`PCIE_F0` Configuration Register
+
+|0x0590
+|PCIE_F0_PHY
+|R/W
+|`PCIE_F0` PHY Configuration Access Register
+
+|0x05a0
+|PCIE_F1_REG
+|R/W
+|`PCIE_F1` Configuration Register
+
+|0x05b0
+|PCIE_F1_PHY
+|R/W
+|`PCIE_F1` PHY Configuration Access Register
+
+|0x0bc0
+|PCIE_H_REG
+|R/W
+|`PCIE_H` Configuration Register
+
+|0x05d0
+|PCIE_H_PHY_LO
+|R/W
+|`PCIE_H` PHY Lo Configuration Access Register
+
+|0x05d8
+|PCIE_H_PHY_HI
+|R/W
+|`PCIE_H` PHY Hi Configuration Access Register
+
+|0x05e0
+|PCIE_G0_REG
+|R/W
+|`PCIE_G0` Configuration Register
+
+|0x05f0
+|PCIE_G0_PHY_LO
+|R/W
+|`PCIE_G0` PHY Lo Configuration Access Register
+
+|0x05f8
+|PCIE_G0_PHY_HI
+|R/W
+|`PCIE_G0` PHY Hi Configuration Access Register
+
+|0x0600
+|PCIE_G1_REG
+|R/W
+|`PCIE_G1` Configuration Register
+
+|0x0610
+|PCIE_G1_PHY_LO
+|R/W
+|`PCIE_G1` PHY Lo Configuration Access Register
+
+|0x0618
+|PCIE_G1_PHY_HI
+|R/W
+|`PCIE_G1` PHY Hi Configuration Access Register
+
+|0x0740
+|SATA0_REG
+|R/W
+|Configuration of `SATA0`
+
+|0x0748
+|SATA0_PHY
+|R/W
+|`PHY` configuration access register for `SATA0`
+
+|0x0750
+|SATA1_REG
+|R/W
+|`SATA1` configuration
+
+|0x0758
+|SATA1_PHY
+|R/W
+|`PHY` configuration access register for `SATA1`
+
+|0x0760
+|SATA2_REG
+|R/W
+|`SATA2` configuration
+
+|0x0768
+|SATA2_PHY
+|R/W
+|`SATA2` PHY Configuration Access Register
+
+|0x3838
+|GMEM_BAR_MASK
+|R/W
+|`Memory` Capacity Configuration Register
+
+|0x3ff8
+|CHIP_ID
+|RO
+|`Chip` Version Number
+|===
+
+include::bridge-configuration-register/ht-clock-enable-and-dma-routing-configuration.adoc[]
+
+include::bridge-configuration-register/general-configuration-register-0.adoc[]
+
+include::bridge-configuration-register/general-configuration-register-1.adoc[]
+
+include::bridge-configuration-register/pin-multiplexing-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pll0-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pll1-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pll2-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pll-pix-0-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pll-pix-1-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-f0-phy-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-f0-phy-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-f1-phy-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-f1-phy-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-h-phy-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-h-phy-lo-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-h-phy-hi-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-g0-phy-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-g0-phy-lo-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-g0-phy-hi-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-g1-phy-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-g1-phy-lo-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-pcie-g1-phy-hi-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-sata0-phy-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-sata0-phy-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-sata1-phy-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-sata1-phy-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-sata2-phy-configuration-register.adoc[]
+
+include::bridge-configuration-register/section-sata2-phy-access-configuration-register.adoc[]
+
+include::bridge-configuration-register/memory-capacity-configuration-register.adoc[]
+
+include::bridge-configuration-register/bridge-identity-register.adoc[]

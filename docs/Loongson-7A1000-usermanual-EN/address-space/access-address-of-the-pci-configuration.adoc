@@ -1,0 +1,18 @@
+[[access-address-of-the-pci-configuration]]
+=== Access Address of the PCI Configuration
+
+The processor can access the configuration space of the bridge chip through two address spaces. One is the standard configuration access space defined by HT (0xFD_FE00_0000 - 0xFD_FFFF_FFFF) and the other is the reserved address space of HT (0xFE_0000_0000 - 0xFE_1FFF_FFFF). The configuration space size for each bridge device accessed through the HT standard configuration access space is 256 bytes; the configuration space size for each bridge device accessed through the reserved address space is 4K bytes.
+
+The maximum configuration space size per device is 256 bytes when using the HT-defined standard configuration access space (0xFD_FE00_0000-0xFD_FFFF_FFFF) to access the bridge slice. The address [39:24] determines the configuration header type (0xFDFE is Type0, 0xFDFF is Type1); [23:16] indicates the Bus Number; [15:11] indicates the Device Number; [10:8] indicates the Function Number; [7:0] indicates the offset. The following diagram shows the meaning of the address segment for the CPU to access the PCI configuration space using the HT standard configuration access space
+
+[[standard-access-address-of-the-pci-configuration]]
+.Standard access address of the PCI configuration
+image::standard-access-address-of-the-pci-configuration.png[]
+
+When using the HT's reserved address space (0xFE_0000_0000 - 0xFE_1FFF_FFFF) to access bridge slices, the maximum configuration space size per device is 4K bytes. The address [39:28] determines the configuration header type (0xFE0 is Type0, 0xFE1 is Type1); [23:16] indicates the Bus Number; [15:11] indicates the Device Number; [10:8] indicates the Function Number; [27:24] and [7:0] are combined to represent the offset. The following diagram illustrates the meaning of the address segment for the CPU to access the PCI configuration space using the HT reserved address space.
+
+[[reserved-access-address-of-the-pci-configuration]]
+.reserved access address of the PCI configuration
+image::reserved-access-address-of-the-pci-configuration.png[]
+
+In general, it is recommended to use the HT standard configuration access space (0xFD_FE00_0000-0xFD_FFFF_FFFF) for PCI configuration header access.

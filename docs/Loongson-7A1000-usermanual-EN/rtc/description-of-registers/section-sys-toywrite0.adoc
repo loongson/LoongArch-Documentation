@@ -1,0 +1,50 @@
+[[section-sys-toywrite0]]
+==== `SYS_TOYWRITE0`
+
+Address Offset: `24`-`27h`
+
+Attribute: WO
+
+Default value: N/A
+
+Size: `4`
+
+[[sys-toywrite0]]
+.`SYS_TOYWRITE0`
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+^|Description
+
+|31:26
+|TOY_MONTH
+|WO
+|Month, range `1`–`12`
+
+|25:21
+|TOY_DAY
+|WO
+|Day, range `1`–`31`
+
+|20:16
+|TOY_HOUR
+|WO
+|Hour, range `0`–`23`
+
+|15:10
+|TOY_MIN
+|WO
+|Minute, range `0`–`59`
+
+|9:4
+|TOY_SEC
+|WO
+|Second, range `0`–`59`
+
+|3:0
+|TOY_MILLISEC
+|WO
+|`0.1` Second, range `0`–`9`
+|===

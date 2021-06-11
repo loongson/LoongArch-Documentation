@@ -1,0 +1,58 @@
+[[memory-capacity-configuration-register]]
+=== Memory Capacity Configuration Register
+
+This set of registers is used to configure the capacity of the video memory. This register represents the mask of the memory BAR register, 0 means the corresponding bit of the memory BAR register is writable, 1 means not writable. 
+The number of 1's represents the memory capacity. The default memory capacity is 256MB.
+
+Address Offset: `3838`-`383Bh`
+
+Attribute: R/W
+
+Default value: `0FFF_FFFFh`
+
+Size: `32` bits
+[[memory-capacity-configuration-register-1]]
+.Memory capacity configuration register 1
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|31:0
+|gmem_bar_mask
+|R/W
+|The lower `32` bits of the memory BAR register mask.
+
+`0`: The corresponding bit of the memory BAR is writable
+
+`1`: The corresponding bit of the memory BAR is not writable
+|===
+
+Address Offset: `383C`-`383Fh`
+
+Attribute: R/W,
+
+Default value: `0000_0000h`
+
+Size: `32` bits
+
+[[memory-capacity-configuration-register-2]]
+.Memory capacity configuration register 2
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|31:0
+|gmem_bar_mask
+|R/W
+|The high `32` bits of the memory BAR register mask.
+
+`0`: The corresponding bit of the memory BAR is writable
+
+`1`: The corresponding bit of the memory BAR is not writable
+|===

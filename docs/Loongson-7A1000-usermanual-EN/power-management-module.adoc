@@ -1,0 +1,18 @@
+[[power-management-module]]
+== Power Management Module (ACPI Support)
+
+Bridge power management module provides system power management functions.
+It supports **A**dvanced **C**onfiguration and **P**ower **I**nterface, Version 4.0a (ACPI) to provide the corresponding power management functions.
+
+* System hibernation and wake-up, support for ACPI S3 (suspend to RAM), ACPI S4 (suspend to disk), ACPI S5 (soft off), and support for power failure detection and automatic system recovery.
+It also supports multiple wake-up methods (USB, GMAC, power switch, etc.)
+
+* System clock control, module clock gating, multiple ways to adjust the frequency.
+
+* It integrates a watchdog with a maximum timing time of about `82s`.
+
+include::power-management-module/access-address.adoc[]
+
+include::power-management-module/power-level.adoc[]
+
+include::power-management-module/description-of-registers.adoc[]

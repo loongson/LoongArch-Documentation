@@ -1,0 +1,16 @@
+[[anti-dead-zones-function]]
+==== Anti Dead Zones Function
+
+Multiple PWMs are equipped with an anti dead zones function between them, which prevents multiple pulse outputs from jumping at the same time.
+To use the anti dead zones function, the multiple PWMs of the anti dead zones function must be numbered from `0` and be consecutive, and their anti dead zones functions must all be enabled.
+In other words, one of `PWM0`/`1`, `PWM0`/`1`/`2` and `PWM0`/`1`/`2`/`3` must be used when using the anti dead zones function.
+
+For `PWM_0`, `PWM_1`, `PWM_2`, and `PWM_3`, their priority is `0`> `1` > `2` > `3`.
+If they jump at the same time, `PWM_1` will jump only after `PWM_0` jumps (the lower priority signal is "`erased`" by one clock cycle), and so on.
+This priority is fixed and cannot be changed.
+
+A typical anti dead zones example is as follows (`PWM_*` is the output when the anti dead zones function is disabled, and `PWM_*'` is the output when the anti dead zones function is enabled).
+
+[[figure-anti-dead-zones-function]]
+.Anti dead zones function
+image::anti-dead-zones-function.png[]

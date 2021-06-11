@@ -1,0 +1,40 @@
+[[address-space-division]]
+=== Address Space Division
+
+The PCIE controller in the bridge has a standard PCIE configuration header, so the internal registers of the PCIE controller and the address space of its downstream devices are managed by the information in its configuration header. 
+The address-related registers in the configuration header are determined during the PCI device scan. 
+
+Because the bridge's PCIE controller can only operate in RC mode, its configuration header is of type TYPE1.
+
+Each PCIE port acts as a separate device in the bridge slice, and each port contains a PCIE configuration header.
+When the PCIE is operating in X4 mode, the port software for the other X1 is not visible, and the other X1 ports are only accessible when the PCIE is operating in X1 mode.
+
+For each PCIE port, the address space can be divided into the following parts.
+
+Configuration header address space: This part of the space corresponds to the configuration header of the PCIE and is accessed through configuration requests up to `4KB`.
+See <<access-address-of-the-pci-configuration,Access Address of the PCI Configuration>> for accessing address space above 256B.
+
+Configuration Access Address Space: This portion of the address space is used to access the PCIE controller's downstream device configuration header information via configuration requests.
+Depending on the Bus number of the downstream device, it is up to the PCIE controller to decide whether to send a TYPE0 type or TYPE1 type configuration access.
+
+The addresses of the above two address spaces are calculated from the configuration address space base address, BUS number, device number, function number, and register offset address, and can be accessed by word.
+
+PCIE controller internal register space: This part of the address space is used to access the internal registers of the PCIE controller.
+These registers are used to control the behavior and characteristics of the PCIE controller and belong to two address spaces with the PCIE configuration header space.
+This address space is of type MEM, 64-bit address space, `4KB` in size, with a base address equal to the value of 64-bit `BAR0`, which is assigned by the PCI scan software during initialization.
+
+MEM address space: This part of the address space contains all the MEM address space of the devices downstream of the PCIE controller.
+For the 32-bit address space, this is determined by the memory base and memory limit of the PCIE configuration header.
+For the 64-bit address space, this is determined by the prefetchable memory base (combined upper 32 bits) and prefetchable memory limit (combined upper 32 bits) of the PCIE configuration header.
+This address space is enabled and controlled by the command register `bit1` of the PCIE configuration header.
+
+I/O address space: This part of the address space contains all the I/O address space of the devices downstream of the PCIE controller.
+It is determined by the IO base (combined upper 16 bits) and IO limit (combined upper 16 bits) of the PCIE configuration header.
+This address space is enabled and controlled by the command register `bit0` of the PCIE configuration header.
+
+For the MEM address space and I/O address space, if there is no device connected downstream of an X1 port in X1 operation mode, the MEM and I/O address space can be disabled by setting `bit0` and `bit1` of the command register to `0`.
+
+*PCIE Controller Enable*
+
+General configuration register 0 of the bridge configuration register contains the enable bits for the PCIE controller.
+It needs to be enabled when using the corresponding PCIE controller in order to access all address spaces of that controller and downstream devices, including configuration access to the controller.

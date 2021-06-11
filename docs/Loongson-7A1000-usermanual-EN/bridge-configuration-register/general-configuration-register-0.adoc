@@ -1,0 +1,481 @@
+[[general-configuration-register-0]]
+=== General Configuration Register 0
+
+Offset Address: `0420`-`0423h`
+
+Attribute: R/W
+
+Default value: `CCCC_3CE0h`
+
+Size: `32` bits
+
+This register contains configuration information related to PCIE, graphics processing unit (GPU, display controller, graphics memory).
+
+[[table-general-configuration-register-0-1]]
+.Table General Configuration Register 0 1
+[%header,cols="^1m,^2m,^1,3"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31
+|pcie_g1_p1_clken
+|R/W
+|Enables the port1 clock for `pcie_g1`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|30
+|pcie_g1_p0_clken
+|R/W
+|Enables the port0 clock for `pcie_g1`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|29
+|pcie_g1_enable
+|R/W
+|Enable `pcie_g1` controller
+
+`0`: Access is disabled
+
+`1`: Access is allowed
+
+|28
+|pcie_g1_soft_reset
+|R/W
+|Software reset of `pcie_g1`
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|27
+|pcie_g0_p1_clken
+|R/W
+|Enables the port1 clock for `pcie_g0`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|26
+|pcie_g0_p0_clken
+|R/W
+|Enables the port0 clock for `pcie_g0`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|25
+|pcie_g0_enable
+|R/W
+|Enable `pcie_g0` controller
+
+`0`: Access is disabled
+
+`1`: Access is allowed
+
+|24
+|pcie_g0_soft_reset
+|R/W
+|Software reset of `pcie_g0`
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|23
+|pcie_h_p1_clken
+|R/W
+|Enables the port1 clock for `pcie_h`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|22
+|pcie_h_p0_clken
+|R/W
+|Enables the port0 clock for `pcie_h`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|21
+|pcie_h_enable
+|R/W
+|Enable `pcie_h` controller
+
+`0`: Access is disabled
+
+`1`: Access is allowed
+
+|20
+|pcie_h_soft_reset
+|R/W
+|Software reset of `pcie_h`
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|19
+|pcie_f1_p1_clken
+|R/W
+|Enables the port1 clock for `pcie_f1`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|18
+|pcie_f1_p0_clken
+|R/W
+|Enables the port0 clock for `pcie_f1`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|17
+|pcie_f1_enable
+|R/W
+|Enable `pcie_f1` controller
+
+`0`: Access is disabled
+
+`1`: Access is allowed
+
+|16
+|pcie_f1_soft_reset
+|R/W
+|Software reset of `pcie_f1`
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|15:14
+|Reserved
+|R/W
+|Reserved
+
+|13
+|pcie_f0_p3_clken
+|R/W
+|Enables the port3 clock for `pcie_f0`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|12
+|pcie_f0_p2_clken
+|R/W
+|Enables the port2 clock for `pcie_f0`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|11
+|pcie_f0_p1_clken
+|R/W
+|Enables the port1 clock for `pcie_f0`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|10
+|pcie_f0_p0_clken
+|R/W
+|Enables the port0 clock for `pcie_f0`
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|9
+|pcie_f0_enable
+|R/W
+|Enable `pcie_f0` controller
+
+`0`: Access is disabled
+
+`1`: Access is allowed
+
+|8
+|pcie_f0_soft_reset
+|R/W
+|Software reset of `pcie_f0`
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|7
+|dc_clken
+|R/W
+|Enables clocking of dc
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|6
+|gpu_clken
+|R/W
+|Enable the clock of the gpu
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|5
+|gmem_clken
+|R/W
+|Enables the clock for gmem
+
+`0`: Turn off the clock
+
+`1`: Turn on the clock
+
+|4:3
+|Reserved
+|R/W
+|Reserved
+
+|2
+|pcie_clksel
+|R/W
+|Clock selection for pcie.
+
+`0`: Selects the PAD input clock
+
+`1`: Select the internal reference clock
+
+If fix_pcie_clksel is `1`, then the signal is constant to `1`.
+
+|1
+|Reserved
+|R/W
+|Reserved
+
+|0
+|default_route_cfg0
+|R/W
+|Read/Writeing PCIE, graphics devices using fixed addresses. `0`: Configuring device addresses using the PCI configuration header
+
+`1`: Use fixed address to access the device
+
+If fix_default_route is `1`, then the signal is constant to `1`.
+|===
+
+Offset Address: `0424`-`0427h`
+
+Attribute: `R/W, RO`
+
+Default value: `0000_0000h`
+
+Size: `32` bits
+
+[[table-dma-routing-configuration-2]]
+.DMA routing configuration
+[%header,cols="^1m,^2m,^1,3"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:25
+|Reserved
+|R/W
+|Reserved
+
+|24
+|disable_gmem_confspace
+|R/W
+|Disable access to the `GMEM` configuration space
+
+`0`: Access allowed
+
+`1`: Access is prohibited
+
+|23:20
+|Reserved
+|R/W
+|Reserved
+
+|19
+|pcie_g1_p1_clk_ok
+|RO
+|`pcie_g1` port `1` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|18
+|pcie_g1_p0_clk_ok
+|RO
+|pcie_g1 port 0 clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|17
+|pcie_g0_p1_clk_ok
+|RO
+|`pcie_g0` port `1` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|16
+|pcie_g0_p0_clk_ok
+|RO
+|`pcie_g0` port `0` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|15
+|pcie_h_p1_clk_ok
+|RO
+|`pcie_h` port `1` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|14
+|pcie_h_p0_clk_ok
+|RO
+|`pcie_h` port `0` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|13
+|pcie_f1_p1_clk_ok
+|RO
+|`pcie_f1` port 1 clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|12
+|pcie_f1_p0_clk_ok
+|RO
+|`pcie_f1` port `0` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|11
+|pcie_f0_p0_clk_ok
+|RO
+|`pcie_f0` port `3` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|10
+|pcie_f0_p0_clk_ok
+|RO
+|`pcie_f0` port `2` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|9
+|pcie_f0_p0_clk_ok
+|RO
+|`pcie_f0` port `1` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|8
+|pcie_f0_p0_clk_ok
+|RO
+|`pcie_f0` port `0` clock ready
+
+`0`: No clock
+
+`1`: clock normal
+
+|5
+|pcie_g1_uca_en
+|R/W
+|`pcie_g1` uncache access acceleration enable
+
+`0`: Turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|4
+|pcie_g0_uca_en
+|R/W
+|`pcie_g0` uncache access acceleration enable
+
+`0`: Turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|3
+|pcie_h_uca_en
+|R/W
+|`pcie_h` uncache access acceleration enable
+
+`0`: Turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|2
+|pcie_f1_uca_en
+|R/W
+|`pcie_f1` uncache access acceleration enable
+
+`0`: Turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|1
+|pcie_f0_uca_en
+|R/W
+|`pcie_f0` uncache access acceleration enable
+
+`0`: Turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|0
+|graphic_uca_en
+|R/W
+|GPU/DC uncache access acceleration can be
+
+`0`: Turn off access acceleration
+
+`1`: Turn on access acceleration
+|===

@@ -1,0 +1,6 @@
+[[graphics-processor]]
+== Graphics Processor (`D6:F0`)
+
+include::graphics-processor/gpu-configuration-register.adoc[]
+
+include::graphics-processor/ddr3-memory-interface.adoc[]

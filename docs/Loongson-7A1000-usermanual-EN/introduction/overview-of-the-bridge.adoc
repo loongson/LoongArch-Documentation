@@ -1,0 +1,46 @@
+[[overview-of-the-bridge]]
+=== Overview of the Bridge
+
+The Loongson 7A1000 bridge chip (hereafter referred to as the bridge chip) is Loongson's first dedicated chipset product, providing north-south bridge functionality for Loongson processors. The bridge chip is connected to the Loongson Series 3 processor via the HT high-speed bus interface and has an integrated GPU, DisplayController, DDR3 SDRAM memory controller, and PCIE, SATA, USB, GMAC, I2C, UART, GPIO, and other interfaces.
+
+*Main Characteristics of the Bridge Piece*
+
+* 16-bit HT 3.0 interface
+
+* Support dual-way bridge chip mode
+
+* 2D/3D GPU
+
+* Display controller, supports dual DVO display
+
+* 16-bit DDR3 graphics memory controller
+
+* 3 x8 PCIE 2.0 interfaces, each x8 interface can be split into 2 independent x4 interfaces
+
+* 2 x4 PCIE 2.0 interfaces that can be split into 6 independent x1 interfaces
+
+* 3 SATA 2.0 ports
+
+* 6 USB 2.0 ports
+
+* 2 RGMII Gigabit LAN interfaces
+
+* HDA/AC97 configurable interface
+
+* RTC support
+
+* HPET support
+
+* UART interface
+
+* I2C interface
+
+* LPC interface
+
+* SPI interface
+
+* GPIO interface
+
+* Support ACPI specification
+
+* Support JTAG bound scan

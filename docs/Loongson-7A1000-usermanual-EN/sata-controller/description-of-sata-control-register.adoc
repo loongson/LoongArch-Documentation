@@ -1,0 +1,299 @@
+[[description-of-sata-control-register]]
+=== Description of SATA Control Register
+
+The base address of SATA is given by `BAR0` of SATA and the register definition is identical to the protocol standard definition.
+
+[[list-of-sata-control-registers]]
+.List of SATA control registers
+[%header,cols="1m,2*2m,3"]
+|===
+^d|Address Offset
+^d|Length
+^d|Name
+^|Description
+
+|0x000
+|32
+|CAP
+|HBA characteristic register
+
+|0x004
+|32
+|GHC
+|Global HBA control register
+
+|0x008
+|32
+|IS
+|Interrupt status register
+
+|0x00c
+|32
+|PI
+|Port register
+
+|0x010
+|32
+|VS
+|AHCI version register
+
+|0x014
+|32
+|CCC_CTL
+|Command completion merge control register
+
+|0x018
+|32
+|CCC_PORTS
+|Command completion merge port register
+
+|0x024
+|32
+|CAP2
+|HBA characteristic expansion register
+
+|0x0A0
+|32
+|BISTAFR
+|BIST active FIS
+
+|0x0A4
+|32
+|BISTCR
+|BIST control register
+
+|0x0A8
+|32
+|BISTCTR
+|BIST FIS count register
+
+|0x0AC
+|32
+|BISTSR
+|BIST status register
+
+|0x0B0
+|32
+|BISTDECR
+|BIST double word error count register
+
+|0x0BC
+|32
+|OOBR
+|OOB register
+
+|0x0E0
+|32
+|TIMER1MS
+|`1ms` count register
+
+|0x0E8
+|32
+|GPARAM1R
+|Global parameter register 1
+
+|0x0EC
+|32
+|GPARAM2R
+|Global parameter register 2
+
+|0x0F0
+|32
+|PPARAMR
+|Port parameter register
+
+|0x0F4
+|32
+|TESTR
+|Test register
+
+|0x0F8
+|32
+|VERIONR
+|Version register
+
+|0x0FC
+|32
+|IDR
+|ID register
+
+|0x100
+|32
+|P0_CLB
+|Command list base address low 32 bits
+
+|0x104
+|32
+|P0_CLBU
+|Command list base address high 32 bits
+
+|0x108
+|32
+|P0_FB
+|FIS base address low 32 bits
+
+|0x10c
+|32
+|P0_FBU
+|FIS base address high 32 bits
+
+|0x110
+|32
+|P0_IS
+|Interrupt status register
+
+|0x114
+|32
+|P0_IE
+|Interrupt enable register
+
+|0x118
+|32
+|P0_CMD
+|Command register
+
+|0x120
+|32
+|P0_TFD
+|Task file data register
+
+|0x124
+|32
+|P0_SIG
+|Signature register
+
+|0x128
+|32
+|P0_SSTS
+|SATA status register
+
+|0x12C
+|32
+|P0_SCTL
+|SATA control register
+
+|0x130
+|32
+|P0_SERR
+|SATA error register
+
+|0x134
+|32
+|P0_SACT
+|SATA active register
+
+|0x138
+|32
+|P0_CI
+|Command send register
+
+|0x13C
+|32
+|P0_SNTF
+|SATA command notification register
+
+|0x170
+|32
+|P0_DMACR
+|DMA control register
+
+|0x178
+|32
+|P0_PHYCR
+|PHY control register
+
+|0x17C
+|32
+|P0_PHYSR
+|PHY status register
+
+|0x180
+|32
+|P1_CLB
+|Command list base address low 32 bits
+
+|0x184
+|32
+|P1_CLBU
+|Command list base address high 32 bits
+
+|0x188
+|32
+|P1_FB
+|FIS base address low 32 bits
+
+|0x18c
+|32
+|P1_FBU
+|FIS base address high 32 bits
+
+|0x190
+|32
+|P1_IS
+|Interrupt status register
+
+|0x194
+|32
+|P1_IE
+|Interrupt enable register
+
+|0x108
+|32
+|P1_CMD
+|Command register
+
+|0x1a0
+|32
+|P1_TFD
+|Task file data register
+
+|0x1a4
+|32
+|P1_SIG
+|Signature register
+
+|0x1a8
+|32
+|P1_SSTS
+|SATA status register
+
+|0x1aC
+|32
+|P1_SCTL
+|SATA control register
+
+|0x1b0
+|32
+|P1_SERR
+|SATA error register
+
+|0x1b4
+|32
+|P1_SACT
+|SATA active register
+
+|0x1b8
+|32
+|P1_CI
+|Command send register
+
+|0x1bC
+|32
+|P1_SNTF
+|SATA command notification register
+
+|0x1f0
+|32
+|P1_DMACR
+|DMA control register
+
+|0x1f8
+|32
+|P1_PHYCR
+|PHY control register
+
+|0x1fC
+|32
+|P1s_PHYSR
+|PHY status register
+|===

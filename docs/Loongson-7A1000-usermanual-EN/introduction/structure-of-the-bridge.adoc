@@ -1,0 +1,6 @@
+[[structure-of-the-bridge]]
+=== Structure of the Bridge
+
+[[figure-structure-of-the-bridge]]
+.Structure of the Bridge
+image::structure-of-the-bridge.png[]

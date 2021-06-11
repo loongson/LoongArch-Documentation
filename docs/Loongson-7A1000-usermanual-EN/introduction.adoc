@@ -1,0 +1,10 @@
+[[introduction]]
+== Introduction
+
+include::introduction/introduction-to-this-manual.adoc[]
+
+include::introduction/overview-of-the-bridge.adoc[]
+
+include::introduction/main-functions-of-the-bridge.adoc[]
+
+include::introduction/structure-of-the-bridge.adoc[]

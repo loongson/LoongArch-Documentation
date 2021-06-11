@@ -1,0 +1,12 @@
+[[lpc-interrupt]]
+=== LPC Interrupt
+
+The LPC controller internally includes two types of interrupts: SIRQ interrupts and access timeout interrupts.
+The LPC controller supports a total of 17 SIRQ interrupts, corresponding to the `bits[16:0]` of the interrupt-related register.
+The access timeout interrupt corresponds to the `bit[17]` of the interrupt-related register.
+
+The SIRQ interrupt is a level-triggered interrupt, and the value of the trigger level can be configured by the register.
+The software should configure the trigger level of the SIRQ interrupt before enabling the SIRQ interrupt of the LPC controller.
+The SIRQ interrupt does not need to be cleared by software.
+
+The access timeout interrupt is edge-triggered, so if an LPC access timeout interrupt occurs, the software needs to write `bit[17]` of the interrupt clear register to clear the interrupt.

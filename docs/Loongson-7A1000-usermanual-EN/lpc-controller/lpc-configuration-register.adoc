@@ -1,0 +1,243 @@
+[[lpc-configuration-register]]
+=== LPC Configuration Register (`D23:F0`)
+
+[[lpc-controller-configuration-registers]]
+.LPC controller configuration registers
+[%header,cols="1,1m,3,2m,1"]
+|===
+^|Address Offset
+^d|Abbreviation
+^|Description
+^|Default value
+^|Read/Write
+
+|00h-01h
+|VID
+|Vendor ID
+|0014h
+|RO
+
+|02h-03h
+|DID
+|Device ID
+|7A0Ch
+|RO
+
+|04h-05h
+|PCICMD
+|PCI Command
+|0001h
+|R/W, RO
+
+|08h
+|RID
+|Revision ID
+|00h
+|RO
+
+|09h
+|PI
+|Programming Interface
+|00h
+|RO
+
+|0Ah
+|SCC
+|Sub Class Code
+|01h
+|RO
+
+|0Bh
+|BCC
+|Base Class Code
+|06h
+|RO
+
+|0Ch
+|CLS
+|Cache Line Size
+|00h
+|RO
+
+|0Eh
+|HEADTYP
+|Header Type
+|00h
+|RO
+
+|10h-17h
+|FIXCREG*
+|Fixed Control Register
+|0000000010002004h
+|RO
+
+|18h-1Fh
+|FIXMREG*
+|Fixed Memory Register
+|0000000012000004h
+|RO
+
+|20h-27h
+|FIXIOREG*
+|Fixed I/O Register
+|000000FDFC000001h
+|RO
+
+|2Ch-2Dh
+|SVID
+|Subsystem Vendor ID
+|0000h
+|RO
+
+|2Eh-2Fh
+|SID
+|Subsystem Identification
+|0000h
+|RO
+
+|3Ch
+|INT_LN
+|Interrupt Line
+|00h
+|R/W
+
+|3Dh
+|INT_PN
+|Interrupt Pin
+|01h
+|RO
+|===
+
+Note: Address space not listed in the table indicates reserved.
+
+`*` See the subsequent FIXCREG/FIXMREG/FIXIOREG and Appendix 2 for more information.
+
+Registers that differ slightly from the PCI configuration header specification and their descriptions are listed below.
+
+*`PCICMD` - PCI Command Register (LPC - `D23:F0`)*
+
+Address Offset: `04`-`05h`
+
+Attribute: R/W, RO
+
+Default value: `0000h`
+
+Size: `16` bits
+
+[[pci-command-register-10]]
+.PCI command register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|15:2
+|Reserved
+|RO
+|Reserved.
+
+|1
+|Memory Space Enable
+|R/W
+|This bit is used to control whether access to the LPC control registers and MEM space is enabled.
+
+`0`: Disable access.
+
+`1`: Enable access to the LPC control registers and MEM space
+
+|0
+|I/O Space Enable
+|R/W
+|This bit is used to control whether access to the LPC I/O space is enabled.
+The address of the LPC I/O space is fixed starting from address `0` of the I/O space.
+
+`0`: Disable access.
+
+`1`: Enable access to the LPC I/O space.
+|===
+
+*`FIXCREG` - Fixed Control Register*
+
+This register is not used as the BAR of the LPC configuration header.
+
+Address Offset: `10`-`17h`
+
+Attribute: RO
+
+Default value: `0000000010002004h`
+
+Size: `64` bits
+
+[[fixed-control-register]]
+.Fixed control register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|63:0
+|Reserved
+|RO
+|Reserved.
+|===
+
+*`FIXMREG` - Fixed MEM Register*
+
+This register is not used as the BAR of the LPC configuration header.
+
+Address Offset: `18`-`1Fh`
+
+Attribute: RO
+
+Default value: `0000000012000004h`
+
+Size: `64` bits
+
+[[fixed-mem-register]]
+.Fixed MEM register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|63:0
+|Reserved
+|RO
+|Reserved.
+|===
+
+*`FIXIOREG` - Fixed I/O Register*
+
+This register is not used as the BAR of the LPC configuration header.
+
+Address Offset: `20`-`27h`
+
+Attribute: RO
+
+Default value: `000000FDFC000001h`
+
+Size: `64` bits
+
+[[fixed-i-o-register]]
+.Fixed I/O register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|63:0
+|Reserved
+|RO
+|Reserved.
+|===
+
+*The addresses of `FIXCREG`, `FIXMREG`, and `FIXIOREG` are the same as the `BAR` registers of the PCI configuration header, but these registers are not used as the `BAR` registers of the LPC configuration header.*
+*Software can work around this hardware bug by modifying the PCI configuration read function so that the upper layer software is not affected. See <<notes-on-the-use-of-the-software,Notes on the Use of the Software>> for more details.*

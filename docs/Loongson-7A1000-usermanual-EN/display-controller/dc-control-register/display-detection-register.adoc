@@ -1,0 +1,150 @@
+[[display-detection-register]]
+==== Display Detection Register
+
+The 7A bridge contains two sets of I2C bus pins specifically for display detection.
+These two sets of I2C bus pins need to be emulated by software using GPIO pins.
+These two sets of GPIO pins differ from the GPIO pins in the MISC in that their control registers are placed in the control register space of the DC.
+The I2C bus of DVO0 is controlled by `bit[1:0]` of the GPIO register, and the I2C bus of DVO1 is controlled by `bit[3:2]` of the GPIO register.
+The correspondence between I2C pins and GPIO registers is shown in the following table.
+
+[[correspondence-between-the-i2c-pins-of-the-dvo-and-the-control-registers]]
+.Correspondence between the I2C pins of the DVO and the control registers
+[%header,cols="2*1m"]
+|===
+^d|Pin Name
+^d|GPIO control bit
+
+|DVO0_SDA
+|0
+
+|DVO0_SCL
+|1
+
+|DVO1_SDA
+|2
+
+|DVO1_SCL
+|3
+|===
+
+Each GPIO control bit is controlled by three registers.
+The addresses of the GPIO control registers are shown in the following table.
+
+[[dvo-s-i2c-pin-control-register-address]]
+.DVO`'s I2C pin control register address
+[cols="10*1"]
+|===
+2+|Register Name
+2+|Address Offset
+|Read/Write
+3+|Description
+2+|Reset Value
+
+2+m|GPIO_OUT
+2+m|0x1650
+|WO
+3+|Output register
+2+m|0h
+
+2+m|GPIO_IN
+2+m|0x1650
+|RO
+3+|Input register
+2+|N/A
+
+2+m|GPIO_EN
+2+m|0x1660
+|R/W
+3+|GPIO direction control register
+2+m|0h
+
+2+|
+|
+5+|
+2+|
+
+2+m|GPIO_OUT
+|Bit
+5+|Description
+2+|Initial Value
+
+2+m|DVO0_SDA_OUT
+m|0
+5+|Control the output value of the `DVO0_SDA` pin (write only)
+2+m|0
+
+2+m|DVO0_SCL_OUT
+m|1
+5+|Control the output value of the `DVO0_SCL` pin (write only)
+2+m|0
+
+2+m|DVO1_SDA_OUT
+m|2
+5+|Control the output value of the `DVO1_SDA` pin (write only)
+2+m|0
+
+2+m|DVO1_SCL_OUT
+m|3
+5+|Control the output value of the `DVO1_SCL` pin (write only)
+2+m|0
+
+2+|
+|
+5+|
+2+|
+
+2+m|GPIO_IN
+|Bit
+5+|Description
+2+|Initial Value
+
+2+m|DVO0_SDA_IN
+m|0
+5+|Control the input value of the `DVO0_SDA` pin (read only)
+2+|N/A
+
+2+m|DVO0_SCL_IN
+m|1
+5+|Control the input value of the `DVO0_SCL` pin (write only)
+2+|N/A
+
+2+m|DVO1_SDA_IN
+m|2
+5+|Control the input value of the `DVO1_SDA` pin (write only)
+2+|N/A
+
+2+m|DVO1_SCL_IN
+m|3
+5+|Control the input value of the `DVO1_SCL` pin (write only)
+2+|N/A
+
+2+|
+|
+5+|
+2+|
+
+2+m|GPIO_EN
+|Bit
+5+|Description
+2+|Initial Value
+
+2+m|DVO0_SDA_EN
+m|0
+5+|Control the direction of the `DVO0_SDA` pin (read/write)
+2+m|0
+
+2+m|DVO0_SCL_EN
+m|1
+5+|Control the direction of the `DVO0_SCL` pin (read/write)
+2+m|0
+
+2+m|DVO1_SDA_EN
+m|2
+5+|Control the direction of the `DVO1_SDA` pin (read/write)
+2+m|0
+
+2+m|DVO1_SCL_EN
+m|3
+5+|Control the direction of the `DVO1_SCL` pin (read/write)
+2+m|0
+|===

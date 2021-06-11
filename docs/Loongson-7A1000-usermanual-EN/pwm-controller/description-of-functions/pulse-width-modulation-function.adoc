@@ -1,0 +1,12 @@
+[[pulse-width-modulation-function]]
+==== Pulse Width Modulation Function
+
+The `low_buffer` and `full_buffer` registers are used to configure the low level of the periodic signal and the length of the total period of the PWM output in the clock period of the PWM module (`20ns`), respectively.
+For example, to generate a low pulse width of 50 times the PWM module clock period and a high pulse width of `90` times the PWM module clock period, you should configure the value `50` in the low_buffer and `(50+90)=140` in the full_buffer.
+
+The pulse width register value should be written before the `CTRL` control register.
+Before writing a new number to the pulse width register, you should clear the `EN` bit in the control register and then set the `EN` bit to `1` after writing the new number.
+
+If `0` is written to both buffer registers, the output is always low.
+If writing `0` to `low_buffer` and `1` to `full_buffer`, the output is always high.
+If the value written to `low_buffer` is not less than the value of `full_buffer`, the output is low.

@@ -1,0 +1,4 @@
+[[misc-low-speed-devices-configuration-register]]
+=== MISC Low-speed Devices Configuration Register
+
+The address space size of the MISC low-speed device block is 512KB, and the starting address (internal space of the bridge chip) is configured by the BIOS.

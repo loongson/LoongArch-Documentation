@@ -1,0 +1,610 @@
+[[ac97-controller-register]]
+=== AC97 Controller Register
+
+[[list-of-ac97-control-registers]]
+.List of AC97 control registers
+[%header,cols="2*1m,3,2m,1"]
+|===
+^d|Address Offset
+^d|Abbreviation
+^|Description
+^d|Default Value
+^|Read/Write
+
+|00h-01h
+|VID
+|Vendor ID
+|0014h
+|RO
+
+|02h-03h
+|DID
+|Device ID
+|7A17h
+|RO
+
+|04h-05h
+|PCICMD
+|PCI Command
+|0000h
+|R/W, RO
+
+|08h
+|RID
+|Revision ID
+|00h
+|RO
+
+|09h
+|PI
+|Programming Interface
+|00h
+|RO
+
+|0Ah
+|SCC
+|Sub Class Code
+|01h
+|RO
+
+|0Bh
+|BCC
+|Base Class Code
+|04h
+|RO
+
+|0Ch
+|CLS
+|Cache Line Size
+|00h
+|RO
+
+|0Eh
+|HEADTYP
+|Header Type
+|00h
+|RO
+
+|10h-17h
+|CNL_BAR
+|Control Block Base Address Register
+|0000000000000004h
+|R/W, RO
+
+|2Ch-2Dh
+|SVID
+|Subsystem Vendor ID
+|0000h
+|RO
+
+|2Eh-2Fh
+|SID
+|Subsystem Identification
+|0000h
+|RO
+
+|3Ch
+|INT_LN
+|Interrupt Line
+|00h
+|R/W
+
+|3Dh
+|INT_PN
+|Interrupt Pin
+|01h
+|RO
+|===
+
+*CSR Register*
+
+Offset address: `0x00`
+
+Reset value: `0x00000000`
+
+[[csr-register]]
+.CSR register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:2
+|Reserved
+|30
+|RO
+|Reserved.
+
+|1
+|RESUME
+|1
+|R/W
+|Hanging.
+Read this bit to return the current state of the AC97 subsystem.
+
+`1`: AC97 subsystem hanged
+
+`0`: Normal operating state
+
+Writing `1` to this bit in the pending state will start the recovery operation.
+
+|0
+|RST_FORCE
+|1
+|W
+|AC97 cold boot.
+
+Writing `1` will cause the AC97 Codec to cold boot.
+|===
+
+*`OCC` Register*
+
+Offset address: `0x04`
+
+Reset value: `0x00004141`
+
+[[occ-register]]
+.`OCC` register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:24
+|Reserved
+|10
+|R/W
+|Reserved.
+
+|23:16
+|Reserved
+|10
+|R/W
+|Reserved.
+
+|15:10
+|OC1_CFG_R
+|10
+|R/W
+|Output channel 1: Right channel configuration.
+
+|7:0
+|OC0_CFG_L
+|10
+|R/W
+|Output channel 0: Left channel configuration.
+|===
+
+*`ICC` Register*
+
+Offset address: `0x10`
+
+Reset value: `0x00410000`
+
+[[icc-register]]
+.`ICC` register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:24
+|Reserved
+|10
+|R/W
+|Reserved.
+
+|23:16
+|IC_CFG_MIC
+|10
+|R/W
+|Input channel 2: MIC channel configuration.
+
+|15:10
+|Reserved
+|10
+|R/W
+|Reserved.
+
+|7:0
+|Reserved
+|10
+|R/W
+|Reserved.
+|===
+
+[[description-of-the-sound-channel-format]]
+.Description of the sound channel format
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|Reserved
+|1
+|R/W
+|Reserved.
+
+|6
+|DMA_EN
+|1
+|R/W
+|DMA enable.
+
+`1`: DMA enable.
+
+`0`: DMA disable.
+
+|5:4
+|FIFO_THRES
+|2
+|R/W
+a|FIFO threshold
+
+[cols="1m,2*1"]
+!===
+!5:4
+!Output channel
+!Input channel
+
+!00
+!FIFO 1/4 empty
+!FIFO 1/4 full
+
+!01
+!FIFO 1/2 empty
+!FIFO 1/2 full
+
+!10
+!FIFO 3/4 empty
+!FIFO 3/4 full
+
+!11
+!FIFO empty
+!FIFO full
+!===
+
+|3:2
+|SW
+|2
+|R/W
+|Number of sampling bits
+
+`00`: `10` bits
+
+`10`: `16` bits
+
+|1
+|VSR
+|1
+|R/W
+|Sampling rate
+
+`1`: Variable sampling rate
+
+`0`: Fixed sampling rate (410KHz)
+
+|0
+|CH_EN
+|1
+|R/W
+|Channel enable
+
+`1`: Channel enable
+
+`0`: Channel disable (or go to energy-saving state)
+|===
+
+*`Codec` Register Access Command*
+
+Offset address: `0x110`
+
+Reset value: `0x00000000`
+
+[[codec-register-access-command]]
+.`Codec` register access command
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31
+|CODEC_WR
+|1
+|R/W
+|Read/write selection
+
+`1`: Read.
+When reading data, first set `CODEC_WR` to read mode, and set the register address you want to access in CODEC_ADR.
+Wait until the return data completes interrupt and then read the `CODEC_DAT` register to read the value.
+
+`0`: Write.
+
+|30:23
+|Reserved
+|10
+|R
+|Reserved.
+
+|22:16
+|CODEC_ADR
+|7
+|R/W
+|Codec register address
+
+|15:0
+|CODEC_DAT
+|16
+|R/W
+|Codec register data
+|===
+
+*Interrupt Status Register/Interrupt Mask Register*
+
+Offset address: `0x54/510`
+
+Reset value: `0x00000000`
+
+[[interrupt-status-register-interrupt-mask-register]]
+.Interrupt Status Register/Interrupt Mask Register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31
+|IC_FULL
+|1
+|R/W
+|Input channel 2: FIFO full
+
+|30
+|IC_TH_INT
+|1
+|R/W
+|Input channel 2: FIFO reaches threshold
+
+|29:10
+|Reserved
+|22
+|R/W
+|Reserved.
+
+|7
+|OC1_FULL
+|1
+|R/W
+|Output channel 1: FIFO full
+
+|6
+|OC1_EMPTY
+|1
+|R/W
+|Output channel 1: FIFO empty
+
+|5
+|OC1_ TH_INT
+|1
+|R/W
+|Output channel 1: FIFO reaches threshold
+
+|4
+|OC0_FULL
+|1
+|R/W
+|Output channel 0: FIFO full
+
+|3
+|OC0_EMPTY
+|1
+|R/W
+|Output channel 0: FIFO empty
+
+|2
+|OC0_ TH_INT
+|1
+|R/W
+|Output channel 0: FIFO reaches threshold
+
+|1
+|CW_DONE
+|1
+|R/W
+|Codec register write complete
+
+|0
+|CR_DONE
+|1
+|R/W
+|Codec register read complete
+|===
+
+*Interrupt Status/Clear Register*
+
+Offset address: `0x5c`
+
+Reset value: `0x00000000`
+
+[[interrupt-status-clear-register]]
+.Interrupt status/clear register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|INT_CLR
+|32
+|RO
+|After masking the interrupt status register, a read of this register will clear all interrupt status in register `0x54`.
+|===
+
+*OC Interrupt Clear Register*
+
+Offset address: `0x60`
+
+Reset value: `0x00000000`
+
+[[oc-interrupt-clear-register]]
+.OC interrupt clear register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|INT_OC_CLR
+|32
+|RO
+|A read operation of this register will clear the `bits[7:2]` corresponding to the interrupt status of all output channels in register `0x54`.
+|===
+
+*IC Interrupt Clear Register*
+
+Offset address: `0x64`
+
+Reset value: `0x00000000`
+
+[[ic-interrupt-clear-register]]
+.IC interrupt clear register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|INT_IC_CLR
+|32
+|RO
+|A read operation of this register will clear the `bits[31:30]` corresponding to the interrupt status of all input channels in register `0x54`.
+|===
+
+*CODEC WRITE Interrupt Clear Register*
+
+Offset address: `0x610`
+
+Reset value: `0x00000000`
+
+[[codec-write-interrupt-clear-register]]
+.CODEC WRITE interrupt clear register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|INT_CW_CLR
+|32
+|RO
+|A read operation of this register will clear the `bit[1]` in register `0x54`.
+|===
+
+*CODEC READ Interrupt Clear Register*
+
+Offset address: `0x6c`
+
+Reset value: `00000000h`
+
+[[codec-read-interrupt-clear-register]]
+.CODEC READ interrupt clear register
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|INT_CR_CLR
+|32
+|RO
+|A read operation of this register will clear the `bit[0]` in register `0x54`.
+|===
+
+*DMA Command Register*
+
+This register is used to control the internal DMA controller of the AC97.
+The DMA controller is described in detail in the following section.
+
+Offset address: `0x100`
+
+Reset value: `00000000h`
+
+[[dma-command-register]]
+.DMA command register
+[%header,cols="1m,2,1,3"]
+|===
+^d|Bit Field
+^|Name
+^|Read/Write
+^|Description
+
+|63:5
+|ask_addr
+|R/W
+|`bit[63:5]` of the DMA descriptor address, the lower 5 bits are `0`.
+
+|5
+|Reserved
+|R/W
+|Reserved.
+
+|4
+|dma_stop
+|R/W
+|Stop DMA operation.
+The DMA controller stops when it has completed reading or writing the current data.
+
+|3
+|dma_start
+|R/W
+|Start DMA operation.
+The DMA controller reads the descriptor address (`ask_addr`) and then clears some bits to zero.
+
+|2
+|ask_valid
+|R/W
+|The DMA working register is written back to the memory pointed to by (`ask_addr`) and cleared to zero when finished.
+
+|1
+|Reserved
+|R/W
+|Reserved.
+
+|0
+|dma_64bit
+|R/W
+|DMA controller 64-bit address support.
+|===

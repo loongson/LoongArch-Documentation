@@ -1,0 +1,34 @@
+[[gpio]]
+== GPIO
+
+The bridge chip has 57 GPIO pins, `GPIO00` is a dedicated GPIO pin, and the remaining 56 are multiplexed with other functions.
+Each GPIO pin is controlled by a set of control registers, including: GPIO direction control (`GPIO_OEN`), GPIO output (`GPIO_O`), GPIO input (`GPIO_I`), and GPIO input interrupt enable control (`GPIO_INT_EN`).
+
+[[gpio-control-register]]
+.GPIO control register
+[%header,cols="2*1m,3"]
+|===
+|Register
+|Size (bit)
+|Description
+
+|GPIO_OEN
+|1
+|GPIO output enable (active low).
+
+|GPIO_O
+|1
+|GPIO output.
+
+|GPIO_I
+|1
+|GPIO input.
+
+|GPIO_INT_EN
+|1
+|GPIO interrupt enable.
+|===
+
+include::gpio/access-address.adoc[]
+
+include::gpio/description-of-registers.adoc[]

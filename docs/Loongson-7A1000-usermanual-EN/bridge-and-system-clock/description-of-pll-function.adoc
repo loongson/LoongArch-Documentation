@@ -1,0 +1,84 @@
+[[description-of-pll-function]]
+=== Description of PLL Function
+
+The output clock frequency is calculated as follows.
+
+[[structure-of-pll]]
+.Structure of PLL
+image::structure-of-pll.png[]
+
+`clock_out = refclk / div_ref * loopc / divoutN`
+
+The refclk of 7A is fixed at 100MHz, and the output of the input divider (`refclk / div_ref`) needs to be guaranteed to be in the range of 20 In addition, it is necessary to ensure that the output of the input divider (`refclk / div_ref`) is in the range of `20` – `40MHz`, and the frequency after frequency doubling module (`refclk / div_ref * loopc`) is in the range of 1.`2GHz` – `3.2GHz`.
+
+The PLL-related configuration signals and their descriptions are shown in the follow table. The locations of these configuration signals are shown in Section 4 Bridge Configuration Registers.
+
+[[PLL-related-configuration-signal-description-table]]
+.PLL-related configuration signal description table
+[%header,cols="^2m,^1m,^1,2"]
+|===
+|Signal
+|Digit
+|Direction
+|Description
+
+|pll_div_out0
+|7
+|R/W
+|`PLL` output clock `0` divisions
+
+|pll_div_out1
+|7
+|R/W
+|`PLL` output clock `1` divisions
+
+|pll_div_out2
+|7
+|R/W
+|`PLL` Output Clock `2` Divisions
+
+|pll_loopc
+|9
+|R/W
+|`PLL` Multiplier
+
+|pll_div_ref
+|7
+|R/W
+|`PLL` Input Divider
+
+|pll_locked
+|1
+|RO
+|`PLL` Lock
+
+|sel_pll_out0
+|1
+|R/W
+|Select `PLL` Output Clock `0`
+
+|sel_pll_out1
+|1
+|R/W
+|Select `PLL` Output Clock `1`
+
+|sel_pll_out2
+|1
+|R/W
+|Select `PLL` Output Clock `2`
+
+|set_pll_param
+|1
+|R/W
+|Set `PLL` configuration parameters
+
+|pll_bypass
+|1
+|R/W
+|`PLL` internal bypass
+
+|pll_pd
+|1
+|R/W
+|`PLL` powerdown
+|===

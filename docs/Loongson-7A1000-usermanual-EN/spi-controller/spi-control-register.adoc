@@ -1,0 +1,417 @@
+[[spi-control-register]]
+=== SPI Control Register
+
+[[list-of-spi-control-registers]]
+.List of SPI control registers
+[%header,cols="2*1m,3"]
+|===
+^d|Address Offset
+^d|Name
+^|Description
+
+|0
+|SPCR
+|Control register
+
+|1
+|SPSR
+|Status register
+
+|2
+|TxFIFO/RxFIFO
+|Data register
+
+|3
+|SPER
+|External register
+
+|4
+|SFC_PARAM
+|Parameter control register
+
+|5
+|SFC_SOFTCS
+|Chip select control register
+
+|6
+|SFC_TIMING
+|Timing control register
+|===
+
+*Control Register (SPCR)*
+
+Offset address: `0x0`
+
+[[control-register-2]]
+.Control register
+[%header,cols="1m,2m,1,1m,3"]
+|===
+^d|Bit Field
+^d|Name
+^|Read/Write
+^d|Initial Value
+^|Description
+
+|7
+|spie
+|R/W
+|0
+|Interrupt output enable signal (active high)
+
+|6
+|spe
+|R/W
+|0
+|System operation enable signal (active high)
+
+|5
+|Reserved
+|RO
+|0
+|Reserved
+
+|4
+|mstr
+|RO
+|1
+|master mode select bit.
+This bit is always held `1`
+
+|3
+|cpol
+|R/W
+|0
+|Clock polarity bits
+
+|2
+|cpha
+|R/W
+|0
+|Clock phase.
+`1` is opposite phase, and `0` is same
+
+|1:0
+|spr
+|R/W
+|0
+|`sclk_o` frequency division configuration.
+It need to be used with ``sper```'s `spre`
+|===
+
+*Status Register (SPSR)*
+
+Offset address: `0x1`
+
+[[status-register]]
+.Status register
+[%header,cols="1m,2m,1,1m,3"]
+|===
+^d|Bit Field
+^d|Name
+^|Read/Write
+^d|Initial Value
+^|Description
+
+|7
+|spif
+|R/W
+|0
+|Interrupt flag.
+`1` indicates an interrupt request, write `1` to clear
+
+|6
+|wcol
+|R/W
+|0
+|Write register overflow flag bit.
+`1` indicates overflowed, write `1` to clear
+
+|5:4
+|Reserved
+|RO
+|0
+|Reserved
+
+|3
+|wffull
+|RO
+|0
+|Write register full.
+`1` indicates full
+
+|2
+|wfempty
+|RO
+|1
+|Write register empty.
+`1` indicates empty
+
+|1
+|rffull
+|RO
+|0
+|Read register full.
+`1` indicates full
+
+|0
+|rfempty
+|RO
+|1
+|Read register empty.
+`1` indicates empty
+|===
+
+*Data Register (`TxFIFO`/`RxFIFO`)*
+
+Offset address: `0x2`
+
+[[data-register]]
+.Data register
+[%header,cols="1m,2m,1,1m,3"]
+|===
+^d|Bit Field
+^d|Name
+^|Read/Write
+^d|Initial Value
+^|Description
+
+|7:0
+|TxFIFO RxFIFO
+|W RO
+d|-
+|Data transporting port.
+
+Data receiving port
+|===
+
+*External Register (SPER)*
+
+Offset address: `0x3`
+
+[[external-register]]
+.External register
+[%header,cols="1m,2m,1,1m,3"]
+|===
+^d|Bit Field
+^d|Name
+^|Read/Write
+^d|Initial Value
+^|Description
+
+|7:6
+|icnt
+|R/W
+|0
+|Bytes transferred before sending an interrupt.
+
+`00`: `1`
+
+`01`: `2`
+
+`10`: `3`
+
+`11`: `4`
+
+|5:3
+d|-
+|-
+d|-
+|Reserved
+
+|2
+|mode
+|R/W
+|0
+|SPI interface mode control
+
+`0`: Sampling and transporting timing are simultaneous
+
+`1`: Sampling and transporting timing staggered by half a cycle
+
+|1:0
+|spre
+|R/W
+|0
+|Set the ratio of the frequency division together with `spr`
+|===
+
+[[spi-frequency-division-factor]]
+.SPI Frequency Division Factor
+[cols="2,12*1m"]
+|===
+|spre
+
+spr
+|00
+
+00
+|00
+
+01
+|00
+
+10
+|00
+
+11
+|01
+
+00
+|01
+
+01
+|01
+
+10
+|01
+
+11
+|10
+
+00
+|10
+
+01
+|10
+
+10
+|10
+
+11
+
+|Frequency Division Factor
+|2
+|4
+|16
+|32
+|8
+|64
+|128
+|256
+|512
+|1024
+|2048
+|4096
+|===
+
+*Parameter Control Register (SFC_PARAM)*
+
+Offset address: `0x4`
+
+[[parameter-control-register]]
+.Parameter control register
+[%header,cols="1m,2m,1,1m,3"]
+|===
+^d|Bit Field
+^d|Name
+^|Read/Write
+^d|Initial Value
+^|Description
+
+|7:4
+|clk_div
+|R/W
+|2
+|Clock division number selection.
+
+The frequency division factor is the same as the combination of `{spre, spr}`
+
+|3
+|dual_io
+|R/W
+|0
+|Dual I/O mode with higher priority than fast read
+
+|2
+|fast_read
+|R/W
+|0
+|Fast Read Mode
+
+|1
+|burst_en
+|R/W
+|0
+|SPI flash supports sequential address read mode
+
+|0
+|memory_en
+|R/W
+|1
+|SPI flash read enable.
+When disabled, `csn[0]` can be controlled by software
+|===
+
+*Chip Select Control Register (SFC_SOFTCS)*
+
+Offset address: `0x5`
+
+[[chip-select-control-register]]
+.Chip select control register
+[%header,cols="1m,2m,1,1m,3"]
+|===
+^d|Bit Field
+^d|Name
+^|Read/Write
+^d|Initial Value
+^|Description
+
+|7:4
+|csn
+|R/W
+|0
+|csn pin output value
+
+|3:0
+|csen
+|R/W
+|0
+|When the bit is `1`, the csn line of the corresponding bit is controlled by `7:4` bits
+|===
+
+*Timing Control Register (SFC_TIMING)*
+
+Offset address: `0x6`
+
+[[timing-control-register]]
+.Timing control register
+[%header,cols="1m,2m,1,1m,3"]
+|===
+^d|Bit Field
+^d|Name
+^|Read/Write
+^d|Initial Value
+^|Description
+
+|7:3
+d|-
+|-
+d|-
+|Reserved
+
+|2
+|tFAST
+|R/W
+|0
+|SPI flash read sampling mode
+
+`0`: Rising edge sampling, half SPI cycle interval
+
+`1`: Rising edge sampling with one SPI cycle interval
+
+|1:0
+|tCSH
+|R/W
+|3
+|The minimum invalidation time of the SPI Flash's chip select signal, in terms of the clock period after frequency division.
+
+Calculation of `T`
+
+`00`: `1T`
+
+`01`: `2T`
+
+`10`: `4T`
+
+`11`: `8T`
+|===

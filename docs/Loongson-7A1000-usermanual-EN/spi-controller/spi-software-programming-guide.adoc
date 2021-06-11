@@ -1,0 +1,49 @@
+[[spi-software-programming-guide]]
+=== SPI Software Programming Guide
+
+*Read and Write Operations of the SPI Host Controller*
+
+*Module Initialization*
+
+. Stop SPI controller operation, write `0` to the `spe` bit of control register `spcr`.
+
+. Reset the status register `spsr` and write `1100_0000b` to the register.
+
+. Set the external register `sper`, including the interrupt request condition `sper[7:6]` and the dividing factor `sper[1:0]`, refer to the register description for details.
+
+. Configure SPI timing, including `cpol`, `cpha` of `spcr` and mode of `sper`.
+`mode` is `1` for standard SPI implementation and `0` for compatible mode.
+
+. Configure interrupt enable, `spie` bit of `spcr`.
+
+. Start the SPI controller and write `1` to the `spe` bit of the control register `spcr`.
+
+*Send/transport Operations of the Module*
+
+. Write data to the data transport register.
+
+. Since transporting and receiving occur simultaneously, the SPI slave device must perform a readout operation even if no valid data is sent.
+
+*Interrupt Handling*
+
+. Receive the interrupt request.
+
+. Read the value of status register `spsr`, if `spsr[2]` is `1`, it means data transport is completed, if `spsr[0]` is `1`, it means data has been received.
+
+. Read or write the data transport register.
+
+. Write `1` to the spif bit of status register spsr to clear the controller's interrupt request.
+
+*Hardware SPI Flash Read*
+
+*Initialization*
+
+. Write `1` to the `memory_en` bit of `SFC_PARAM`.
+
+. Set the read parameters (clock division, sequential address read, fast read, dual I/O, tCSH, etc.). These parameters are reset to the most conservative values.
+
+*Changing Parameters*
+
+If the SPI Flash used supports higher frequencies or offers enhanced features, modifying the corresponding parameters can greatly speed up the Flash access speed.
+The parameter modification does not require turning off the SPI Flash read enable (`memory_en`).
+Refer to the description of registers for details.

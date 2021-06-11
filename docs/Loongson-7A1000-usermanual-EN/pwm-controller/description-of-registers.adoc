@@ -1,0 +1,144 @@
+[[description-of-registers-3]]
+=== Description of Registers
+
+There are three registers per controller, which are described as follows.
+
+[[list-of-pwn-registers]]
+.List of PWM registers
+[%header,cols="3*1m,1,2"]
+|===
+|Name
+|Address
+|Length
+|Read/Write
+|Description
+
+|low_buffer
+|Base + 0x4
+|32
+|R/W
+|Low pulse width register
+
+|full_buffer
+|Base + 0x8
+|32
+|R/W
+|Pulse period width register
+
+|CTRL
+|Base + 0xC
+|11
+|R/W
+|Control register
+|===
+
+*PWM Control Register Configuration*
+
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|0
+|EN
+|R/W
+|0
+|PWM enable bit
+
+`1`: PWM enable
+
+`0`: PWM disable
+
+|2:1
+|Reserved
+|R/W
+|0
+|Reserved
+
+|3
+|OE
+|R/W
+|0
+|Pin pulse output enable control bit (active low).
+When set to `1`, the PWM can be used as a periodic interrupt generation module without changing the value of the PWM pin (held at `0`)
+
+`0`: Pulse output enable
+
+`1`: Pulse output disable
+
+|4
+|SINGLE
+|R/W
+|0
+|Single pulse control bit, valid for non-measurement mode
+
+`1`: Pulse is generated only once
+
+`0`: Pulse is generated continuously
+
+|5
+|INTE
+|R/W
+|0
+|Interrupt enable bit.
+In the non-measurement mode, an interrupt is generated for every pulse period measured.
+In the measurement mode, an interrupt is generated when the input pulse period is greater than `0xFFFF_FFF9`.
+
+`1`: Interrupt is generated
+
+`0`: No interrupt is generated
+
+|6
+|INT
+|R/W
+|0
+|Interrupt status bit.
+Write `1` to this bit to clear the interrupt
+
+`1`: The interrupt is generated
+
+`0`: No interrupt
+
+|7
+|RST
+|R/W
+|0
+|Counter reset
+
+`1`: Reset
+
+`0`: Normal work
+
+|8
+|CAPTE
+|R/W
+|0
+|Measurement pulse enable
+
+`1`: Measurement pulse mode
+
+`0`: Non-measurement pulse mode (or pulse output mode in general)
+
+|9
+|INVERT
+|R/W
+|0
+|Output invert enable, valid for non-measurement mode
+
+`1`: Invert the signal after the pulse is output (period starts at high level)
+
+`0`: Keeps the pulse at the original output (period starts at low level)
+
+|10
+|DZONE
+|R/W
+|0
+|Anti dead zones function enable, valid for non-measurement mode
+
+`1`: This PWM enables the anti dead zones function
+
+`0`: This PWM disables the anti dead zones function
+|===

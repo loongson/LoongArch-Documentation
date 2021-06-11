@@ -1,0 +1,57 @@
+[[detailed-description-of-interrupt-handling-process]]
+=== Detailed Description of Interrupt Handling Process
+
+In the interrupt line interrupt mode, the interrupt controller of the bridge chip receives the device interrupt and sets the corresponding interrupt output pin low according to the interrupt routing configuration.
+The processor receives the interrupt through the interrupt input pin, 
+and the processor obtains the current interrupt source routed to itself by reading the corresponding ISR (interrupt in service register) register within the bridge chip interrupt controller.
+The interrupt processing process is:
+
+. The interrupt controller of the bridge receives the device interrupt; (hardware)
+
+. The interrupt controller of the bridge chip sets the interrupt output pin low; (hardware)
+
+. The processor's interrupt controller receives the interrupt pin interrupt; (hardware)
+
+. The processor turns off the interrupt. (software)
+
+. The processor reads its own interrupt controller and learns that it is an external interrupt; (software)
+
+. The processor reads the interrupt controller of the bridge chip to get the interrupt vector; (software)
+
+. The processor writes the interrupt controller of the bridge chip to mask the corresponding interrupt source; (software)
+
+. The processor opens the interrupt. (software)
+
+. The processor calls the interrupt service program to handle the interrupt; (software)
+
+. The processor writes the bridge chip's interrupt controller to clear edge-triggered interrupts; (software)
+
+. The processor writes the bridge chip's interrupt controller to turn on the corresponding interrupt source. (Software)
+
+. The processor interrupt returns. (Software)
+
+In the HT message packet interrupt method, the interrupt controller and PCIE controller of the bridge receive the device interrupt and can send the interrupt vector directly to the HT controller of the processor, thus avoiding the process of the processor querying the internal interrupt vector of the bridge. The interrupt processing process is as follows.
+
+. The interrupt controller of the bridge receives the device interrupt; (hardware)
+
+. The interrupt controller of the bridge slices sends the interrupt vector to the HT controller of the processor; (hardware)
+
+. The processor's interrupt controller receives the HT interrupt; (hardware)
+
+. The processor turns off the interrupt. (software) 5.
+
+. The processor reads its own interrupt controller and learns that it is an HT interrupt; (software)
+
+. The processor reads its own HT controller to get the interrupt vector; (software)
+
+. The processor writes its own HT controller to clear the interrupt; (software)
+
+. The processor opens the interrupt. (software) 9.
+
+. The processor calls the interrupt service program to handle the interrupt; (software)
+
+. The processor writes the bridge chip's interrupt controller to clear the interrupt (not required if it is an MSI interrupt issued by a PCIE device). (software)
+
+. The processor interrupt returns. (Software)
+
+The software can configure the HT interrupt vector corresponding to the internal devices of the bridge chip.

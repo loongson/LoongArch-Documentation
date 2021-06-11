@@ -1,0 +1,29 @@
+[[access-address-4]]
+=== Access Address
+
+The base address of accessing the RTC module is the base address of the MISC low-speed device block plus an offset of `0x50100`.
+
+*Note*: The RTC module only supports access by 4 bytes.
+
+The physical address composition of the RTC module internal registers is as follows.
+
+[[the-physical-address-composition-of-the-rtc-module-internal-registers]]
+.The physical address composition of the RTC module internal registers
+[%header,cols="1m,1,2"]
+|===
+^d|Address bits
+^|Composition
+^|Note
+
+|[15:9]
+|`0`
+|Reserved
+
+|[8]
+|`1`
+|Reserved
+
+|[7:0]
+|`REG`
+|Internal registers address
+|===

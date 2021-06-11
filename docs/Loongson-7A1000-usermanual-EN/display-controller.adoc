@@ -1,0 +1,16 @@
+[[display-controller]]
+== Display Controller (`D6:F1`)
+
+The features supported by the display controller of the bridge include the following.
+
+* Dual DVO interface displays
+* Each display supports up to `1920x1080@60Hz`
+* Two hardware cursors modes: Monochrome, ARGB8888
+* Four color depths: RGB444, RGB555, RGB565, RGB888
+* Output dithering and gamma correction
+* Switchable dual routability frame buffer
+* Interrupt and soft reset
+
+include::display-controller/dc-configuration-register.adoc[]
+
+include::display-controller/dc-control-register.adoc[]

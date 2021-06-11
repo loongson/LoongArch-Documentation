@@ -1,0 +1,24 @@
+[[access-address-1]]
+=== Access Address
+
+The address space size of the HPET controller is 4KB, and the starting address (internal space of the bridge chip) is configured by the BIOS.
+The physical address composition of the internal registers of the HPET controller is as follows:
+
+[[access-address]]
+.Access address
+[%header,cols="1m,^1m,2"]
+|===
+|Address bits
+|Composition
+|Remarks
+
+|[11:08]
+|0
+|Reserved
+
+|[07:00]
+|REG
+|Internal register address
+|===
+
+Note: The HPET controller only supports 4-byte accesses. Software that needs to use the HPET's 64-bit master counter as a timestamp needs to be careful to handle the data rounding introduced by reading the high and low 32-bit values in two separate readings.

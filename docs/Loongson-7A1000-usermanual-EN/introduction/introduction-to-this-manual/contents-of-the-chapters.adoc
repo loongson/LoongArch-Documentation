@@ -1,0 +1,41 @@
+[[contents-of-the-chapters]]
+==== Contents of the Chapters
+Section `1` is an introduction that provides an overview of the features and functions of this bridge chip.
+
+Section `2` introduces the bridge chip clock structure, describes the clock of the bridge chip, and details the clock-related hardware configuration and software usage.
+
+Section `3` introduces the address space of the bridge chip, describing the entire address space of the processor (Loongson 3 processor) + bridge chip and the address space distribution inside the bridge chip.
+
+Section `4` introduces the bridge chip configuration registers.
+
+Section `5` introduces interrupts.
+
+Section `6` describes the HPET controller.
+
+Section `7` introduces the HT controller.
+
+Sections 8-14 describe the low-speed interface and other internal functions of the bridge chip. These include: address space description, UART serial controller, I2C controller, PWM controller, and other internal functions. I2C controller, PWM controller, ACPI power management module, real-time clock RTC, and GPIO interface.
+
+Section `15` describes the GMAC controller.
+
+Section `16` describes the USB controller, including the EHCI controller and the OHCI controller.
+
+Section `17` describes the Graphics Processing Unit GPU.
+
+Section `18` describes the display controller DC.
+
+Section `19` describes the HDA controller.
+
+Section `20` describes the AC97 controller.
+
+Section `21` describes the SATA controller.
+
+Section `22` describes the PCIE controller.
+
+Section `23` introduces the SPI controller.
+
+Section `24` introduces the LPC controller.
+
+Appendix `1` explains the chip pin multiplexing relationship.
+
+Appendix `2` gives the software usage notes.

@@ -1,0 +1,1113 @@
+[[ht-configuration-register]]
+=== HT Configuration Register
+
+HT Configuration Register
+
+[[table-ht-configuration-register]]
+.HT configuration register
+[%header,cols="1m,^1m,2,2m,^1"]
+|===
+|Address Offset
+|Abbreviations
+|Description
+|Default value
+|Read/Write
+
+|00h-01h
+|VID
+|Vendor ID
+|0014h
+|RO
+
+|02h-03h
+|DID
+|Device ID
+|7A00h
+|RO
+
+|04h-05h
+|PCICMD
+|PCI Command
+|0000h
+|R/W, RO
+
+|06h-07h
+|PCISTS
+|PCI Status
+|0010h
+|RO
+
+|08h
+|RID
+|Revision ID
+|00h
+|RO
+
+|09h
+|PI
+|Programming Interface
+|00h
+|RO
+
+|0Ah
+|SCC
+|Sub Class Code
+|00h
+|RO
+
+|0Bh
+|BCC
+|Base Class Code
+|06h
+|RO
+
+|0Ch
+|CLS
+|Cache Line Size
+|00h
+|RO
+
+|0Eh
+|HEADTYP
+|Header Type
+|80h
+|RO
+
+|2Ch-2Dh
+|SVID
+|Subsystem Vendor ID
+|0014h
+|RO
+
+|2Eh-2Fh
+|SID
+|Subsystem Identification
+|7A00h
+|RO
+
+|34h
+|CAPP
+|Capabilities Pointer
+|40h
+|RO
+
+|3Ch
+|INT_LN
+|Interrupt Line
+|00h
+|R/W
+
+|3Dh
+|INT_PN
+|Interrupt Pin
+|00h
+|RO
+
+|3Eh-3Fh
+|BCTRL
+|Bridge Control Register
+|0000h
+|R/W
+
+|42h-43h
+|DIDCMD
+|Device ID Command Register
+|0000h
+|R/W, RO
+
+|44h-45h
+|LKSC0
+|Link Status and Control Register 0
+|0020h
+|R/W
+
+|46h-47h
+|LKWDSC0
+|Link Width Status and Control Register 0
+|0000h
+|R/W
+
+|4Ch
+|HTRID
+|HT Revision ID
+|60h
+|RO
+
+|4Dh-4Fh
+|LKFREQSC0
+|Link Frequency Status and Control Register 0
+|000000h
+|R/W, RO
+
+|140h-147h
+|RXWIN0
+|Receive Window 0
+|0000F00080000000h
+|R/W
+
+|148h-14Fh
+|RXWIN1
+|Receive Window 1
+|FDFCFFFF80000000h
+|R/W
+
+|150h-157h
+|RXWIN2
+|Receive Window 2
+|0000000000000000h
+|R/W
+
+|158h-15Fh
+|RXWIN3
+|Receive Window 3
+|0000000000000000h
+|R/W
+
+|160h-167h
+|RXWIN4
+|Receive Window 4
+|0000000000000000h
+|R/W
+
+|170h-177h
+|TXPOSTWIN0
+|Transmit Post Window 0
+|0000000000000000h
+|R/W,RO
+
+|178h-17Fh
+|TXPOSTWIN1
+|Transmit Post Window 1
+|0000000000000000h
+|R/W,RO
+
+|1B0h-1B7h
+|RXP2PWIN0
+|Receive P2P Window 0
+|0000000000000000h
+|R/W,RO
+
+|1B8h-1BFh
+|RXP2PWIN1
+|Receive P2P Window 1
+|0000000000000000h
+|R/W,RO
+
+|1F4h-1F7h
+|HTPLLCTRL
+|HT Pll Control Register
+|00000000h
+|R/W,RO
+|===
+
+Note: Address spaces not listed in the table indicate reservations.
+
+*BCTRL-HT bridge control register*
+
+Address Offset: `3E`-`3Fh`
+
+Attribute: R/W, RO
+
+Default value: `0000h`
+
+Size: `16` bit
+
+[[bctrl-ht-bridge-control-register]]
+.BCTRL-HT bridge control register
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|15:7
+|Reserved
+|RO
+|Reserved
+
+|6
+|HT Reset
+|R/W
+|This bit controls the HT reset.
+
+0: unreset.
+
+1: Reset.
+
+|5:0
+|Reserved
+|RO
+|Reserved
+|===
+
+*DIDCMD - device ID command register*
+
+Address Offset: `42`-`43h`
+
+Attribute: R/W, RO
+
+Default value: `0000h`
+
+Size: `16` bit
+
+[[didcmd-device-id-command-register]]
+.DIDCMD-device ID command register
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|15:13
+|Command Format
+|RO
+|Command Format
+
+|12:10
+|Reserved
+|RO
+|Reserved
+
+|9:5
+|Unit Count
+|R/W
+|Provided to the software for recording the current number of units
+
+|4:0
+|Unit ID
+|R/W
+|Record the number of IDs used
+|===
+
+*LKSC0-Link status control register 0*
+
+Address Offset: `44`-`45h`
+
+Attribute: R/W, RO
+ 
+Default value: `2000h`
+
+Size: `16` bit
+
+[[lksc0-link-status-control-register-0]]
+.LKSC0-Link status control register 0
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|15:14
+|Reserved
+|RO
+|Reserved
+
+|13
+|LDTSTOP# Tristate Enable
+|R/W
+|Whether to turn off the HT PHY when the HT bus enters the HT Disconnect state.
+
+`0`: Not to turn off;
+
+`1`: To turn off.
+
+|12:10
+|Reserved
+|RO
+|Reserved
+
+|9
+|CRC Error (hi)
+|R/W
+|CRC error occurs in high 8 bits
+
+|8
+|CRC Error (lo)
+|R/W
+|CRC error occurs on low 8 bits
+
+|7
+|Trans off
+|R/W
+|HT PHY off control. When in `16`-bit bus operation,
+
+`1`: Turn off the high/low `8`-bit HT PHY;
+
+`0`: Enable the low `8`-bit HT PHY, the high `8`-bit HT PHY is controlled by bit `0`
+
+|6
+|End of Chain
+|RO
+|HT Bus End
+
+|5
+|Init Complete
+|RO
+|HT bus initialization complete
+
+|4
+|Link Fail
+|RO
+|Connection failure indication
+
+|3:2
+|Reserved
+|RO
+|Reserved
+
+|1
+|CRC Flood Enable
+|R/W
+|Whether to flood the `HT` bus in case of `CRC` error
+
+|0
+|Trans off (hi)
+|R/W
+|When running an `8`-bit protocol using a `16`-bit HT bus, the high `8`-bit PHY is off control.
+
+`0`: Enables the high 8-bit HT PHY.
+
+`1`: Disables high 8-bit HT PHY.
+|===
+
+*LKWDSC0-Link data width status and control register*
+
+Address Offset: `46`-`47h`
+
+Attribute: R/W, RO
+
+Default value: `0011h` or `0000h`
+
+
+
+[[lkwdsc0-link-data-width-status-and-control-register]]
+.LKWDSC0-Link data width status and control register
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|15
+|Reserved
+|RO
+|Reserved
+
+|14:12
+|Link TX Width
+|R/W
+|Link Sender Width.
+The value after a cold reset is the maximum width of the current connection, and the value written to this register will take effect after the next hot reset or HT Disconnect.
+
+`000b`: `8` bits.
+
+`001b`: `16` bits.
+
+|11
+|Reserved
+|RO
+|Reserved
+
+
+|10:8
+|Link RX Width
+|R/W
+|Link Sender Width.
+The value after a cold reset is the maximum width of the current connection, and the value written to this register will take effect after the next hot reset or HT Disconnect.
+
+`000b`: `8` bits.
+
+`001b`: `16` bits.
+
+|7
+|TX DW FC
+|RO
+|The transmitter supports double-word flow control.
+
+`0`: not supported.
+
+`1`: Supported.
+
+|6:4
+|Link TX Max Width
+|RO
+|Maximum width of the link transmitter.
+
+`000b`: `8` bits.
+
+`001b`: `16` bits.
+
+|3
+|RX DW FC
+|RO
+|The receiver side supports double-word flow control.
+
+`0`: Not supported.
+
+`1`: Supported.
+
+|2:0
+|Link RX Max Width
+|RO
+|Maximum width at the receiver end of the link.
+
+`000b`: `8` bits.
+
+`001b`: `16` bits.
+
+Note: When `HT_8x2` is 0, the default value is `0011h`; when `HT_8x2` is 1, the default value is `0000h`.
+|===
+
+*LKFREQCFG0-Link frequency configuration register*
+
+Address Offset: `4C`-`4Dh`
+
+Attribute: R/W, RO
+
+Default value: `0060h`
+
+Size: `32` bits
+ 
+[[lkfreqcfg0-link-frequency-configuration-register-1]]
+.LKFREQCFG0-Link frequency configuration register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|15:14
+|Reserved
+|RO
+|Reserved
+
+|13
+|Overflow Error
+|RO
+|HT bus packet overflow
+
+|12
+|Protocol Error
+|RO
+|Protocol error, referring to an unrecognized command received on the HT bus
+
+
+|11:8
+|Link Frequency Control
+|R/W
+|HT Bus Operating Frequency Configuration, the configuration value corresponds to the bit of Link Frequency Capability. For example, setting this register to `4` means that the HT bus frequency is configured to `600` MHz (the frequency represented by bit `4` of Link Frequency Capability). The value written to this register must be the value available as indicated by the Link Frequency Capability register (corresponding to a bit equal to 1). Writing to this register will take effect after the next thermal reset or HT Disconnect (when using the software configuration
+
+|:0
+|Revision ID
+|RO
+|PLL (0x1F4), this bit has no meaning)
+|===
+
+Address Offset: `4E`-`4Fh`
+
+Attribute: `RO`
+
+Default value: `0000h`
+
+
+
+[[lkfreqcfg0-link-frequency-configuration-register-2]]
+.LKFREQCFG0-Link frequency configuration register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|15:0
+|Link Frequency Capability
+|RO
+|The supported HT bus frequency, which produces a different value depending on the external PLL setting (when using the software configuration PLL
+(0x1F4) is used, this bit is meaningless). Each bit represents an HT bus frequency, and when the bit is 1 it indicates that the frequency is supported; when the bit is 0 it indicates that the frequency is not supported. The frequencies represented by each bit are as follows:
+
+bit0:200MHz bit1:300MHz bit2:400MHz bit3:500MHz bit4:600MHz bit5:800MHz bit6:1.0GHz bit7:1.2GHz bit8:1.4GHz bit9:1.6GHz bit10:1.8GHz bit11:2.0GHz bit12:2.2GHz bit13:2.4GHz bit14:2.6GHz bit15:3.2GHz
+|===
+
+*RXWIN - receive address window*
+
+Receive address window hits are sent to the internal devices of the bridge chip only when the access is hit. The receive address window includes the following fields:
+
+[[rxwin-receive-address-window]]
+.RXWIN-receive address window
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|WIN_BASE
+|R/W
+|Window Base Address
+
+|47:32
+|WIN_MASK
+|R/W
+|Window Mask
+
+|31
+|WIN_EN
+|R/W
+|Window Enable
+
+|30
+|WIN_TRANS_EN
+|R/W
+|Window address conversion enable
+
+|29:0
+|WIN_TRANS
+|R/W
+|Window converted address high bit of address bit`[53:24]`
+When the window is enabled, the address window hit condition is: ( `ADDR` & `WIN_MASK` ) == ( `WIN_BASE` & `WIN_MASK` ). If address translation is enabled, the output address is: (ADDR & ~WIN_MASK) | WIN_TRANS; if address translation is not enabled, the output address is the original address.
+Note: The ADDR here refers to the high 16 bits of the address (bit`[39:24]`, the address sent from HT bus is only `40` bits).
+For example, `1111111100000000b`,`1100000000000000b` are all legal configurations, while
+The number of zeros in MASK indicates the size of the address window.
+|===
+
+*RXWIN0-Receive window register 0*
+
+Address Offset: `140`-`147h`
+
+Attribute: R/W
+
+Default value: `0000F00080000000h`
+
+Size:`64` bit
+
+[[rxwin0-receive-window-register-0]]
+.RXWIN0-Receive window register 0
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|RXWIN0_BASE
+|R/W
+|Receive Window `0` Base Address
+
+|47:32
+|RXWIN0_MASK
+|R/W
+|Receive Window `0` Mask
+
+|31
+|RXWIN0_EN
+|R/W
+|Receive Window `0` Enable
+
+|30
+|RXWIN0_TRANS_EN
+|R/W
+|Receive Window `0` Address Conversion Enable
+
+|29:0
+|RXWIN0_TRANS
+|R/W
+|Receive Window `0` Converted high address, bit[53:24] of address
+|===
+
+*RXWIN1-Receive window register 1*
+
+Address Offset: `148`-`14Fh`
+
+Attribute: R/W
+
+Default value: `FDFCFFFF80000000h`
+
+Size: `64` bit
+
+[[rxwin1-receive-window-register-1]]
+.RXWIN1-Receive window register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|RXWIN1_BASE
+|R/W
+|Receive Window `1` Base Address
+
+|47:32
+|RXWIN1_MASK
+|R/W
+|Receive Window `1` Mask
+
+|31
+|RXWIN1_EN
+|R/W
+|Receive Window `1` Enable
+
+|30
+|RXWIN1_TRANS_EN
+|R/W
+|Receive Window `1` Address Conversion Enable
+
+|29:0
+|RXWIN1_TRANS
+|R/W
+|Receive Window `1` Converted high address, bit`[53:24]` of the address
+|===
+
+*RXWIN2-Receive window register 2*
+
+Address Offset: `150`-`147h`
+|Attribute: R/W
+Default value: `0000000000000000h`
+|Size: `64` bit
+
+[[rxwin2-receive-window-register-2]]
+.RXWIN2-Receive window register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|RXWIN2_BASE
+|R/W
+|Receive Window `2` Base Address
+
+|47:32
+|RXWIN2_MASK
+|R/W
+|Receive Window `2` Mask
+
+|31
+|RXWIN2_EN
+|R/W
+|Receive Window `2` Enable
+
+|30
+|RXWIN2_TRANS_EN
+|R/W
+|Receive Window `2` Address Conversion Enable
+
+|29:0
+|RXWIN2_TRANS
+|R/W
+|Receive Window `2` Converted High Address, bit`[53:24]` of the address
+|===
+
+*RXWIN3-Receive window register 3*
+
+Address Offset: `158`-`14Fh`
+
+Attribute: R/W
+
+Default value: `0000000000000000h`
+
+Size: `64` bit
+
+[[rxwin3-receive-window-register-3]]
+.RXWIN3-Receive window register  3
+[%header,cols="1m,^3m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|RXWIN3_BASE
+|R/W
+|Receive Window `3` Base Address
+
+|47:32
+|RXWIN3_MASK
+|R/W
+|Receive Window `3` Mask
+
+|31
+|RXWIN3_EN
+|R/W
+|Receive Window `3` Enable
+
+|30
+|RXWIN3_TRANS_EN
+|R/W
+|Receive Window `3` Address Conversion Enable
+
+|29:0
+|RXWIN3_TRANS
+|R/W
+|Receive Window `3` Converted High Address, bit`[53:24]` of the address
+|===
+
+*RXWIN4-Receive window register 4*
+
+Address Offset: `160`-`147h`
+
+Attribute: R/W
+
+Default value: `0000000000000000h`
+
+Size: `64` bit
+
+[[rxwin4-receive-window-register-4]]
+.RXWIN4-Receive window register 4
+[%header,cols="1m,^4m,^1m,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|RXWIN4_BASE
+|R/W
+|Receive Window `4` Base Address
+
+|47:32
+|RXWIN4_MASK
+|R/W
+|Receive Window `4` Mask
+
+|31
+|RXWIN4_EN
+|R/W
+|Receive Window `4` Enable
+
+|30
+|RXWIN4_TRANS_EN
+|R/W
+|Receive Window `4` Address Conversion Enable
+
+|29:0
+|RXWIN4_TRANS
+|R/W
+|Receive Window `4` Converted High Address, bit`[53:24]` of the address
+|===
+
+*TXPOSTWIN - quick send window*
+
+Visits hit by the Quick Send window give a direct response, thus speeding up the request for the request initiator. The Quick Send window includes the following fields:
+
+[[TXPOSTWIN---quick-send-window]]
+.TXPOSTWIN - quick send window
+[%header,cols="1m,^4m,^1m,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|WIN_BASE
+|R/W
+|Window Base Address
+
+|47:32
+|WIN_MASK
+|R/W
+|Window Mask
+
+|31
+|WIN_EN
+|R/W
+|Window Enable
+
+|30:0
+|Reserved
+|RO
+|Reserved
+|===
+
+When the window is enabled, the address window hit condition is: ( ADDR & WIN_MASK ) == ( WIN_BASE & WIN_MASK ). Note: ADDR here refers to the high `16` bits of the address (bit`[39:24]`, the address sent to the HT bus is only 40 bits).
+For example, `1111111100000000b`,`1100000000000000b` are all legal configurations, while The number of zeros in MASK indicates the size of the address window.
+
+*TXPOSTWIN0-Quick send window register 0*
+
+Address Offset: 170-177h
+
+Attribute: `R/W,RO`
+
+Default value: `0000000000000000h`
+
+Size:`64` bit
+
+[[txpostwin0-quick-send-window-register-0]]
+.TXPOSTWIN0-Quick send window register 0
+[%header,cols="1m,^4m,^1m,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|TXPOSTWIN0_BASE
+|R/W
+|Quick Send Window `0` Base Address
+
+|47:32
+|TXPOSTWIN0_MASK
+|R/W
+|Fast Send Window `0` Mask
+
+|31
+|TXPOSTWIN0_EN
+|R/W
+|Fast Send Window `0` Enable
+
+|30:0
+|Reserved
+|RO
+|Reserved
+|===
+
+*TXPOSTWIN1 - Quick send window register 1*
+
+Address Offset: `178`-`17Fh`
+
+Attribute: `R/W,RO`
+
+Default value: `000000000000000h`
+
+Size: `64` bit
+
+[[txpostwin1-quick-send-window-register-1]]
+.TXPOSTWIN1-Quick send window register 1
+[%header,cols="1m,^4m,^1m,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|TXPOSTWIN1_BASE
+|R/W
+|Quick Send Window `1` Base Address
+
+|47:32
+|TXPOSTWIN1_MASK
+|R/W
+|Fast Send Window `1` Mask
+
+|31
+|TXPOSTWIN1_EN
+|R/W
+|Fast Send Window `1` Enable
+
+|30:0
+|Reserved
+|RO
+|Reserved
+|===
+
+*RXP2PWIN-P2P receive window*
+
+Accesses hit by the P2P receive window are sent directly back to the HT bus as P2P commands. the P2P receive window has a higher priority than the normal receive window. the P2P receive window includes the following fields.
+
+[[rxp2pwin-p2p-receive-window]]
+.RXP2PWIN-P2P receive window
+[%header,cols="1m,^4m,^1m,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|WIN_BASE
+|R/W
+|Window Base Address
+
+|47:32
+|WIN_MASK
+|R/W
+|Window Mask
+
+|31
+|WIN_EN
+|R/W
+|Window Enable
+
+|30:0
+|Reserved
+|RO
+|Reserved
+|===
+
+When the window is enabled, the address window hit condition is: ( ADDR & WIN_MASK ) == ( WIN_BASE & WIN_MASK ). Note: ADDR here refers to the high 16 bits of the address (bit[39:24], the address sent to the HT bus is only 40 bits).
+
+For example, 1111111100000000b,1100000000000000b are legal configurations, while 1011111100000000b,11010000000000b are not.
+The number of zeros in MASK indicates the size of the address window. 
+
+*RXP2PWIN0-P2P receive window 0*
+
+Address Offset: `180`-`187h`
+
+Attribute: `R/W,RO`
+
+Default value: 00000`00000000000h
+
+Size: `64` bit
+
+[[rxp2pwin0-p2p-receive-window-0]]
+.RXP2PWIN0-P2P receive window 0
+[%header,cols="1m,^4m,^1m,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|RXP2PWIN0_BASE
+|R/W
+|P2P Receive Window `0` Base Address
+
+|47:32
+|RXP2PWIN0_MASK
+|R/W
+|P2P receive window `0` mask
+
+|31
+|RXP2PWIN0_EN
+|R/W
+|P2P receive window `0` enable
+
+|30:0
+|Reserved
+|RO
+|Reserved
+|===
+
+*RXP2PWIN0-P2P receive window 1*
+
+Address Offset: `188`-`18Fh`
+
+Attribute: `R/W,RO`
+
+Default value: `000000000000000h`
+
+Size: `64` bit
+
+[[rxp2pwin1-p2p-receive-window-1]]
+.RXP2PWIN1-P2P receive window 1
+[%header,cols="1m,^4m,^1m,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|64:48
+|RXP2PWIN1_BASE
+|R/W
+|P2P Receive Window `1` Base Address
+
+|47:32
+|RXP2PWIN1_MASK
+|R/W
+|P2P receive window `1` mask
+
+|31
+|RXP2PWIN1_EN
+|R/W
+|P2P receive window `1` enable
+
+|30:0
+|Reserved
+|RO
+|Reserved
+|===
+
+*Htpllctrl-ht pll control register*
+
+This register is used to enable the software configuration of the HT's PLL, which is used to modify the frequency of the HT PHY and controller.
+
+Address Offset: `1F4`-`1F7h`
+
+Attribute: `R/W,RO`
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[htpllctrl-ht-pll-control-register]]
+.Htpllctrl-ht pll control register
+[%header,cols="1m,^4m,^1m,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:26
+|Reserved
+|R/W
+|Reserved
+
+|25:22
+|pll_div_phy_lo
+|R/W
+|PHY low output crossover
+
+|21:18
+|pll_div_phy_hi
+|R/W
+|PHY high output crossover
+
+|17:16
+|pll_div_refc
+|R/W
+|HT PLL input frequency division
+
+|15:9
+|pll_loopc
+|R/W
+|HT PLL Multiplier
+
+|8:5
+|pll_div_ctrl
+|R/W
+|Controller output divider
+
+|4
+|Reserved
+|RO
+|Reserved
+
+|3
+|pll locked
+|RO
+|PLL lock
+
+|2
+|Controller bypass
+|R/W
+|Controller clock bypass mode
+
+|1
+|pll config enable
+|R/W
+|PLL Configuration Enable
+
+|0
+|Reserved
+|RO
+|0: Disable PLL configuration
+|===

@@ -1,0 +1,9 @@
+[[pulse-measurement-function]]
+==== Pulse Measurement Function
+
+After setting the `CTRL` control register, the PWM continuously samples the input signal level.
+When a down-jump of the input pulse signal is detected, the internal counter starts counting from `1`, and when an up-jump is detected, the counter value is shifted to the `low_buffer` register and continues to accumulate, and when a down-jump is detected again, the counter value is shifted to the `full_buffer` register.
+For example, if the input pulse is `50` times the low pulse width of the system clock and `90` times the high pulse width, the final value read in the `low_buffer` is `50`, and the value read in the `full_buffer` register is `(50+90)=140`.
+
+It should be noted that the pulse to be measured should be a periodic signal, and the pulse period should not exceed the range that the 32-bit counter can measure.
+If there is a pulse with a pulse period longer than `0xFFFF_FFF9`, the `INT` bit of the control register will be set to `1`, indicating that the pulse to be measured is out of the measurement range.

@@ -1,0 +1,25 @@
+[[access-address-3]]
+=== Access Address
+
+The base address of accessing the power management module is the base address of the MISC low-speed device block plus an offset of `0x50000`.
+
+*Note*: The PWM module only supports access by 4 bytes.
+
+The physical address composition of the ACPI module internal registers is as follows.
+
+[[the-physical-address-composition-of-the-acpi-module-internal-registers]]
+.The physical address composition of the ACPI controller internal registers
+[%header,cols="1m,1,2"]
+|===
+^d|Address bits
+^|Composition
+^|Note
+
+|[15:8]
+|`0`
+|Reserved
+
+|[7:0]
+|`REG`
+|Internal registers address
+|===

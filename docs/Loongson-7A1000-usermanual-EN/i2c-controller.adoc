@@ -1,0 +1,9 @@
+[[i2c-controller]]
+== I2C Controller
+
+A total of 6 I2C controllers are integrated into the bridge, and the I2C controllers operate at `50MHz`.
+The maximum transfer rate supported by the I2C bus is `400kbps`.
+
+include::i2c-controller/access-address-and-pin-multiplexing.adoc[]
+
+include::i2c-controller/description-of-i2c-controller-register.adoc[]

@@ -1,0 +1,60 @@
+[[bridge-identity-register]]
+=== Bridge Identity register
+
+This register contains the identification ID and revision number of the bridge.
+
+Address Offset: `3FF8`-`3FFBh`
+
+Attribute: `RO`
+
+Default value: See the description in the table below
+
+Size: `32` bits
+
+[[bridge-identity-register-3]]
+.Bridge Identity register 3
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|31:24
+|fix_id
+|RO
+|Bridge fixed ID (0x7A).
+
+|23:0
+|variable_id
+|RO
+|Bridge Variable ID.
+|===
+
+Address Offset: 3FFC-3FFFh
+
+Attribute: RO
+
+Default value: See the description in the table below
+
+Size: `32` bits
+
+[[bridge-identity-register-4]]
+.Bridge Identity register 4
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|31:24
+|revision_number
+|RO
+|Bridge piece revision number.
+
+|23:0
+|Reserved
+|RO
+|Reserved
+|===

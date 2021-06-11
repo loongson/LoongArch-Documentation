@@ -1,0 +1,283 @@
+[[description-of-i2c-controller-register]]
+=== Description of I2C Controller Register
+
+*Frequency Division Latch Low-order Byte Register (`PRERlo`)*
+
+Offset: `0x00`
+
+Reset value: `0xff`
+
+[[frequency-division-latch-low-order-byte-register]]
+.Frequency division latch low-order byte register
+[%header,cols="1m,2m,1m,1,3"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|PRERlo
+|8
+|R/W
+|Store the lower `8` bits of the division latch
+|===
+
+*Frequency Division Latch High-order Byte Register (PRERhi)*
+
+Offset: `0x01`
+
+Reset value: `0xff`
+
+[[frequency-division-latch-high-order-byte-register]]
+.Frequency division latch high-order byte register
+[%header,cols="1m,2m,1m,1,3"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|PRERhi
+|8
+|RW
+|Store the high `8` bits of the division latch
+|===
+
+Assuming that the value of the divider latch is `Prescaler` and the frequency of the I2C controller is `50MHz`, if the clock frequency of the I2C bus is needed `clock_s`, then `Prescaler` should be equal to: `50M/(5*clock_s) - 1`.
+
+*Control Register (`CTR`)*
+
+Offset: `0x02`
+
+Reset value: `0x00`
+
+[[control-register-1]]
+.Control register
+[%header,cols="1m,2m,1m,1,3"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|EN
+|1
+|R/W
+|Module enable bit
+
+`0`: Module disable
+
+`1`: Module enable
+
+|6
+|IEN
+|1
+|R/W
+|Interrupt enable bit
+
+`0`: Interrupt disable
+
+`1`: Interrupt enable
+
+|5:0
+|Reserved
+|6
+|R/W
+|Reserved
+|===
+
+*Transport Data Register (`TXR`)*
+
+Offset: `0x03`
+
+Reset value: `0x00`
+
+[[transport-data-register]]
+.Transport data register
+[%header,cols="1m,2m,1m,1,3"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:1
+|DATA[7:1]/ADDR
+|7
+|W
+|When transporting data, the data to be sent (`bit[7:1]`) is stored.
+
+When transporting the address, the address of the I2C slave device is stored
+
+|0
+|DATA[0]/RW
+|1
+|W
+|When transporting data, stores the data to be sent (`bit[0]`).
+
+When transporting the address, the read and write status is stored.
+
+`0`: Write
+
+`1`: Read
+|===
+
+*Receive Data Register (`RXR`)*
+
+Offset: `0x03`
+
+Reset value: `0x00`
+
+[[receive-data-register]]
+.Receive data register
+[%header,cols="1m,2m,1m,1,3"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|RXR
+|8
+|R
+|Store received data
+|===
+
+*Command Control Register (`CR`)*
+
+Offset: `0x04`
+
+Reset value: `0x00`
+
+[[command-control-register]]
+.Command control register
+[%header,cols="1m,2m,1m,1,3"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|STA
+|1
+|W
+|Generate the `START` signal
+
+|6
+|STO
+|1
+|W
+|Generate the `STOP` signal
+
+|5
+|RD
+|1
+|W
+|Generate the read signal
+
+|4
+|WR
+|1
+|W
+|Generate the write signal
+
+|3
+|ACK
+|1
+|W
+|Generate the response signal
+
+`0`: The controller sends `ack` at the end of this transmission
+
+`1`: The controller does not send `ack` at the end of this transmission
+
+|2:1
+|Reserved
+|2
+|W
+|Reserved
+
+|0
+|IACK
+|1
+|W
+|Generate interrupt response signal.
+Software writes `1` to this bit to clear the interrupt.
+|===
+
+*State Register (`SR`)*
+
+Offset: `0x04`
+
+Reset value: `0x00`
+
+[[state-register]]
+.State register
+[%header,cols="1m,2m,1m,1,3"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|RxACK
+|1
+|R
+|Receive response bit
+
+`1` - no receive the response bit
+
+`0` - receive the response bit
+
+|6
+|Busy
+|1
+|R
+|I2c bus busy flag bit
+
+`1` - bus is busy
+
+`0` - bus is free
+
+|5
+|AL
+|1
+|R
+|When the I2C core loses control of the I2C bus, this bit is `1`
+
+|4:2
+|Reserved
+|3
+|R
+|Reserved
+
+|1
+|TIP
+|1
+|R
+|Indicate the process of transport
+
+`1` - indicate that data is being transported
+
+`0` - indicate that data transport is complete
+
+|0
+|IF
+|1
+|R
+|Interrupt flag bit.
+When one data transport is finished, or another device initiates data transport, this bit is `1`
+|===

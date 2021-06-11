@@ -1,0 +1,13 @@
+[[pwm-controller]]
+== PWM Controller
+
+A four-way pulse width output/counter controller (PWM) is implemented in the bridge.
+The four PWMs The four PWMs work and control in exactly the same way.
+Each PWM pin can be used as either a pulse output signal or a pulse width measurement input signal.
+The PMW controller clock is `50MHz`, and the count and reference registers are 32-bit length.
+
+include::pwm-controller/access-address-and-pin-multiplexing.adoc[]
+
+include::pwm-controller/description-of-registers.adoc[]
+
+include::pwm-controller/description-of-functions.adoc[]

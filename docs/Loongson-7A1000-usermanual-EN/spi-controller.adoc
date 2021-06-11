@@ -1,0 +1,8 @@
+[[spi-controller]]
+== SPI Controller (`D22:F0`)
+
+include::spi-controller/spi-configuration-register.adoc[]
+
+include::spi-controller/spi-control-register.adoc[]
+
+include::spi-controller/spi-software-programming-guide.adoc[]

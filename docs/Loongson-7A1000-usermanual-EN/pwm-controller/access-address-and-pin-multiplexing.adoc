@@ -1,0 +1,36 @@
+[[access-address-and-pin-multiplexing-2]]
+=== Access Address and Pin Multiplexing
+
+The base address of accessing the PWM controller is the base address of the MISC low-speed device block plus an offset of `0x20000`.
+
+*Note*: The PWM module only supports access by 4 bytes.
+
+The physical address composition of the PWM controller internal registers is as follows.
+
+[[the-physical-address-composition-of-the-pwn-controller-internal-registers]]
+.The physical address composition of the PWM controller internal registers
+[%header,cols="1m,1,2"]
+|===
+^d|Address bits
+^|Composition
+^|Note
+
+|[15:10]
+|`0`
+|Reserved
+
+|[9:8]
+|PWM number
+|`0x0`-`0x3` represent `PWM0`-`PWM3` respectively
+
+|[7:4]
+|`0`
+|Reserved
+
+|[3:0]
+|`REG`
+|Internal registers address
+|===
+
+For PMM modules, the corresponding pins should be set to the corresponding functions when used.
+The pin settings related to PMM are described in <<pin-multiplexing-configuration-register,Pin Multiplexing Configuration Register>>.

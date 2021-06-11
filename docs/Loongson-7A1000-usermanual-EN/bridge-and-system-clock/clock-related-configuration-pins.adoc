@@ -1,0 +1,53 @@
+[[clock-related-configuration-pins]]
+=== Clock-related Configuration Pins
+
+The bridge chip sets a number of pins to set the bridge clock generation method, these configuration pins are mainly used as a backup design, the normal motherboard design does not need to change the value of these configuration pins except for `CLKSEL[7:6]` (dangling or kept as default values). Bridge clock-related configuration pins are shown in the following table:
+
+[[Bridge-chip-clock-related-configuration-pins-and-descriptions]]
+.Bridge chip clock-related configuration pins and descriptions
+[%header,cols="^2m,^1m,^1m,4"]
+|===
+|Pin
+|Direction
+|Default Value
+|Description
+
+|SYS_CLKSEL[1:0]
+|&#124:
+|00b
+|Reserved
+
+|SYS_CLKSEL[3:2]
+|&#124:
+|00b
+|Reserved
+
+|SYS_CLKSEL[5:4]
+|&#124:
+|01b
+|Reserved
+
+|SYS_CLKSEL[6]
+|&#124:
+|0
+|HT PHY reference clock selection.
+
+`0`: Use `200MHz` differential input clock.
+
+`1`: Use the `100MHz` system input clock.
+
+|SYS_CLKSEL[6]
+|&#124:
+|1
+|HT frequency configuration mode (recommended setting is `0`).
+
+0: The HT clock is configured in software mode. If the PLL frequency of the HT is not modified using software, the HT bus frequency remains fixed (HT1.0 mode: `200MHz`; `HT3.0` mode: `400MHz`).
+
+1: The HT clock can only be used in hardware configuration mode. In this case, software modification of the HT PLL frequency is not valid, and only a few frequencies can be selected via registers. For `HT1.0` mode, `2`: `400MHz`; `5/9`: `800MHz`; others: `200MHz`;.
+For HT3.0 mode, 2: `800MHz`; 5/9: `1600MHz`; others: `400MHz`.
+
+|SYS_CLKSEL[6]
+|&#124:
+|0
+|Reserved
+|===

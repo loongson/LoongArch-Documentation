@@ -1,0 +1,4 @@
+[[dc-control-register]]
+=== DC Control Register
+
+include::dc-control-register/display-detection-register.adoc[]

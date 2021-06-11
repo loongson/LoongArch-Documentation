@@ -1,0 +1,36 @@
+[[access-address-and-pin-multiplexing-1]]
+=== Access Address and Pin Multiplexing
+
+The base address of accessing the I2C controller is the base address of the MISC low-speed device block plus an offset of `0x10000`.
+
+*Note*: The I2C module only supports access by 1 byte.
+
+The physical address composition of the I2C module internal registers is as follows.
+
+[[the-physical-address-composition-of-the-i2c-module-internal-registers]]
+.The physical address composition of the I2C module internal registers
+[%header,cols="1m,1,2"]
+|===
+^d|Address bits
+^|Composition
+^|Note
+
+|[15:11]
+|`0`
+|Reserved
+
+|[10:8]
+|I2C controller number
+|`0x0`-`0x5` represent `I2C0`-`I2C5` respectively
+
+|[7:3]
+|`0`
+|Reserved
+
+|[2:0]
+|`REG`
+|Internal registers address
+|===
+
+For I2C modules, the corresponding pins should be set to the corresponding functions when used.
+The pin settings related to I2C are described in <<pin-multiplexing-configuration-register,Pin Multiplexing Configuration Register>>.

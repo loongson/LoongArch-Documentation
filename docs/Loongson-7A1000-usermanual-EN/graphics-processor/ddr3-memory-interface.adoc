@@ -1,0 +1,22 @@
+[[ddr3-memory-interface]]
+=== DDR3 Memory Interface
+
+The bridge chip's integrated memory interface complies with the DDR3 SDRAM standard (JESD79-3).
+
+The bridge supports 1 chip select, 16 row addresses, 15 column addresses, and 3 logical body addresses.
+
+The bridge chip's memory controller has the following characteristics.
+
+* Full-flow operation of commands, read and write data on the interface
+* Memory command merging and sorting to improve the overall bandwidth
+* Basic parameters of memory devices can be modified
+* Supports `133`-`667MHz` clock frequency
+
+*Access Address*
+
+The DDR3 memory controller consists of two address spaces: the memory space for video memory controller configuration register and the memory space for the video memory.
+These two address spaces share the same address space (the video memory address space, the address space allocated to `GMEM_BAR`).
+The final access to the memory address space is determined by the parameter `disable_gmem_confspace` — bit `3` of general configuration register 0 of the bridge configuration register `addr_0x420[3]`.
+
+When the configuration parameter `disable_gmem_confspace = 0`, all accesses to the memory are configuration register accesses.
+When the configuration parameter `disable_gmem_confspace = 1`, the accesses to the memory are normal memory read and write accesses.

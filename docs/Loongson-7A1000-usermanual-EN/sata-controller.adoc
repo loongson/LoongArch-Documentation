@@ -1,0 +1,12 @@
+[[sata-controller]]
+== SATA Controller (`D8:F0/1/2`)
+
+The features of SATA are as follows.
+
+* Supports SATA Generation 1 at 1.`5Gbps` and SATA Generation 2 at `3Gbps`
+
+* Compatible with Serial ATA 2.6 specification and AHCI 1.1 specification
+
+include::sata-controller/sata-configuration-register.adoc[]
+
+include::sata-controller/description-of-sata-control-register.adoc[]

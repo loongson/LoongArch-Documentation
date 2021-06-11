@@ -1,0 +1,4 @@
+[[ohci-controller]]
+=== OHCI Controller
+
+include::ohci-controller/ohci-configuration-register.adoc[]

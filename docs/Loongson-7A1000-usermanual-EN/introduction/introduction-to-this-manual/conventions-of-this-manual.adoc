@@ -1,0 +1,13 @@
+[[conventions-of-this-manual]]
+==== Conventions of this Manual
+Note: The bit field of Reserved in the register description in the text is either a read-only attribute or a read-write attribute. Regardless of the attribute of the bit field, the software must ensure that the value of the bit field is not changed, that is, if the software needs to modify a register containing a Reserved bit field, it must ensure that the value written to the Reserved bit field is the same as the value read from the bit field.
+
+For ease of presentation, the following abbreviations are used to denote the register attributes.
+
+`RO` Read-only
+
+`WO` Write-only
+
+`R/W` Read-Write
+
+`R/WC` read-write, write clear

@@ -1,0 +1,776 @@
+[[description-of-registers-4]]
+=== Description of Registers
+
+This section describes the power management related registers.
+The register voltage field indicates the voltage field to which this bit of the register belongs.
+
+*`PMCON_SOC`: SOC General PM Configuration Register*
+
+[[soc-general-pm-configuration-register]]
+.SOC general PM configuration register
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x00
+m|SOC
+|R/W, RO
+
+|Bit Field
+3+|Description
+
+m|25
+3+<|*`PWRBTN_LVL` – RO*
+
+This bit indicates the current `PWRBTNn` signal status.
+
+m|24
+3+<|*`PWRTYP` – RO*
+
+This bit indicates the power supply mode.
+
+`1`: AC (Adapter)
+
+`0`: Battery
+
+m|23:0
+3+<|Reserved
+|===
+
+*`PMCON_RESUME` : RESUME General PM Configuration Register*
+
+[[resume-general-pm-configuration-register]]
+.RESUME general PM configuration register
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x04
+m|RESUME
+|R/W, RO, R/WC
+
+|Bit Field
+3+|Description
+
+m|31:14
+3+<|Reserved
+
+m|13
+3+<|*`VSB_GATEn_EN` – R/W*
+
+Enables or disables the `VSB_GATEn` function.
+
+`0`: off; `1`: enable.
+
+If `RSMRSTn` is active, this bit is `1`.
+This bit is configured by the system after re-powering.
+If the motherboard uses the `VSB_GATEn` pin as the power management control signal, the system software must write `1` to this bit.
+
+m|12:11
+3+<|*`VSB_GATEn_DLY` – R/W*
+
+Used to control the duration of the `VSB_GATEn` signal relative to S3n from S0 to S3 and S3 to S0 (the time advanced when sleeping and the time delayed when waking up).
+
+`2'b00`: `31.25ms` advance at hibernation and `125ms` delay at wake-up.
+
+`2'b01`: `62.5ms` advance at hibernation, `250ms` delay at wake-up.
+
+`2'b10`: `125ms` advance on hibernation and `500ms` delay on wake-up.
+
+`2'b11`: `250ms` ahead of hibernation and `1s` behind wake-up.
+
+This field is `2'b0` if `RSMRSTn` is valid, and is configured by the system after re-powering.
+
+m|10:8
+3+<|Reserved
+
+m|7
+3+<|*`USB_GMAC_OK` – R/W*
+
+If `RSMRSTn` is valid, this bit is `0`, indicating that USB and GMAC are not configured and cannot wake up the system.
+The system will configure this bit after re-powering.
+
+m|6
+3+<|*`CTT_STS` – R/WC*
+
+The system enters the G2/S5 state when a temperature trip occurs in the S0 state, and this bit is used to detect the logged event status after re-powering the system.
+
+m|5
+3+<|*`CTT_EN` – R/W*
+
+Enable the temperature trip protection mechanism.
+
+m|4
+3+<|*`LID_OPEN` – RO*
+
+Display status detection bit.
+
+`1`: Display is on.
+
+`0`: Display is off.
+
+m|3
+3+<|Reserved
+
+m|2
+3+<|*`SRS` (System Reset Status) – R/WC*
+
+0: `SYS_RESETn` has not been pressed
+
+1: `SYS_RESETn` has been pressed.
+This bit should be checked after system reset and clear it accordingly.
+
+m|1
+3+<|*`PWROK_FLR` (PWROK Failure) – R/WC*
+
+When the system is in the S0 state, the PWROK signal becomes invalid and this bit is set to `1`.
+Software writes `1` to clear this bit.
+
+m|0
+3+<|*`DRAM_INIT` – R/W*
+
+This bit does not affect the hardware function, PMON will set this bit to `1` before DRAM initialization, and write `0` to this bit after finishing DRAM initialization, software can use this bit to check if DRAM initialization has been interrupted.
+|===
+
+*`PMCON_RTC` : RTC General PM Configuration Register*
+
+[[rtc-general-pv-configuration-register]]
+.RTC general PM configuration register
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x08
+m|RTC
+|R/W, R/WC
+
+|Bit Field
+3+|Description
+
+m|31:9
+3+<|Reserved
+
+m|8
+3+<|*`WOL_EN` – R/W*
+
+Controls whether the `SLPLANn` signal is active when the system is in the low-power state.
+When the system is in the operating state, `SLPLANn` is held high.
+
+0: `SLPLANn` is not valid.
+
+1: `SLPLANn` is pulled low if the system is powered by the power supply.
+If the system is powered by the battery, `WOL_BAT_EN` determines whether `SLPLANn` is pulled low.
+
+m|7
+3+<|*`WOL_BAT_EN` – R/W*
+
+When the system enters a low-power state and is battery powered and `WOL_EN` is high.
+
+`0`: `SLPLANn` is invalid.
+
+`1`: `SLPLANn` is pulled low.
+
+m|6:5
+3+<|*`S3_ASSERTION_WIDTH` – R/W*
+
+The 2 bits represent the minimum time interval between when the `S3n` signal is valid and when it is invalid again.
+
+`11`: `1s`
+
+`10`: `125ms`
+
+`01`: `1ms`
+
+`00`: `60us`
+
+m|4:3
+3+<|*`S4_ASSERTION_WIDTH` – R/W*
+
+The 2 bits represent the minimum time interval between when the `S4n` signal is valid and when it is invalid again.
+
+`11`: `4s`
+
+`10`: `2s`
+
+`01`: `1s`
+
+`00`: `125us`
+
+m|2
+3+<|*`S4_ASSERTION_EN` – R/W*
+
+`0`: The interval between valid and re-invalidation of the `S4n` signal is several RTC periods.
+
+`1`: The interval between valid and re-invalidation of the `S4n` signal is determined by `S4_ASSERTION_WIDTH`.
+
+m|1
+3+<|*`PWR_FLR` (Power Failure) – R/WC*
+
+This bit is in the RTC domain and can only be reset by `RTC_RSTn`.
+
+`1` indicates that a power failure has occurred in the system (entering the G3 state), i.e., all power supplies except RTC have failed (`RSMRSTn` has been active).
+The software clears this bit by writing `1`.
+
+m|0
+3+<|*`AFTERG3_EN` – R/W*
+
+This bit determines the action of the system after it enters the G3 state and the power is restored.
+
+`0`: The system will automatically revert to the S0 state after power is restored.
+
+`1`: The system will revert to the S5 state, or if the system was in the S4 state when the power failure occurred, the system will revert to the S4 state after power is restored.
+
+This bit will be set to `1` by the power button override and thermal trip events.
+|===
+
+*`PM1_STS` : Power Management 1 Status Register*
+
+[[power-management-1-status-register]]
+.Power Management 1 Status Register
+[cols="6*^1"]
+|===
+2+|Address Offset
+2+|Voltage Field
+2+|Attribute
+
+2+m|0x0C
+2+m|RESUME/RTC/SOC
+2+|R/WC
+
+|Bit Field
+4+|Description
+|Voltage Field
+
+m|31:16
+4+<|Reserved
+m|
+
+m|15
+4+<|*`WAK_STS` (Wake Status) – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: Hardware writes `1` to this bit if the system is woken up from any of the sleep states by a wakeup event.
+m|Resume
+
+m|14
+4+<|*`PCIEXP_WAKE_STS` – R/WC*
+
+`1`: PCIE wake-up event occurs
+
+`0`: Software write `1` to clear the bit
+m|Resume
+
+m|13:12
+4+<|Reserved
+m|
+
+m|11
+4+<|*`PRBTNOR_STS` (Power Button Override Status) – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: When power button override occurs, this bit is set to `1`, the system enters G2/S5 unconditionally state, while setting `AFTERG3_EN` to `1`.
+m|RTC
+
+m|10
+4+<|*`RTC_STS` (RTC Status) – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: This bit is `1` when the RTC generates an alarm.
+Also when `RTC_EN` is valid, this bit generates a wake-up event.
+m|Resume
+
+m|9
+4+<|Reserved
+m|
+
+m|8
+4+<|*`PWRBTN_STS` (Power Button Status) – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+Thermal trip will clear this bit.
+
+`1`: This bit will be set to `1` when `PWRBTNn` is pressed and held for more than `16ms` (less than `4s`).
+In the S0 state, an interrupt is generated when both `PWRBTN_EN` and `PWRBTN_STS` are active.
+During any sleep state from S3-S5, the system will resume if `PWRBTN_STS` is set.
+m|Resume
+
+m|7:1
+4+<|Reserved
+m|
+
+m|0
+4+<|TMROF_STS (PM Timer Overflow Status) – R/WC
+`0`: Software writes `1` to clear this bit.
+
+`1`: When the highest bit of the 24-bit counter (`20ns` per clock cycle) is inverted, this bit is set to `1`.
+The timer function is recommended to be done with HPET.
+m|SOC
+|===
+
+*`PM1_EN`: Power Management 1 Enable Register*
+
+[[power-management-1-enable-register]]
+.Power management 1 enable register
+[cols="6*^1"]
+|===
+2+|Address Offset
+2+|Voltage Field
+2+|Attribute
+
+2+m|0x10
+2+m|RESUME/RTC/SOC
+2+|R/W
+
+|Bit Field
+4+|Description
+|Voltage Field
+
+m|31:15
+4+<|Reserved
+m|
+
+m|14
+4+<|*`PCIEXP_WAKE_DIS` – R/W*
+
+When this bit is set, no PCIE wake-up event is generated, but the value of this bit does not affect the value of `PCIEXP_WAKE_STS`.
+m|resume
+
+m|13:11
+4+<|Reserved
+m|
+
+m|10
+4+<|*`RTC_EN` (RTC Event Enable) – R/W*
+
+RTC wake-up and interrupt enable.
+m|rtc
+
+m|9
+4+<|Reserved
+m|
+
+m|8
+4+<|*`PWRBTN_EN` (Power Button Enable) – R/W*
+
+`PWRBTN` interrupt event generation enable, this bit does not affect `PWRBTN` wake-up event generation.
+m|resume
+
+m|7:1
+4+<|Reserved
+m|
+
+m|0
+4+<|*TMROF_EN (PM Timer Overflow Enable) – R/W*
+
+If this bit is set, `TMROF_STS` will generate an interrupt.
+m|SOC
+|===
+
+*`PM1_CNT`: Power Management 1 Control Register*
+
+[[power-management-1-control-register]]
+.Power management 1 control register
+[cols="6*^1"]
+|===
+2+|Address Offset
+2+|Voltage Field
+2+|Attribute
+
+2+m|0x14
+2+|RESUME/RTC/SOC
+2+|R/W
+
+|Bit Field
+4+|Description
+|Voltage Field
+
+m|31:14
+4+<|Reserved
+|
+
+m|13
+4+<|*SLP_EN (Sleep Enable) – R/W*
+
+Writing `1` to this bit will cause the system to enter the `SLP_TYP` declared hibernation state, and this bit will automatically revert to `0` upon entering the associated hibernation state.
+m|resume
+
+m|12:10
+4+<|*`SLP_TYP` (Sleep Type) – R/W*
+
+This 3 bits indicate the hibernation state of the system.
+
+`000`: S0 state.
+
+`001`: Reserved.
+
+`010`: Reserved.
+
+`011`: Reserved.
+
+`100`: Reserved.
+
+`101`: Suspend-to-RAM.
+`S3n` signal is valid, enter S3 state.
+
+`110`: Suspend-to-Disk.
+`S3n`, `S4n` signals are valid, enter S4 state.
+
+`111`: Soft Off.
+`S3n`, `S4n`, `S5n` signals are valid, enter S5 state.
+m|rtc
+
+m|9:1
+4+<|Reserved
+m|
+
+m|0
+4+<|*`INT_EN` – R/W*
+
+Interrupt enable switch to enable the generation of interrupt signals for the power management controller.
+m|SOC
+|===
+
+*`PM1_TMR`: Power Management 1 Timer*
+
+[[power-management-1-timer]]
+.Power management 1 timer
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x18
+m|SOC
+|RO
+
+|Bit Field
+3+|Description
+
+m|31:24
+3+<|Reserved
+
+m|23:0
+3+<|*`TMR_VAL` (Timer Value) – RO*
+
+Counter counts with a period of `8ns`.
+When the `23` bit is inverted, the `TNROF_STS` bit is set.
+HPET is recommended.
+|===
+
+*`GPE0_STS`: General Purpose Event0 Status Register*
+
+[[general-purpose-event0-status-register]]
+.General purpose event0 status register
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x28
+m|RESUME
+|R/WC
+
+|Bit Field
+3+|Description
+
+m|31:16
+3+<|Reserved
+
+m|15:10
+3+<|*`USB[5:0]_STS` – R/WC*
+
+Only the bit `10` is meaningful, the `15:11` bits are meaningless for now.
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: These bits are set when a USB wake event occurs, and when the USBx_EN bit is valid, a wake event or interrupt is generated.
+
+m|9
+3+<|Reserved
+
+m|8
+3+<|*`RI_STS` – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: This bit is set when the `RIn` signal is valid.
+
+m|7
+3+<|*`BATLOW_STS` – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: This bit is set when the `BATLOWn` signal is active.
+
+If `BATLOW_EN` is valid, an interrupt will be generated when `BATLOW_STS` is set.
+This bit does not generate a wake-up event.
+
+m|6
+3+<|*`GMAC1_STS` – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: These bits are set when a wake event occurs in `GMAC1` and generate a wake event or interrupt when the `GMAC1_EN` bit is valid.
+
+m|5
+3+<|*`GMAC0_STS` – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: These bits are set when a wake event occurs in `GMAC0` and generate a wake event or interrupt when the `GMAC0_EN` bit is valid.
+
+m|4
+3+<|*`LID_STS` – R/WC*
+
+`0`: Software writes `1` to clear this bit.
+
+`1`: When the `LID_EN` bit is valid, a wake-up event is generated.
+
+m|3
+3+<|*`CTW_STS` – R/WC*
+
+Thermal warning is generated.
+
+m|2
+3+<|*CTA_STS – R/WC*
+
+Thermal alert is generated.
+
+m|1
+3+<|*`PWRSWITCH_STS` – R/WC*
+
+The `PWRTYP` changes when the power supply status changes.
+This bit generates an interrupt.
+
+m|0
+3+<|Reserved
+|===
+
+*`GPE0_EN`: General Purpose Event0 Enable Register*
+
+[[general-purpose-event0-enable-register]]
+.General purpose event0 enable register
+[cols="6*^1"]
+|===
+2+|Address Offset
+2+|Voltage Field
+2+|Attribute
+
+2+m|0x2C
+2+m|RESUME/RTC
+2+|R/W
+
+|Bit Field
+4+|Description
+|Voltage Field
+
+m|31:16
+4+<|Reserved
+m|
+
+m|15:10
+4+<|*`USB[5 :0]_EN` – R/W*
+
+`0`: Invalid.
+
+`1`: Enable `USBx_STS` to wake-up event that will generate an interrupt signal when returning to S0.
+m|
+
+m|9
+4+<|Reserved
+|
+
+m|8
+4+<|*`RI_EN` – R/W*
+
+`0`: Invalid.
+
+`1`: Enable `RIn_STS` wake-up event that will generate an interrupt signal when returning to S0.
+m|RTC
+
+m|7
+4+<|*`BATLOW_EN` – R/W*
+
+`0`: Invalid.
+
+`1`: Enable `BATLOWn` interrupt event.
+m|RTC
+
+m|6
+4+<|*`GMAC1_EN` – R/W*
+
+`0`: Invalid.
+
+`1`: Enable `GMAC1_STS` wake-up event, which will generate an interrupt signal when returning to S0.
+m|RTC
+
+m|5
+4+<|*`GMAC0_EN` – R/W*
+
+`0`: Invalid.
+
+`1`: Enable `GMAC0_STS` wake-up event, which will generate an interrupt signal when returning to S0.
+m|
+
+m|4
+4+<|*`LID_EN` – R/W*
+
+`0`: Invalid.
+
+`1`: Enable `LID_STS` wake-up event, and an interrupt signal will be generated when S0 state.
+m|
+
+|3
+4+<|*`CTW_EN` – R/W*
+
+Enable THERMAL WARNING interrupt.	
+m|
+
+m|2
+4+<|*`CTA_EN` – R/W*
+
+Enable THERMAL ALERT interrupt.
+m|
+
+m|1
+4+<|*`PWRSWITCH_EN` – R/W*
+
+Enable PWRSWITCH_STS interrupt.
+m|
+
+m|0
+4+<|*`LID_POL` – R/W*
+
+This bit sets the polarity of the `LID`.
+m|
+|===	
+
+*`RST_CNT`: Reset Control Register*
+
+[[reset-control-register]]
+.Reset control register
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x30
+m|SOC
+|R/W
+
+|Bit Field
+3+|Description
+
+m|31:2
+3+<|Reserved
+
+m|1
+3+<|*`WD_EN` – R/W*
+
+Watch dog function enable.
+
+m|0
+3+<|*`OS_RST` – R/W*
+
+Software writes this bit to reset the system.
+|===
+
+*`WD_SET` : Watch Dog Set Register*
+
+[[watch-dog-set-register]]
+.Watch dog set register
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x34
+m|SOC
+|WO
+
+|Bit Field
+3+|Description
+
+m|31:1
+3+<|Reserved
+
+m|0
+3+<|When `WD_EN` is `1`, writing this bit will refill the internal watch dog counter with the value of `WD_Timer`.
+Note that the watch dog counter operates at `50MHz`.
+|===
+
+*`WD_Timer`: Watch Dog Timer Register*
+
+[[watch-dog-timer-register]]
+.Watch dog timer register
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x38
+m|SOC
+|R/W
+
+|Bit Field
+3+|Description
+
+m|31:0
+3+<|The value of this register is the watch dog refill value, and the reset value is all ``1``s.
+|===
+
+*`GEN_RTC_1`: General RTC Register 1*
+
+[[general-rtc-register-1]]
+.General RTC register 1
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x50
+m|RTC
+|R/W
+
+|Bit Field
+3+|Description
+
+m|31:0
+3+<|RTC general purpose register.
+|===
+
+*`GEN_RTC_2`: General RTC Register 2*
+
+[[general-rtc-register-2]]
+.General RTC register 2
+[cols="2*^1,2*^2"]
+|===
+2+|Address Offset
+|Voltage Field
+|Attribute
+
+2+m|0x54
+m|RTC
+|R/W
+
+|Bit Field
+3+|Description
+
+m|31:0
+3+<|RTC general purpose register.
+|===

@@ -1,0 +1,18 @@
+[[description-of-clock-function]]
+=== Description of Clock Function
+
+The bridge contains multiple PLLs and clock divider modules to generate the individual clocks needed for the bridge.
+
+The bridge contains 5 PLLs, each of which can provide up to 3 clock outputs. The five PLLs are used for the following purposes
+
+* A device PLL to generate the clocks for USB/SATA, GMAC.
+
+* A graphics PLL to generate clocks for GPU, DC, and graphics memory.
+
+* One system PLL to generate clocks for the internal bus, HDA bitclk, flex clkout.
+
+* Two PIX PLLs for generating two independent pixel clocks to support dual independent displays.
+
+[[structure-of-bridge-clock]]
+.Structure of bridge clock
+image::structure-of-bridge-clock.png[]

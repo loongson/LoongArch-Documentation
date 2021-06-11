@@ -1,0 +1,8 @@
+[[ac97-controller]]
+== AC97 Controller (`D7:F1`)
+
+include::ac97-controller/ac97-configuration-register.adoc[]
+
+include::ac97-controller/ac97-controller-register.adoc[]
+
+include::ac97-controller/dma-controller.adoc[]

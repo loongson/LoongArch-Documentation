@@ -1,0 +1,86 @@
+[[section-sata1-phy-access-configuration-register]]
+=== `SATA1 PHY` Access Configuration Register
+
+This group of registers is used to control the generation of configuration access operations to the SATA1 PHY internal control registers.
+
+Address Offset: `0758`-`075Bh`
+
+Attribute: R/W
+
+Default value: `0000_0000h`
+
+Size: `32` bits
+
+[[sata1-phy-access-configuration-register-1]]
+.SATA1 PHY Access Configuration Register 1
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|31:16
+|phy_cfg_data
+|R/W
+|PHY configuration reads and writes data. In the write operation, the data is written to this register first, and then the write operation is performed. In the read operation, the read data returned from PHY is stored into this register.
+
+|15:0
+|phy_cfg_addr
+|R/W
+|PHY Configuration Address
+|===
+
+Address Offset: `075C`-`075Fh`
+
+Attribute: R/W,
+
+Default value: `0000_0000h`
+
+Size: `32` bits
+
+[[sata1-phy-access-configuration-register-2]]
+.SATA1 PHY Access Configuration Register 2
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|31:7
+|Reserved
+|R/W
+|Reserved
+
+|6
+|phy_cfg_reset
+|R/W
+|PHY Configuration Reset, High Active
+
+|5:3
+|phy_cfg_state
+|RO
+|PHY Configuration Status Machine Status Indication
+
+|2
+|phy_cfg_done
+|R/W
+|The completion of one access to PHY indicates the completion of reading and writing to PHY. Write completion indicates that the written data has been written to the PHY internal register, and read completion indicates that the read data has been returned to the to the phy_cfg_data register
+
+|1
+|phy_cfg_disable
+|R/W
+|0 - Reading or writing to this set of registers triggers a PHY configuration access operation
+
+1 - Reading or writing to this set of registers does not trigger a PHY configuration access operation, but rather acts as a read or write operation to this register
+
+|0
+|phy_cfg_R/W
+|R/W
+|Start a read operation or a write operation.
+
+0: Read operation
+
+1: Write operation
+|===

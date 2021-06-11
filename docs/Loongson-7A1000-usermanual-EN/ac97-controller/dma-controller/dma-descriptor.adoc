@@ -1,0 +1,413 @@
+[[dma-descriptor]]
+==== DMA Descriptor
+
+*`DMA_ORDER_ADDR_LOW`*
+
+Offset address: `0x0`
+
+Reset value: `0x00000000`
+
+[[dma-order-addr-low]]
+.`DMA_ORDER_ADDR_LOW`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:1
+|dma_order_addr
+|31
+|R/W
+|Memory internal next descriptor address register (low 32 bits).
+
+|0
+|Dma_order_en
+|1
+|R/W
+|Whether the descriptor is a valid signal.
+|===
+
+Description: Store the address of the next DMA descriptor.
+`dma_order_en` is the enable bit of the next DMA descriptor.
+If this bit is `1`, the next descriptor is valid; if this bit is `0`, the next descriptor is invalid and no operation is performed.
+When the DMA descriptor is configured, this register holds the address of the next descriptor. After the DMA operation is performed, the dma_order_en signal is used to determine whether to start the next DMA operation.
+In 64-bit address mode, this register stores the low 32-bit address.
+
+*`DMA_SADDR`*
+
+Offset address: `0x4`
+
+Reset value: `0x00000000`
+
+[[dma-saddr]]
+.`DMA_SADDR`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|dma_saddr
+|32
+|R/W
+|System memory address for DMA operations (low 32 bits).
+|===
+
+Description: DMA operations are divided into Memory Read and Memory Write.
+Memory Read: reads data from memory, saves it in the DMA controller's cache, and then writes it to the AC97 device; this register specifies the address of the read memory.
+Memory Write: Read data from AC97 device is saved in the DMA cache, and when the data in the DMA cache exceeds a certain number, it is written to the memory, and this register specifies the address of the write memory.
+In 64-bit address mode, this register stores the low 32-bit address.
+
+*`DMA_DADDR`*
+
+Offset address: `0x8`
+
+Reset value: `0x00000000`
+
+[[dma-daddr]]
+.`DMA_DADDR`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31
+|AC97_wr_en
+|1
+|R/W
+|AC97 write enable.
+`1`: Indicate a write operation.
+
+|30
+|AC97_mode
+|1
+|R/W
+|`0`: mono
+
+`1`: 2 stero
+
+|29:28
+|AC97_wr_mode
+|2
+|R/W
+|AC97 write mode.
+
+`0`: 1-byte
+
+`1`: 2-byte
+
+`2`: 4-byte
+
+|27:0
+|dma_daddr
+|28
+|R/W
+|AC97 device address for DMA operation.
+|===
+
+*`DMA_LENGTH`*
+
+Offset address: `0xc`
+
+Reset value: `0x00000000`
+
+[[dma-length]]
+.`DMA_LENGTH`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|dma_length
+|32
+|R/W
+|Transport data length register.
+|===
+
+Description: Represents the length of a piece of content to be carried, in words.
+When the length of the word has been carried, the next step is started, i.e. the next loop.
+When a new loop is started, the length of data is carried again.
+When step becomes `1`, the single DMA descriptor operation ends and the next descriptor is read.
+
+*`DMA_STEP_LENGTH`*
+
+Offset address: `0x10`
+
+Reset value: `0x00000000`
+
+[[dma-step-length]]
+.`DMA_STEP_LENGTH`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|dma_step_length
+|32
+|R/W
+|Data transport interval length register.
+|===
+
+Description: The length of the interval between two blocks of memory data being carried, the interval between the end address of the previous step and the start address of the next step.
+
+*`DMA_STEP_TIMES`*
+
+Offset address: `0x14`
+
+Reset value: `0x00000000`
+
+[[dma-step-times]]
+.`DMA_STEP_TIMES`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|dma_step_times
+|32
+|R/W
+|Data transport cycle count register.
+|===
+
+Description: The number of cycles indicates the number of blocks to be carried in a single DMA operation.
+If you want to carry only one consecutive block, the value of the cycle count register can be assigned to `1`.
+
+*`DMA_CMD`*
+
+Offset address: `0x18`
+
+Reset value: `0x00000000`
+
+[[dma-cmd]]
+.`DMA_CMD`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|14:13
+|Dma_cmd
+|2
+|R/W
+|Source and destination address generation method.
+
+|12
+|dma_r_w
+|1
+|R/W
+|DMA operation type, `1` is read ddr2 write device, `0` is read device write ddr2.
+
+|11:8
+|dma_write_state
+|4
+|R/W
+|DMA write data status.
+
+|7:4
+|dma_read_state
+|4
+|R/W
+|DMA read data status.
+
+|3
+|dma_trans_over
+|1
+|R/W
+|The DMA has executed all the configured descriptor operations.
+
+|2
+|dma_single_trans_over
+|1
+|R/W
+|The DMA has executed a descriptor operation.
+
+|1
+|dma_int
+|1
+|R/W
+|DMA interrupt signal.
+
+|0
+|dma_int_mask
+|1
+|R/W
+|Whether DMA interrupts are masked.
+|===
+
+Description: `dma_single_trans_over=1` means the end of one DMA operation, when `length=0` and `step_times=1`, the descriptor of the next DMA operation will be taken.
+The descriptor address of the next DMA operation is stored in the `DMA_ORDER_ADDR` register.
+If `dma_order_en=0` in the `DMA_ORDER_ADDR` register, then `dma_trans_over=1` and the whole dma operation is finished and there are no new descriptors to read.
+If `dma_order_en=1`, then `dma_trans_over` is set to `0` and the next dma descriptor is read.
+`dma_int` is the interrupt of the DMA, which occurs after a configured DMA operation if there is no interrupt mask.
+The CPU can set it low directly after processing the interrupt, or it can wait until the DMA makes its next transfer.
+`dma_int_mask` is the interrupt mask for the corresponding `dma_int`.
+`dma_read_state` describes the current read state of the DMA.
+`dma_write_state` describes the current write state of the DMA.
+
+The DMA write state (`WRITE_STATE[3:0]`) describes that the DMA includes the following write states.
+
+[[dma-write-state]]
+.DMA write state
+[%header,cols="2m,1m,5"]
+|===
+d|Write_state
+d|[3:0]
+|Description
+
+|Write_idle
+|4'h0
+|Write state is in idle state
+
+|W_ddr_wait
+|4'h1
+|Dma determines that it needs to perform a read device write memory operation and initiates a write memory request, but the memory is not ready to respond to the request, so dma keeps waiting for a response from the memory
+
+|Write_ddr
+|4'h2
+|Memory has received a dma write request, but has not yet finished executing the write operation
+
+|Write_ddr_end
+|4'h3
+|The memory receives the dma write request and completes the write operation, at which point the dma is in the write memory operation complete state
+
+|Write_dma_wait
+|4'h4
+|Dma sends a request to write the dma status register back to memory and waits for memory to receive the request
+
+|Write_dma
+|4'h5
+|Memory receives a write dma status request, but the operation is not yet complete
+
+|Write_dma_end
+|4'h6
+|Memory completes write dma status operation
+
+|Write_step_end
+|4'h7
+|Dma completes a length length operation (i.e. completes a step)
+|===
+
+The DMA read state (`READ_STATE[3:0]`) describes that the DMA includes the following read states.
+
+[[dma-read-state]]
+.DMA read state
+[%header,cols="2m,1m,5"]
+|===
+|Read_state
+|[3:0]
+|Description
+
+|Read_idle
+|4'h0
+|Read state is in idle state
+
+|Read_ready
+|4'h1
+|After receiving the start signal to start the dma operation, enter the ready state and start reading the descriptor
+
+|Get_order
+|4'h2
+|Issue a read descriptor request to memory and wait for a memory answer
+
+|Read_order
+|4'h3
+|Memory receives a read descriptor request and is performing a read operation
+
+|Finish_order_end
+|4'h4
+|Memory read out dma descriptor
+
+|R_ddr_wait
+|4'h5
+|Dma sends a read data request to memory and waits for a memory answer
+
+|Read_ddr
+|4'h6
+|Memory receives dma read data request and is performing read data operation
+
+|Read_ddr_end
+|4'h7
+|Memory completes a read data request from dma
+
+|Read_dev
+|4'h8
+|Dma enters read device status
+
+|Read_dev_end
+|4'h9
+|The device returns read data, ending the read device request
+
+|Read_step_end
+|4'ha
+|End a step operation, step times minus `1`
+|===
+
+*`DMA_ORDER_ADDR_HIGH`*
+
+Offset address: `0x20`
+
+Reset value: `0x00000000`
+
+[[dma-order-addr-high]]
+.`DMA_ORDER_ADDR_HIGH`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|dma_order_addr
+|32
+|R/W
+|Memory internal next descriptor address register (high 32 bits)
+|===
+
+*`DMA_SADDR_HIGH`*
+
+Offset address: `0x24`
+
+Reset value: `0x00000000`
+
+[[dma-saddr-high]]
+.`DMA_SADDR_HIGH`
+[%header,cols="1m,2,1m,1,3"]
+|===
+^d|Bit Field
+^|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|31:0
+|dma_saddr
+|32
+|R/W
+|Memory address for DMA operation (high 32 bits)
+|===

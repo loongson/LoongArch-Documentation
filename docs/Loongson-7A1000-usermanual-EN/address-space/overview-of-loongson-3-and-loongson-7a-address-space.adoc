@@ -1,0 +1,56 @@
+[[overview-of-loongson-3-and-loongson-7a-address-space]]
+=== Overview of Loongson 3 and Loongson 7A Address Space
+
+As a bridge for the HT interface, the bridge supports a 40-bit address space internally. Without the SWIOTLB, the Loongson3 processor + bridge supports a maximum of 1TB of memory address space. To support multi-processor systems, we use a few bits (up to 4 bits) of the bridge chip's internal address as the destination node number for the bridge chip's internal device DMA access. This means that the bridge chip can support a processor system with up to 16 nodes. Considering that in practice Loongson uses systems with up to 4 nodes Therefore, this section describes the maximum number of nodes supported. For a 4-node system, the address space size for a single processor node is 256GB.
+
+From the CPU's perspective - that is, the device address space accessible to the CPU - the address space of a bridge chip consists of three parts: configuration space, PCI I/O space, and PCI MEM space. The address space of a bridge chip has the same form as the address space defined by PCI.
+
+. Configuration space: this address space is used to access the configuration headers of the devices inside the bridge chip (including devices extended through the PCIE bus), and its address composition conforms to the address organization form of PCI configuration access.
+
+. I/O space: This address space is used to access the I/O address space defined by the PCI protocol. Only PCIE has this address space in the bridge chip for accessing downstream devices of the PCIE controller through I/O type requests.
+
+. MEM space: All address spaces other than the above two address spaces are MEM spaces.
+
+The bridge chip's configuration space corresponds to the HT bus configuration space of the HT bus, with a size of 32MB. the bridge chip's PCI I/O space corresponds to the HT bus I/O space, with a size of 32MB. the bridge chip's PCI MEM space corresponds to the HT bus MEM space, with a size of 1012GB. the PCI MEM space is used to The PCI MEM space is used to access the MEM space of the bridge's internal PCIE devices, the MEM and IO space of devices other than PCIE devices, and the bridge's configuration register space.
+
+The latter two address spaces (PCI I/O space and PCI MEM space) are part of the overall processor address space. and the system software can assign them to any location from 0 - 1TB*. When the software accesses them, it needs to map them into HT1's address space segment via the processor's level 1 XBAR or directly add HT1's address space offset to that access address.
+
+Note*: Except for the address segment `0x0f000000`-`0x0fffffff`. This address segment cannot be used as a bridge device address space.
+
+From the perspective of DMA accesses - that is, accesses to the address space initiated by the bridge chip's internal devices - the address space available includes the processor's memory space and the bridge chip's memory space. The size of the processor's memory space varies depending on the number of nodes in the system, and the total DMA address space is 1 TB. For a 4-node system, the DMA address space must be located within the lower 256 GB of the node address space so that the bridge can directly access the memory of up to 4 nodes. Devices within the bridge chip that can initiate DMA operations include: GPU, DC, PCIE, USB, SATA, GMAC, HDA, and AC97.
+
+Both types of addresses (the bridge's address space and the processor's address space) are addressed in a uniform manner, i.e., the processor's memory space, the processor's configuration space, the bridge's configuration access space, the I/O space, and the MEM space, are all located in the same address space and do not overlap with each other. For a single node system, this address space has a maximum size of 1TB.
+
+The access addresses of the devices inside the bridge chip (PCI I/O space and PCI MEM space) are designed to be software configurable to support device discovery and management for the PCI architecture. Each device (device block) inside the bridge contains a PCI configuration header. The software accesses the configuration header to obtain information about the type of the device, the size of the address space supported, etc., and sets the address space of the device by configuring the device's BAR register. This approach is consistent with the 780E.
+
+The following is an example of a Loongson 3A+ bridge chip system to illustrate the address space allocation for the entire computer system. one way of dividing the address space for the 3A+ bridge chip is shown in the following figure.
+
+[[example-of-address-space-division-for-loongson-3-processor-loongson-7a-bridge]]
+.Example of address space division for Loongson 3 processor + Loongson 7A bridge
+image::example-of-address-space-division-for-loongson-3-processor-loongson-7a-bridge.png[]
+
+Note: The address in the figure is the low address, not including the node number and high address.
+
+In the address space allocation method in the figure above, the
+
+`0x0000,0000` - `0x0fff,ffff` is the low 256MB memory space of the system.
+
+`0x1000,0000` - `0x17ff,fff` is the fixed device address space of the bridge, which includes interrupt controller, HPET, confbus, MISC low-speed devices, and LPC. ,ffff (HT1's MEM space)
+
+`0x1800,0000` - `0x19ff,ffff` is the PCI I/O space of the bridge chip, the software can allocate the I/O space of the PCIE devices in the bridge chip to this address space, which is mapped to 0xefd,fc00,0000 - 0xefd,fdff through the configuration window of the first-level XBAR, ffff (I/O space of HT1).
+
+`0x1a00,0000` - `0x1bff,ffff` is the configuration space of the bridge chip, which is used to access the configuration header of the internal device of the bridge chip, and the access method is compatible with the PCI protocol, the bit[23:8] of the address bit corresponds to the bus number, device number and func number in order, and this address is mapped to 0xefd, fe00,0000 - 0xefd,fff,fff (HT1's bus configuration space).
+
+`0x1c00,0000` - `0x1dff,ffff` is the LPC MEM address space of 3A.
+
+`0x1f00,0000` - `0x1fff,ffff` is the 3A`'s LPC device space.
+
+`0x2000,0000` - `0x2fff,ffff` is the reserved space for the processor.
+
+`0x3000,0000` - `0x3fff,ffff` is the configuration space for 3A.
+
+`0x4000,0000` - `0x7fff,ffff` is the PCI MEM space of the bridge chip. This address is mapped to `0xe00,4000,0000` - `0xe00,7fff,fff` (the MEM space of HT1) through the configuration window of level 1 XBAR.
+
+`0x8000,0000` - `MEM_UP_LIMIT` is the high memory address space of 3A.
+
+`MEM_UP_LIMIT` - `0xfc,ffff,ffff` is the PCI MEM space of the bridge. This address is mapped to `0xe00,0000,0000+MEM_UP_LIMIT` - `0xefc,ffff,ffff` (the MEM space of HT1) through the configuration window of Level 1 XBAR.

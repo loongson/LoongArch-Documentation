@@ -1,0 +1,44 @@
+[appendix]
+[[notes-on-the-use-of-the-software]]
+== Notes on the Use of the Software
+
+Currently, there are five{empty}footnote:[Translator`'s note: Maybe six.] problems that need to be fixed by the software for the bridge piece.
+
+. PCI device scanning problem
++
+The correct value of the subclass code of the PCI device header of the PCIE bridge integrated in the bridge chip should be `0x04` (for PCI type bridge), but this bridge chip will now be `0x00` (for Host type bridge).
++
+Solution: When the read configuration header access is found, if the access address is bus 0 of the device 9 to 20 and the address is `0x8`, directly return `0x06040001`, and not return the hardware read value.
+
+. PCI device scanning problem
++
+For the PCIE bridge integrated in the bridge chip, when scanning the lower bus, when scanning the non-0 device, it should return an invalid value, but this bridge chip will return the configuration header of the 0 device, causing the 0 device to be found repeatedly.
++
+Solution: For PCIE bridges integrated in the bridge, the lower bus only scans for device 0 and no other device number is scanned.
+
+. PCI device scanning problem
++
+The `Memory Space Enable` control bits of the PCI configuration headers of the OHCI (Function 0) and EHCI (Function 1) controllers of the USB devices (Device 4 and Device 5) are reversed.
+That is, the `Memory Space Enable` bit of EHCI controls the Mem space enable of OHCI, while the `Memory Space Enable` bit of OHCI controls the Mem space enable of EHCI.
++
+Solution: Fix by software.
+
+. GMAC DMA64 problem
++
+In 64-bit DMA mode, the high 32-bit register (`0x1094`) of the GMAC's transmit descriptor base address can only be read, but not written.
++
+Solution: Write to the high 32-bit register (`0x1094`) by writing the following addresses `{0x10a8[31:8], 0x1068[7:0]}`.
+
+. LPC `FIXIOREG` problem
++
+The FIXCREG/FIXMREG/FIXIOREG of the LPC is used as an internal reserved register and is not used as a BAR in the PCI configuration header, but the hardware implementation incorrectly places its address in the location of the PCI configuration header BAR.
+The software should treat the `BAR` register location of the LPC as an invalid BAR, but needs to enable I/O and MEM space access for the LPC.
++
+Solution: In the PCI configuration read access function, when the device found to be read is LPC (`B0:D23:F0`) and the address is equal to the address of `BAR0`/`1`/`2`/`3`/`4`/`5` (`0x10` to `0x27`), return data `0` directly.
+
+. Concurrent access of DC control registers problem
++
+The DC's control registers do not support simultaneous write accesses by multiple processors, regardless of whether the destination registers for these write accesses are the same.
+That is, only one processor can write to the DC's control register space at any given time.
++
+Solution: The kernel prevents multiple processors from writing to the DC control register space at the same time by adding a lock.

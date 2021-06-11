@@ -1,0 +1,367 @@
+[[general-configuration-register-1]]
+=== General Configuration Register 1
+
+Offset Address: `0430`-`0433h`
+
+Attribute: R/W
+
+Default value: `00F9_BBF2h`
+
+Size: `32` bits
+
+This register contains configuration information related to USB, SATA, GMAC, HDA/AC97, LPC, and SPI.
+
+[[table-general-configuration-register-0-2]]
+.Table general configuration register 0 2
+[%header,cols="^1m,^2m,^1,3"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31
+|lpc_uca_en
+|R/W
+|`LPC` uncache acceleration enable
+
+`0`: turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|30
+|spi_uca_en
+|R/W
+|`SPI` uncache acceleration enable
+
+`0`: Turn off access acceleration
+
+`1: Access acceleration on
+
+|29
+|conf_uca_en
+|R/W
+|Configuration register `uncache` acceleration enable
+
+`0`: Turn off access acceleration
+
+`1`: turn on access acceleration
+
+|28
+|misc_uca_en
+|R/W
+|Low-speed misc device uncache acceleration enable
+
+`0`: turn off access acceleration
+
+`1`: turn on access acceleration
+
+|27
+|aud_uca_en
+|R/W
+|`HDA/AC97` uncache acceleration enable
+
+`0`: Turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|26
+|gmac_uca_en
+|R/W
+|`gmac` uncache acceleration enable
+
+`0`: Turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|25
+|sata_uca_en
+|R/W
+|sata `uncache` acceleration enable
+
+`0`: turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|24
+|usb_uca_en
+|R/W
+|usb `uncache` acceleration enable
+
+`0`: turn off access acceleration
+
+`1`: Turn on access acceleration
+
+|23:16
+|Reserved
+|R/W
+|Reserved
+
+|15
+|usb1_clken
+|R/W
+|`usb1` clock enable
+
+`0`: No clock
+
+`1`: clock normal
+
+|14
+|usb1_en
+|R/W
+|`usb_1` access enable
+
+`0`: Access disabled
+
+`1`: Access allowed
+
+|13
+|usb1_phy_soft_reset
+|R/W
+|`usb1` PHY software reset
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|12
+|usb1_cntl_soft_reset
+|R/W
+|`usb1` controller software reset
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|11
+|usb0_clken
+|R/W
+|`usb0` clock enable
+
+`0`: No clock
+
+`1`: clock normal
+
+|10
+|usb0_en
+|R/W
+|`usb0` access enable
+
+`0`: Access disabled
+
+`1`:Access allowed
+
+|9
+|usb0_phy_soft_reset
+|R/W
+|`usb0` PHY software reset
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|8
+|usb0_cntl_soft_reset
+|R/W
+|`usb0` controller software reset
+
+`0`:Remove reset
+
+`1`: Hold reset
+
+|7
+|gmac1_clken
+|R/W
+|`gmac1` clock enable
+
+`0`: No clock
+
+`1`: clock normal
+
+|6
+|gmac1_sdb_flowctrl
+|R/W
+|`gmac1` flow control enable
+
+`0`: Flow control off
+
+`1`: Flow control on
+
+|5
+|gmac0_clken
+|R/W
+|`gmac0` clock enable
+
+`0`: No clock
+
+`1`: clock normal
+
+|4
+|gmac0_sdb_flowctrl
+|R/W
+|`gmac0` flow control enable
+
+`0`: Flow control off
+
+`1`: Flow control on
+
+|3:2
+|usb_ref_clk_sel
+|R/W
+|`USB` PHY Reference Clock Selection
+
+`00b`: Use external 12MHz crystal
+
+`10b`: Use internal reference clock
+
+|1
+|usb_ehci_dma64_en
+|R/W
+|Enables usb EHCI `64`-bit `DMA` address mode
+
+`0`: Use `32`-bit DMA address mode
+
+`1`: Use `64`-bit DMA address mode
+
+|0
+|default_route_cfg1
+|R/W
+|Use fixed addresses to access devices such as `USB`, `SATA`, `GMAC`, etc.
+
+`0`: Use the PCI configuration header to configure the device address
+
+`1`: Use fixed address to access the device
+
+If fix_default_route is `1`, then the signal is constant to `1`.
+|===
+
+Note: In order to support the USB sleep-wake function, the USB reference clock must use a 12MHz external crystal.
+
+Offset Address: `0430`-`0437h`
+
+Attribute: R/W
+
+Default value: `1209_9900h`
+
+Size: `32` bits
+
+[[table-general-configuration-register-0-3]]
+.Table general configuration register 0 3
+[%header,cols="^1m,^2m,^1,3"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|28
+|hda_dma_64
+|R/W
+|Enables `HDA64` bit DMA address mode
+
+`0`: Use `32`-bit DMA address mode
+
+`1`: Use `64`-bit DMA address mode
+
+|27
+|rtc_restart
+|R/W
+|RTC crystal oscillator restart
+
+|26:24
+|rtc_ds
+|R/W
+|RTC Crystal Oscillator Driver Configuration
+
+|19
+|sata2_clk_en
+|R/W
+|`SATA2` clock enable
+
+`0`: No clock
+
+`1`: Normal clock
+
+|18
+|sata2_en
+|R/W
+|`SATA2` access enable
+
+`0`: Access disabled
+
+`1`: Access allowed
+
+|16
+|sata2_cntl_soft_reset
+|R/W
+|`SATA2` controller software reset
+
+`0`: Remove reset
+
+`1`: Hold reset
+
+|15
+|sata1_clken
+|R/W
+|`SATA1` clock enable
+
+`0`: No clock
+
+`1`: Clock normal
+
+|14
+|sata1_en
+|R/W
+|`SATA1` access enable
+
+`0`: Access disabled
+
+`1`: Access allowed
+
+|12
+|sata1_cntl_soft_reset
+|R/W
+|`SATA1` controller software reset
+
+`0`: Remove reset
+
+`1: Hold reset
+
+|11
+|sata0_clken
+|R/W
+|`SATA0` clock enable
+
+`0`: No clock
+
+`1`: Clock normal
+
+|10
+|sata0_en
+|R/W
+|`SATA0` Access Enable
+
+`0`: Access disabled
+
+`1`: Access allowed
+
+|8
+|sata0_cntl_soft_reset
+|R/W
+|`SATA0` Controller software reset
+
+`0`: Remove reset
+
+`1`: Hold Reset
+
+`7:1` Reserved R/W Reserved
+
+|0
+|lpc_en
+|R/W
+|`LPC` controller enable
+
+`0`: Access is disabled
+
+`1`: Access allowed
+|===

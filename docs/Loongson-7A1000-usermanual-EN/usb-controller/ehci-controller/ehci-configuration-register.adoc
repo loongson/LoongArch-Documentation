@@ -1,0 +1,217 @@
+[[ehci-configuration-register]]
+==== EHCI Configuration Register (`D4:F1`, `D5:F1`)
+
+[[usb-ehci-controller-configuration-registers]]
+.USB-EHCI controller configuration registers
+[%header,cols="1,1m,3,2m,1"]
+|===
+^|Address Offset
+^d|Abbreviation
+^|Description
+^|Default value
+^|Read/Write
+
+|00h-01h
+|VID
+|Vendor ID
+|0014h
+|RO
+
+|02h-03h
+|DID
+|Device ID
+|7A14h
+|RO
+
+|04h-05h
+|PCICMD
+|PCI Command
+|0000h
+|R/W, RO
+
+|08h
+|RID
+|Revision ID
+|00h
+|RO
+
+|09h
+|PI
+|Programming Interface
+|20h
+|RO
+
+|0Ah
+|SCC
+|Sub Class Code
+|03h
+|RO
+
+|0Bh
+|BCC
+|Base Class Code
+|0Ch
+|RO
+
+|0Ch
+|CLS
+|Cache Line Size
+|00h
+|RO
+
+|0Eh
+|HEADTYP
+|Header Type
+|80h
+|RO
+
+|10h-17h
+|CNL_BAR
+|Control Block Base Address Register
+|0000000000000004h
+|R/W, RO
+
+|2Ch-2Dh
+|SVID
+|Subsystem Vendor ID
+|0000h
+|RO
+
+|2Eh-2Fh
+|SID
+|Subsystem Identification
+|0000h
+|RO
+
+|3Ch
+|INT_LN
+|Interrupt Line
+|00h
+|R/W
+
+|3Dh
+|INT_PN
+|Interrupt Pin
+|01h
+|RO
+|===
+
+Note: Address space not listed in the table indicates reserved.
+
+Registers that differ slightly from the PCI configuration header specification and their descriptions are listed below.
+
+*`PCICMD` - PCI Command Register (USB EHCI - `D4:F1`, `D5:F1`)*
+
+Address Offset: `04`-`05h`
+
+Attribute: R/W, RO
+
+Default value: `0000h`
+
+Size: `16` bits
+
+[[pci-command-register-2]]
+.PCI command register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|15:2
+|Reserved
+|RO
+|Reserved.
+
+|1
+|Memory Space Enable
+|R/W
+|This bit is used to control whether access to the USB EHCI control registers is enabled.
+
+`0`: Disable access.
+
+`1`: Enable access to the USB EHCI control registers.
+The `BAR` register must be configured before this bit can be configured to `1`.
+
+*In rev. 00, this bit controls the `Memory Space Enable` of the OHCI.*
+*The `Memory Space Enable` of the EHCI is controlled by the corresponding bit of the OHCI controller.*
+
+|0
+|Reserved
+|RO
+|Reserved.
+|===
+
+*`CNL_BAR` - Control Base Address Register*
+
+This register is used to configure the base address of the control registers of the EHCI controller.
+
+Address Offset: `10`-`13h`
+
+Attribute: R/W, RO
+
+Default value: `00000004h`
+
+Size: `32` bits
+
+[[control-base-address-register-3]]
+.Control base address register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:15
+|Base Address
+|RW
+|The software writes to this register field the low address of the base address allocated to the EHCI control register.
+
+|14:4
+|Memory Size
+|RO
+|The address space size of EHCI control register is `32KB`.
+
+|3
+|Prefetchable Memory
+|RO
+|Set to `0` to indicate that it is not prefetchable.
+
+|2:1
+|Memory Type
+|RO
+|Set to `10b` to indicate 64-bit `BAR`.
+
+|0
+|Memory/ I/O Space
+|RO
+|Set to `0` to indicate Memory space `BAR`.
+|===
+
+Address Offset: `14`-`17h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[control-base-address-register-4]]
+.Control base address register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:0
+|Base Address
+|RW
+|Software writes to this register field the high 32-bit address of the base address allocated to the EHCI control register.
+|===
+
+The bridge's USB host controller is compatible with the EHCI Rev 1.0 protocol.
+Refer to the Enhanced Host Controller Interface Rev 1.0 Specification for details of the Capability register and Operational register.

@@ -1,0 +1,46 @@
+[[section-pcie-f1-phy-configuration-register]]
+=== `PCIE_F1 PHY` Configuration Register
+
+This set of registers contains the control signals for PCIE_F1 PHY.
+
+Address Offset: `05A8`-`05ABh`
+
+Attribute: `R/W,RO`
+
+Default value: `0006_0000h`
+
+Size: `32` bits
+
+
+[[pcie-f1-phy-configuration-register-1]]
+.PCIE_F1 PHY Configuration Register 1
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|27
+|cfg_x4_mode_en
+|R/W
+|Enable software to configure the operating mode of `PCIE_F1`
+
+`0`: the operating mode is determined by the hardware pin
+
+`1`: The operating mode is determined by the software configuration (bit26)
+
+|26
+|cfg_x4_mode
+|R/W
+|Software configuration of PCIE_F1 operating modes
+
+`0`: working in `x1` mode
+
+`1`: working in `x4` mode
+
+|24
+|phy_powerdown
+|R/W
+|Set `PHY` into `low-power` mode
+|===

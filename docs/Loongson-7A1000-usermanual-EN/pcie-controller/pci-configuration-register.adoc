@@ -1,0 +1,296 @@
+[[pci-configuration-register]]
+=== PCI Configuration Register
+
+The following table lists the configuration header defaults for PCIE ports, the Device ID may be different for different ports, all other fields are the same.
+
+[[pcie-controller-configuration-registers]]
+.PCIE controller configuration registers
+[%header,cols="1,1m,3,2m,1"]
+|===
+^|Address Offset
+^d|Abbreviation
+^|Description
+^|Default value
+^|Read/Write
+
+|00h-01h
+|VID
+|Vendor ID
+|0014h
+|RO
+
+|02h-03h
+|DID
+|Device ID
+d|See description of registers
+|RO
+
+|04h-05h
+|PCICMD
+|PCI Command
+|0000h
+|R/W, RO
+
+|06h-07h
+|PCISTS
+|PCI Status
+|0010h
+|RO
+
+|08h
+|RID
+|Revision ID
+|01h
+|RO
+
+|09h
+|PI
+|Programming Interface
+|00h
+|RO
+
+|0Ah
+|SCC
+|Sub Class Code
+|04h
+|RO
+
+|0Bh
+|BCC
+|Base Class Code
+|06h
+|RO
+
+|0Ch
+|CLS
+|Cache Line Size
+|00h
+|RO
+
+|0Dh
+|PLT
+|Primary Latency Timer
+|00h
+|RO
+
+|0Eh
+|HEADTYP
+|Header Type
+|01h
+|RO
+
+|10h-17h
+|CNL_BAR
+|Control Block Base Address Register
+|0000000000000004h
+|R/W, RO
+
+|18h
+|PBNUM
+|Primary Bus Number
+|00h
+|R/W
+
+|19h
+|SBNUM
+|Secondary Bus Number
+|00h
+|R/W
+
+|1Ah
+|SUBNUM
+|Subordinate Bus Number
+|00h
+|R/W
+
+|1Bh
+|SLT
+|Secondary Latency Timer
+|00h
+|RO
+
+|1Ch
+|IOBASE
+|I/O Base
+|01h
+|R/W
+
+|1Dh
+|IOLMT
+|I/O Limit
+|01h
+|R/W
+
+|1Eh-1Fh
+|SSTS
+|Secondary Status
+|0000h
+|RO
+
+|20h-21h
+|MBASE
+|Memory Base
+|0000h
+|R/W
+
+|22h-23h
+|MLMT
+|Memory Limit
+|0000h
+|R/W
+
+|25h-24h
+|PMBASE
+|Prefetchable Memory Base
+|0000h
+|R/W
+
+|27h-26h
+|PMLMT
+|Prefetchable Memory Limit
+|0000h
+|R/W
+
+|28h-2Bh
+|PMBU32
+|Prefetchable Memory Base Upper 32 Bits
+|00000000h
+|R/W
+
+|2Ch-2Fh
+|PMLU32
+|Prefetchable Memory Limit Upper 32 Bits
+|00000000h
+|R/W
+
+|30h-31h
+|IOBU
+|I/O Base Upper 16 Bits
+|0000h
+|R/W
+
+|32h-33h
+|IOLMTU
+|I/O Limit Upper 16 Bits
+|0000h
+|R/W
+
+|34h
+|CAPP
+|Capabilities Pointer
+|40h
+|RO
+
+|3Ch
+|INT_LN
+|Interrupt Line
+|FFh
+|R/W
+
+|3Dh
+|INT_PN
+|Interrupt Pin
+|01h
+|RO
+
+|3Eh-3Fh
+|BCTRL
+|Bridge Control Register
+|0000h
+|R/W
+|===
+
+Note: Address space not listed in the table indicates reserved.
+
+Registers that differ slightly from the PCI configuration header specification and their descriptions are listed below.
+
+*`DID` - Device Identity Register (PCIE)*
+
+Address Offset: `02`-`03h`
+
+Attribute: RO
+
+Default value: See description
+
+Size: `16` bits
+
+[[device-identity-register]]
+.Device identity register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|15:0
+|DID
+|RO
+|PCIE device identity register.
+The corresponding DID of each PCIE port is shown in the following table.
+|===
+
+[[table-of-did-of-pcie-port]]
+.Table of DID of PCIE port
+[%header,cols="1m,2,1m"]
+|===
+^d|PCI Device Number
+^|Description
+^d|Device Identity Register
+
+|D9:F0
+|`PCIE_F0` port 0
+|7A19h
+
+|D10:F0
+|`PCIE_F0` port 1
+|7A09h
+
+|D11:F0
+|`PCIE_F0` port 2
+|7A09h
+
+|D12:F0
+|`PCIE_F0` port 3
+|7A09h
+
+|D13:F0
+|`PCIE_F1` port 0
+|7A19h
+
+|D14:F0
+|`PCIE_F1` port 1
+|7A09h
+
+|D15:F0
+|`PCIE_G0` port 0
+|7A29h
+
+|D16:F0
+|`PCIE_G0` port 1
+|7A19h
+
+|D17:F0
+|`PCIE_G1` port 0
+|7A29h
+
+|D18:F0
+|`PCIE_G1` port 1
+|7A19h
+
+|D19:F0
+|`PCIE_H` port 0
+|7A29h
+
+|D20:F0
+|`PCIE_H` port 1
+|7A19h
+|===
+
+Note:
+
+. The correct value of the subclass code for all PCIE controllers integrated in the bridge should be 0x04 for the PCI-to-PCI bridge, but this bridge incorrectly implements this value as 0x00 (for the Host bridge).
+The software needs to ignore this bit field and still handle the bridge-integrated PCIE controllers as PCI-to-PCI bridges, see <<notes-on-the-use-of-the-software,Notes on the Use of the Software>>.
+
+. Only one device (Device 0) can be mounted on the bus below all PCIE controllers integrated in the bridge, but when the software scans the PCIE bus for non-Device 0 devices, this PCIE controller will return the information of Device 0, causing Device 0 to be discovered repeatedly.
+Therefore, the software must not actively scan for non-Device 0 devices below the PCIE controller, see <<notes-on-the-use-of-the-software,Notes on the Use of the Software>>.

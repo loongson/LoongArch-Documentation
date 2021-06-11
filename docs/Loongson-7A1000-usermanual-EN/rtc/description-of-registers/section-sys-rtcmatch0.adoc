@@ -1,0 +1,25 @@
+[[section-sys-rtcmatch0]]
+==== `SYS_RTCMATCH0`
+
+Address Offset: `6C`-`6Fh`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[sys-rtcmatch0]]
+.`SYS_RTCMATCH0`
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+^|Description
+
+|31:0
+|RTCMATCH0
+|R/W
+|RTC timer comparison register 0
+|===

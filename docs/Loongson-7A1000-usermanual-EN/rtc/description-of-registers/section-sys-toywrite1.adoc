@@ -1,0 +1,25 @@
+[[section-sys-toywrite1]]
+==== `SYS_TOYWRITE1`
+
+Address Offset: `28`-`2Bh`
+
+Attribute: WO
+
+Default value: N/A
+
+Size: `4`
+
+[[sys-toywrite1]]
+.`SYS_TOYWRITE1`
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+^|Description
+
+|31:0
+|TOY_YEAR
+|WO
+|Year, range `0`–`16383`
+|===

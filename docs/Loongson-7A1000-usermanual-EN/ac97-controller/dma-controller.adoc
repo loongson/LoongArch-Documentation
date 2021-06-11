@@ -1,0 +1,6 @@
+[[dma-controller]]
+=== DMA Controller
+
+include::dma-controller/description-of-dma-controller-structure.adoc[]
+
+include::dma-controller/dma-descriptor.adoc[]

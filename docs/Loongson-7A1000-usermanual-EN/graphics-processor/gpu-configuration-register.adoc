@@ -1,0 +1,364 @@
+[[gpu-configuration-register]]
+=== GPU Configuration Register (`D6:F0`)
+
+[[gpu-controller-configuration-registers]]
+.GPU controller configuration registers
+[%header,cols="1,1m,3,2m,1"]
+|===
+^|Address Offset
+^d|Abbreviation
+^|Description
+^|Default value
+^|Read/Write
+
+|00h-01h
+|VID
+|Vendor ID
+|0014h
+|RO
+
+|02h-03h
+|DID
+|Device ID
+|7A15h
+|RO
+
+|04h-05h
+|PCICMD
+|PCI Command
+|0000h
+|R/W, RO
+
+|08h
+|RID
+|Revision ID
+|00h
+|RO
+
+|09h
+|PI
+|Programming Interface
+|00h
+|RO
+
+|0Ah
+|SCC
+|Sub Class Code
+|02h
+|RO
+
+|0Bh
+|BCC
+|Base Class Code
+|03h
+|RO
+
+|0Ch
+|CLS
+|Cache Line Size
+|00h
+|RO
+
+|0Eh
+|HEADTYP
+|Header Type
+|80h
+|RO
+
+|10h-17h
+|CNL_BAR
+|Control Block Base Address Register
+|0000000000000004h
+|R/W, RO
+
+|18h-1Fh
+|GMEM_BAR
+|Graphic Memory Base Address Register
+|0000000000000004h
+|R/W, RO
+
+|27h-20h
+|RSV_BAR
+|Reserved Base Address Register
+|0000000000000004h
+|R/W, RO
+
+|2Ch-2Dh
+|SVID
+|Subsystem Vendor ID
+|0000h
+|RO
+
+|2Eh-2Fh
+|SID
+|Subsystem Identification
+|0000h
+|RO
+
+|3Ch
+|INT_LN
+|Interrupt Line
+|00h
+|R/W
+
+|3Dh
+|INT_PN
+|Interrupt Pin
+|01h
+|RO
+|===
+
+Note: Address space not listed in the table indicates reserved.
+
+Registers that differ slightly from the PCI configuration header specification and their descriptions are listed below.
+
+*`PCICMD` - PCI Command Register (GPU - `D6:F0`)*
+
+Address Offset: `04`-`05h`
+
+Attribute: R/W, RO
+
+Default value: `0000h`
+
+Size: `16` bits
+
+[[pci-command-register-4]]
+.PCI command register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|15:2
+|Reserved
+|RO
+|Reserved.
+
+|1
+|Memory Space Enable
+|R/W
+|This bit is used to control whether access to the GPU control registers is enabled.
+
+`0`: Disable access.
+
+`1`: Enable access to the GMAC control registers and GMEN space.
+The `BAR` register must be configured before this bit can be configured to `1`.
+
+|0
+|Reserved
+|RO
+|Reserved.
+|===
+
+*`CNL_BAR` - Control Base Address Register*
+
+This register is used to configure the base address of the control registers of the GMAC controller.
+
+Address Offset: `10`-`13h`
+
+Attribute: R/W, RO
+
+Default value: `00000004h`
+
+Size: `32` bits
+
+[[control-base-address-register-7]]
+.Control base address register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:18
+|Base Address
+|RW
+|Software writes to this register field the low address of the base address allocated to the GPU control register.
+
+|17:4
+|Memory Size
+|RO
+|The address space size of the GPU control registers is `32KB`.
+
+|3
+|Prefetchable Memory
+|RO
+|Set to `0` to indicate that it is not prefetchable.
+
+|2:1
+|Memory Type
+|RO
+|Set to `10b` to indicate 64-bit `BAR`.
+
+|0
+|Memory/ I/O Space
+|RO
+|Set to `0` to indicate Memory space `BAR`.
+|===
+
+Address Offset: `14`-`17h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[control-base-address-register-8]]
+.Control base address register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:0
+|Base Address
+|RW
+|Software writes to this register field the high 32-bit address of the base address allocated to the GPU control register.
+|===
+
+*`GMEM_BAR` - Video Memory Base Address Register*
+
+This register is used to configure the base address of the video memory.
+
+Address Offset: `18`-`1Bh`
+
+Attribute: R/W, RO
+
+Default value: `00000004h`
+
+Size: `32` bits
+
+[[video-memory-base-address-register-1]]
+.Video memory base address register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:X
+|Base Address
+|RW
+|The software writes to this register field the low bit of the base address allocated to the video memory.
+
+|X:4
+|Memory Size
+|RO
+|The memory size is configured by the BIOS.
+The maximum is not more than `512MB`.
+
+|3
+|Prefetchable Memory
+|RO
+|Set to `0` to indicate that it is not prefetchable.
+
+|2:1
+|Memory Type
+|RO
+|Set to `10b` to indicate 64-bit `BAR`.
+
+|0
+|Memory/ I/O Space
+|RO
+|Set to `0` to indicate Memory space `BAR`.
+|===
+
+Address Offset: `1C`-`1Fh`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[video-memory-base-address-register-2]]
+.Video memory base address register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:0
+|Base Address
+|RW
+|The software writes to this register field the high 32-bit address allocated to the base address of the video memory.
+|===
+
+*`RSV_BAR` - Reserved Window Base Address Register*
+
+This register is used to configure the base address of the reserved registers of the GPU controller.
+
+Address Offset: `20`-`23h`
+
+Attribute: R/W, RO
+
+Default value: `00000004h`
+
+Size: `32` bits
+
+[[reserved-window-base-address-register-1]]
+.Reserved window base address register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:18
+|Base Address
+|RW
+|The software writes to this register field the low address of the base address allocated to the GPU reserved register.
+
+|17:4
+|Memory Size
+|RO
+|The address space size of the GPU reserved registers is `256B`.
+
+|3
+|Prefetchable Memory
+|RO
+|Set to `0` to indicate that it is not prefetchable.
+
+|2:1
+|Memory Type
+|RO
+|Set to `10b` to indicate 64-bit `BAR`.
+
+|0
+|Memory/ I/O Space
+|RO
+|Set to `0` to indicate Memory space `BAR`.
+|===
+
+Address Offset: `24`-`27h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[reserved-window-base-address-register-2]]
+.Reserved window base address register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:0
+|Base Address
+|RW
+|The software writes to this register field the high 32-bit address of the base address allocated to the GPU reserved register.
+|===

@@ -1,0 +1,2023 @@
+[[description-of-interrupt-related-registers]]
+=== Description of Interrupt-related Registers
+
+The bridge chip's interrupt controller has a set of control and status registers for each interrupt source.
+
+[[interrupt-control-and-status-registers]]
+.Interrupt control and status registers
+[%header,cols="2m,^1m,^1,4,1m"]
+|===
+|Register Name
+|Length
+|Read/Write
+|Description
+|Default Value
+
+|INT_MASK
+|1
+|R/W
+|Interrupt Mask Register.
+
+`0`: Enable the interrupt.
+
+`1`: Mask this interrupt.
+|1
+
+|HTMSI_EN
+|1
+|R/W
+|`HT` packet interrupt enable register.
+
+`0`: Turn off the `HT` message packet mode.
+
+`1`: Enable the `HT` message packet mode.
+|0
+
+|INTEDGE
+|1
+|R/W
+|Trigger mode setting register.
+
+`0`: Level-triggered interrupt.
+
+`1`: Edge-triggered interrupt.
+|0
+
+|INTCLR
+|1
+|WO
+|Edge-triggered interrupt clear register.
+
+Write `1` clears the interrupt, write 0 has no effect.
+d|N/A
+
+|AUTO_CTRL0
+|1
+|R/W
+|Interrupt distribution mode control register (used in conjunction with `AUTO_CTRL1`).
+
+{`AUTO_CTRL1`, `AUTO_CTRL0`}.
+
+`00b`: fixed distribution mode.
+
+`01b`: rotating distribution mode.
+
+`10b`: idle distribution mode.
+
+`11b`: Busy distribution mode.
+|0
+
+|AUTO_CTRL1
+|1
+|R/W
+|Interrupt distribution mode control register (used in conjunction with AUTO_CTRL0).
+
+{`AUTO_CTRL1`, `AUTO_CTRL0`}.
+
+`00b`: fixed distribution mode.
+
+`01b`: rotating distribution mode.
+
+`10b`: idle distribution mode.
+
+`11b`: Busy distribution mode.
+|0
+
+|ROUTE_ENTRY
+|8
+|R/W
+|Interrupt Routing Register.
+
+Used to configure which processor to route this interrupt to. This register is organized in the form of a bitmap.
+
+Bit0: Routed to INTn0/HT controller lo; bit1: Routed to INTn1/HT controller hi. bit7:2: Reserved.
+|01b
+
+|HTMSI_VECTOR
+|8
+|R/W
+|HT message packet interrupt vector register.
+d|See below
+
+|INTISR_CHIP0
+|1
+|RO
+|Routing to the interrupt status (in service) register of `INTn0`.
+
+`0`: no interrupts.
+
+`1`: with interrupts.
+|0
+
+|INTISR_CHIP1
+|1
+|RO
+|Routing to INTn1's interrupt status (in service) register.
+
+`0`: no interrupts.
+
+`1`: with interrupts.
+|0
+
+|INTIRR
+|1
+|RO
+|Interrupt request register.
+
+`0`: no interrupt request.
+
+`1`: Interrupt request is available.
+|0
+
+|INTISR
+|1
+|RO
+|Interrupt status (in service) register.
+
+`0`: no interrupt is being received.
+
+`1`: There are interrupts being received.
+|0
+
+|INT_POLARITY
+|1
+|R/W
+|Interrupt level trigger polarity selection register. For the level trigger type.
+
+`0`: High level trigger.
+
+`1`: Low level trigger.
+|0
+|===
+
+The address distribution of the registers related to the interrupt controller is shown in the following table
+
+*Interrupt register address distribution*
+
+[[interrupt-register-address-distribution]]
+.Interrupt register address distribution
+[%header,cols="2m,^1m,^1,3"]
+|===
+|Register Name
+|Address Offset
+|Read/Write
+|Description
+
+|INT_ID
+|0x000
+|RO
+|Interrupt controller identification register
+
+|INT_MASK
+|0x020
+|R/W
+|Interrupt Mask Register
+
+|HTMSI_EN
+|0x040
+|R/W
+|HT message packet interrupt enable register
+
+|INTEDGE
+|0x060
+|R/W
+|Trigger mode setting register
+
+|INTCLR
+|0x080
+|WO
+|Edge-triggered interrupt clear register
+
+|AUTO_CTRL0
+|0x0c0
+|R/W
+|Interrupt distribution mode control register 0
+
+|AUTO_CTRL1
+|0x0e0
+|R/W
+|Interrupt distribution mode control register 1
+
+|ROUTE_ENTRY_0
+|0x100
+|R/W
+|Interrupt routing register [ 7- 0]
+
+|ROUTE_ENTRY_8
+|0x108
+|R/W
+|Interrupt routing register [15- 8]
+
+|ROUTE_ENTRY_16
+|0x110
+|R/W
+|Interrupt Routing Register [23-16]
+
+|ROUTE_ENTRY_24
+|0x118
+|R/W
+|Interrupt Routing Register [31-24]
+
+|ROUTE_ENTRY_32
+|0x120
+|R/W
+|Interrupt routing register [39-32]
+
+|ROUTE_ENTRY_40
+|0x128
+|R/W
+|Interrupt Routing Register [47-40]
+
+|ROUTE_ENTRY_48
+|0x130
+|R/W
+|Interrupt Routing Register [55-48]
+
+|ROUTE_ENTRY_56
+|0x138
+|R/W
+|Interrupt Routing Register [63-56]
+
+|HTMSI_VECTOR0
+|0x200
+|R/W
+|HT Interrupt Vector Register [ 7- 0]
+
+|HTMSI_VECTOR8
+|0x208
+|R/W
+|HT Interrupt Vector Register [15- 8]
+
+|HTMSI_VECTOR16
+|0x210
+|R/W
+|HT Interrupt Vector Register [23-16]
+
+|HTMSI_VECTOR24
+|0x218
+|R/W
+|HT Interrupt Vector Register [31-24]
+
+|HTMSI_VECTOR32
+|0x220
+|R/W
+|HT Interrupt Vector Register [39-32]
+
+|HTMSI_VECTOR40
+|0x228
+|R/W
+|HT Interrupt Vector Register [47-40]
+
+|HTMSI_VECTOR48
+|0x230
+|R/W
+|HT Interrupt Vector Register [55-48]
+
+|HTMSI_VECTOR56
+|0x238
+|R/W
+|HT Interrupt Vector Register [63-56]
+
+|INTISR_0
+|0x300
+|RO
+|Interrupt status (in service) register routed to `INTn0`
+
+|INTISR_1
+|0x320
+|RO
+|Interrupt status (in service) register routed to `INTn1`
+
+|INTIRR
+|0x380
+|RO
+|Interrupt request register
+
+|INTISR
+|0x3a0
+|RO
+|Interrupt Status (In Service) Register
+
+|INT_POLARITY
+|0x3e0
+|R/W
+|Interrupt trigger level selection register
+|===
+
+*Interrupt controller identification register*
+
+Address Offset: `000`-`003h`
+
+Attribute: `RO`
+
+Default value: `07000000h`
+Size: `32` bits
+
+[[interrupt-controller-identification-register-1]]
+.Interrupt controller identification register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|id
+|RO
+|Interrupt Controller ID
+
+|23:0
+|Reserved
+|RO
+|Reserved
+|===
+
+Address Offset: `004`-`007h`
+
+Attribute: `RO`
+
+Default value: `003F0001h`
+
+Size: `32` bits
+
+[[interrupt-controller-identification-register-2]]
+.Interrupt controller identification register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|Reserved
+|RO
+|Reserved
+
+|23:16
+|int_num
+|RO
+|The number of interrupt sources supported. The actual number of interrupts is equal to the value of this field plus `1`.
+
+|15:8
+|Reserved
+|RO
+|Reserved
+
+|7:0
+|version
+|RO
+|Interrupt controller version number
+|===
+
+*Interrupt mask register*
+
+Address Offset: `020`-`023h`
+
+Attribute: R/W
+
+Default value: `FFFFFFFFh`
+
+Size: `32` bits
+
+[[interrupt-mask-register-1]]
+.Interrupt mask register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_mask
+|R/W
+|Low 32 bits of the interrupt mask register (bit[31:0])
+|===
+
+Address Offset: `024`-`027h`
+
+Default value: `FFFFFFFFh`
+
+Attribute: R/W
+
+Size: `32` bits
+
+[[interrupt-mask-register-2]]
+.Interrupt mask register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_mask
+|R/W
+|High 32 bits of the interrupt mask register (bit[63:32])
+|===
+
+*HT interrupt message packet enable register*
+
+Address Offset: `040`-`043h` 
+
+Default value: `00000000h`
+
+Attribute: R/W 
+
+Size: `32` bits
+
+[[ht-interrupt-message-packet-enable-register-1]]
+.HT interrupt message packet enable register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|htmsi_en
+|R/W
+|Low 32 bits (bit[31:0]) of the HT Interrupt Message Packet Enable Register
+|===
+
+Address Offset: `044`-`047h`
+
+Default value: `00000000h`
+
+
+Attribute: R/W
+
+Size: `32` bits
+
+[[ht-interrupt-message-packet-enable-register-2]]
+.HT interrupt message packet enable register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|htmsi_en
+|R/W
+|High 32 bits (bit[63:32]) of the HT Interrupt Message Packet Enable Register
+|===
+
+*Interrupt trigger control register*
+
+Address Offset: `060`-`063h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-trigger-control-register-1]]
+.Interrupt trigger control register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_edge
+|R/W
+|Low 32 bits of the interrupt trigger control register (bit[31:0])
+|===
+
+Address Offset: `064`-`067h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-trigger-control-register-2]]
+.Interrupt trigger control register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_edge
+|R/W
+|High 32 bits of the interrupt trigger control register (bit[63:32])
+|===
+
+*Interrupt clear register*
+
+Address Offset: `080`-`083h`
+
+Attribute: `WO`
+
+Default value: `N`/`A`
+
+Size: `32` bits
+
+[[interrupt-clear-register-1]]
+.Interrupt clear register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_clear
+|WO
+|Low 32 bits of the interrupt clear register (bit`[31:0]`)
+|===
+
+Address Offset: `084`-`087h`
+
+Attribute: `WO`
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-clear-register-2]]
+.Interrupt clear register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_clear
+|WO
+|High 32 bits of the interrupt clear register (bit`[63:32]`)
+|===
+
+*INT_AUTO_CTRL0 register*
+
+Address Offset: `0C0`-`0C3h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[int_auto_ctrl0-register-1]]
+.INT_AUTO_CTRL0 register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_auto_ctrl0
+|R/W
+|Low 32 bits (bit`[31:0]`) of Interrupt Smart Distribution Control Register `0`
+|===
+
+Address Offset: `0C4`-`0C7h`
+
+Default value: `00000000h`
+
+Attribute: R/W
+
+Size: `32` bits
+
+[[int_auto_ctrl0-register-2]]
+.INT_AUTO_CTRL0 register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_auto_ctrl0
+|R/W
+|High `32` bits (bit`[63:32]`) of Interrupt Smart Distribution Control Register `0`
+|===
+
+*INT_AUTO_CTRL1 register*
+
+Address Offset: `0E0`-`0E3h` 
+
+Default value: `00000000h`
+
+Attribute: R/W 
+
+Size: `32` bits
+
+[[int_auto_ctrl1-register-1]]
+.INT_AUTO_CTRL1 register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_auto_ctrl1
+|R/W
+|Low `32` bits (bit[31:0]) of Interrupt Smart Distribution Control Register `1`
+|===
+
+Address Offset: `0E4`-`0E7h`
+
+Default value: `00000000h`
+
+Attribute: R/W
+
+Size: `32` bits
+
+[[int_auto_ctrl1-register-2]]
+.INT_AUTO_CTRL1 register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_auto_ctrl1
+|R/W
+|High `32` bits (bit`[63:32]`) of Interrupt Smart Distribution Control Register `1`
+|===
+
+*Interrupt routing configuration register*
+
+Address Offset: 100-103h
+
+Attribute: R/W
+
+Default value: 01010101h
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-1]]
+.Interrupt routing configuration register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|Reserved
+|R/W
+|Reserved
+|===
+
+Address Offset: `104`-`107h`
+
+Default value: `01010101h`
+
+Attribute: R/W
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-2]]
+.Interrupt routing configuration register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|Reserved
+|R/W
+|Reserved
+|===
+
+Address Offset: `108`-`10Bh`
+
+Default value: `01010101h`
+
+Attribute: R/W
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-3]]
+.Interrupt routing configuration register 3
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:16
+|Reserved
+|R/W
+|Reserved
+
+|9:8
+|i2c_int_route
+|R/W
+|`I2C` Interrupt Routing Configuration Register
+ 
+|1:0
+|uart_int_route
+|R/W
+|`UART` Interrupt Routing Configuration Register
+|===
+
+Address Offset: `10C`-`10Fh`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-4]]
+.Interrupt routing configuration register 4
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|gmac1_pmt_int_route
+|R/W
+|`GMAC1_PMT` Interrupt Routing Configuration Register
+
+|17:16
+|gmac1_sbd_int_route
+|R/W
+|`GMAC1_SBD` Interrupt Routing Configuration Register
+
+|9:8
+|gmac0_pmt_int_route
+|R/W
+|`GMAC0_PMT` Interrupt Routing Configuration Register
+
+|1:0
+|gmac0_sbd_int_route
+|R/W
+|`GMAC0_SBD` Interrupt Routing Configuration Register
+|===
+
+Address Offset: `110`-`113h`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-5]]
+.Interrupt routing configuration register 5
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|lpc_int_route
+|R/W
+|`LPC` Interrupt Routing Configuration Register
+
+|17:16
+|SATA2_int_route
+|R/W
+|`SATA2` Interrupt Routing Configuration Register
+
+|9:8
+|SATA1_int_route
+|R/W
+|`SATA1` Interrupt Routing Configuration Register
+
+|1:0
+|SATA0_int_route
+|R/W
+|`SATA0` Interrupt Routing Configuration Register
+|===
+
+Address Offset: `114`-`117h`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-6]]
+.Interrupt routing configuration register 6
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|Reserved
+|R/W
+|Reserved
+|===
+
+Address Offset: `118`-`11Bh`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-7]]
+.Interrupt routing configuration register 7
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|pwm3_int_route
+|R/W
+|PWM3 Interrupt Routing Configuration Register
+
+|17:16
+|pwm2_int_route
+|R/W
+|PWM2 Interrupt Routing Configuration Register
+
+|9:8
+|pwm1_int_route
+|R/W
+|PWM1 Interrupt Routing Configuration Register
+
+|1:0
+|pwm0_int_route
+|R/W
+|PWM0 Interrupt Routing Configuration Register
+|===
+
+Address Offset: `11C`-`11Fh`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-8]]
+.Interrupt routing configuration register 8
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|thsens_int_route
+|R/W
+|Thsensor Interrupt Routing Configuration Register
+
+|17:16
+|gpu_int_route
+|R/W
+|GPU Interrupt Routing Configuration Register
+
+|9:8
+|gmem_int_route
+|R/W
+|GMEM Interrupt Routing Configuration Register
+
+|1:0
+|dc_int_route
+|R/W
+|DC Interrupt Routing Configuration Register
+|===
+
+Address Offset: `120`-`123h`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-9]]
+.Interrupt routing configuration register 9
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|pcie_f0_p3_int_route
+|R/W
+|PCIE_F0 Controller 3 Interrupt Routing Configuration Register
+
+|17:16
+|pcie_f0_p2_int_route
+|R/W
+|PCIE_F0 Controller 2 Interrupt Routing Configuration Register
+
+|9:8
+|pcie_f0_p1_int_route
+|R/W
+|PCIE_F0 Controller 1 Interrupt Routing Configuration Register
+
+|1:0
+|pcie_f0_p0_int_route
+|R/W
+|PCIE_F0 Controller 0 Interrupt Routing Configuration Register
+|===
+
+Address Offset: `124`-`127h`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-10]]
+.Interrupt routing configuration register 10
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|pcie_h_p1_int_route
+|R/W
+|PCIE_H Controller `1` Interrupt Routing Configuration Register
+
+|17:16
+|pcie_h_p0_int_route
+|R/W
+|PCIE_H Controller `0` Interrupt Routing Configuration Register
+
+|9:8
+|pcie_f1_p1_int_route
+|R/W
+|PCIE_F1 Controller `1` Interrupt Routing Configuration Register
+
+|1:0
+|pcie_f1_p0_int_route
+|R/W
+|PCIE_F1 Controller `0` Interrupt Routing Configuration Register
+|===
+
+Address Offset: `128`-`12Bh`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-11]]
+.Interrupt routing configuration register 11
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|pcie_g1_p1_int_route
+|R/W
+|`PCIE_G1` Controller 1 Interrupt Routing Configuration Register
+
+|17:16
+|pcie_g1_p0_int_route
+|R/W
+|`PCIE_G1` Controller `0` Interrupt Routing Configuration Register
+
+|9:8
+|pcie_g0_p1_int_route
+|R/W
+|`PCIE_G0` Controller `1` Interrupt Routing Configuration Register
+
+|1:0
+|pcie_g0_p0_int_route
+|R/W
+|`PCIE_G0` Controller `0` Interrupt Routing Configuration Register
+|===
+
+
+Address Offset: `12C`-`12Fh`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-12]]
+.Interrupt routing configuration register 12
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|acpi_int_route
+|R/W
+|`ACPI` Interrupt Routing Configuration Register
+
+|17:16
+|toy2_int_route
+|R/W
+|`TOY2` Interrupt Routing Configuration Register
+
+|9:8
+|toy1_int_route
+|R/W
+|`TOY1` Interrupt Routing Configuration Register
+
+|1:0
+|toy0_int_route
+|R/W
+|`TOY0` Interrupt Routing Configuration Register
+|===
+
+Address Offset: `130`-`133h`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-13]]
+.Interrupt routing configuration register 13
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|usb1_ohci_int_route
+|R/W
+|`USB1` OHCI Controller Interrupt Routing Configuration Register
+
+|17:16
+|usb1_ehci_p2_int_route
+|R/W
+|`USB1` EHCI Controller Interrupt Routing Configuration Register
+
+|9:8
+|usb0_ohci_int_route
+|R/W
+|`USB0` OHCI Controller Interrupt Routing Configuration Register
+
+|1:0
+|usb0_ehci_int_route
+|R/W
+|`USB0` EHCI Controller Interrupt Routing Configuration Register
+|===
+
+Address Offset: `134`-`137h`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-14]]
+.Interrupt routing configuration register 14
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|hpet_int_route
+|R/W
+|`HPET` Interrupt Routing Configuration Register
+
+|17:16
+|rtc2_int_route
+|R/W
+|`RTC2` Interrupt Routing Configuration Register
+
+|9:8
+|rtc1_int_route
+|R/W
+|`RTC1` Interrupt Routing Configuration Register
+
+|1:0
+|rtc0_int_route
+|R/W
+|`RTC0` Interrupt Routing Configuration Register
+|===
+
+Address Offset: `138`-`13Bh`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-15]]
+.Interrupt routing configuration register 15
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|gpio_hi_int_route
+|R/W
+|`GPIO` high bit (bit[56:4]) interrupt routing configuration register
+
+|17:16
+|ac97/hda_int_route
+|R/W
+|`AC97`/`HDA` controller interrupt routing configuration register
+
+|9:8
+|ac97_dma1_int_route
+|R/W
+|`AC97` `DMA1` Interrupt Routing Configuration Register
+
+|1:0
+|ac97_dma0_int_route
+|R/W
+|`AC97` `DMA0` Interrupt Routing Configuration Register
+|===
+
+Address Offset: `13C`-`13Fh`
+
+Attribute: R/W
+
+Default value: `01010101h`
+
+Size: `32` bits
+
+[[interrupt-routing-configuration-register-16]]
+.Interrupt routing configuration register 16
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|25:24
+|gpio3_int_route
+|R/W
+|`GPIO3` Interrupt Routing Configuration Register
+
+|17:16
+|gpio2_int_route
+|R/W
+|`GPIO2` Interrupt Routing Configuration Register
+
+|9:8
+|gpio1_int_route
+|R/W
+|`GPIO1` Interrupt Routing Configuration Register
+
+|1:0
+|gpio0_int_route
+|R/W
+|`GPIO0` Interrupt Routing Configuration Register
+|===
+
+*HT message packet interrupt vector configuration register*
+
+Address Offset: `200`-`203h`
+
+Attribute: R/W
+
+Default value: `03020100h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-1]]
+.HT message packet interrupt vector configuration register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|Reserved
+|R/W
+|Reserved
+|===
+
+Address Offset: `204`-`207h`
+
+Attribute: R/W
+
+Default value: `070605040h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-2]]
+.HT message packet interrupt vector configuration register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|Reserved
+|R/W
+|Reserved
+|===
+
+Address Offset: `208`-`20Bh`
+
+Attribute: R/W
+
+Default value: `0B0A0908h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-3]]
+.HT message packet interrupt vector configuration register 3
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:16
+|Reserved
+|R/W
+|Reserved
+
+|15:8
+|i2c_int_route
+|R/W
+|I2C HT Interrupt Vector Configuration Register
+
+|7:0
+|uart_int_route
+|R/W
+|UART HT interrupt vector configuration register
+|===
+
+Address Offset: `20C`-`20Fh`
+
+Attribute: R/W
+
+Default value: `0E0F0D0Ch`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-4]]
+.HT message packet interrupt vector configuration register 4
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|gmac1_pmt_int_route
+|R/W
+|GMAC1_PMT HT Interrupt Vector Configuration Register
+
+|23:16
+|gmac1_sbd_int_route
+|R/W
+|GMAC1_SBD HT Interrupt Vector Configuration Register
+
+|15:8
+|gmac0_pmt_int_route
+|R/W
+|GMAC0_PMT HT Interrupt Vector Configuration Register
+
+|7:0
+|gmac0_sbd_int_route
+|R/W
+|GMAC0_SBD HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `210`-`213h`
+
+Attribute: R/W
+
+Default value: `13121110h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-5]]
+.HT message packet interrupt vector configuration register 5
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|lpc_int_route
+|R/W
+|LPC HT Interrupt Vector Configuration Register
+
+|23:16
+|SATA2_int_route
+|R/W
+|SATA2 HT Interrupt Vector Configuration Register
+
+|15:8
+|SATA1_int_route
+|R/W
+|SATA1 HT Interrupt Vector Configuration Register
+
+|7:0
+|SATA0_int_route
+|R/W
+|SATA0 HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `214`-`217h`
+
+Attribute: R/W
+
+Default value: `17161514h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-6]]
+.HT message packet interrupt vector configuration register 6
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|Reserved
+|R/W
+|Reserved
+|===
+
+Address Offset: `218`-`21Bh`
+
+Attribute: R/W
+
+Default value: `1B1A1918h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-7]]
+.HT message packet interrupt vector configuration register 7
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|pwm3_int_route
+|R/W
+|PWM3 HT Interrupt Vector Configuration Register
+
+|23:16
+|pwm2_int_route
+|R/W
+|PWM2 HT Interrupt Vector Configuration Register
+
+|15:8
+|pwm1_int_route
+|R/W
+|PWM1 HT Interrupt Vector Configuration Register
+
+|7:0
+|pwm0_int_route
+|R/W
+|PWM0 HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `21C`-`21Fh`
+
+Attribute: R/W
+
+Default value: `1E1F1D1Ch`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-8]]
+.HT message packet interrupt vector configuration register 8
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|thsens_int_route
+|R/W
+|Thsensor HT Interrupt Vector Configuration Register
+
+|23:16
+|gpu_int_route
+|R/W
+|GPU HT Interrupt Vector Configuration Register
+
+|15:8
+|gmem_int_route
+|R/W
+|GMEM HT Interrupt Vector Configuration Register
+
+|7:0
+|dc_int_route
+|R/W
+|DC HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `220`-`223h`
+
+Attribute: R/W
+
+Default value: `43424140h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-9]]
+.HT message packet interrupt vector configuration register 9
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|pcie_f0_p3_int_route
+|R/W
+|PCIE_F0 Controller 3 HT Interrupt Vector Configuration Register
+
+|23:16
+|pcie_f0_p2_int_route
+|R/W
+|PCIE_F0 Controller 2 HT Interrupt Vector Configuration Register
+
+|15:8
+|pcie_f0_p1_int_route
+|R/W
+|PCIE_F0 Controller 1 HT Interrupt Vector Configuration Register
+
+|7:0
+|pcie_f0_p0_int_route
+|R/W
+|PCIE_F0 Controller 0 HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `224`-`227h`
+
+Attribute: R/W
+
+Default value: `47464544h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-10]]
+.HT message packet interrupt vector configuration register 10
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|pcie_h_p1_int_route
+|R/W
+|PCIE_H Controller 1 HT Interrupt Vector Configuration Register
+
+|23:16
+|pcie_h_p0_int_route
+|R/W
+|PCIE_H Controller 0 HT Interrupt Vector Configuration Register
+
+|15:8
+|pcie_f1_p1_int_route
+|R/W
+|PCIE_F1 Controller 1 HT Interrupt Vector Configuration Register
+
+|7:0
+|pcie_f1_p0_int_route
+|R/W
+|PCIE_F1 Controller 0 HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `228`-`22Bh`
+
+Attribute: R/W
+
+Default value: `4B4A4948h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-11]]
+.HT message packet interrupt vector configuration register 11
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|pcie_g1_p1_int_route
+|R/W
+|PCIE_G1 Controller 1 HT Interrupt Vector Configuration Register
+
+|23:16
+|pcie_g1_p0_int_route
+|R/W
+|PCIE_G1 Controller 0 HT Interrupt Vector Configuration Register
+
+|15:8
+|pcie_g0_p1_int_route
+|R/W
+|PCIE_G0 Controller 1 HT Interrupt Vector Configuration Register
+
+|7:0
+|pcie_g0_p0_int_route
+|R/W
+|PCIE_G0 Controller 0 HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `22C`-`22Fh`
+
+Attribute: R/W
+
+Default value: `4F4E4D4Ch`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-12]]
+.HT message packet interrupt vector configuration register 12
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+ 
+|31:24
+|acpi_int_route
+|R/W
+|ACPI HT Interrupt Vector Configuration Register
+
+|23:16
+|toy2_int_route
+|R/W
+|TOY2 HT Interrupt Vector Configuration Register
+
+|15:8
+|toy1_int_route
+|R/W
+|TOY1 HT Interrupt Vector Configuration Register
+
+|7:0
+|toy0_int_route
+|R/W
+|TOY0 HT Interrupt vector configuration register
+|===
+
+Address Offset: `230`-`233h`
+
+Attribute: R/W
+
+Default value: `53525150h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-13]]
+.HT message packet interrupt vector configuration register 13
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|usb1_ohci_int_route
+|R/W
+|USB1 OHCI Controller HT Interrupt Vector Configuration Register
+
+|23:16
+|usb1_ehci_p2_int_route
+|R/W
+|USB1 EHCI Controller HT Interrupt Vector Configuration Register
+
+|15:8
+|usb0_ohci_int_route
+|R/W
+|USB0 OHCI Controller HT Interrupt Vector Configuration Register
+
+|7:0
+|usb0_ehci_int_route
+|R/W
+|USB0 EHCI Controller HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `234`-`237h`
+
+Attribute: R/W
+
+Default value: `57565554h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-14]]
+.HT message packet interrupt vector configuration register 14
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|hpet_int_route
+|R/W
+|HPET HT Interrupt Vector Configuration Register
+
+|23:16
+|rtc2_int_route
+|R/W
+|RTC2 HT Interrupt Vector Configuration Register
+
+|15:8
+|rtc1_int_route
+|R/W
+|RTC1 HT Interrupt Vector Configuration Register
+
+|7:0
+|rtc0_int_route
+|R/W
+|RTC0 HT Interrupt Vector Configuration Register
+|===
+
+Address Offset: `238`-`23Bh`
+
+Attribute: R/W
+
+Default value: `5B5A5958h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-15]]
+.HT message packet interrupt vector configuration register 15
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|gpio_hi_int_route
+|R/W
+|GPIO high bit (bit[56:4]) HT interrupt vector configuration register
+
+|23:16
+|ac97/hda_int_route
+|R/W
+|AC97/HDA Controller HT Interrupt Vector Configuration Register
+
+|15:8
+|ac97_dma1_int_route
+|R/W
+|AC97 DMA1 HT Interrupt vector configuration register
+
+|7:0
+|ac97_dma0_int_route
+|R/W
+|AC97 DMA0 HT Interrupt vector configuration register
+|===
+
+Address Offset: `23C`-`23Fh`
+
+Attribute: R/W
+
+Default value: `5F5E5D5Ch`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-16]]
+.HT message packet interrupt vector configuration register 16
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:24
+|gpio3_int_route
+|R/W
+|`GPIO3` HT Interrupt Vector Configuration Register
+
+|23:16
+|gpio2_int_route
+|R/W
+|`GPIO2` HT Interrupt Vector Configuration Register
+
+|15:8
+|gpio1_int_route
+|R/W
+|`GPIO1` HT Interrupt Vector Configuration Register
+
+|7:0
+|gpio0_int_route
+|R/W
+|`GPIO0` HT Interrupt Vector Configuration Register
+|===
+
+Interrupts routed to INTn0 are in the Service Status Register
+
+Address Offset: `300`-`303h`
+
+Attribute: `RO`
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-17]]
+.HT message packet interrupt vector configuration register 17
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_isr_0
+|R/W
+|Interrupts routed to INTn0 are in the lower `32` bits of the Service Status Register (bit`[31:0]`)
+|===
+
+Address Offset: `304`-`307h`
+
+Attribute: `RO`
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[ht-message-packet-interrupt-vector-configuration-register-18]]
+.HT message packet interrupt vector configuration register 18
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_isr_0
+|R/W
+|The interrupt routed to INTn0 is in the high 32 bits of the service status register (bit`[63:32]`)
+|===
+
+*Interrupts routed to INTn1 are in the service status segiste*
+
+Address Offset: `320`-`323h`
+
+Attribute: `RO`
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupts-routed-to-intn1-are-in-the-service-status-register-1]]
+.Interrupts routed to INTn1 are in the service status segister 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_isr_1
+|R/W
+|Interrupts routed to INTn1 are in the lower 32 bits of the service status register (bit`[31:0]`)
+|===
+
+Address Offset: `324`-`327h`
+
+Attribute: `RO`
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupts-routed-to-intn1-are-in-the-service-status-register-2]]
+.Interrupts routed to INTn1 are in the service status segister 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_isr_1
+|R/W
+|The interrupt routed to INTn1 is in the high `32` bits of the service status register (bit`[63:32]`)
+|===
+
+*Interrupt request register*
+
+Address Offset: `380`-`383h`
+
+Attribute: `RO`
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-request-register-1]]
+.Interrupt request register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_irr
+|R/W
+|Low `32` bits of the interrupt request register (bit`[31:0]`)
+|===
+
+Address Offset: `384`-`387h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-request-register-2]]
+.Interrupt request register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_irr
+|R/W
+|High 32 bits of the interrupt request register (bit`[63:32]`)
+|===
+
+*Interrupt in service status register*
+
+Address Offset: `3A0`-`3A3h`
+
+Attribute: `RO`
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-in-service-status-register-1]]
+.Interrupt in service status register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_isr
+|R/W
+|Interrupt in the lower `32` bits of the service status register (bit`[31:0]`)
+|===
+
+Address Offset: `3A4`-`3A7h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-in-service-status-register-2]]
+.Interrupt in service status register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_isr
+|R/W
+|Interrupt in the high 32 bits of the service status register (bit`[63:32]`)
+|===
+
+*Interrupt level trigger polarity register*
+
+Address Offset: `3E0`-`3E3h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-level-trigger-polarity-register-1]]
+.Interrupt level trigger polarity register 1
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_polarity
+|R/W
+|Low `32` bits of the interrupt level trigger polarity register (bit`[31:0]`)
+|===
+
+Address Offset: `3E4`-`3E7h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `32` bits
+
+[[interrupt-level-trigger-polarity-register-2]]
+.Interrupt level trigger polarity register 2
+[%header,cols="1m,^2m,^1,4"]
+|===
+|Bit Field
+|Name
+|Read/Write
+|Description
+
+|31:0
+|int_polarity
+|R/W
+|High `32` bits of the interrupt level trigger 
+polarity register (bit`[63:32]`)
+|===

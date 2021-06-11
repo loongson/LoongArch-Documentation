@@ -1,0 +1,20 @@
+[[configuration-method-of-pll]]
+=== Configuration Method of PLL
+
+When `SYS_CLKSEL[1:0]` is `00b`, it means the output frequency of PLL can be changed by software. In this configuration, the default clock frequency at bridge startup is the external reference clock frequency, and software configuration of the bridge clock is required during processor startup. The process of modifying the clock configuration through software is as follows:
+
+. set `sel_pll_out*` to `0`.
+
+. set the `pll_pd` signal to `1`.
+
+. set `set_pll_param` to `0`.
+
+. set the value of `pll_div_ref`/`pll_loopc`/`pll_div_out*`.
+
+. set `set_pll_param` to `1`.
+
+. set the `pll_pd` signal to `0`.
+
+. wait for the PLL lock signal `pll_locked` to change to `1`.
+
+. set `sel_pll_out*` to `1`.

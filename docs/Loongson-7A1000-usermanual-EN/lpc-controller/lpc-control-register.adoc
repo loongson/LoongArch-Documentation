@@ -1,0 +1,164 @@
+[[lpc-control-register]]
+=== LPC Control Register
+
+*Control Register 0*
+
+Address Offset: `00`-`03h`
+
+Attribute: R/W
+
+Default value: `0000FFFFh`
+
+Size: `4`
+
+[[table-control-register-0]]
+.Control register 0
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31
+|SIRQ_EN
+|R/W
+|SIRQ interrupt enable control.
+
+|23
+|LPC_MEM_TRANS_EN
+|R/W
+|LPC Memory space address translation enable.
+
+|22:16
+|LPC_MEM_TRANS
+|R/W
+|The high 7-bit address (`bit[31:25]`) of the LPC Memory space after address translation.
+
+|15:0
+|LPC_SYNC_TIMEOUT
+|R/W
+|Threshold for LPC access timeout (minimum value 64).
+|===
+
+*Control Register 1*
+
+Address Offset: `04`-`07h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[table-control-register-1]]
+.Control register 1
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31
+|FIRMWARE_TYPE
+|R/W
+|LPC Memory space Firmware Memory access type configuration.
+
+|17:0
+|LPC_INT_EN
+|R/W
+|LPC interrupt enable, each bit corresponds to an interrupt source.
+For each interrupt source:
+
+`0`: Disable interrupt.
+
+`1`: Enable interrupt.
+|===
+
+*LPC Interrupt Status Register*
+
+Address Offset: `08`-`0Bh`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[lpc-interrupt-status-register]]
+.LPC interrupt status register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|17:0
+|LPC_INT_SRC
+|RO
+|LPC Interrupt source indication, each bit corresponds to an interrupt source.
+For each interrupt source:
+
+`0`: Disable interrupt.
+
+`1`: Enable interrupt.
+|===
+
+*LPC Interrupt Clear Register*
+
+Address Offset: `0C`-`0Fh`
+
+Attribute: WO
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[lpc-interrupt-clear-register]]
+.LPC interrupt clear register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|17
+|LPC_TIMEOUT_INT_CLEAR
+|WO
+|LPC access timeout interrupt clear (write `1` to clear).
+Bit 17 corresponds to LPC access timeout interrupt.
+Write `1` to clear, write `0` to be invalid.
+|===
+
+*LPC SIRQ Interrupt Polarity Register*
+
+Address Offset: `10`-`13h`
+
+Attribute: R/W
+
+Default value: `0000FFFBh`
+
+Size: `4`
+
+[[lpc-sirq-interrupt-polarity-register]]
+.LPC SIRQ interrupt polarity register
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|16:0
+|SIRQ_INT_POLARITY
+|R/W
+|LPC SIRQ interrupt polarity register, each bit corresponds to an interrupt source.
+For each interrupt source:
+
+`0`: Low level trigger.
+
+`1`: High level trigger.
+|===

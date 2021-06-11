@@ -1,0 +1,13 @@
+[[lpc-access-address]]
+=== LPC Access Address
+
+The LPC controller consists of three address spaces: the control register space, the MEM space, and the I/O space.
+
+The LPC control register space is used to configure the LPC controller, which is located in the fixed device address space of the bridge chip, starting at `0x1000,2000`, with a size of `4KB`.
+
+The LPC MEM space is used to access the Memory/Firmware Memory devices mounted on the LPC bus.
+The LPC MEM space is located in the fixed device address space of the bridge chip starting at `0x1200,0000` and is `32MB` in size.
+Processor accesses to the LPC MEM space are converted to LPC protocol Memory accesses and sent to the LPC bus.
+Which type of Memory access is issued by the LPC controller is determined by the LPC controller's control registers.
+Addresses sent by the processor to this address space can be address converted.
+The converted address is set by the LPC controller's configuration register (`LPC_MEM_TRANS`).

@@ -1,0 +1,50 @@
+[[section-pcie-g0-phy-configuration-register]]
+=== `PCIE_G0 PHY` Configuration Register
+
+This set of registers contains the control signals for PCIE_G0 PHY.
+
+Address Offset: `05E8`-`05EBh`
+
+Attribute: `R/W,RO`
+
+Default value: `0006_0000h`
+
+Size: `32` bits
+
+[[pcie-g0-phy-configuration-register]]
+.Pcie g0 phy configuration register
+[%header,cols="^1m,^2m,^1,3"]
+|===
+d|Bit Field
+d|Name
+d|Read/Write
+|Description
+
+|27
+|cfg_x4_mode_en
+|R/W
+|Enables software to configure the operating mode of PCIE_G0
+
+0: the operating mode is determined by the hardware pins
+
+1: The operating mode is determined by the software configuration (bit26)
+
+|26
+|cfg_x4_mode
+|R/W
+|Software configuration of PCIE_G0 operating modes
+
+0: working in x8 mode
+
+1: working in x4 mode
+
+|25
+|phy_powerdown_hi
+|R/W
+|Set the high four bits of PHY to enter the low-power mode
+
+|24
+|phy_powerdown_lo
+|R/W
+|Set PHY low four bits to enter low-power mode
+|===

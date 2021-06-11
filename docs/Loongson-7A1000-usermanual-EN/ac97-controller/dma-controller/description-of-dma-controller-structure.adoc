@@ -1,0 +1,19 @@
+[[description-of-dma-controller-structure]]
+==== Description of DMA Controller Structure
+
+The bridge contains 2 DMA controllers for data migration between memory and AC97, which can save resources and improve the efficiency of system data transfer.
+This saves resources and improves the efficiency of system data transfer.
+
+The process of transporting data by DMA consists of three stages.
+
+. Pre-processing before transport: The CPU configures the registers related to the DMA descriptor.
+
+. Data transport: done automatically under the control of the DMA controller.
+
+. End-of-transport processing: sending an interrupt request.
+
+This DMA controller is limited to data handling in words (4-byte).
+
+The DMA controller supports 64-bit address space, which is mainly controlled by `dma_64bit`.
+When this bit is set to `1`, it means that the DMA controller works in 64-bit address space, and vice versa for 32-bit address space.
+In 64-bit address mode, it is necessary to extend `DMA_ORDER_ADDR` and `DMA_SADDR` to 64-bit registers.

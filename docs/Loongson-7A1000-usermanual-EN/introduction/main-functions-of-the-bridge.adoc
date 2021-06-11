@@ -1,0 +1,66 @@
+[[main-functions-of-the-bridge]]
+=== Main Functions of the Bridge
+*HT Interface*
+
+The bridge is connected to the processor via the `HT` interface, which is compatible with `HT3.0` protocol and supports `200`/`400`/`800`/`1600Mhz` interface frequency and `8`/`16-bit` interface width. In addition to being used as a single bridge chip, it can also be configured as a dual bridge chip mode to support direct data transfer with both processors.
+
+*Graphics Processing*
+
+The GPU supports OpenGL ES 2.0 and OpenGL ES 1.1; OpenVG, Futuremark certified, BitBLT and Stretch BLT, rectangle fill, hardware line drawing, color font rendering, YUV color space conversion, and high quality scaling. Space conversion, high quality scaling, etc. The display controller supports dual DVO signal output and hardware cursor, gamma correction, output dithering, etc. The memory interface uses 16-bit DDR3 SDRAM interface with a maximum data rate of 1333 Mbps.
+
+*PCIE Interface*
+
+The PCIE 2.0 protocol-compliant interface contains a total of 32 data links supporting up to 5G b/s in each data direction (10G b/s in both directions) and a total of 12 PCIE controllers. 32 data links can be divided into 3 x8 interfaces and 2 x4 interfaces; each x8 interface can be configured as 2 x4 interfaces. Each x8 interface can be configured as two x4 interfaces independently; of the two x4 interfaces, one can be configured as four x1 interfaces independently, and the other as two x1 interfaces independently.
+
+*SATA Controllers*
+
+Integrated 3 SATA host controllers, each controlling 1 SATA interface, each supporting up to 3 Gb/s data rate and compatible with SATA 2.6 protocol. SATA controllers are compatible with AHCI 1.1 specification.
+
+*USB Controllers*
+
+Two USB controllers control six independent USB host interfaces, supporting up to USB 2.0 protocol with maximum transfer speeds of up to
+The two USB controllers control six independent USB host interfaces, supporting up to USB 2.0 protocol and transfer speeds up to 480 Mbps, and are compatible with USB 1.1 full-speed and low-speed transfers.
+
+*GMAC Controller*
+
+Integrated two 10/100/1000Mbps adaptive Ethernet MAC controllers, compatible with IEEE 802.3, connect external GMAC PHY chip through RGMII interface, half-duplex/full-duplex adaptive, support Timestamp function, support network wake-up.
+
+*HDA Controller*
+
+Supports 16, 18 and 20-bit sampling accuracy, variable rate, sampling rate up to 192KHz, 7.1 channel surround sound output, and three audio inputs.
+
+*SPI Controller*
+
+Integrated SPI host controller, supports standard read, sequential address read, fast read, dual I/O and other read modes.
+
+*UART*
+
+Integrated 1 full-featured UART controller, full-duplex asynchronous data receive/transmit, 16-bit programmable clock counter, support receive timeout detection, configurable as 4 two-wire serial ports (TXD/RXD).
+
+*I2C Bus*
+
+Compatible with I2C standard, operates in master device mode, supports 7-bit addressing and 10-bit addressing modes.
+
+*PWM*
+
+Four PWM outputs with internal 32-bit counter, supporting pulse generation and detection.
+
+*HPET*
+
+Compatible with HPET specification, supports 64-bit counter timestamp function, 32-bit timer, 1 periodic interrupt and Supports 1 periodic interrupt and 2 non-periodic interrupts.
+
+*RTC*
+
+Timing accurate to 0.1 second, can generate 3 timing interrupts, supports timed power-on function.
+
+*Interrupt Controller*
+
+Internal integrated interrupt controller supports up to 64 interrupt sources, dual interrupt outputs, software set interrupts, configurable trigger mode, and intelligent interrupt distribution.
+
+*ACPI Power Management*
+
+Supports clock gating, PHY shutdown, USB/GMAC wake-up, and auto-start for incoming calls.
+
+*GPIO*
+
+1 dedicated GPIO pin, 56 multiplexed GPIO pins, support input interrupt function.

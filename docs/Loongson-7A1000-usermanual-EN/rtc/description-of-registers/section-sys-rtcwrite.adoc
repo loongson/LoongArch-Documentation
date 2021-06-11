@@ -1,0 +1,25 @@
+[[section-sys-rtcwrite]]
+==== `SYS_RTCWRITE`
+
+Address Offset: `64`-`67h`
+
+Attribute: WO
+
+Default value: N/A
+
+Size: `4`
+
+[[sys-rtcwrite]]
+.`SYS_RTCWRITE`
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+^|Description
+
+|31:0
+|RTCWRITE
+|WO
+|RTC counter input register
+|===

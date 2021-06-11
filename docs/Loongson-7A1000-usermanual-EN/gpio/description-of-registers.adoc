@@ -1,0 +1,230 @@
+[[description-of-registers-6]]
+=== Description of Registers
+
+*GPIO Direction Control*
+
+Address Offset: `00`-`03h`
+
+Attribute: R/W
+
+Default value: `FFFFFFF0h`
+
+Size: `4`
+
+[[gpio-direction-control-1]]
+.GPIO direction control
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:0
+|GPIO_OEN
+|R/W
+|Corresponds to the direction control of `GPIO[31:0]`.
+
+`0`: Output
+
+`1`: Input
+|===
+
+Address Offset: `04`-`07h`
+
+Attribute: R/W
+
+Default value: `FFFFFFFFh`
+
+Size: `4`
+
+[[gpio-direction-control-2]]
+.GPIO direction control
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:26
+|Reserved
+|R/W
+|Reserved.
+
+|25:0
+|GPIO_OEN
+|R/W
+|Corresponds to the direction control of `GPIO[57:32]`.
+
+`0`: Output
+
+`1`: Input
+|===
+
+*GPIO Output*
+
+Address Offset: `00`-`03h`
+
+Attribute: R/W
+
+Default value: `0000000Fh`
+
+Size: `4`
+
+[[gpio-output-1]]
+.GPIO output
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:0
+|GPIO_O
+|R/W
+|Corresponds to the output of `GPIO[31:0]`.
+|===
+
+Address Offset: `04`-`07h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[gpio-output-2]]
+.GPIO output
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:26
+|Reserved
+|R/W
+|Reserved.
+
+|25:0
+|GPIO_O
+|R/W
+|Corresponds to the output of `GPIO[57:32]`.
+|===
+
+*GPIO Input*
+
+Address Offset: `00`-`03h`
+
+Attribute: RO
+
+Default value: N/A
+
+Size: `4`
+
+[[gpio-input-1]]
+.GPIO input
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:0
+|GPIO_I
+|RO
+|Corresponds to the input of `GPIO[31:0]`.
+|===
+
+Address Offset: `04`-`07h`
+
+Attribute: RO
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[gpio-input-2]]
+.GPIO input
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:26
+|Reserved
+|R/W
+|Reserved.
+
+|25:0
+|GPIO_I
+|RO
+|Corresponds to the input of `GPIO[57:32]`.
+|===
+
+*GPIO Interrupt Enable*
+
+Address Offset: `00`-`03h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[gpio-interrupt-enable-1]]
+.GPIO interrupt enable
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:0
+|GPIO_OEN
+|R/W
+|Corresponds to the interrupt enable of `GPIO[31:0]`.
+
+`0`: Disable interrupt
+
+`1`: Enable interrput
+|===
+
+Address Offset: `04`-`07h`
+
+Attribute: R/W
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[gpio-interrupt-enable-2]]
+.GPIO interrupt enable
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+^|Read/Write
+^|Description
+
+|31:26
+|Reserved
+|R/W
+|Reserved.
+
+|25:0
+|GPIO_OEN
+|R/W
+|Corresponds to the interrupt enable of `GPIO[57:32]`.
+
+`0`: Disable interrupt
+
+`1`: Enable interrput
+|===

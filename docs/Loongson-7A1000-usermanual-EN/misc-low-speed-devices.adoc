@@ -1,0 +1,8 @@
+[[misc-low-speed-devices]]
+== MISC Low-speed Devices
+
+MISC low speed devices include: UART, I2C, PWM, ACPI, RTC, and GPIO. these devices run at a fixed frequency of 50MHz.
+
+include::misc-low-speed-devices/misc-low-speed-devices-configuration-register.adoc[]
+
+include::misc-low-speed-devices/internal-device-address-routing.adoc[]

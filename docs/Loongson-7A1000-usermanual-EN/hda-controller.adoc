@@ -1,0 +1,10 @@
+[[hda-controller]]
+== HDA Controller (`D7:F0`)
+
+The HDA controller is compatible with High Definition Audio Specification Revision 1.0a.
+
+See <<section-pll1-configuration-register,`PLL1` Configuration Register>> for HDA-related pin setup registers.
+
+include::hda-controller/hda-configuration-register.adoc[]
+
+include::hda-controller/description-of-hda-control-register.adoc[]

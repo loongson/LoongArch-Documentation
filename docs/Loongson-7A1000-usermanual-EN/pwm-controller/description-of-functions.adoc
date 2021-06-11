@@ -1,0 +1,8 @@
+[[description-of-functions]]
+=== Description of Functions
+
+include::description-of-functions/pulse-width-modulation-function.adoc[]
+
+include::description-of-functions/pulse-measurement-function.adoc[]
+
+include::description-of-functions/anti-dead-zones-function.adoc[]

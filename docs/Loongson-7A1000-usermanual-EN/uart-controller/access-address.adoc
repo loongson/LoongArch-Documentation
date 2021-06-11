@@ -1,0 +1,27 @@
+[[access-address-2]]
+=== Access Address
+
+The access base address of the UART controller is the base address of the MISC low-speed device block plus offset `0x0`. Note: The UART module supports byte access only.
+
+The 4 UART controllers are distinguished by bit `[9:8]`, and the internal physical address division of the UART module is shown in the following table.
+
+[[module-physical-address-composition]]
+.Module physical address composition
+[%header,cols="3*^1m"]
+|===
+|Address bit
+|Composition 
+|Remarks
+
+|[15:10]
+|0
+|Reserved
+
+|[09:08]
+|UART number
+|0x0 - 0x3 for each UART controller
+
+|[07:00]
+|REG
+|internal register address
+|===

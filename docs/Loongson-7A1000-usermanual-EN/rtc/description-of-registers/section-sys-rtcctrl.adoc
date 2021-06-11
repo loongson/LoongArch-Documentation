@@ -1,0 +1,135 @@
+[[section-sys-rtcctrl]]
+==== `SYS_RTCCTRL`
+
+Address Offset: `40`-`43h`
+
+Attribute: RO, R/W
+
+Default value: `00000000h`
+
+Size: `4`
+
+[[sys-rtcctrl]]
+.`SYS_RTCCTRL`
+[%header,cols="^1m,2m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+^|Description
+
+|31:24
+|Reserved
+|RO
+|Reserved
+
+|23
+|ERS
+|RO
+|`REN` (bit `13`) write status
+
+|22:21
+|Reserved
+|RO
+|Reserved
+
+|20
+|RTS
+|RO
+|`Sys_rtctrim` write status
+
+|19
+|RM2
+|RO
+|`Sys_rtcmatch2` write status
+
+|18
+|RM2
+|RO
+|`Sys_rtcmatch2` write status
+
+|17
+|RM0
+|RO
+|`Sys_rtcmatch0` write status
+
+|16
+|RS
+|RO
+|`Sys_rtcwrite` write status
+
+|15:14
+|Reserved
+|RO
+|Reserved
+
+|13
+|REN
+|R/W
+|RTC enable (active high).
+
+Needs to be initialized to `1`
+
+|12
+|Reserved
+|RO
+|Reserved
+
+|11
+|TEN
+|R/W
+|TOY enable (active high).
+
+Needs to be initialized to `1`
+
+|10:9
+|Reserved
+|RO
+|Reserved
+
+|8
+|EO
+|R/W
+|`0`: `32.768k` crystal oscillation disable
+
+`1`: `32.768k` crystal oscillation enable
+
+|7:6
+|Reserved
+|RO
+|Reserved
+
+|5
+|Status
+|RO
+|`32K` crystal oscillation work state.
+
+`0`: `32.768k` crystal oscillation not work
+
+`1`: `32.768k` crystal oscillation working properly
+
+|4
+|Reserved
+|RO
+|Reserved
+
+|3
+|TM2
+|RO
+|`Sys_toymatch2` write state
+
+|2
+|TM1
+|RO
+|`Sys_toymatch1` write state
+
+|1
+|TM0
+|RO
+|`Sys_toymatch0` write state
+
+|0
+|TS
+|RO
+|`Sys_toywrite` write state
+|===

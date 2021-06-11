@@ -1,0 +1,324 @@
+== List of Figures
+
+* <<figure-structure-of-the-bridge,Structure of the Bridge>>
+* <<structure-of-bridge-clock,Structure of bridge clock>>
+* <<structure-of-pll,Structure of PLL>>
+* <<example-of-address-space-division-for-loongson-3-processor-loongson-7a-bridge,Example of address space division for Loongson 3 processor + Loongson 7A bridge>>
+* <<standard-access-address-of-the-pci-configuration,Standard access address of the PCI configuration>>
+* <<reserved-access-address-of-the-pci-configuration,reserved access address of the PCI configuration>>
+* <<schematic-of-the-interrupt-system-of-3a-7a,Schematic of the interrupt system of 3A + 7A>>
+* <<figure-anti-dead-zones-function,Anti dead zones function>>
+
+== List of Tables
+
+* <<bridge-block-input,Bridge clock>>
+* <<bridge-block-output,Birge clock output>>
+* <<Bridge-chip-clock-related-configuration-pins-and-descriptions,Bridge chip clock-related configuration pins and descriptions>>
+* <<PLL-related-configuration-signal-description-table,PLL-related configuration signal description table>>
+* <<configuration-header-access-correspondence-for-each-device,Configuration header access correspondence for each device>>
+* <<bridge-piece-fixed-address-device-address-space,Bridge piece fixed address device address space>>
+* <<bridge-chip-PCI-device-address-space-allocation-example,Bridge chip PCI device address space allocation example>>
+* <<bridge-configuration-register-list,Bridge configuration register list>>
+* <<table-ht-clock-enable,Table ht clock enable>>
+* <<table-dma-routing-configuration-1,DMA routing configuration>>
+* <<table-general-configuration-register-0-1,Table General Configuration Register 0 1>>
+* <<table-dma-routing-configuration-2,DMA routing configuration>>
+* <<table-general-configuration-register-0-2,Table general configuration register 0 2>>
+* <<table-general-configuration-register-0-3,Table general configuration register 0 3>>
+* <<table-pin-multiplexing-configuration-register,Pin multiplexing configuration register>>
+* <<pll0-configuration-register-1,PLL0 configuration register 1>>
+* <<pll0-configuration-register-2,PLL0 configuration register 2>>
+* <<pll1-configuration-register-1,PLL1 configuration register 1>>
+* <<pll1-configuration-register-2,PLL1 configuration register 2>>
+* <<pll2-configuration-register-1,Pll2 configuration register 1>>
+* <<pll2-configuration-register-2,Pll2 configuration register 2>>
+* <<pll-pix-0-configuration-register-1,Pll pix 0 configuration register 1>>
+* <<pll-pix-0-configuration-register-2,Pll pix 0 configuration register 2>>
+* <<pll-pix-1-configuration-register-1,PLL_PIX_1 Configuration Register 1>>
+* <<pll-pix-1-configuration-register-2,PLL_PIX_1 Configuration Register 2>>
+* <<pcie-f0-phy-configuration-register,Pcie f0 phy configuration register>>
+* <<pcie-f0-phy-access-configuration-register-1,PCIE_F0 PHY Access Configuration Register 1>>
+* <<pcie-f0-phy-access-configuration-register-2,PCIE_F0 PHY Access Configuration Register 2>>
+* <<pcie-f1-phy-configuration-register-1,PCIE_F1 PHY Configuration Register 1>>
+* <<pcie-f1-phy-access-configuration-register-1,pcie f1 phy access configuration register 1>>
+* <<pcie-f1-phy-access-configuration-register-2,pcie f1 phy access configuration register 2>>
+* <<pcie-h-phy-configuration-register,Pcie h phy configuration register>>
+* <<pcie-h-phy-lo-access-configuration-register-1,Pcie h phy lo access configuration register 1>>
+* <<pcie-h-phy-lo-access-configuration-register-2,Pcie h phy lo access configuration register 2>>
+* <<pcie-h-phy-hi-access-configuration-register-1,Pcie h phy hi access configuration register 1>>
+* <<pcie-h-phy-hi-access-configuration-register-2,Pcie h phy hi access configuration register 2>>
+* <<pcie-g0-phy-configuration-register,Pcie g0 phy configuration register>>
+* <<pcie-g0-phy-lo-access-configuration-register-1,Pcie g0 phy lo access configuration register 1>>
+* <<pcie-g0-phy-lo-access-configuration-register-2,Pcie g0 phy lo access configuration register 2>>
+* <<pcie-g0-phy-hi-access-configuration-register-1,Pcie g0 phy hi access configuration register 1>>
+* <<pcie-g0-phy-hi-access-configuration-register-2,Pcie g0 phy hi access configuration register 2>>
+* <<pcie-g1-phy-configuration-register,PCIE_G1 PHY configuration register>>
+* <<pcie-g1-phy-lo-access-configuration-register-1,PCIE_G1 PHY LO access configuration register 1>>
+* <<pcie-g1-phy-lo-access-configuration-register-2,PCIE_G1 PHY LO access configuration register 2>>
+* <<pcie-g1-phy-hi-access-configuration-register-1,PCIE_G1 PHY HI access configuration register 1>>
+* <<pcie-g1-phy-hi-access-configuration-register-2,PCIE_G1 PHY HI access configuration register 2>>
+* <<sata0-phy-configuration-register-1,SATA0 PHY Configuration Register 1>>
+* <<sata0-phy-configuration-register-2,SATA0 PHY Configuration Register 2>>
+* <<sata0-phy-access-configuration-register-1,SATA0 PHY Access Configuration Register 1>>
+* <<sata0-phy-access-configuration-register-2,SATA0 PHY Access Configuration Register 2>>
+* <<sata1-phy-configuration-register-1,SATA1 PHY Configuration Register 1>>
+* <<sata1-phy-configuration-register-2,SATA1 PHY Configuration Register 2>>
+* <<sata1-phy-access-configuration-register-1,SATA1 PHY Access Configuration Register 1>>
+* <<sata1-phy-access-configuration-register-2,SATA1 PHY Access Configuration Register 2>>
+* <<sata2-phy-configuration-register-1,SATA2 PHY Configuration Register 1>>
+* <<sata2-phy-configuration-register-2,SATA2 PHY Configuration Register 2>>
+* <<sata2-phy-access-configuration-register-1,SATA2 PHY Access Configuration Register 1>>
+* <<sata2-phy-access-configuration-register-2,SATA2 PHY Access Configuration Register 2>>
+* <<memory-capacity-configuration-register-1,Memory capacity configuration register 1>>
+* <<memory-capacity-configuration-register-2,Memory capacity configuration register 2>>
+* <<bridge-identity-register-3,Bridge Identity register 3>>
+* <<bridge-identity-register-4,Bridge Identity register 4>>
+* <<bridge-chip-interrupt-controller-interrupt-source-assignment,Bridge chip interrupt controller interrupt source assignment>>
+* <<interrupt-control-and-status-registers,Interrupt control and status registers>>
+* <<interrupt-register-address-distribution,Interrupt register address distribution>>
+* <<interrupt-controller-identification-register-1,Interrupt controller identification register 1>>
+* <<interrupt-controller-identification-register-2,Interrupt controller identification register 2>>
+* <<interrupt-mask-register-1,Interrupt mask register 1>>
+* <<interrupt-mask-register-2,Interrupt mask register 2>>
+* <<ht-interrupt-message-packet-enable-register-1,HT interrupt message packet enable register 1>>
+* <<ht-interrupt-message-packet-enable-register-2,HT interrupt message packet enable register 2>>
+* <<interrupt-trigger-control-register-1,Interrupt trigger control register 1>>
+* <<interrupt-trigger-control-register-2,Interrupt trigger control register 2>>
+* <<interrupt-clear-register-1,Interrupt clear register 1>>
+* <<interrupt-clear-register-2,Interrupt clear register 2>>
+* <<int_auto_ctrl0-register-1,INT_AUTO_CTRL0 register 1>>
+* <<int_auto_ctrl0-register-2,INT_AUTO_CTRL0 register 2>>
+* <<int_auto_ctrl1-register-1,INT_AUTO_CTRL1 register 1>>
+* <<int_auto_ctrl1-register-2,INT_AUTO_CTRL1 register 2>>
+* <<interrupt-routing-configuration-register-1,Interrupt routing configuration register 1>>
+* <<interrupt-routing-configuration-register-2,Interrupt routing configuration register 2>>
+* <<interrupt-routing-configuration-register-3,Interrupt routing configuration register 3>>
+* <<interrupt-routing-configuration-register-4,Interrupt routing configuration register 4>>
+* <<interrupt-routing-configuration-register-5,Interrupt routing configuration register 5>>
+* <<interrupt-routing-configuration-register-6,Interrupt routing configuration register 6>>
+* <<interrupt-routing-configuration-register-7,Interrupt routing configuration register 7>>
+* <<interrupt-routing-configuration-register-8,Interrupt routing configuration register 8>>
+* <<interrupt-routing-configuration-register-9,Interrupt routing configuration register 9>>
+* <<interrupt-routing-configuration-register-10,Interrupt routing configuration register 10>>
+* <<interrupt-routing-configuration-register-11,Interrupt routing configuration register 11>>
+* <<interrupt-routing-configuration-register-12,Interrupt routing configuration register 12>>
+* <<interrupt-routing-configuration-register-13,Interrupt routing configuration register 13>>
+* <<interrupt-routing-configuration-register-14,Interrupt routing configuration register 14>>
+* <<interrupt-routing-configuration-register-15,Interrupt routing configuration register 15>>
+* <<interrupt-routing-configuration-register-16,Interrupt routing configuration register 16>>
+* <<ht-message-packet-interrupt-vector-configuration-register-1,HT message packet interrupt vector configuration register 1>>
+* <<ht-message-packet-interrupt-vector-configuration-register-2,HT message packet interrupt vector configuration register 2>>
+* <<ht-message-packet-interrupt-vector-configuration-register-3,HT message packet interrupt vector configuration register 3>>
+* <<ht-message-packet-interrupt-vector-configuration-register-4,HT message packet interrupt vector configuration register 4>>
+* <<ht-message-packet-interrupt-vector-configuration-register-5,HT message packet interrupt vector configuration register 5>>
+* <<ht-message-packet-interrupt-vector-configuration-register-6,HT message packet interrupt vector configuration register 6>>
+* <<ht-message-packet-interrupt-vector-configuration-register-7,HT message packet interrupt vector configuration register 7>>
+* <<ht-message-packet-interrupt-vector-configuration-register-8,HT message packet interrupt vector configuration register 8>>
+* <<ht-message-packet-interrupt-vector-configuration-register-9,HT message packet interrupt vector configuration register 9>>
+* <<ht-message-packet-interrupt-vector-configuration-register-10,HT message packet interrupt vector configuration register 10>>
+* <<ht-message-packet-interrupt-vector-configuration-register-11,HT message packet interrupt vector configuration register 11>>
+* <<ht-message-packet-interrupt-vector-configuration-register-12,HT message packet interrupt vector configuration register 12>>
+* <<ht-message-packet-interrupt-vector-configuration-register-13,HT message packet interrupt vector configuration register 13>>
+* <<ht-message-packet-interrupt-vector-configuration-register-14,HT message packet interrupt vector configuration register 14>>
+* <<ht-message-packet-interrupt-vector-configuration-register-15,HT message packet interrupt vector configuration register 15>>
+* <<ht-message-packet-interrupt-vector-configuration-register-16,HT message packet interrupt vector configuration register 16>>
+* <<ht-message-packet-interrupt-vector-configuration-register-17,HT message packet interrupt vector configuration register 17>>
+* <<ht-message-packet-interrupt-vector-configuration-register-18,HT message packet interrupt vector configuration register 18>>
+* <<interrupts-routed-to-intn1-are-in-the-service-status-register-1,Interrupts routed to INTn1 are in the service status segister 1>>
+* <<interrupts-routed-to-intn1-are-in-the-service-status-register-2,Interrupts routed to INTn1 are in the service status segister 2>>
+* <<interrupt-request-register-1,Interrupt request register 1>>
+* <<interrupt-request-register-2,Interrupt request register 2>>
+* <<interrupt-in-service-status-register-1,Interrupt in service status register 1>>
+* <<interrupt-in-service-status-register-2,Interrupt in service status register 2>>
+* <<interrupt-level-trigger-polarity-register-1,Interrupt level trigger polarity register 1>>
+* <<interrupt-level-trigger-polarity-register-2,Interrupt level trigger polarity register 2>>
+* <<access-address,Access address>>
+* <<hpet-register-list,HPET register list>>
+* <<general-capabilities-and-id-register,General capabilities and id register>>
+* <<general-configuaration-register,General configuaration register>>
+* <<general-interrupt-status-register,General interrupt status register>>
+* <<main-counter-value-register,Main counter value register>>
+* <<timer-0-configuration-and-capabilities-registe,Timer 0 configuration and capabilities registe>>
+* <<timer-0-comparator-value-register,Timer 0 comparator value register>>
+* <<table-ht-configuration-register,HT configuration register>>
+* <<bctrl-ht-bridge-control-register,BCTRL-HT bridge control register>>
+* <<didcmd-device-id-command-register,DIDCMD-device ID command register>>
+* <<lksc0-link-status-control-register-0,LKSC0-Link status control register 0>>
+* <<lkwdsc0-link-data-width-status-and-control-register,LKWDSC0-Link data width status and control register>>
+* <<lkfreqcfg0-link-frequency-configuration-register-1,LKFREQCFG0-Link frequency configuration register 1>>
+* <<lkfreqcfg0-link-frequency-configuration-register-2,LKFREQCFG0-Link frequency configuration register 2>>
+* <<rxwin-receive-address-window,RXWIN-receive address window>>
+* <<rxwin0-receive-window-register-0,RXWIN0-Receive window register 0>>
+* <<rxwin1-receive-window-register-1,RXWIN1-Receive window register 1>>
+* <<rxwin2-receive-window-register-2,RXWIN2-Receive window register 2>>
+* <<rxwin3-receive-window-register-3,RXWIN3-Receive window register  3>>
+* <<rxwin4-receive-window-register-4,RXWIN4-Receive window register 4>>
+* <<TXPOSTWIN---quick-send-window,TXPOSTWIN - quick send window>>
+* <<txpostwin0-quick-send-window-register-0,TXPOSTWIN0-Quick send window register 0>>
+* <<txpostwin1-quick-send-window-register-1,TXPOSTWIN1-Quick send window register 1>>
+* <<rxp2pwin-p2p-receive-window,RXP2PWIN-P2P receive window>>
+* <<rxp2pwin0-p2p-receive-window-0,RXP2PWIN0-P2P receive window 0>>
+* <<rxp2pwin1-p2p-receive-window-1,RXP2PWIN1-P2P receive window 1>>
+* <<htpllctrl-ht-pll-control-register,Htpllctrl-ht pll control register>>
+* <<misc-Low-speed-device-address-routing-and-access-types,MISC Low-speed device address routing and access types>>
+* <<misc-Low-speed-device-address-routing,MISC Low-speed device address routing>>
+* <<uart-function-reuse,UART function reuse>>
+* <<module-physical-address-composition,Module physical address composition>>
+* <<table-uart-function-reuse,UART function reuse>>
+* <<interrupt-enable-register-ier,Interrupt enable register (IER)>>
+* <<interrupt-identification-register-iir,Interrupt identification register (IIR)>>
+* <<interrupt-control-menu,Interrupt control menu>>
+* <<fifo-control-register-fcr,FIFO control register (FCR)>>
+* <<line-control-register-lcr,Line control register (LCR)>>
+* <<modem-control-register-mcr,MODEM control register (MCR)>>
+* <<line-status-register-lsr,Line status register (LSR)>>
+* <<modem-status-register-msr,MODEM status register (MSR)>>
+* <<frequency-divider-latch-1,Frequency divider latch 1>>
+* <<frequency-divider-latch-2,Frequency divider latch 2>>
+* <<the-physical-address-composition-of-the-i2c-module-internal-registers,The physical address composition of the I2C module internal registers>>
+* <<frequency-division-latch-low-order-byte-register,Frequency division latch low-order byte register>>
+* <<frequency-division-latch-high-order-byte-register,Frequency division latch high-order byte register>>
+* <<control-register-1,Control register>>
+* <<transport-data-register,Transport data register>>
+* <<receive-data-register,Receive data register>>
+* <<command-control-register,Command control register>>
+* <<state-register,State register>>
+* <<the-physical-address-composition-of-the-pwn-controller-internal-registers,The physical address composition of the PWM controller internal registers>>
+* <<list-of-pwn-registers,List of PWM registers>>
+* <<the-physical-address-composition-of-the-acpi-module-internal-registers,The physical address composition of the ACPI controller internal registers>>
+* <<description-of-acpi-status,Description of ACPI status>>
+* <<soc-general-pm-configuration-register,SOC general PM configuration register>>
+* <<resume-general-pm-configuration-register,RESUME general PM configuration register>>
+* <<rtc-general-pv-configuration-register,RTC general PM configuration register>>
+* <<power-management-1-status-register,Power Management 1 Status Register>>
+* <<power-management-1-enable-register,Power management 1 enable register>>
+* <<power-management-1-control-register,Power management 1 control register>>
+* <<power-management-1-timer,Power management 1 timer>>
+* <<general-purpose-event0-status-register,General purpose event0 status register>>
+* <<general-purpose-event0-enable-register,General purpose event0 enable register>>
+* <<reset-control-register,Reset control register>>
+* <<watch-dog-set-register,Watch dog set register>>
+* <<watch-dog-timer-register,Watch dog timer register>>
+* <<general-rtc-register-1,General RTC register 1>>
+* <<general-rtc-register-2,General RTC register 2>>
+* <<the-physical-address-composition-of-the-rtc-module-internal-registers,The physical address composition of the RTC module internal registers>>
+* <<list-of-rtc-registers,List of RTC registers>>
+* <<sys-toywrite0,`SYS_TOYWRITE0`>>
+* <<sys-toywrite1,`SYS_TOYWRITE1`>>
+* <<sys-toyread0,`SYS_TOYREAD0`>>
+* <<sys-toyread1,`SYS_TOYREAD1`>>
+* <<sys-toymatch0,`SYS_TOYMATCH0`>>
+* <<sys-toymatch1,`SYS_TOYMATCH1`>>
+* <<sys-toymatch2,`SYS_TOYMATCH2`>>
+* <<sys-rtcctrl,`SYS_RTCCTRL`>>
+* <<sys-rtcwrite,`SYS_RTCWRITE`>>
+* <<sys-rtcread,`SYS_RTCREAD`>>
+* <<sys-rtcmatch0,`SYS_RTCMATCH0`>>
+* <<sys-rtcmatch1,`SYS_RTCMATCH1`>>
+* <<sys-rtcmatch2,`SYS_RTCMATCH2`>>
+* <<gpio-control-register,GPIO control register>>
+* <<the-physical-address-composition-of-the-gpio-module-internal-registers,The physical address composition of the GPIO module internal registers>>
+* <<address-of-gpio-bit-control-configuration-register,Address of GPIO bit control configuration register>>
+* <<address-of-gpio-byte-control-configuration-register,Address of GPIO byte control configuration register>>
+* <<gpio-direction-control-1,GPIO direction control>>
+* <<gpio-direction-control-2,GPIO direction control>>
+* <<gpio-output-1,GPIO output>>
+* <<gpio-output-2,GPIO output>>
+* <<gpio-input-1,GPIO input>>
+* <<gpio-input-2,GPIO input>>
+* <<gpio-interrupt-enable-1,GPIO interrupt enable>>
+* <<gpio-interrupt-enable-2,GPIO interrupt enable>>
+* <<gmac-controller-configuration-registers,GMAC controller configuration registers>>
+* <<pci-command-register-1,PCI command register>>
+* <<control-base-address-register-1,Control base address register>>
+* <<control-base-address-register-2,Control base address register>>
+* <<usb-ehci-controller-configuration-registers,USB-EHCI controller configuration registers>>
+* <<pci-command-register-2,PCI command register>>
+* <<control-base-address-register-3,Control base address register>>
+* <<control-base-address-register-4,Control base address register>>
+* <<usb-ohci-controller-configuration-registers,USB-OHCI controller configuration registers>>
+* <<pci-command-register-3,PCI command register>>
+* <<control-base-address-register-5,Control base address register>>
+* <<control-base-address-register-6,Control base address register>>
+* <<gpu-controller-configuration-registers,GPU controller configuration registers>>
+* <<pci-command-register-4,PCI command register>>
+* <<control-base-address-register-7,Control base address register>>
+* <<control-base-address-register-8,Control base address register>>
+* <<video-memory-base-address-register-1,Video memory base address register>>
+* <<video-memory-base-address-register-2,Video memory base address register>>
+* <<reserved-window-base-address-register-1,Reserved window base address register>>
+* <<reserved-window-base-address-register-2,Reserved window base address register>>
+* <<dc-controller-configuration-registers,DC controller configuration registers>>
+* <<pci-command-register-5,PCI command register>>
+* <<control-base-address-register-9,Control base address register>>
+* <<control-base-address-register-10,Control base address register>>
+* <<correspondence-between-the-i2c-pins-of-the-dvo-and-the-control-registers,Correspondence between the I2C pins of the DVO and the control registers>>
+* <<dvo-s-i2c-pin-control-register-address,DVO`'s I2C pin control register address>>
+* <<hda-controller-configuration-registers,HDA controller configuration registers>>
+* <<pci-command-register-6,PCI command register>>
+* <<control-base-address-register-11,Control base address register>>
+* <<control-base-address-register-12,Control base address register>>
+* <<ac97-controller-configuration-registers,AC97 controller configuration registers>>
+* <<pci-command-register-7,PCI command register>>
+* <<control-base-address-register-13,Control base address register>>
+* <<control-base-address-register-14,Control base address register>>
+* <<list-of-ac97-control-registers,List of AC97 control registers>>
+* <<csr-register,CSR register>>
+* <<occ-register,`OCC` register>>
+* <<icc-register,`ICC` register>>
+* <<description-of-the-sound-channel-format,Description of the sound channel format>>
+* <<codec-register-access-command,`Codec` register access command>>
+* <<interrupt-status-register-interrupt-mask-register,Interrupt Status Register/Interrupt Mask Register>>
+* <<interrupt-status-clear-register,Interrupt status/clear register>>
+* <<oc-interrupt-clear-register,OC interrupt clear register>>
+* <<ic-interrupt-clear-register,IC interrupt clear register>>
+* <<codec-write-interrupt-clear-register,CODEC WRITE interrupt clear register>>
+* <<codec-read-interrupt-clear-register,CODEC READ interrupt clear register>>
+* <<dma-command-register,DMA command register>>
+* <<dma-order-addr-low,`DMA_ORDER_ADDR_LOW`>>
+* <<dma-saddr,`DMA_SADDR`>>
+* <<dma-daddr,`DMA_DADDR`>>
+* <<dma-length,`DMA_LENGTH`>>
+* <<dma-step-length,`DMA_STEP_LENGTH`>>
+* <<dma-step-times,`DMA_STEP_TIMES`>>
+* <<dma-cmd,`DMA_CMD`>>
+* <<dma-write-state,DMA write state>>
+* <<dma-read-state,DMA read state>>
+* <<dma-order-addr-high,`DMA_ORDER_ADDR_HIGH`>>
+* <<dma-saddr-high,`DMA_SADDR_HIGH`>>
+* <<sata-controller-configuration-registers,SATA controller configuration registers>>
+* <<pci-command-register-8,PCI command register>>
+* <<control-base-address-register-15,Control base address register>>
+* <<control-base-address-register-16,Control base address register>>
+* <<list-of-sata-control-registers,List of SATA control registers>>
+* <<configuration-methods-and-control-ports-supported-by-pcie-f0,Configuration methods and control ports supported by `PCIE_F0`>>
+* <<configuration-methods-and-control-ports-supported-by-pcie-f1,Configuration methods and control ports supported by `PCIE_F1`>>
+* <<pcie-controller-configuration-registers,PCIE controller configuration registers>>
+* <<device-identity-register,Device identity register>>
+* <<table-of-did-of-pcie-port,Table of DID of PCIE port>>
+* <<spi-controller-configuration-registers,SPI controller configuration registers>>
+* <<pci-command-register-9,PCI command register>>
+* <<control-base-address-register-17,Control base address register>>
+* <<control-base-address-register-18,Control base address register>>
+* <<mem-space-base-address-register-1,MEM space base address register>>
+* <<mem-space-base-address-register-2,MEM space base address register>>
+* <<list-of-spi-control-registers,List of SPI control registers>>
+* <<control-register-2,Control register>>
+* <<status-register,Status register>>
+* <<data-register,Data register>>
+* <<external-register,External register>>
+* <<spi-frequency-division-factor,SPI Frequency Division Factor>>
+* <<parameter-control-register,Parameter control register>>
+* <<chip-select-control-register,Chip select control register>>
+* <<timing-control-register,Timing control register>>
+* <<lpc-controller-configuration-registers,LPC controller configuration registers>>
+* <<pci-command-register-10,PCI command register>>
+* <<fixed-control-register,Fixed control register>>
+* <<fixed-mem-register,Fixed MEM register>>
+* <<fixed-i-o-register,Fixed I/O register>>
+* <<table-control-register-0,Control register 0>>
+* <<table-control-register-1,Control register 1>>
+* <<lpc-interrupt-status-register,LPC interrupt status register>>
+* <<lpc-interrupt-clear-register,LPC interrupt clear register>>
+* <<lpc-sirq-interrupt-polarity-register,LPC SIRQ interrupt polarity register>>
+* <<table-of-chip-pin-function-multiplexing,Table of chip pin function multiplexing>>

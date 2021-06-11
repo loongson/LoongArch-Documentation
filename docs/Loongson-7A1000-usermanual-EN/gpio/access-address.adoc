@@ -1,0 +1,100 @@
+[[access-address-5]]
+=== Access Address
+
+The base address of accessing the GPIO module is the base address of the MISC low-speed device block plus an offset of `0x60000`.
+
+*Note*: The GPIO module only supports access by 1 byte.
+
+The bridge chip provides two ways to control the GPIO pins.
+One is to control each GPIO pin by bit and the other is to control each GPIO pin by byte.
+The bridge chip does this by providing two address spaces to map the GPIO control registers.
+One is a per-bit mapping and the other is a per-byte indexing of each bit of the control register.
+Correspondingly, the GPIO internal address space is divided into two parts.
+
+The latter way is recommended for the GPIO controller pins.
+
+The physical address composition of the GPIO module internal registers is as follows.
+
+[[the-physical-address-composition-of-the-gpio-module-internal-registers]]
+.The physical address composition of the GPIO module internal registers
+[%header,cols="1,2"]
+|===
+^d|Address space
+^|Description
+
+|`0x800`–`0xC00`
+|Address of byte control register
+
+|`0x0`–`0x40`
+|Address of bit control register
+|===
+
+[[address-of-gpio-bit-control-configuration-register]]
+.Address of GPIO bit control configuration register
+[%header,cols="3*1m,3"]
+|===
+^d|Address Offset
+^d|Register
+^d|Size (bit)
+^|Description
+
+|0x00
+|GPIO_OEN
+|57
+|GPIO output enable (active low).
+Each bit controls one GPIO pin.
+
+|0x10
+|GPIO_O
+|57
+|GPIO output.
+Each bit controls one GPIO pin.
+
+|0x20
+|GPIO_I
+|57
+|GPIO input.
+Each bit controls one GPIO pin.
+
+|0x30
+|GPIO_INT_EN
+|57
+|GPIO interrupt enable.
+Each bit controls one GPIO pin.
+|===
+
+[[address-of-gpio-byte-control-configuration-register]]
+.Address of GPIO byte control configuration register
+[%header,cols="3*1m,3"]
+|===
+^d|Address Offset
+^d|Register
+^d|Size (bit)
+^|Description
+
+|0x800
+|GPIO_OEN
+|57
+|GPIO output enable (active low).
+Each byte controls one GPIO pin, bit `0` is valid.
+
+|0x900
+|GPIO_O
+|57
+|GPIO output.
+Each byte controls one GPIO pin, bit `0` is valid.
+
+|0xA00
+|GPIO_I
+|57
+|GPIO input.
+Each byte controls one GPIO pin, bit `0` is valid.
+
+|0xB00
+|GPIO_INT_EN
+|57
+|GPIO interrupt enable.
+Each byte controls one GPIO pin, bit `0` is valid.
+|===
+
+For example, the output input direction of `GPIO03` can be controlled either by `bit[3]` with offset address `0x0` (taking care not to affect other bits) or by a byte with offset address `0x803` (only `bit[0]` is valid).

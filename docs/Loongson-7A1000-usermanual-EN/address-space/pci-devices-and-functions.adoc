@@ -1,0 +1,119 @@
+[[pci-devices-and-functions]]
+=== PCI Devices and Functions
+
+Devices with DMA capability inside the bridge and some other devices contain a standard PCI configuration header. The devices that contain PCI configuration headers include: GPU, DC, PCIE, USB, SATA, GMAC, HDA/AC97, LPC, and SPI. the bus number, device number, and function number of each device are listed in the following table
+
+[[configuration-header-access-correspondence-for-each-device]]
+.Configuration header access correspondence for each device
+[%header,cols="2*1"]
+|===
+|Bus: Device: Function
+|Function Description
+
+|Bus 0:Device 0:Function 0
+|HT lo
+
+|Bus 0:Device 1:Function 0
+|HT hi
+
+|Bus 0:Device 3:Function 0
+|GMAC0
+
+|Bus 0:Device 3:Function 1
+|GMAC1
+|
+|
+
+|Bus 0:Device 4:Function 0
+|USB0 OHCI
+
+|Bus 0:Device 4:Function 1
+|USB0 EHCI
+
+|Bus 0:Device 5:Function 0
+|USB1 OHCI
+
+|Bus 0:Device 5:Function 1
+|USB1 EHCI
+
+|Bus 0:Device 6:Function 0
+|GPU
+
+|Bus 0:Device 6:Function 1
+|DC
+
+|Bus 0:Device 7:Function 0
+|HDA1
+
+|Bus 0:Device 7:Function 1
+|AC971
+
+|Bus 0:Device 8:Function 0
+|SATA0
+
+|Bus 0:Device 8:Function 1
+|SATA1
+
+|Bus 0:Device 8:Function 2
+|SATA2
+
+|Bus 0:Device 9:Function 0
+|PCIE_F0 Port02
+
+|Bus 0:Device 10:Function 0
+|PCIE_F0 Port12
+
+|Bus 0:Device 11:Function 0
+|PCIE_F0 Port22
+
+|Bus 0:Device 12:Function 0
+|PCIE_F0 Port32
+
+|Bus 0:Device 13:Function 0
+|PCIE_F1 Port03
+
+|Bus 0:Device 14:Function 0
+|PCIE_F1 Port13
+
+|Bus 0:Device 15:Function 0
+|PCIE_G0 port04
+
+|Bus 0:Device 16:Function 0
+|PCIE_G0 port14
+
+|Bus 0:Device 17:Function 0
+|PCIE_G1 port05
+
+|Bus 0:Device 18:Function 0
+|PCIE_G1 port15
+
+|Bus 0:Device 19:Function 0
+|PCIE_H port06
+
+|Bus 0:Device 20:Function 0
+|PCIE_H port16
+
+|Bus 0:Device 22:Function 0
+|SPI
+
+|Bus 0:Device 23:Function 0
+|LPC7
+|===
+
+Notes.
+
+. when hda_sel is 1, HDA controller can be discovered; when hda_sel is 0, AC97 controller can be discovered.
+
+. When PCIE_F0 works in x4 mode, only Port 0 is visible, Port 1-3 is not visible; when PCIE_F0 works in non-x4 mode, Port 0-3 is visible. When PCIE_F0 works in non-x4 mode, Port 0-3 is visible. 3.
+
+. When PCIE_F1 is operating in x4 mode, only Port 0 is visible and Port 1 is not visible; when PCIE_F1 is operating in non-x4 mode, Port 0-1 is visible. When PCIE_F1 is operating in non-x4 mode, Port 0-1 is visible. 4.
+
+. When PCIE_G0 is operating in x8 mode, only Port 0 is visible and Port 1 is not visible; when PCIE_G0 is operating in x4 mode, Port 0-1 is visible. mode, Port 0-1 is visible. 5.
+
+. When PCIE_G1 is operating in x8 mode, only Port 0 is visible and Port 1 is not visible; when PCIE_G1 is operating in x4 mode, Port 0-1 is visible. When PCIE_G1 is operating in x4 mode, Port 0-1 is visible. 6.
+
+. When PCIE_H is operating in x8 mode, only Port 0 is visible and Port 1 is not visible; when PCIE_H is operating in x4 mode, Port 0-1 is visible.
+
+. LPC(D23:F0) is only visible when LPC module is enabled.
+
+When the bus number, device number, function number and address offset accessed by the configuration header are invalid, the write operation is invalid; the data obtained by the read operation is 0xFFFFFFFF.
