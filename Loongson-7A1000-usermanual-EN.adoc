@@ -1,6 +1,6 @@
 = Loongson 7A1000 Bridge User Manual
 Loongson Technology Corporation Limited
-v2.0
+v2.00
 :title-separator: -
 :docinfodir: themes
 :docinfo: shared
