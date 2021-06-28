@@ -28,7 +28,7 @@ This is the first volume of _LoongArch Reference Manual_, which describes the ba
 
 These documents were translated by Yanteng Si and Feiyang Chen.
 
-This is the translation of https://github.com/loongson/LoongArch-Documentation/releases/download/latest/LoongArch-Vol1-v1.00-CN.pdf.
+This is the translation of https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf.
 
 Due to the limited knowledge of the translators, there are some inevitable errors and omissions existing in this document, please feel free to correct.
 

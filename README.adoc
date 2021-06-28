@@ -20,7 +20,7 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 
 * https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN[LoongArch Reference Manual - Volume 1: Basic Architecture]: This manual describes the basic part of the LoongArch architecture.
 +
-You can view the original document https://github.com/loongson/LoongArch-Documentation/blob/main/docs/CN/LoongArch-Vol1-v1.00-CN.pdf[here].
+You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[here].
 
 * LoongArch Reference Manual - Volume 2: Vector Extensions: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture.
 
@@ -30,7 +30,7 @@ You can view the original document https://github.com/loongson/LoongArch-Documen
 
 * https://loongson.github.io/LoongArch-Documentation/Loongson-7A1000-usermanual-EN[Loongson 7A1000 Bridge User Manual]: This manual describes the overall bridge architecture, clock structure, address space, configuration registers, and individual functional interfaces, primarily for BIOS and kernel developers.
 +
-You can view the original document https://github.com/loongson/LoongArch-Documentation/blob/main/docs/CN/Loongson-7A1000-usermanual-v2.0-CN.pdf[here].
+You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[here].
 
 == Translator`'s Note
 
