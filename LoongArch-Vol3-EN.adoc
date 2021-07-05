@@ -1,0 +1,13 @@
+= LoongArch Reference Manual - Volume 3: Virtualization and Binary Translation Extensions
+Loongson Technology Corporation Limited
+v1.00
+:title-separator: -
+:docinfodir: themes
+:docinfo: shared
+:doctype: book
+:imagesdir: images/LoongArch-Vol3-EN
+:toc: left
+:toclevels: 4
+:sectnumlevels: 4
+
+*TBD*

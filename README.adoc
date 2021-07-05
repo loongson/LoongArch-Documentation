@@ -22,15 +22,25 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 +
 You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[here].
 
-* LoongArch Reference Manual - Volume 2: Vector Extensions: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture.
+* https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol2-EN[LoongArch Reference Manual - Volume 2: Vector Extensions]: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture.
++
+You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol2-v1.00-CN.pdf[here].
 
-* LoongArch Reference Manual - Volume 3: Virtualization and Binary Translation Extensions: This manual describes the virtualization and binary translation extensions of the LoongArch architecture.
+* https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol3-EN[LoongArch Reference Manual - Volume 3: Virtualization and Binary Translation Extensions]: This manual describes the virtualization and binary translation extensions of the LoongArch architecture.
++
+You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol3-v1.00-CN.pdf[here].
 
-* Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
+* https://loongson.github.io/LoongArch-Documentation/Loongson-3A5000-usermanual-EN[Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide]: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
++
+You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.00-CN.pdf[here].
 
 * https://loongson.github.io/LoongArch-Documentation/Loongson-7A1000-usermanual-EN[Loongson 7A1000 Bridge User Manual]: This manual describes the overall bridge architecture, clock structure, address space, configuration registers, and individual functional interfaces, primarily for BIOS and kernel developers.
 +
 You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[here].
+
+* https://loongson.github.io/LoongArch-Documentation/LoongArch-ABI-EN[LoongArch ABI]: This manual describes the LoongArch ABI.
++
+You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ABI-v1.00-CN.pdf[here].
 
 == Translator`'s Note
 
