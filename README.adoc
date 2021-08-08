@@ -9,7 +9,7 @@ Loongson Technology Corporation Limited
 
 Test Github Action!!!
 
-This is the translation of LoongArch documentation.
+This is the translation of LoongArch documentation. AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 * You can find documents online https://loongson.github.io/LoongArch-Documentation[here].
 
