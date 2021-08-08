@@ -9,38 +9,44 @@ Loongson Technology Corporation Limited
 
 This is the translation of LoongArch documentation.
 
-* You can find the HTML versions of these documents online https://loongson.github.io/LoongArch-Documentation[here].
+* You can find documents online https://loongson.github.io/LoongArch-Documentation[here].
 
-* You can find the PDF versions of these documents online https://github.com/loongson/LoongArch-Documentation/releases[here].
+* You can find all historical versions here https://github.com/loongson/LoongArch-Documentation/releases[here].
 
 The HTML versions are more readable than the PDF versions, not only because there exists tables of excessive length, but also because the theme of html versions is easier to customize.
 To make it easier to download, each HTML page contains embedded CSS and images.
 
 == Documents
 
-* https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN[LoongArch Reference Manual - Volume 1: Basic Architecture]: This manual describes the basic part of the LoongArch architecture.
-+
-You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[here].
+* LoongArch Reference Manual - Volume 1: Basic Architecture: This manual describes the basic part of the LoongArch architecture.
+** link:LoongArch-Vol1-EN.html[HTML version].
+** link:LoongArch-Vol1-EN.pdf[PDF version].
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[Original document].
 
-* https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol2-EN[LoongArch Reference Manual - Volume 2: Vector Extensions]: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture.
-+
-You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol2-v1.00-CN.pdf[here].
+* LoongArch Reference Manual - Volume 2: Vector Extensions: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture.
+** link:LoongArch-Vol2-EN.html[HTML version].
+** link:LoongArch-Vol2-EN.pdf[PDF version].
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol2-v1.00-CN.pdf[Original document].
 
-* https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol3-EN[LoongArch Reference Manual - Volume 3: Virtualization and Binary Translation Extensions]: This manual describes the virtualization and binary translation extensions of the LoongArch architecture.
-+
-You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol3-v1.00-CN.pdf[here].
+* LoongArch Reference Manual - Volume 3: Virtualization and Binary Translation Extensions: This manual describes the virtualization and binary translation extensions of the LoongArch architecture.
+** link:LoongArch-Vol3-EN.html[HTML version].
+** link:LoongArch-Vol3-EN.pdf[PDF version].
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol3-v1.00-CN.pdf[Original document].
 
-* https://loongson.github.io/LoongArch-Documentation/Loongson-3A5000-usermanual-EN[Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide]: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
-+
-You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.00-CN.pdf[here].
+* Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
+** link:Loongson-3A5000-usermanual-EN.html[HTML version].
+** link:Loongson-3A5000-usermanual-EN.pdf[PDF version].
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.00-CN.pdf[Original document].
 
-* https://loongson.github.io/LoongArch-Documentation/Loongson-7A1000-usermanual-EN[Loongson 7A1000 Bridge User Manual]: This manual describes the overall bridge architecture, clock structure, address space, configuration registers, and individual functional interfaces, primarily for BIOS and kernel developers.
-+
-You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[here].
+* Loongson 7A1000 Bridge User Manual: This manual describes the overall bridge architecture, clock structure, address space, configuration registers, and individual functional interfaces, primarily for BIOS and kernel developers.
+** link:Loongson-7A1000-usermanual-EN.html[HTML version].
+** link:Loongson-7A1000-usermanual-EN.pdf[PDF version].
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[Original document].
 
-* https://loongson.github.io/LoongArch-Documentation/LoongArch-ABI-EN[LoongArch ABI]: This manual describes the LoongArch ABI.
-+
-You can download the original document https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ABI-v1.00-CN.pdf[here].
+* LoongArch ABI: This manual describes the LoongArch ABI.
+** link:LoongArch-ABI-EN.html[HTML version].
+** link:LoongArch-ABI-EN.pdf[PDF version].
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ABI-v1.00-CN.pdf[Original document].
 
 == Translator`'s Note
 
@@ -135,6 +141,7 @@ See https://github.com/FreeFlyingSheep/golang-asciidoc-tools[Golang AsciiDoc Too
 *Thank you for taking the time to contribute!*
 
 You can create an issue or submit a pull request directly.
+If you submit a pull request, you can see the preview version https://loongson.github.io/LoongArch-Documentation-Preview[here] after successful rendering.
 
 The HTML versions of documents will be deployed automatically, while the PDF versions will be published manually.
 If you find an issue about the documents as found on the https://github.com/loongson/LoongArch-Documentation/releases[release page], please cross-check that it is still present in this repo.

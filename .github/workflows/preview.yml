@@ -1,7 +1,7 @@
-name: Github Pages
+name: Preview
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -33,7 +33,17 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: loongson/LoongArch-Documentation-Preview
           publish_branch: gh-pages
           publish_dir: ./public
-          force_orphan: true
+
+      - name: Update status
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          context: 'LoongArch Documentation Preview / Deploy (update)'
+          description: 'Deployed, click "Details" to view ->'
+          state: 'success'
+          target_url: https://loongson.github.io/LoongArch-Documentation-Preview
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
