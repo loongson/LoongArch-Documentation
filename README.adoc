@@ -5,6 +5,8 @@ Loongson Technology Corporation Limited
 :doctype: book
 :toc: left
 
+Preview test!
+
 == Introduction
 
 This is the translation of LoongArch documentation.
