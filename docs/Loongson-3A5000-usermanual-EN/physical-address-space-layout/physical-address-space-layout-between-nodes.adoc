@@ -93,4 +93,4 @@ d|End address
 |0xFFFF_FFFF_FFFF
 |===
 
-When the number of system nodes is less than `16` nodes, the `nodemask` field of the route setting register (`0x1fe00400`) should be set to ensure that a response can be obtained even if there is no physical node address when a guessed access occurs (2-way: `0x1`; 4-way: `0x3`; 8-way: `0x7`; 16-way: `0xF`;footnote:[Translator`'s note: The original content is missing.]).
+When the number of system nodes is less than `16` nodes, the `nodemask` field of the route setting register (`0x1fe00400`) should be set to ensure that a response can be obtained even if there is no physical node address when a guessed access occurs (2-way: `0x1`; 4-way: `0x3`; 8-way: `0x7`; 16-way: `0xF`).
