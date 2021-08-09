@@ -1,0 +1,6 @@
+[[chip-operating-modes]]
+=== Chip Operating Modes
+
+Depending on the structure of the constituent systems, the Loongson 3A5000 consists of two main operating modes.
+Single-chip mode: The system contains only `1` chip of Loongson 3A5000, which is a symmetric multiprocessor system (SMP).
+Multi-chip interconnect mode: The system contains `2`, `4`, or `16` chips of the Loongson 3A5000 interconnected through HT ports to form a non-uniform access multiprocessor system (CC-NUMA).

@@ -1,0 +1,4 @@
+[[ddr4-sdram-parameter-configuration-format]]
+=== DDR4 SDRAM Parameter Configuration Format
+
+include::ddr4-sdram-parameter-configuration-format/parameter-list-of-the-memory-controller.adoc[]

@@ -1,0 +1,123 @@
+[[phy-configuration-register]]
+==== PHY Configuration Register
+
+Used to configure PHY related physical parameters, when the controller is two independent 8-bit controllers, the high PHY and low PHY are controlled independently by the two controllers.
+When the controller is one 16-bit controller, the configuration parameters of the high and low PHY are unified by the low controller.
+
+Offset: `0x1FC`
+
+Reset value: `0x83308000`
+
+Name: PHY configuration register
+
+[[table-phy-configuration-register]]
+.PHY configuration register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|Rx_ckpll_term
+|1
+|0x1
+|R/W
+|PLL to `RX` side on-Chip transmission line termination impedance
+
+|30
+|Tx_ckpll_term
+|1
+|0x0
+|R/W
+|PLL to `TX` side on-Chip transmission line termination impedance
+
+|29
+|Rx_clk_in_sel_
+|1
+|0x0
+|R/W
+|Clock `PAD` supply the clock selection for the data `PAD`, automatically selected as `CLKPAD` in `HT1` mode:
+
+`1'b0` - external clock source
+
+`1'b1` - PLL clock
+
+|28
+|Rx_ckdll_sell
+|1
+|0x0
+|R/W
+|Clock selection used to lock the `DLL`.
+
+`1'b0` - PLL clock
+
+`1'b1` - external clock source
+
+|27:26
+|Rx_ctle_bitc
+|2
+|0x0
+|R/W
+|PAD EQD high frequency gain
+
+|25:24
+|Rx_ctle_bitr
+|2
+|0x3
+|R/W
+|PAD EQD low frequency gain
+
+|23:22
+|Rx_ctle_bitlim
+|2
+|0x0
+|R/W
+|PAD EQD compensation limit
+
+|21
+|Rx_en_ldo
+|1
+|0x1
+|R/W
+|LDO Control
+
+`1'b0` - LDO disable
+
+`1'b1` - LDO enable
+
+|20
+|Rx_en_by
+|1
+|0x1
+|R/W
+|BandGap control
+
+`1'b0` - bandGap disable
+
+`1'b1` - bandGap enable
+
+|19:17
+|Reserved
+|3
+|0x0
+|R
+|Reserved
+
+|16:12
+|Tx_preenmp
+|5
+|0x08
+|R/W
+|PAD pre-emphasis control signal
+
+|11:0
+|Reserved
+|12
+|0x0
+|R
+|Reserved
+|===

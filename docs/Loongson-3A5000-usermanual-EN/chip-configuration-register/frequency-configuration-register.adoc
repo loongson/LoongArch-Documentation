@@ -1,0 +1,380 @@
+[[frequency-configuration-register]]
+=== Frequency Configuration Register (`0x01B0`)
+
+The following sets of software multiplier setting registers are used to set the operating frequency of the chip master clock and the memory controller clock when `CLKSEL` is configured in software control mode (refer to the `CLKSEL` setting method in <<descriptions-of-pins,Descriptions of Pins>>).
+
+Among other things, the `MEM CLOCK` configuration supports multiple modes.
+In `4x` mode (`mem div`), `MEM CLOCK` should be 4x the memory controller clock; in `2x` mode (`mem div`), `MEM CLOCK` should be `2x` the memory controller clock; in `1x` mode (`mem div`), `MEM CLOCK` should be the memory controller clock frequency .
+
+The memory bus operates at `2` times the memory controller clock and the bus operates at `4` times the memory controller clock.
+
+`NODE CLOCK` corresponds to the clock frequency of the processor core, on-chip network, and shared Cache.
+
+Each clock configuration generally has three parameters, `DIV_REFC`, `DIV_LOOPC`, and `DIV_OUT`.
+The final clock frequency is `(reference clock / DIV_REFC * DIV_LOOPC) / DIV_OUT`.
+
+In software control mode, the default corresponding clock frequency is the frequency of the external reference clock (`100MHz` or `25MHz`), which needs to be set in software during the processor startup.
+The process of setting the individual clocks should be done as follows:
+
+. Set registers other than `SEL_PLL_*` and `SOFT_SET_PLL`, i.e., these two registers are written to 0 during the setting process.
+
+. Set registers other than `SEL_PLL_*` and `SOFT_SET_PLL`, i.e., these two registers are written to 0 during the setting process.
+
+.Wait for the lock signal `LOCKED_*` in the register to be `1`.
+
+. Set `SEL_PLL_*` to `1`, then the corresponding clock frequency will be switched to the software-set frequency.
+
+The following register is the configuration register of Main CLOCK, Main Clock is used to generate the maximum operating frequency of node clock, core clock, etc.
+The base address is `0x1fe00000` and the offset address is `0x1b0`:
+
+[[node-clock-software-multiplier-configuration-register]]
+.Node clock software multiplier configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|0
+|SEL_PLL_NODE
+|RW
+|0x0
+|Clock output selection
+
+`1`: Node clock select PLL output
+
+`0`: Node clock select SYS CLOCK
+
+|1
+|
+|RW
+|0x0
+|Reserved
+
+|2
+|SOFT_SET_PLL
+|RW
+|0x0
+|Allow software to set the PLL
+
+|3
+|BYPASS_L1
+|RW
+|0x0
+|Bypass L1 PLL
+
+|7:4
+|-
+|RW
+|0x0
+|Reserved
+
+|8
+|VDDA_LDO_EN
+|RW
+|0x0
+|Enable VDDA LDO
+
+|9
+|VDDD_LDO_EN
+|RW
+|0x0
+|Enable VDDD LDO
+
+|11:10
+|-
+|
+|
+|
+
+|12
+|DACPD_L2
+|RW
+|0x0
+|L2 clock DACPD
+
+|13
+|DSMPD_L2
+|RW
+|0x0
+|L2 clock DSMPD
+
+|15:14
+|
+|RW
+|0x0
+|Reserved
+
+|16
+|LOCKED_L1
+|R
+|0x0
+|L1 PLL is locked or not
+
+|18:17
+|-
+|R
+|0x0
+|Reserved
+
+|19
+|PD_L1
+|RW
+|0x0
+|Disable L1 PLL
+
+|21:20
+|
+|RW
+|0x0
+|Reserved
+
+|22
+|L2_SEL
+|RW
+|0x0
+|Select L2 clock output
+
+|25:23
+|
+|RW
+|0x0
+|Reserved
+
+|31:26
+|L1_DIV_REFC
+|RW
+|0x1
+|L1 PLL input parameters
+
+|40:32
+|L1_DIV_LOOPC
+|RW
+|0x1
+|L1 PLL input parameters
+
+|41
+|
+|
+|
+|Reserved
+
+|47:42
+|L1_DIV_OUT
+|RW
+|0x1
+|L1 PLL input parameters
+
+|53:48
+|L2_DIV_REFC
+|RW
+|
+|
+
+|63:54
+|L2_DIV_LOOPC
+|RW
+|
+|
+
+|69:64
+|L2_DIV_OUT
+|RW
+|
+|
+
+|95:70
+|-
+|RW
+|
+|
+
+|119:96
+|L2_FRAC
+|RW
+|
+|
+
+|122:120
+|VDDA_LDO_CTRL
+|RW
+|
+|
+
+|123
+|VDDA_LDO_BYPASS
+|RW
+|
+|
+
+|126:124
+|VDDD_LDO_CTRL
+|RW
+|
+|
+
+|127:124
+|VDDD_LDO_BYPASS
+|RW
+|
+|
+
+d|Other
+|-
+|RW
+|
+|Reserved
+|===
+
+Note: `PLL ouput = (clk_ref /div_refc * div_loopc) / div_out`.
+
+The result of `clk_ref/div_refc` for the PLL should be `25`/`50`/`100MHz`, with `50MHz` recommended.
+The VCO frequency (the part in parentheses in the above equation) must be in the range `4.8GHz`-`6.4GHz`.
+This requirement also applies to memory PLLs.
+
+In addition, the recommended setting for div_loopc is less than `255`.
+The recommended setting for `div_out` is `1`/`2`/`4`/`6` and above `6`, and `3`/`5` is not recommended.
+
+The following register is the `MEM CLOCK` configuration register, the `MEM CLOCK` clock frequency should be configured to `1`/`2` of the final DDR bus clock frequency.
+The base address is `0x1fe00000`, offset address is `0x1c0`:
+
+[[memory-clock-software-multiplier-configuration-register]]
+.Memory clock software multiplier configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|[0]
+|SEL_MEM_PLL
+|RW
+|0x0
+|Clock output selection
+
+`1`: Node clock select PLL output
+
+`0`: Node clock select SYS CLOCK
+
+|[1]
+|SOFT_SET_MEM_PLL
+|RW
+|0x0
+|Allow software to set MEM PLL
+
+|[2]
+|BYPASS_MEM_PLL
+|RW
+|0x0
+|Bypass MEM_PLL
+
+|[3]
+|MEMDIV_RESETn
+|RW
+|0x1
+|Reset the internal frequency divider
+
+|[5:4]
+|MEMDIV_MODE
+|RW
+|
+|`00`: `1X` frequency multiplier mode
+
+`01`: `2X` frequency multiplier mode
+
+`10`: `4X` frequency multiplier mode
+
+`11`: Reserved
+
+|[6]
+|LOCKED_MEM_PLL
+|R
+|0x0
+|MEM_PLL is locked or not
+
+|[7]
+|PD_MEM_PLL
+|RW
+|0x0
+|Disable MEM PLL
+
+|[13:8]
+|MEM_PLL_DIV_REFC
+|RW
+|0x1
+|MEM PLL input parameters
+
+When the NODE clock is selected (`NODE_CLOCK_SEL` is `1`), it is used as a frequency divider input
+
+|[23:14]
+|MEM_PLL_DIV_LOOPC
+|RW
+|0x41
+|MEM PLL input parameters
+
+|[29:24]
+|MEM_PLL_DIV_OUT
+|RW
+|0x0
+|MEM PLL input parameters
+
+|[30]
+|NODE_CLOCK_SEL
+|RW
+|0x0
+|`0`: use MEM_PLL as MEM clock
+
+`1`: use NODE_CLOCK as a frequency divider input
+
+|[31]
+|-
+|
+|
+|
+
+|[34:32]
+|VDDA_LDO_CTRL
+|RW
+|
+|
+
+|[35]
+|VDDA_LDO_BYPASS
+|RW
+|
+|
+
+|[38:36]
+|VDDD_LDO_CTRL
+|RW
+|
+|
+
+|[39]
+|VDDD_LDO_BYPASS
+|RW
+|
+|
+
+|[40]
+|VDDA_LDO_EN
+|
+|
+|
+
+|[41]
+|VDDD_LDO_EN
+|RW
+|
+|
+
+|Other
+|
+|RW
+|
+|Reserved
+|===

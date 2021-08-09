@@ -1,0 +1,9 @@
+[[processor-core-frequency-division-and-enable-control]]
+=== Processor Core Frequency Division and Enable Control
+
+There are various modes of processor core frequency division, one is per-address access mode, and the other is processor configuration instruction access mode, which are described below.
+Each processor core can be controlled separately.
+
+include::processor-core-frequency-division-and-enable-control/accessing-by-address.adoc[]
+
+include::processor-core-frequency-division-and-enable-control/accessing-by-configuration-register-instructions.adoc[]

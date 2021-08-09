@@ -1,0 +1,22 @@
+[[chip-name-register]]
+=== Chip Name Register (`0x0020`)
+
+This register is used to identify the chip name.
+The offset address is `0x0020`.
+
+[[table-chip-name-register]]
+.Chip name register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|63:0
+|ID
+|R
+|0x00003030_30354133
+|String "`3A5000`"
+|===

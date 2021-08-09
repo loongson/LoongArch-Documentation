@@ -1,0 +1,117 @@
+[[introduction-to-chip-module-clock]]
+=== Introduction to Chip Module clock
+
+The chip reference clock `SYS_CLOCK` usually uses a `100MHz` crystal input, but a `25MHz` crystal input is also available.
+Different crystal frequencies need to be selected via `CLKSEL[4]`.
+
+The reference clock of the HT PHY can use the `200MHz` differential reference input of each PHY in addition to the SYS CLOCK.
+Use `CLKSEL[8]` to make the selection.
+When SYS CLOCK is selected as the reference clock and a `25MHz` crystal input is used, the HT PHY cannot operate at `3.2GHz`.
+
+The clocks used in the Loongson 3A5000 chip and their control methods are shown in the following table.
+
+[[processor-internal-clock-description]]
+.Processor internal clock description
+[%header,cols="5*1,3"]
+|===
+|Clock
+|Clock Source
+|Frequency Multiplier Method
+|Frequency Division Control
+|Enable Control
+|Clock Description
+
+|Boot clock
+|SYS_CLOCK
+|`*1`
+|Not supported
+|Not supported
+|SPI, UART, I2C controller clock
+
+|Main clock
+|SYS PLL
+|PLL configuration
+|Not supported
+|Not supported
+|SYS PLL output
+
+Node clock, core clock, HTcore clock, GS132 clock source
+
+Optional mem clock, stable clock source
+
+|Node clock
+|Main clock
+|`*1`
+|Supported
+|Not supported
+|On-chip network, shared Cache, node clock, HT controller clock source
+
+|Core0 clock
+|Main clock
+|`*1`
+|Supported
+|Supported
+|Core0 clock
+
+|Core1 clock
+|Main clock
+|`*1`
+|Supported
+|Supported
+|Core1 clock
+
+|Core2 clock
+|Main clock
+|`*1`
+|Supported
+|Supported
+|Core2 clock
+
+|Core3 clock
+|Main clock
+|`*1`
+|Supported
+|Supported
+|Core3 clock
+
+|HTcore0 clock
+|Node clock
+|`*1`
+|Supported
+|Supported
+|HT0 controller clock, and software needs to be guaranteed to be below `1GHz` after frequency division
+
+|HTcore1 clock
+|Node clock
+|`*1`
+|Supported
+|Supported
+|HT1 controller clock, and software needs to be guaranteed to be below `1GHz` after frequency division
+
+|GS132 clock
+|Main clock
+|`*1`
+|Supported
+|Supported
+|GS132 clock, and software needs to be guaranteed to be below `1GHz` after frequency division
+
+|Stable clock
+|SYS_CLOCK
+|`*1`
+|Supported
+|Supported
+|Processor core constant counter clock
+
+.2+|Mem clock
+|MEM PLL
+|PLL configuration
+|Not supported
+|Supported
+|Memory controller clock
+
+|Main clock
+|`/2`, `/4`, `/8`
+|Not supported
+|Supported
+|Memory controller alternative clock
+|===

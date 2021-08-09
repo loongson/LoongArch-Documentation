@@ -1,0 +1,246 @@
+[[interrupt-enable-register-1]]
+==== Interrupt Enable Register
+
+There are 256 interrupt enable registers, which correspond to the interrupt vector registers.
+The interrupt enable register is set to `1` to turn on the corresponding interrupt, and set to `0` to mask the interrupt.
+
+The `256` interrupt vectors are mapped to different interrupt lines according to the configuration of the interrupt routing registers, as follows:
+
+`ht_int_stripe_1`:
+
+`[0,1,2,3......63]` Corresponding interrupted line `0` / HT HI Corresponding interrupted line `4`
+
+`[64,65,66,67......127]` Corresponding interrupted line `1` / HT HI Corresponding interrupted line `5`
+
+`[128,129,130,131......191]` Corresponding interrupted line `2` / HT HI Corresponding interrupted line `6`
+
+`[192,193,194,195......255]` Corresponding interrupted line `3` / HT HI Corresponding interrupted line `7`
+
+`ht_int_stripe_2`:
+
+`[0,2,4,6......126]` Corresponding interrupted line `0` / HT HI Corresponding interrupted line `4`
+
+`[1,3,5,7......127]` Corresponding interrupted line `1` / HT HI Corresponding interrupted line `5`
+
+`[128,130,132,134......254]` Corresponding interrupted line `2` / HT HI Corresponding interrupted line `6`
+
+`[129,131,133,135......255]` Corresponding interrupted line `3` / HT HI Corresponding interrupted line `7`
+
+`ht_int_stripe_4`:
+
+`[0,4,8,12......252]` Corresponding interrupted line `0` / HT HI Corresponding interrupted line `4`
+
+`[1,5,9,13......253]` Corresponding interrupted line `1` / HT HI Corresponding interrupted line `5`
+
+[`2,6,10,14......254]` Corresponding interrupted line `2` / HT HI Corresponding interrupted line `6`
+
+`[3,7,11,15......255]` Corresponding interrupted line `3` / HT HI Corresponding interrupted line `7`
+
+The following description of the interrupt vector corresponds to `ht_int_stripe_1`, the other two ways can be obtained from the above description.
+
+Offset: `0xa0`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Enable Register [31:0]
+
+[[HT-bus-interrupt-enable-register-definition-1]]
+.HT bus interrupt enable register definition 1
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_mask[31:0]
+|32
+|0x0
+|R/W
+|HT bus interrupt enable register `[31:0]` corresponds to interrupt line `0`.
+HT HI corresponds to interrupt line `4`
+|===
+
+Offset: `0xa4`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Enable Register [63:32]
+
+[[HT-bus-interrupt-enable-register-definition-2]]
+.HT bus interrupt enable register definition 2
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_mask[63:32]
+|32
+|0x0
+|R/W
+|HT bus interrupt enable register `[63:32]` corresponds to interrupt line `0`.
+HT HI corresponds to interrupt line `4`
+|===
+
+Offset: `0xa8`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Enable Register [95:64]
+
+[[HT-bus-interrupt-enable-register-definition-3]]
+.HT bus interrupt enable register definition 3
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_mask[95:64]
+|32
+|0x0
+|R/W
+|HT bus interrupt enable register `[95:64]` corresponds to interrupt line `1`.
+HT HI corresponds to interrupt line `5`
+|===
+
+Offset: `0xac`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Enable Register [127:96]
+
+[[HT-bus-interrupt-enable-register-definition-4]]
+.HT bus interrupt enable register definition 4
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+|31:0
+|Interrupt_mask [127:96]
+|32
+|0x0
+|R/W
+|HHT bus interrupt enable register `[127:96]` corresponds to interrupt line `1`.
+HT HI corresponds to interrupt line `5`
+|===
+
+Offset: `0xb0`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Enable Register [159:128]
+
+[[HT-bus-interrupt-enable-register-definition-5]]
+.HT bus interrupt enable register definition 5
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_mask[159:128]
+|32
+|0x0
+|R/W
+|HT bus interrupt enable register `[159:128]` corresponds to interrupt line `2`.
+HT HI corresponds to interrupt line `6`
+|===
+
+Offset: `0xb4`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Enable Register[191:160]
+
+[[HT-bus-interrupt-enable-register-definition-6]]
+.HT bus interrupt enable register definition 6
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_mask[191:160]
+|32
+|0x0
+|R/W
+|HT bus interrupt enable register `[191:160]` corresponds to interrupt line `2`.
+HT HI corresponds to interrupt line `6`
+|===
+
+Offset: `0xb8`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Enable Register [223:192]
+
+[[HT-bus-interrupt-enable-register-definition-7]]
+.HT bus interrupt enable register definition 7
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_mask[223:192]
+|32
+|0x0
+|R/W
+|HT bus interrupt enable register `[223:192]` corresponds to interrupt line `3`.
+HT HI corresponds to interrupt line `7`
+|===
+
+Offset: `0xbc`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Enable Register [255:224]
+
+[[HT-bus-interrupt-enable-register-definition-8]]
+.HT bus interrupt enable register definition 8
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_mask[255:224]
+|32
+|0x0
+|R/W
+|HT bus interrupt enable register `[255:224]` corresponds to interrupt line `3`.
+HT HI corresponds to interrupt line `7`
+|===

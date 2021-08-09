@@ -1,0 +1,113 @@
+[[high-low-temperature-interrupt-trigger]]
+=== High/Low Temperature Interrupt Trigger
+
+For the high and low temperature interrupt alarm function, there are `4` groups of control registers to set the threshold value.
+Each group of registers contains the following three control bits:
+
+`GATE`: Set the threshold value for high or low temperature.
+When the input temperature is higher than the high temperature threshold or lower than the low temperature threshold, an interrupt will be generated.
+Note that the Gate value should be set to the 16-bit value corresponding to the `0x198` register, not the centigrade temperature.
+
+`EN`: Interrupt enable control.
+The setting of this set of registers is valid only after setting `1`.
+
+`SEL`: Input temperature selection.
+This register is used to configure which sensor's temperature is selected as input.
+Either `0` or `1` can be used.
+
+The high temperature interrupt control register contains four sets of setting bits to control the triggering of high temperature interrupts; the low temperature interrupt control register contains four sets of setting bits to control the triggering of low temperature interrupts.
+There is another set of registers for displaying the interrupt status, corresponding to the high-temperature interrupt and low-temperature interrupt, respectively, and any write operation to this register will clear the interrupt status.
+
+These registers are described below, and their base addresses are `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR):
+
+[[description-of-high-low-temperature-interrupt-register]]
+.Description of high/low temperature interrupt register
+[%header,cols="2,1m,1,6"]
+|===
+|Register
+d|Address
+|Read/Write
+|Description
+
+|High temperature interrupt control register `Thsens_int_ctrl_Hi`
+|0x1460
+|RW
+|`[7:0]`: `Hi_gate0`: high temperature threshold 0, above which an interrupt will be generated
+
+`[8:8]`: `Hi_en0`: high temperature interrupt enable 0
+
+`[11:10]`: `Hi_Sel0`: select temperature sensor input source for high temperature interrupt 0
+
+`[23:16]`: `Hi_gate1`: high temperature threshold 1, above which an interrupt will be generated
+
+`[24:24]`: `Hi_en1`: high temperature interrupt enable 1
+
+`[27:26]`: `Hi_Sel1`: select temperature sensor input source for high temperature interrupt 1
+
+`[39:32]`: `Hi_gate2`: high temperature threshold 2, above which an interrupt will be generated
+
+`[40:40]`: `Hi_en2`: high temperature interrupt enable 2
+
+`[43:42]`: `Hi_Sel2`: select temperature sensor input source for high temperature interrupt 2
+
+`[55:48]`: `Hi_gate3`: high temperature threshold 3, above which an interrupt will be generated
+
+`[56:56]`: `Hi_en3`: high temperature interrupt enable 3
+
+`[59:58]`: `Hi_Sel3`: select temperature sensor input source for high temperature interrupt 3
+
+|Low temperature interrupt control register `Thsens_int_ctrl_Lo`
+|0x1468
+|RW
+|`[7:0]`: `Lo_gate0`: low temperature threshold 0, below which an interrupt will be generated
+
+`[8:8]`: `Lo_en0`: low temperature interrupt enable 0
+
+`[11:10]`: `Lo_Sel0`: select temperature sensor input source for low temperature interrupt 0
+
+`[23:16]`: `Lo_gate1`: low temperature threshold 1, below which an interrupt will be generated
+
+`[24:24]`: `Lo_en1`: low temperature interrupt enable 1
+
+`[27:26]`: `Lo_Sel1`: select temperature sensor input source for low temperature interrupt 1
+
+`[39:32]`: `Lo_gate2`: low temperature threshold 2, below which an interrupt will be generated
+
+`[40:40]`: `Lo_en2`: low temperature interrupt enable 2
+
+`[43:42]`: `Lo_Sel2`: select temperature sensor input source for low temperature interrupt 2
+
+`[55:48]`: `Lo_gate3`: low temperature threshold 3, below which an interrupt will be generated
+
+`[56:56]`: `Lo_en3`: low temperature interrupt enable 3
+
+`[59:58]`: `Lo_Sel3`: select temperature sensor input source for low temperature interrupt 3
+
+|Interrupt status register `Thsens_int_status/clr`
+|0x1470
+|RW
+|Interrupt status register; write `1` to clear the interrupt
+
+`[0]`: high temperature interrupt trigger
+
+`[1]`: low temperature interrupt trigger
+
+|High order bits of high temperature interrupt control register `Thsens_int_up`
+|0x1478
+|RW
+|`[7:0]`: `Hi_gate0`: high 8-bit
+
+`[15:8]`: `Hi_gate1`: high 8-bit
+
+`[23:16]`: `Hi_gate2`: high 8-bit
+
+`[31:24]`: `Hi_gate3`: high 8-bit
+
+`[39:32]`: `Lo_gate0`: high 8-bit
+
+`[47:40]`: `Lo_gate1`: high 8-bit
+
+`[55:48]`: `Lo_gate2`: high 8-bit
+
+`[63:56]`: `Lo_gate3`: high 8-bit
+|===

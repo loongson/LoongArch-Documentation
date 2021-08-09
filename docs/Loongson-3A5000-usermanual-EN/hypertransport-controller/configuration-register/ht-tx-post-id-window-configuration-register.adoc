@@ -1,0 +1,131 @@
+[[ht-tx-post-id-window-configuration-register]]
+==== HT TX POST ID Window Configuration Register
+
+This window sends hit requests outbound through the HT POST channel by comparing the ID of the internal write request to a pre-defined window.
+
+Offset: `0x260`
+
+Reset value: `0x00000000`
+
+Name: HT TX POST ID WIN0
+
+[[ht-tx-post-id-win0]]
+.HT TX POST ID WIN0
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|HT TX POST ID0 MASK
+|16
+|0x0
+|R/W
+|`AXI ID` hit requests are transmitted using the `POST` window, the `MASK` bit of the `ID`
+
+|15:0
+|HT TX POST ID0 BASE
+|16
+|0x0
+|R/W
+|`AXI ID` hit requests are transmitted using the `POST` window, the `BASE` bit of the `ID`
+|===
+
+Offset: `0x264`
+
+Reset value: `0x00000000`
+
+Name: HT TX POST ID WIN1
+
+[[ht-tx-post-id-win1]]
+.HT TX POST ID WIN1
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|HT TX POST ID1 MASK
+|16
+|0x0
+|R/W
+|`AXI ID` hit requests are transmitted using the `POST` window, the `MASK` bit of the `ID`
+
+|15:0
+|HT TX POST ID1 BASE
+|16
+|0x0
+|R/W
+|`AXI ID` hit requests are transmitted using the `POST` window, the `BASE` bit of the `ID`
+|===
+
+Offset: `0x268`
+
+Reset value: `0x00000000`
+
+Name: HT TX POST ID WIN2
+
+[[ht-tx-post-id-win2]]
+.HT TX POST ID WIN2
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|HT TX POST ID2 MASK
+|16
+|0x0
+|R/W
+|`AXI ID` hit requests are transmitted using the `POST` window, the `MASK` bit of the `ID`
+
+|15:0
+|HT TX POST ID2 BASE
+|16
+|0x0
+|R/W
+|`AXI ID` hit requests are transmitted using the `POST` window, the `BASE` bit of the `ID`
+|===
+
+Offset: `0x26C`
+
+Reset value: `0x00000000`
+
+Name: HT TX POST ID WIN3
+
+[[ht-tx-post-id-win3]]
+.HT TX POST ID WIN3
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+|31:16
+|HT TX POST ID3 MASK
+|16
+|0x0
+|R/W
+|`AXI ID` hit requests are transmitted using the `POST` window, the `MASK` bit of the `ID`
+
+|15:0
+|HT TX POST ID3 BASE
+|16
+|0x0
+|R/W
+|`AXI ID` hit requests are transmitted using the `POST` window, the `BASE` bit of the `ID`
+|===

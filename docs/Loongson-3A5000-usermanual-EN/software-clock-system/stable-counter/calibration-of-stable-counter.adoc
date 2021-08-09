@@ -1,0 +1,20 @@
+[[calibration-of-stable-counter]]
+==== Calibration of Stable Counter
+
+In the single-chip case, the Counter difference between each core is within 2 cycles, and no special calibration is needed.
+In the multi-chip case, there are large differences between different chips, and a special hardware and software calibration mechanism is needed to keep the counter difference of each core below `100ns`.
+
+First, to ensure that the master clock of each chip does not deviate during use, the same crystal is used to drive `SYS_CLK` for all chips.
+
+Second, to ensure that the Stable counter of each chip starts timing at the same moment, the hardware needs to use the multiplexing function of two GPIO pins.
+Node 0 uses GPIO12 to output the reset signal, and all other nodes (including Node 0) use GPIO13 to input the reset signal (which needs to be configured for the Stable counter function).
+On the motherboard a buffer device need to be used to ensure the reset timing (mainly the signal slope), the better the reset timing, the less the difference in clocks between different chips.
+
+The software must reset the global Stable counter via GPIO12 before using the Stable counter.
+Before resetting, need to ensure that the clock selection of each chip is consistent and that the reset of each chip has been lifted.
+This work is usually done by the BIOS.
+The connection scheme of the system is shown in the following figure.
+
+[[stable-reset-control-for-multi-chip-interconnection]]
+.Stable reset control for multi-chip interconnection
+image::stable-reset-control-for-multi-chip-interconnection.png[]

@@ -1,0 +1,57 @@
+[[phy-impedance-matching-control-register]]
+==== PHY Impedance Matching Control Register
+
+Used to control the impedance matching enable of the PHY and the impedance matching parameter setting of the transmitter and receiver.
+
+Offset: `0x1F8`
+
+Reset value: `0x00000000`
+
+Name: PHY impedance matching control register
+
+[[table-phy-impedance-matching-control-register]]
+.PHY impedance matching control register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|Tx_scanin_en
+|1
+|0x0
+|R/W
+|`TX` impedance matching enable
+
+|30
+|Rx_scanin_en
+|1
+|0x0
+|R/W
+|`RX` impedance matching enable
+
+|27:24
+|Tx_scanin_ncode
+|4
+|0x0
+|R/W
+|`TX` impedance matching scan input ncode
+
+|23:20
+|Tx_scanin_pcode
+|4
+|0x0
+|R/W
+|`TX` impedance matching scan input pcode
+
+|19:12
+|Rx_scanin_code
+|8
+|0x0
+|R/W
+|`RX` impedance matching scan input
+|===

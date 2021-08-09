@@ -1,0 +1,69 @@
+[[state-register-1]]
+==== State Register (`SPSR`)
+
+Name: Status register
+
+Length: `[7:0]`
+
+Offset: `0x01`
+
+Reset value: `0x05`
+
+[[table-state-register-1]]
+.State register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|spif
+|1
+|RW
+|Interrupt flag bit.
+`1` indicates an interrupt request and write `1` to clear
+
+|6
+|wcol
+|1
+|RW
+|Write register overflow flag bit.
+`1` indicates overflow, and write `1` to clear
+
+|5:4
+|Reserved
+|2
+|RW
+|Reserved
+
+|3
+|wffull
+|1
+|RW
+|Write register full flag.
+`1` indicates full
+
+|2
+|wfempty
+|1
+|RW
+|Write register empty flag.
+`1` indicates empty
+
+|1
+|rffull
+|1
+|RW
+|Read register full flag.
+`1` indicates full
+
+|0
+|rfempty
+|1
+|RW
+|Read register empty flag.
+`1` indicates empty
+|===

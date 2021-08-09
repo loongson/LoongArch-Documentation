@@ -1,0 +1,87 @@
+[[stable-counter-frequency-ddivision-and-enable-control]]
+=== Stable Counter Frequency Ddivision and Enable Control
+
+Stable Counter's frequency division mechanism is similar to the others.
+It is set using the corresponding bits in the other function configuration register.
+Its base address is `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR), and offset address `0x0420`.
+
+[[other-function-configuration-register-6]]
+.Other function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|20
+|stable_sel
+|RW
+|0x0
+|Stable clock selection
+
+`0`: SYS CLOCK
+
+`1`: NODE CLOCK
+
+|21
+|stable_resetn
+|RW
+|0x0
+|Stable clock reset control
+
+`1`: set reset state
+
+`0`: unset software reset
+
+|40
+|freqscale_mode_stable
+|RW
+|0x0
+|Frequency adjustment mode selection for stable clock
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+
+|46:44
+|freqscale_stable
+|RW
+|0x0
+|Stable clock frequency adjustment register
+
+|47
+|clken_stable
+|RW
+|0x0
+|Stable clock enable
+|===
+
+It should be noted that after stable_reset is set to `0`, only the software reset is released.
+At this time, if `GPIO_FUNC_en[13]` is `1`, the reset of the stable counter is still controlled by `GPIO[13]` (low valid).
+
+The GPIO output enable register base address is 0x1fe00000,It can also be accessed using the configuration register instruction (IOCSR),  offset address 0x0500.
+
+[[gpio-output-enable-register]]
+.GPIO output enable register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|31:0
+|GPIO_OEn
+|RW
+|32'hffffffff
+|GPIO output enable (active low)
+
+|63:32
+|GPIO_FUNC_En
+|RW
+|32'hffff0000
+|GPIO function enable (active low)
+|===

@@ -1,0 +1,44 @@
+[[hypertransport-controller]]
+== HyperTransport Controller
+
+In the Loongson 3A5000, the HyperTransport bus is used to enable external device connections and multi-chip interconnections.
+When used for peripheral connection, I/O Cache consistency can be freely selected by the user program (set through the address window Uncache, see <<retry-count-register,Retry Count Register>>).
+When configured to support Cache consistency mode, the I/O device access to the internal DMA is transparent to the Cache hierarchy, i.e., the hardware automatically maintains its consistency without the need for software maintenance through program Cache instructions.
+When the HyperTransport bus is used for multi-chip interconnects, the `HT0` controller (initial address `0x0C00_0000_0000`-`0x0DFF_FFFF_FFFF`) can be pin-configured to support inter-chip Cache.
+The `HT1` controller (initial address `0x0E00_0000_0000`-`0x0FFF_FFFF_FFFF`) can be configured in software to support interchip Cache consistency maintenance, as described in <<hypertransport-multi-processor-support,HyperTransport Multi-processor Support>>.
+In an 8-chip interconnect fabric, the `HT1_HI` controller's conformance mode is configured via the pins in `CHIP_CONFIG`.
+
+The HyperTransport controller supports up to 16-bit width in both directions and `2.4GHz` operation.
+After the connection is established by automatic system initialization, the user program can change the width and operating frequency and re-initialize by modifying the corresponding configuration registers in the protocol as described in <<hypertransport-hardware-configuration-and-initialization,HyperTransport Hardware Configuration and Initialization>>.
+
+The main features of the Loongson 3A5000 HyperTransport controller are as follows:
+
+* Support for HT1.0/HT3.0 protocol
+
+* Supports `200`/`400`/`800`/`1600`/`2000`/`2400`/`3200MHz` operating frequency
+
+* HT1.0 supports length of `8` bits
+
+* HT3.0 supports length of `8`/`16` bits
+
+* Each HT controller (`HT0`/`HT1`) can be configured as two 8-bit HT controllers
+
+* Bus control signals (including `PowerOK`, `Rstn`, `LDT_Stopn`) direction can be configured
+
+* Peripheral DMA space Cache/Uncache configurable
+
+* Configurable for Cache Consistency Mode when used in multi-chip interconnects
+
+include::hypertransport-controller/hypertransport-hardware-configuration-and-initialization.adoc[]
+
+include::hypertransport-controller/hypertransport-protocol-support.adoc[]
+
+include::hypertransport-controller/hypertransport-interrupt-support.adoc[]
+
+include::hypertransport-controller/hypertransport-address-windows.adoc[]
+
+include::hypertransport-controller/configuration-register.adoc[]
+
+include::hypertransport-controller/access-to-hypertransport-bus-configuration-space.adoc[]
+
+include::hypertransport-controller/hypertransport-multi-processor-support.adoc[]

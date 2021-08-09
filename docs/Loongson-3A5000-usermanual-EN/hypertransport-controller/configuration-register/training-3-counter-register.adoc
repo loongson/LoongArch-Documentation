@@ -1,0 +1,27 @@
+[[training-3-counter-register]]
+==== Training 3 Counter Register
+
+For the Training 3 count threshold in HyerTransport 3.0 mode, the counter clock frequency is `1/4` of the HyperTransport 3.0 link bus clock frequency.
+
+Offset: `0x1F0`
+
+Name: Training 3 counter register
+
+[[table-training-3-counter-register]]
+.Training 3 counter register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|T3 time
+|32
+|0x7fffff
+|R/W
+|Training 3 counter register
+|===

@@ -1,0 +1,17 @@
+[[arbitrary-operation-control-bus]]
+==== Arbitrary Operation Control Bus
+
+The memory controller can send any combination of commands to DRAM via command send mode.
+The software can set `Cmd_cs`, `Cmd_cmd`, `Cmd_ba`, `Cmd_a` (`0x1128`) to be sent to DRAM in command send mode.
+
+The specific operation is as follows:
+
+. Set registers `Cmd_cs`, `Cmd_cmd`, `Cmd_ba`, `Cmd_a` (`0x1128`) to the correct values.
+
+. Set `Command_mode` (`0x1120`) to `1` to put the controller into command sending mode;
+
+. Sample `Status_cmd` (`0x1122`), if it is `1`, the controller is in command sending mode and can proceed to the next operation, if it is `0`, it needs to continue to wait;
+
+.Write `Cmd_req` (`0x1121`) to `1` to send a command to DRAM.
+
+. Set `Command_mode` (`0x1120`) to `0` to make the controller exit the command sending mode.

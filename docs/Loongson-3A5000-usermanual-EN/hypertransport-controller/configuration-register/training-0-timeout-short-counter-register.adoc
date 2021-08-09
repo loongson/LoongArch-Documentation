@@ -1,0 +1,43 @@
+[[training-0-timeout-short-counter-register]]
+==== Training 0 Timeout Short Counter Register
+
+Used to configure the Training 0 short timing timeout threshold in HyerTransport 3.0 mode, with a counter clock frequency of `1/4` of the HyperTransport 3.0 link bus clock frequency.
+
+Offset: `0x1E0`
+
+Reset value: `0x00000080`
+
+Name: Training 0 timeout short counter register
+
+[[table-training-0-timeout-short-counter-register]]
+.Training 0 timeout short counter register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|Gen3_timing_soft
+|1
+|0x0
+|R/W
+|
+
+|30:23
+|Retry_nop_num
+|8
+|0x0
+|R/W
+|
+
+|22:0
+|T0 time
+|23
+|0x80
+|R/W
+|Training 0 timeout short counter register
+|===

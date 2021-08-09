@@ -1,0 +1,12 @@
+[[temperature-sensor]]
+== Temperature Sensor
+
+include::temperature-sensor/real-time-temperature-collection.adoc[]
+
+include::temperature-sensor/high-low-temperature-interrupt-trigger.adoc[]
+
+include::temperature-sensor/high-temperature-automatic-underclock-configuration.adoc[]
+
+include::temperature-sensor/temperature-status-detection-and-control.adoc[]
+
+include::temperature-sensor/control-of-temperature-sensors.adoc[]

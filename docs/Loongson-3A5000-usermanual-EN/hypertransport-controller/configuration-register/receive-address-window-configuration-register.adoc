@@ -1,0 +1,464 @@
+[[receive-address-window-configuration-register]]
+==== Receive Address Window Configuration Register
+
+The formula for hitting the address window in the HT controller is as follows:
+
+[source]
+----
+hit = ( BASE & MASK ) == ( ADDR & MASK )
+addr_out_trans = TRANS_EN ? TRANS | ADDR & ~MASK : ADDR
+addr_out = Multi_node_en ?
+addr_out_trans[39:37], addr_out_trans[43:40], 3'b0,addr_out[36:0]:
+addr_out_trans
+----
+
+It should be noted that when configuring the address window register, the high bits of `MASK` should be all 1s and the low bits should be all `0` values.
+The actual number of bits of `0` in `MASK` indicates the size of the address window.
+
+The address of the receive address window is the address received on the HT bus.
+HT addresses that fall within the P2P window will be forwarded back to the HT bus as P2P commands, HT addresses that fall within the normal receive window and are not in the P2P window will be sent to the CPU, and commands for other addresses will be forwarded back to the HT bus as P2P commands.
+
+Offset: `0x140`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 0 enable (external access)
+
+[[definition-of-bus-receive-address-window-0-enable-register]]
+.Definition of busreceive address window 0 enable (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_rx_image0_en
+|1
+|0x0
+|R/W
+|HT bus receives address window 0, enable signal
+
+|30
+|ht_rx_image0_trans_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 0, map enable signal
+
+|29
+|ht_rx_image0_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 0, multi-node address mapping enable
+
+Convert `[39:37]` to `[46:44]` of the address
+
+|28
+|ht_rx_image0_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 0, protocol address hit enable.
+
+Must be set to 0
+
+|25:0
+|ht_rx_image0_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus receive address window 0, `[49:24]` of the mapped address
+|===
+
+Offset: `0x144`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 0 base address (external access)
+
+[[definition-of-ht-bus-receive-address-window-0-base-address-register]]
+.Definition of HT bus receive address window 0 base address (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_rx_image0_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 0, address base address of `[39:24]`
+
+|15:0
+|ht_rx_image0_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 0, address mask of `[39:24]`
+|===
+
+Offset: `0x148`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 1 enable (external access)
+
+[[definition-of-ht-bus-receive-address-window-1-enable-register]]
+.Definition of HT bus receive address window 1 enable (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_rx_image1_en
+|1
+|0x0
+|R/W
+|HT bus receives address window 1, enable signal
+
+|30
+|ht_rx_image1_trans_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 1, mapping enable signal
+
+|29
+|ht_rx_image1_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 1, multi-node address mapping enable.
+
+Convert `[39:37]` to `[46:44]` of the address
+
+|28
+|ht_rx_image1_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 1, protocol address hit enable.
+
+Must be set to 0
+
+|25:0
+|ht_rx_image1_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus receive address window 1, `[49:24]` of the mapped address
+|===
+
+Offset: `0x14c`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 1 base address (external access)
+
+[[definition-of-bus-receive-address-window-1-base-address-register]]
+.Definition of bus receive address window 1 base address (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_rx_image1_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 1, `[39:24]` of the address base address
+
+|15:0
+|ht_rx_image1_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 1, address mask of `[39:24]`
+|===
+
+Offset: `0x150`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 2 enable (External Access)
+
+[[definition-of-bus-receive-address-window-2-enable-register]]
+.Definition of bus receive address window 2 enable (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_rx_image2_en
+|1
+|0x0
+|R/W
+|HT bus receives address window 2, enable signal
+
+|30
+|ht_rx_image2_trans_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 2, mapping enable signal
+
+|29
+|ht_rx_image2_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 2, multi-node address mapping enable.
+
+Convert `[39:37]` to `[46:44]` of the address
+
+|28
+|ht_rx_image2_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 2, protocol address hit enable.
+
+Must be set to `0`
+
+|25:0
+|ht_rx_image2_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus receive address window 2, `[49:24]` of the mapped address
+|===
+
+Offset: `0x154`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 2 base address (external access)
+
+[[definition-of-ht-bus-receive-address-window-2-base-address-register]]
+.Definition of HT bus receive address window 2 base address (external Access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_rx_image2_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 2, address base address of `[39:24]`
+
+|15:0
+|ht_rx_image2_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window `2`, address masked `[39:24]
+|===
+
+Offset: `0x158`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 3 enable (external access)
+
+[[definition-of-ht-bus-receive-address-window-3-enable-register]]
+.Definition of HT bus receive address window 3 enable (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_rx_image3_en
+|1
+|0x0
+|R/W
+|HT bus receives address window 3, enable signal
+
+|30
+|ht_rx_image3_trans_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 3, mapping enable signal
+
+|29
+|ht_rx_image3_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 3, multi-node address mapping enable.
+
+Convert `[39:37]` to `[46:44]` of the address
+
+|28
+|ht_rx_image3_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 3, protocol address hit enable.
+
+Must be set to `0`
+
+|25:0
+|ht_rx_image3_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus receive address window 3, `[49:24]` of the mapped address
+|===
+
+Offset: `0x15C`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 3 base address (external access)
+
+[[definition-of-ht-bus-receive-address-window-3-base-address-register]]
+.Definition of HT bus receive address window 3 base address (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_rx_image3_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 3, address base address of `[39:24]`
+
+|15:0
+|ht_rx_image3_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 3, address masked `[39:24]`
+|===
+
+Offset: `0x160`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 4 enable (external access)
+
+[[definition-of-ht-bus-receive-address-window-4-enable-register]]
+.Definition of HT bus receive address window 4 enable (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_rx_image4_en
+|1
+|0x0
+|R/W
+|HT bus receives address window 4, enable signal
+
+|30
+|ht_rx_image4_trans_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 4, map enable signal
+
+|29
+|ht_rx_image4_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 4, multi-node address mapping enable.
+
+Convert `[39:37]` to `[46:44]` of the address
+
+|28
+|ht_rx_image4_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus receive address window 4, protocol address hit enable.
+
+Must be set to `0`
+
+|25:0
+|ht_rx_image4_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus receive address window 4, `[49:24]` of the mapped address
+|===
+
+Offset: `0x164`
+
+Reset value: `0x00000000`
+
+Name: HT bus receive address window 4 base address (external access)
+
+[[definition-of-ht-bus-receive-address-window-4-base-address-register]]
+.Definition of HT bus receive address window 4 base address (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_rx_image4_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 4, address base address of `[39:24]`
+
+|15:0
+|ht_rx_image4_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus receive address window 4, address masked `[39:24]`
+|===

@@ -1,0 +1,348 @@
+[[uncache-address-window-configuration-register]]
+==== Uncache Address Window Configuration Register
+
+The address window hit formula is detailed in <<receive-address-window-configuration-register,Receive Address Window Configuration Register>>.
+
+The address of this window is the address received on the HT bus.
+A read or write command that lands in this window will not be sent to SCache and will not invalidate the first-level Cache, but will be sent directly to memory or other address space, i.e., the read or write command in this address window will not maintain Cache consistency of the I/O.
+This window is mainly for some operations that will not hit in Cache and therefore can improve the efficiency of accessing memory, such as accessing video memory.
+
+Offset: `0x190`
+
+Reset value: `0x00000000`
+
+Name: HT bus uncache address window 0 enable (internal access)
+
+[[ht-bus-uncache-address-window-0-enable]]
+.HT bus uncache address window 0 enable (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_uncache0_en
+|1
+|0x0
+|R/W
+|HT bus uncache address window 0, enable signal
+
+|30
+|ht_uncache0_trans_en
+|1
+|0x0
+|R/W
+|HT bus uncache address window 0, mapping enable signal
+
+|29
+|ht_uncache0_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus uncache receive address window 0, multi-node address mapping enable
+
+|28
+|ht_uncache0_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus uncache receive address window 0, protocol address hit enable
+
+|25:0
+|ht_uncache0_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus uncache address window 0, `[49:24]` of the translated address
+|===
+
+Offset: `0x194`
+
+Reset value: `0x00000000`
+
+Name: HT bus uncache address window 0 base address (internal access)
+
+[[ht-bus-uncache-address-window-0-base-address]]
+.HT bus uncache address window 0 base address (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_uncache0_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus uncache address window 0, address base address of `[39:24]`
+
+|15:0
+|ht_uncache0_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus uncache address window 0, address masked `[39:24]`
+|===
+
+Offset: `0x198`
+
+Reset value: `0x00000000`
+
+Name: HT bus uncache address window 1 enabled (internal access)
+
+[[ht-bus-uncache-address-window-1-enable]]
+.HT bus uncache address window 1 enable (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_uncache1_en
+|1
+|0x0
+|R/W
+|HT bus uncache address window 1, enable signal
+
+|30
+|ht_uncache1_trans_en
+|1
+|0x0
+|R/W
+|HT bus uncache address window 1, mapping enable signal
+
+|29
+|ht_uncache1_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus uncache receive address window 1, multi-node address mapping enable
+
+|28
+|ht_uncache1_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus uncache receive address window 1, protocol address hit enable
+
+|25:0
+|ht_uncache1_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus uncache address window 1, `[49:24]` of the translated address
+|===
+
+Offset: `0x19c`
+
+Reset value: `0x00000000`
+
+Name: HT bus uncache address window 1 base address (internal access)
+
+[[ht-bus-uncache-address-window-1-base-address]]
+.HT bus uncache address window 1 base address (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_uncache1_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus uncache address window 1, address base address of `[39:24]`
+
+|15:0
+|ht_uncache1_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus uncache address window 1, `[39:24]` of address mask
+|===
+
+Offset: `0x1A0`
+
+Reset value: `0x00000000`
+
+Name: HT bus uncache address window 2 enable (internal access)
+
+[[ht-bus-uncache-address-window-2-enable]]
+.HT bus uncache address window 2 enable (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_uncache2_en
+|1
+|0x0
+|R/W
+|HT bus uncache address window 2, enable signal
+
+|30
+|ht_uncache2_trans_en
+|1
+|0x0
+|R/W
+|HT bus uncache address window 2, mapping enable signal
+
+|29
+|ht_uncache2_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus uncache receive address window 2, multi-node address mapping enable
+
+|28
+|ht_uncache2_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus uncache receive address window 2, protocol address hit enable
+
+|25:0
+|ht_uncache2_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus uncache address window 2, `[49:24]` of the translated address
+|===
+
+Offset: `0x1A4`
+
+Reset value: `0x00000000`
+
+Name: HT bus uncache address window 2 base address (internal access)
+
+[[ht-bus-uncache-address-window-2-base-address]]
+.HT Bus uncache Address Window 2 Base Address (Internal Access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_uncache2_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus uncache address window 2, address base address of `[39:24]`
+
+|15:0
+|ht_uncache2_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus uncache address window 2, address masked `[39:24]`
+|===
+
+Offset: `0x1A8`
+
+Reset value: `0x00000000`
+
+Name: HT bus uncache address window 3 enabled (internal access)
+
+[[ht-bus-uncache-address-window-3-enable]]
+.HT bus uncache address window 3 enable (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_uncache3_en
+|1
+|0x0
+|R/W
+|HT bus uncache address window 3, enable signal
+
+|30
+|ht_uncache3_trans_en
+|1
+|0x0
+|R/W
+|HT bus uncache address window 3, mapping enable signal
+
+|29
+|ht_uncache3_multi_node_en
+|1
+|0x0
+|R/W
+|HT bus uncache receive address window 3, multi-node address mapping enable
+
+|28
+|ht_uncache3_conf_hit_en
+|1
+|0x0
+|R/W
+|HT bus uncache receive address window 3, protocol address hit enable
+
+|25:0
+|ht_uncache3_trans[49:24]
+|26
+|0x0
+|R/W
+|HT bus uncache address window 3, `[49:24]` of the translated address
+|===
+
+Offset: `0x1AC`
+
+Reset value: `0x00000000`
+
+Name: HT Bus uncache address window 3 base address (internal sccess)
+
+[[ht-bus-uncache-address-window-3-base-address]]
+.HT Bus uncache address window 3 base address (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_uncache3_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus uncache address window 3, address base address of `[39:24]`
+
+|15:0
+|ht_uncache3_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus uncache address window 3, address masked `[39:24]`
+|===

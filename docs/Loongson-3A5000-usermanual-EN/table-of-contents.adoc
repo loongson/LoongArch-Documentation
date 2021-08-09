@@ -1,0 +1,243 @@
+== List of Figures
+
+* <<system-architecture-of-loongson-3,Loongson 3 System architecture>>
+* <<loongson-3-node-structure,Loongson 3 node structure>>
+* <<loongson-3a5000-chip-structure,Loongson 3A5000 chip structure>>
+* <<stable-reset-control-for-multi-chip-interconnection,Stable reset control for multi-chip interconnection>>
+* <<gs464v-structure,GS464V structure>>
+* <<interrupt-routing-of-loongson-3a5000-processor,Interrupt routing of Loongson 3A5000 processor>>
+* <<general-mode-timing,General mode timing>>
+* <<reverse-mode-timing,Reverse mode timing>>
+* <<access-to-the-ht-protocol-configuration-in-the-loongson-3a5000,Access to the HT protocol configuration in the Loongson 3A5000>>
+* <<structure-of-four-loongson-3-chips-interconnected,Structure of four Loongson 3 chips interconnected>>
+* <<structure-of-sixteen-loongson-3-chips-interconnected,Structure of sixteen Loongson 3 chips interconnected>>
+* <<structure-of-two-loongson-3-chips-with-8-bit-interconnection,Structure of two Loongson 3 chips with 8-bit interconnection>>
+* <<structure-of-two-loongson-3-chips-with-16-bit-interconnection,Structure of two Loongson 3 chips with 16-bit interconnection>>
+
+== List of Tables
+
+* <<descriptions-of-control-pins,Descriptions of control pins>>
+* <<system-global-address-layout-at-the-node-level,System global address layout at the node level>>
+* <<address-distribution-within-nodes,Address layout within nodes>>
+* <<scid-sel-address-bit-configuration,`SCID_SEL` Address bit configuration>>
+* <<table-44-bit-physical-address-layout-within-nodes,44-bit physical address layout within nodes>>
+* <<space-access-attributes-corresponding-to-mmap-1,Space access attributes corresponding to `MMAP`>>
+* <<table-of-address-window-registers,Table of address window registers>>
+* <<description-of-mmap-register-bit-field,Description of `MMAP` register bit field>>
+* <<correspondence-from-the-device-number-to-the-module-it-belongs-to,Correspondence from the device number to the module it belongs to>>
+* <<space-access-attributes-corresponding-to-mmap-2,Space access attributes corresponding to `MMAP`>>
+* <<table-version-register,Version register>>
+* <<table-chip-characteristics-register,Chip characteristics register>>
+* <<table-manufacturer-name-register,Manufacturer name register>>
+* <<table-chip-name-register,Chip name register>>
+* <<function-configuration-register-1,Function configuration register>>
+* <<table-pin-controller-driver-configuration-register,Pin controller driver configuration register>>
+* <<table-function-collection-register,Function collection register>>
+* <<table-temperature-collection-register,Temperature collection register>>
+* <<node-clock-software-multiplier-configuration-register,Node clock software multiplier configuration register>>
+* <<memory-clock-software-multiplier-configuration-register,Memory clock software multiplier configuration register>>
+* <<processor-core-software-frequency-division-configuration-register-1,Processor core software frequency division configuration>>
+* <<processor-core-software-reset-control-register,Processor core software reset control register>>
+* <<chip-routing-configuration-register,Chip routing configuration register>>
+* <<other-function-configuration-register-1,Other function configuration register>>
+* <<temperature-observation-register,Temperature observation register>>
+* <<processor-core-sram-adjustment-register,Processor core SRAM adjustment register>>
+* <<table-fuse0-observation-register,`FUSE0` observation register>>
+* <<table-fuse1-observation-register,`FUSE1` observation register>>
+* <<processor-internal-clock-description,Processor internal clock description>>
+* <<processor-core-software-frequency-division-configuration-register-2,Processor core software frequency division configuration>>
+* <<other-function-configuration-register-2,Other function configuration register>>
+* <<other-function-configuration-register-3,Other function configuration register>>
+* <<processor-core-private-frequency-division-register,Processor core private frequency division register>>
+* <<function-configuration-register-2,Function configuration register>>
+* <<other-function-configuration-register-4,Other function configuration register>>
+* <<function-configuration-register-3,Function configuration register>>
+* <<other-function-configuration-register-5,Other function configuration register>>
+* <<other-function-configuration-register-6,Other function configuration register>>
+* <<gpio-output-enable-register,GPIO output enable register>>
+* <<address-access-method,Address access method>>
+* <<configuration-register-instruction-access-method,Configuration register instruction access method>>
+* <<register-description,Register description>>
+* <<other-function-configuration-register-7,Other function configuration register>>
+* <<node-counter-register,Node counter register>>
+* <<table-output-enable-register,Output enable register>>
+* <<table-input-output-register,Input/Output Register>>
+* <<interrupt-control-register-1,Interrupt control register>>
+* <<table-of-gpio-multiplexing-function,Table of GPIO multiplexing function>>
+* <<table-interrupt-control-register-2,Interrupt control register>>
+* <<list-of-configuration-information-for-the-instruction-set-functions-implemented-in-the-3a5000,List of configuration information for the instruction set functions implemented in the 3A5000>>
+* <<shared-cache-lock-window-register-configuration,Shared Cache lock window register configuration>>
+* <<shared-cache-configuration-register,Shared Cache configuration register (`SC_CONFIG`)>>
+* <<registers-related-to-inter-processor-interrupt-and-their-functional-descriptions,Registers related to inter-processor interrupt and their functional descriptions>>
+* <<list-of-inter-processor-interrupt-and-communication-registers-for-processor-core-0,List of inter-processor interrupt and communication registers for processor core 0>>
+* <<list-of-inter-processor-interrupt-and-communication-registers-for-processor-core-1,List of inter-processor interrupt and communication registers for processor core 1>>
+* <<list-of-inter-processor-interrupt-and-communication-registers-for-processor-core-2,List of inter-processor interrupt and communication registers for processor core 2>>
+* <<list-of-inter-processor-interrupt-and-communication-registers-for-processor-core-3,List of inter-processor interrupt and communication registers for processor core 3>>
+* <<list-of-inter-processor-interrupt-and-communication-registers-for-the-current-processor-core,List of inter-processor interrupt and communication registers for the current processor core>>
+* <<processor-core-inter-processor-communication-registers-1,Processor core inter-processor communication registers>>
+* <<processor-core-inter-processor-communication-registers-2,Processor core inter-processor communication registers>>
+* <<table-interrupt-control-register,Interrupt control register>>
+* <<io-control-register-address,I/O control register address>>
+* <<description-of-the-interrupt-routing-register,Description of the interrupt routing register>>
+* <<interrupt-routing-register-address-1,Interrupt routing register address>>
+* <<processor-core-private-interrupt-status-register,Processor core private interrupt status register>>
+* <<other-function-configuration-register-8,Other function configuration register>>
+* <<extended-io-interrupt-enable-register,Extended I/O interrupt enable register>>
+* <<extended-io-interrupt-auto-rotation-enable-register,Extended I/O interrupt auto-rotation enable register>>
+* <<extended-io-interrupt-interrupt-status-register,Extended I/O interrupt interrupt status register>>
+* <<extended-io-interrupt-status-register-for-each-processor-core,Extended I/O interrupt status register for each processor core>>
+* <<description-of-the-interrupt-pin-routing-register,Description of the interrupt pin routing register>>
+* <<interrupt-routing-register-address-2,Interrupt routing register address>>
+* <<description-of-the-interrupt-destination-processor-core-routing-register,Description of the interrupt destination processor core routing register>>
+* <<interrupt-destination-processor-core-routing-register-address,Interrupt destination processor core routing register address>>
+* <<interrupt-destination-node-mapping-method-configuration,Interrupt destination node mapping method configuration>>
+* <<extended-io-interrupt-status-register-for-the-current-processor-core,Extended I/O interrupt status register for the current processor core>>
+* <<extended-io-interrupt-trigger-register-1,Extended I/O interrupt trigger register>>
+* <<description-of-temperature-collection-register,Description of temperature collection register>>
+* <<extended-io-interrupt-trigger-register-2,Extended I/O interrupt trigger register>>
+* <<description-of-high-low-temperature-interrupt-register,Description of high/low temperature interrupt register>>
+* <<description-of-high-temperature-underclock-control-register-2,Description of high-temperature underclock control register>>
+* <<description-of-temperature-status-detection-and-control,Description of temperature status detection and control register>>
+* <<description-of-temperature-sensor-configuration-register,Description of temperature sensor configuration register>>
+* <<description-of-temperature-sensor-data-register,Description of temperature sensor data register>>
+* <<software-visible-parameter-list-of-the-memory-controller,Software-visible parameter list of the memory controller>>
+* <<memory-controller-0-error-status-observation-register,Memory controller 0 error status observation register>>
+* <<memory-controller-1-error-status-observation-register,Memory controller 1 error status observation register>>
+* <<pin-signals-related-to-hypertransport-bus,Pin signals related to HyperTransport bus>>
+* <<commands-that-can-be-received-by-the-hypertransport-receiver,Commands that can be received by the HyperTransport receiver>>
+* <<commands-that-will-be-transported-in-both-modes,Commands that will be transported in both modes>>
+* <<default-address-window-layout-of-the-4-HyperTransport-interfaces,Default address window layout of the 4 HyperTransport interfaces>>
+* <<address-window-distribution-inside-the-hypertransport-interface-of-the-loongson-3-processor,Address window distribution inside the HyperTransport interface of the Loongson 3 processor>>
+* <<address-window-provided-in-the-hypertransport-interface-of-the-loongson-3a5000-processor,Address window provided in the HyperTransport interface of the Loongson 3A5000 processor>>
+* <<software-visible-registers-in-the-ht-controller,Software visible registers in the HT controller>>
+* <<table-bridge-control-register,Bridge control register>>
+* <<definition-of-command-capabilities-pointer-capability-id-registers,Definition of command, capabilities pointer, capability ID registers>>
+* <<definition-of-link-config-link-control-registers,Definition of link config, link control registers>>
+* <<definition-of-revision-id-link-freq-link-error-link-freq-cap-registers,Definition of revision id, link freq, link error, link freq capregisters>>
+* <<definition-of-feature-capability-registers,Definition of feature registers>>
+* <<table-error-retry-control-register,Error Retry Control Register>>
+* <<table-retry-count-register,Retry Count Register>>
+* <<table-revision-id-register,Revision ID Register>>
+* <<table-interrupt-capability-register,Interrupt capability register>>
+* <<interrupt-dataport-register,Interrupt dataport register>>
+* <<interrupt-intrlnfo-register-1,Interrupt intrlnfo register 1>>
+* <<interrupt-intrlnfo-register-2,Interrupt intrlnfo register 2>>
+* <<interrupt-vectors-mapping,Interrupt vectors mapping>>
+* <<ht-bus-interrupt-vector-register-definition-1,HT bus interrupt vector register definition 1>>
+* <<ht-bus-interrupt-vector-register-definition-2,HT bus interrupt vector register definition 2>>
+* <<ht-bus-interrupt-vector-register-definition-3,HT bus interrupt vector register definition 3>>
+* <<ht-bus-interrupt-vector-register-definition-4,HT bus interrupt vector register definition 4>>
+* <<ht-bus-interrupt-vector-register-definition-5,HT bus interrupt vector register definition 5>>
+* <<ht-bus-interrupt-vector-register-definition-6,HT bus interrupt vector register definition 6>>
+* <<ht-bus-interrupt-vector-register-definition-7,HT bus interrupt vector register definition 7>>
+* <<ht-bus-interrupt-vector-register-definition-8,HT bus interrupt vector register definition 8>>
+* <<HT-bus-interrupt-enable-register-definition-1,HT bus interrupt enable register definition 1>>
+* <<HT-bus-interrupt-enable-register-definition-2,HT bus interrupt enable register definition 2>>
+* <<HT-bus-interrupt-enable-register-definition-3,HT bus interrupt enable register definition 3>>
+* <<HT-bus-interrupt-enable-register-definition-4,HT bus interrupt enable register definition 4>>
+* <<HT-bus-interrupt-enable-register-definition-5,HT bus interrupt enable register definition 5>>
+* <<HT-bus-interrupt-enable-register-definition-6,HT bus interrupt enable register definition 6>>
+* <<HT-bus-interrupt-enable-register-definition-7,HT bus interrupt enable register definition 7>>
+* <<HT-bus-interrupt-enable-register-definition-8,HT bus interrupt enable register definition 8>>
+* <<table-link-train-register,Link Train Register>>
+* <<definition-of-bus-receive-address-window-0-enable-register,Definition of busreceive address window 0 enable (external access) register>>
+* <<definition-of-ht-bus-receive-address-window-0-base-address-register,Definition of HT bus receive address window 0 base address (external access) register>>
+* <<definition-of-ht-bus-receive-address-window-1-enable-register,Definition of HT bus receive address window 1 enable (external access) register>>
+* <<definition-of-bus-receive-address-window-1-base-address-register,Definition of bus receive address window 1 base address (external access) register>>
+* <<definition-of-bus-receive-address-window-2-enable-register,Definition of bus receive address window 2 enable (external access) register>>
+* <<definition-of-ht-bus-receive-address-window-2-base-address-register,Definition of HT bus receive address window 2 base address (external Access) register>>
+* <<definition-of-ht-bus-receive-address-window-3-enable-register,Definition of HT bus receive address window 3 enable (external access) register>>
+* <<definition-of-ht-bus-receive-address-window-3-base-address-register,Definition of HT bus receive address window 3 base address (external access) register>>
+* <<definition-of-ht-bus-receive-address-window-4-enable-register,Definition of HT bus receive address window 4 enable (external access) register>>
+* <<definition-of-ht-bus-receive-address-window-4-base-address-register,Definition of HT bus receive address window 4 base address (external access) register>>
+* <<definition-of-configuration-space-extended-address-translation-register,Definition of configuration space extended address translation register>>
+* <<definition-of-extended-address-translation-register,Definition of extended address translation register>>
+* <<ht-bus-post-address-window-0-enable,HT bus POST address window 0 enable (internal access)>>
+* <<ht-bus-post-address-window-0-base-address,HT bus POST address window 0 base address (internal access)>>
+* <<ht-bus-post-address-window-1-enable,HT bus POST address window 1 enable (internal access)>>
+* <<ht-bus-post-address-window-1-base-address,HT bus POST address window 1 base address (internal access)>>
+* <<ht-bus-prefetchable-address-window-0-enable,HT bus prefetchable address window 0 enable (internal access)>>
+* <<ht-bus-prefetchable-address-window-0-base-address,HT bus prefetchable address window 0 base address (internal access)>>
+* <<ht-bus-prefetchable-address-window-1-enable,HT bus prefetchable address window 1 enable (internal access)>>
+* <<HT-bus-prefetchable-address-window-1-base-address,HT bus prefetchable address window 1 base address (internal access)>>
+* <<ht-bus-uncache-address-window-0-enable,HT bus uncache address window 0 enable (internal access)>>
+* <<ht-bus-uncache-address-window-0-base-address,HT bus uncache address window 0 base address (internal access)>>
+* <<ht-bus-uncache-address-window-1-enable,HT bus uncache address window 1 enable (internal access)>>
+* <<ht-bus-uncache-address-window-1-base-address,HT bus uncache address window 1 base address (internal access)>>
+* <<ht-bus-uncache-address-window-2-enable,HT bus uncache address window 2 enable (internal access)>>
+* <<ht-bus-uncache-address-window-2-base-address,HT Bus uncache Address Window 2 Base Address (Internal Access)>>
+* <<ht-bus-uncache-address-window-3-enable,HT bus uncache address window 3 enable (internal access)>>
+* <<ht-bus-uncache-address-window-3-base-address,HT Bus uncache address window 3 base address (internal access)>>
+* <<definition-of-ht-bus-p2p-address-window-0-enable-register,Definition of HT bus P2P address window 0 enable (external access) register>>
+* <<definition-of-ht-bus-p2p-address-window-0-base-address-register,Definition of HT bus P2P address window 0 base address (external access) register>>
+* <<definition-of-ht-bus-p2p-address-window-1-enable-register,Definition of HT bus P2P address window 1 enable (external access) register>>
+* <<definition-of-ht-bus-p2p-address-window-1-base-address-register,Definition of HT bus P2P address window 1 base address (external access) register>>
+* <<definition-of-controller-parameter-configuration-register-0,Definition of controller parameter configuration register 0>>
+* <<definition-of-controller-parameter-configuration-register-1,Definition of controller parameter configuration register 1>>
+* <<table-receive-diagnostic-register,Receive diagnostic register>>
+* <<table-phy-status-register,PHY status register>>
+* <<table-transport-command-cache-size-register,Transport command Cache size register>>
+* <<table-transport-data-cache-size-register,Transport data Cache size register>>
+* <<table-transport-cache-debug-register,Transport Cache debug register>>
+* <<table-receive-buffer-initialization-configuration-register,Receive buffer initialization configuration register>>
+* <<table-training-0-timeout-short-counter-register,Training 0 timeout short counter register>>
+* <<table-training-0-timeout-long-counter-register,Training 0 timeout long counter register>>
+* <<table-training-1-counter-register,Training 1 counter register>>
+* <<table-training-2-counter-register,Training 2 counter register>>
+* <<table-training-3-counter-register,Training 3 counter register>>
+* <<table-software-frequency-configuration-register,Software frequency configuration register>>
+* <<table-phy-impedance-matching-control-register,PHY impedance matching control register>>
+* <<table-phy-configuration-register,PHY configuration register>>
+* <<table-link-initialization-debug-register,Link initialization debug register>>
+* <<ldt-debug-register-1,LDT debug register 1>>
+* <<ldt-debug-register-2,LDT debug register 2>>
+* <<ldt-debug-register-3,LDT debug register 3>>
+* <<ldt-debug-register-4,LDT debug register 4>>
+* <<ldt-debug-register-5,LDT debug register 5>>
+* <<ldt-debug-register-6,LDT debug register 6>>
+* <<ht-tx-post-id-win0,HT TX POST ID WIN0>>
+* <<ht-tx-post-id-win1,HT TX POST ID WIN1>>
+* <<ht-tx-post-id-win2,HT TX POST ID WIN2>>
+* <<ht-tx-post-id-win3,HT TX POST ID WIN3>>
+* <<ht-rx-int-trans-lo-2,HT RX INT TRANS Lo>>
+* <<ht-rx-int-trans-hi-2,HT RX INT TRANS Hi>>
+* <<table-data-transport-register,Data transport register>>
+* <<interrupt-enable-register,Interrupt enable register>>
+* <<table-interrupt-identity-register,Interrupt identity register>>
+* <<table-of-interrupt-control-function,Table of interrupt control function>>
+* <<table-fifo-control-register,FIFO control register>>
+* <<table-line-control-register,Line control register>>
+* <<table-modem-control-register,MODEM Control Register>>
+* <<table-modem-state-register,MODEM state register>>
+* <<table-receive-fifo-counter,Receive FIFO counter>>
+* <<table-transport-fifo-counter,Transport FIFO counter>>
+* <<frequency-division-latchs-1,Frequency division latchs 1>>
+* <<frequency-division-latchs-2,Frequency division latchs 2>>
+* <<frequency-division-latchs-3,Frequency division latchs 3>>
+* <<table-control-register-1,Control register>>
+* <<table-state-register-1,State register>>
+* <<table-transport-data-register-1,Transport data register>>
+* <<table-external-register,External register>>
+* <<frequency-division-factor,Frequency division factor>>
+* <<table-parameter-control-register,Parameter control register>>
+* <<table-chip-select-control-register,Chip select control register>>
+* <<table-timing-control-register,Timing control register>>
+* <<table-custom-controller-register,Custom controller register>>
+* <<table-custom-command-register,Custom command register>>
+* <<table-custom-data-register-0,Custom data register 0>>
+* <<table-custom-data-register-1,Custom data register 1>>
+* <<table-custom-timing-register-0,Custom timing register 0>>
+* <<table-custom-timing-register-1,Custom timing register 1>>
+* <<table-custom-timing-register-2,Custom timing register 2>>
+* <<table-frequency-division-latch-low-order-byte-register,Frequency division latch low-order byte register>>
+* <<table-frequency-division-latch-high-order-byte-register,Frequency division latch high-order byte register>>
+* <<table-control-register-2,Control register>>
+* <<table-transport-data-register-2,Transport data register>>
+* <<table-receive-data-register,Receive data register>>
+* <<table-command-control-register,Command control register>>
+* <<table-state-register-2,State register>>
+* <<table-slave-device-controller-register,Slave device controller register>>
+* <<ht-rx-int-trans-lo-1,HT RX INT TRANS Lo>>
+* <<ht-rx-int-trans-hi-1,HT RX INT TRANS Hi>>
+* <<other-function-configuration-register-10,Other function configuration register>>
+* <<processor-core-inter-processor-communication-registers-3,Processor core inter-processor communication registers>>

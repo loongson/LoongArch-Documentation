@@ -1,0 +1,34 @@
+[[retry-count-register]]
+==== Retry Count Register
+
+Offset: `0x68`
+
+Reset value: `0x00000000`
+
+Name: Retry count register
+
+[[table-retry-count-register]]
+.Retry Count Register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|Reserved
+|16
+|0x0
+|R
+|Reserved
+
+|15:0
+|Retry Count
+|16
+|0x0
+|R
+|Retry count
+|===

@@ -1,0 +1,10 @@
+[[access-to-hypertransport-bus-configuration-space]]
+=== Access to HyperTransport Bus Configuration Space
+
+The protocol for the HyperTransport interface software layer is basically the same as the PCI protocol, with slightly different specific access details as the access to the configuration space is directly related to the underlying protocol.
+As listed in <<address-window-distribution-inside-the-hypertransport-interface-of-the-loongson-3-processor,Address window distribution inside the HyperTransport interface of the Loongson 3 processor>>, the address range of the HT bus configuration space is `0xFD_FE00_0000` to `0xFD_FFFF_FFFF`.
+For the configuration access in the HT protocol, the following format is used in the Loongson 3A5000:
+
+[[access-to-the-ht-protocol-configuration-in-the-loongson-3a5000]]
+.Access to the HT protocol configuration in the Loongson 3A5000
+image::access-to-the-ht-protocol-configuration-in-the-loongson-3a5000.png[]

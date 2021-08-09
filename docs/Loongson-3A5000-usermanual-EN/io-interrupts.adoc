@@ -1,0 +1,10 @@
+[[io-interrupts]]
+== I/O Interrupts
+
+The Loongson 3A5000 chip supports two different interrupt methods.
+The first is the traditional interrupt method, which is compatible with processors such as the 3A3000, and the second is the new extended I/O interrupt method, which is used to support the interrupt cross-chip and dynamic distribution functions of the HT controller.
+The following describes each of the two interrupt methods.
+
+include::io-interrupts/traditional-io-interrupts.adoc[]
+
+include::io-interrupts/extended-io-interrupts.adoc[]

@@ -1,0 +1,41 @@
+[[gs464v-processor-core]]
+== GS464V Processor Core
+
+GS464V is a quad-launch 64-bit high-performance processor core.
+It can be used as a single core for high-end embedded and desktop applications, or as a basic processor core to form an on-chip multi-core system for server and high-performance machine applications.
+The multiple GS464V cores in the Loongson 3A5000 form a distributed multi-core architecture with a shared on-chip last-level Cache through the AXI interconnect network.
+The main features of GS464V are as follows:
+
+* Support for the Loongson autonomous instruction set (LoongArch).
+
+* Four-launch superscalar architecture with four fixed-point, two vector, and two access components.
+
+* Each vector component is `256` bits wide, and each component supports up to eight double 32-bit floating-point multiplication and addition operations.
+
+* Access components support 256-bit memory access, with 64-bit virtual addresses and 48-bit physical addresses.
+
+* support for register renaming, dynamic scheduling, transfer prediction, and other chaotic execution techniques.
+
+* 64 fully-associative items plus `2048` items connected in 8-way groups, for a total of `2112` TLBs, `64` instruction TLBs, and variable page size.
+
+* First-level instruction Cache and data Cache size of `64KB` each, 4-way group concatenation.
+
+* Victim Cache as a private secondary Cache, `256KB` in size, 16-way group concatenation.
+
+* Supports access optimization techniques such as Non-blocking access and Load-Speculation.
+
+* Supports Cache Consistency Protocol for on-chip multi-core processors.
+
+* Supports parity check for first-level Cache and ECC check for second-level, on-chip last-level Cache.
+
+* Supports standard JTAG debugging interface for easy hardware and software debugging.
+
+The structure of GS464V is shown in the following figure.
+
+[[gs464v-structure]]
+.GS464V structure
+image::gs464v-structure.png[]
+
+include::gs464v-processor-core/instruction-set-features-implemented-in-3a5000.adoc[]
+
+include::gs464v-processor-core/access-to-3a5000-control-and-status-registers.adoc[]

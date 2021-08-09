@@ -1,0 +1,15 @@
+[[stable-counter]]
+=== Stable Counter
+
+The constant clock source in the 3A5000 is called the stable counter, which is a separate master clock from the processor core's own clock and from the node clock.
+
+In the 3A5000, both the processor core clock and the node clock are derived from the master clock, but both can freely control the number of divisions (see the introduction in the previous chapter), while the clock of the stable counter is derived from the input reference clock and can also be independently divided and does not vary with the frequency of other clocks.
+
+Based on this clock source, a timer and a timer are implemented.
+This chapter mainly introduces the registers related to the Stable couter.
+
+include::stable-counter/configuration-address-for-stable-timer.adoc[]
+
+include::stable-counter/clock-control-for-stable-counter.adoc[]
+
+include::stable-counter/calibration-of-stable-counter.adoc[]

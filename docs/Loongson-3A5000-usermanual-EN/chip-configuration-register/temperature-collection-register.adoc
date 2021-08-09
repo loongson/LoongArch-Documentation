@@ -1,0 +1,83 @@
+[[temperature-collection-register]]
+=== Temperature Collection Register (`0x0198`)
+
+The offset address is `0x0198`.
+
+[[table-temperature-collection-register]]
+.Temperature collection register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|15:0
+|
+|R
+|
+|Reserved
+
+|19:16
+|
+|R
+|
+|Reserved
+
+|20
+|dotest
+|R
+|
+|Dotest pin status
+
+|21
+|iccc_en
+|R
+|
+|Iccc_en pin status
+
+|23:22
+|
+|R
+|
+|Reserved
+
+|24
+|Thsens0_overflow
+|R
+|
+|Temperature sensor 0 overflow
+
+|25
+|Thsens1_overflow
+|R
+|
+|Temperature sensor 1 overflow
+
+|31:26
+|
+|
+|
+|
+
+|47:32
+|Thsens0_out
+|R
+|
+|Temperature sensor 0 centigrade temperature
+
+`Node temperature=Thens0_out *731/0x4000-273`
+
+Temperature range: `-40` degree - `125` degree
+
+|63:48
+|Thsens1_out
+|R
+|
+|Temperature sensor 1 centigrade temperature
+
+`Node temperature=Thens0_out *731/0x4000-273`
+
+Temperature range: `-40` degree - `125` degree
+|===

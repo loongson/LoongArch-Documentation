@@ -1,0 +1,45 @@
+[[receive-diagnostic-register]]
+==== Receive Diagnostic Register
+
+Offset: `0x1C8`
+
+Reset value: `0x00000000`
+
+Name: Receive diagnostic register
+
+[[table-receive-diagnostic-register]]
+.Receive diagnostic register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|rx_cad_phase_0
+|16
+|0x0
+|R/W
+|Save the sampled value of input `CAD[15:0]`
+
+|15:8
+|rx_ctl_catch
+|8
+|0x0
+|R/W
+|Save the input `ctl` obtained by sampling.
+
+`(0, 2, 4, 6)` corresponds to the four phases sampled by `CTL0`.
+
+`(1, 3, 5, 7)` corresponds to the four phases sampled by `CTL1`
+
+|7:0
+|
+|
+|
+|
+|
+|===

@@ -1,0 +1,61 @@
+[[control-of-reset-pins]]
+==== Control of Reset Pins
+
+For simpler control of reset pins in states such as STR, special reset pin (`DDR_RESETn`) control can be performed via the `pad_reset_po` (`0x808`) register, and there are two main control modes:
+
+. General mode, `reset_ctrl[1:0] == 2'b00`.
+The behavior of the reset signal pins in this mode is compatible with the general control mode.
+`DDR_RESETn` is connected directly on the motherboard to the corresponding pin on the memory slot.
+The behavior of the pin is:
+
+* When not powered up: pin status is low.
+
+* At power-up: pin state is low.
+
+* When the controller starts initialization: pin state is high.
+
+* During normal operation: pin state is high.
++
+The timing is shown in the figure below:
++
+[[general-mode-timing]]
+.General mode timing
+image::general-mode-timing.png[]
+
+. Reverse mode, `reset_ctrl[1:0] == 2'b10`.
+In this mode, the reset signal pins are at the opposite effective level from the normal control mode when doing the actual memory control.
+So the motherboard needs to connect DDR_RESETn to the corresponding pin on the memory slot through the inverter.
+The pin behavior is:
++
+* When not powered up: the pin state is low.
+
+* At power-up: pin state is low.
+
+* When the controller starts configuration: pin state is high.
+
+* When the controller starts initialization: pin state is low.
+
+* During normal operation: pin state is low.
++
+The timing sequence is shown in the following figure:
++
+[[reverse-mode-timing]]
+.Reverse mode timing
+image::reverse-mode-timing.png[]
+
+. Reset disable mode, `pm_pad_reset_o[1:0] == 2'b01`.
+In this mode, the reset signal pin remains low during the whole memory operation.
+So the motherboard needs to connect DDR_RESETn to the corresponding pin on the memory slot through the inverter.
+The behavior of the pins is:
++
+* always low.
++
+The timing is shown in the following diagram:
++
+[[reset-disable-mode-timing]]
+.Reset disable mode timing
+image:reset-disable-mode-timing.png[]
+
+By the latter two reset modes in conjunction, STR control can be achieved directly with the use of the memory controller's reset signal.
+When the whole system is booted from the shutdown state, use the method 2 to use the memory stick to reset normally and start working.
+When the system resumes from STR, the method 3 is used to reconfigure the memory stick so that it starts working properly again without destroying the original state of the memory stick.

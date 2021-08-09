@@ -1,0 +1,29 @@
+[[accessing-by-configuration-register-instructions-5]]
+==== Accessing by Configuration Register Instructions
+
+The biggest difference when accessing using the processor core's configuration register instructions is that access to the processor core's interrupt status registers becomes private, and each core only needs to issue a query request to the same address to get the current core's interrupt status.
+
+[[extended-io-interrupt-status-register-for-the-current-processor-core]]
+.Extended I/O interrupt status register for the current processor core
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|perCore_EXT_IOIsr[63:0]
+|0x1800
+|Interrupt status of the extended I/O interrupt `[63:0]` routed to the current processor core
+
+|perCore_EXT_IOIsr[127:64]
+|0x1808
+|Interrupt status of the extended I/O interrupt `[127:64]` routed to the current processor core
+
+|perCore_EXT_IOIsr[191:128]
+|0x1810
+|Interrupt status of the extended I/O interrupt `[191:128]` routed to the current processor core
+
+|perCore_EXT_IOIsr[255:192]
+|0x1818
+|Interrupt status of the extended I/O interrupt `[255:192]` routed to the current processor core
+|===

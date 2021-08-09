@@ -1,0 +1,5 @@
+[[power-control-configuration-flow]]
+==== Power Control Configuration Flow
+
+First set `pm_pad_ctrl_ca[0]` to `1`, then set `pm_pad_ctrl_ca[0]` to `0` after memory initialization is complete.
+This function is only available when CAL Mode is enabled in DDR4 mode.

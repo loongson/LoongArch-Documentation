@@ -1,0 +1,24 @@
+[[control-of-self-cycling-test-mode]]
+==== Control of Self-cycling Test Mode
+
+The self-cycling test mode can be used in test mode or normal function mode, respectively.
+For this purpose, this memory controller implements two separate sets of control interfaces, one for direct control by the test port in test mode and the other for configuration enable test by the register configuration module in normal function mode.
+
+The multiplexing of these two sets of interfaces is controlled using port `test_phy`.
+When `test_phy` is valid, the `test_*` port of the controller is used for control, and the self-test is fully controlled by hardware at this time; when `test_phy` is invalid, the parameters of `pm_*` programmed by software are used for control.
+The specific signal meaning of using the test port can be found in the same name section of the register parameters.
+
+These two sets of interfaces are basically the same in terms of control parameters, only the access point is different, here to introduce the control method of software programming.
+The specific operation is as follows:
+
+. Set all the parameters of the memory controller correctly.
+
+.Wait for the clock reset to stabilize according to the initialization process.
+
+. Set register `Lpbk_en` to `1`.
+
+. Set the register Lpbk_start to `1`; then the self-loop test starts.
+
+. At this point the self-loop test has begun and the software needs to be checked frequently for errors, as follows:
+
+. Sample register `Lpbk_error`, if it is `1`, it means that an error occurred, at this time the first error data and correct data through `Lpbk_*` and other observation registers can be observed; if this value is `0`, it means that there has not been a data error.

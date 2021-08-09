@@ -1,0 +1,29 @@
+[[initiate-a-separate-mrs-command]]
+==== Initiate a Separate MRS Command
+
+In DDR3 mode, the sequence of MRS commands issued by the memory controller to the memory are:
+
+`MR2_CS0`, `MR2_CS1`, `MR2_CS2`, `MR2_CS3`, `MR2_CS4`, `MR2_CS5`, `MR2_CS6`, `MR2_CS7`, `MR3_CS0`, `MR3_CS1`, `MR3_CS2`, `MR3_CS3`, `MR3_CS4`, `MR3_CS5`, `MR3_CS6`, `MR3_CS7`, `MR1_CS0`, `MR1_CS1`, `MR1_CS2`, `MR1_CS3`, `MR1_CS4`, `MR1_CS5`, `MR1_CS6`, `MR1_CS7`, `MR0_CS0`, `MR1_CS1`, `MR1_CS2`, `MR1_CS3`, `MR0_CS4`, `MR0_CS5`, `MR0_CS6`, `MR0_CS7`.
+
+In addition, for DDR4 mode, the sequence of MRS commands issued by the memory controller to the memory are:
+
+`MR3_CS0`, `MR3_CS1`, `MR3_CS2`, `MR3_CS3`, `MR3_CS4`, `MR3_CS5`, `MR3_CS6`, `MR3_CS7`, `MR6_CS0`, `MR6_CS1`, `MR6_CS2`, `MR6_CS3`, `MR6_CS4`, `MR6_CS5`, `MR6_CS6`, `MR6_CS7`, `MR5_CS0`, `MR5_CS1`, `MR5_CS2`, `MR5_CS3`, `MR5_CS4`, `MR5_CS5`, `MR5_CS6`, `MR5_CS7`, `MR4_CS0`, `MR1_CS1`, `MR1_CS2`, `MR1_CS3`, `MR4_CS4`, `MR4_CS5`, `MR4_CS6`, `MR4_CS7`, `MR2_CS0`, `MR2_CS1`, `MR2_CS2`, `MR2_CS3`, `MR2_CS4`, `MR2_CS5`, `MR2_CS6`, `MR2_CS7`, `MR1_CS0`, `MR1_CS1`, `MR1_CS2`, `MR1_CS3`, `MR1_CS4`, `MR1_CS5`, `MR1_CS6`, `MR1_CS7`, `MR0_CS0`, `MR1_CS1`, `MR1_CS2`, `MR1_CS3`, `MR0_CS4`, `MR0_CS5`, `MR0_CS6`, `MR0_CS7`.
+
+Among them, whether the MRS command corresponding to CS is valid or not is determined by `Cs_mrs`.
+Only when the bit corresponding to each chip select on `Cs_mrs` is valid, this MRS command is actually sent to DRAM.
+The value of each corresponding MR is determined by the register `Mr*_cs*`.
+These values are also used for the MRS command when initializing the memory.
+
+The operation is as follows:
+
+. Set the registers `Cs_mrs` (`0x1101`), `Mr*_cs*` (`0x1140`-`0x11f8`) to the correct values.
+
+. Set Command_mode (`0x1120`) to `1` to put the controller into command sending mode.
+
+. Sample Status_cmd (`0x1122`), if it is `1`, the controller is in command sending mode and can proceed to the next operation, if it is `0`, it needs to continue to wait.
+
+.Write `Mrs_req` (`0x1126`) to `1` to send MRS command to DRAM.
+
+. sample `Mrs_done` (`0x1127`), if it is `1`, it means the MRS command has been sent and can exit, if it is `0`, it needs to continue to wait.
+
+. Set `Command_mode` (`0x1120`) to `0` to make the controller exit the command sending mode.

@@ -1,0 +1,27 @@
+[[custom-timing-register-0]]
+==== Custom Timing Register 0 (`TIMER0`)
+
+Name: SPI FLASH custom timing register 0
+
+Length: `[7:0]`
+
+Offset: `0x0c`
+
+Reset value: `0x00`
+
+[[table-custom-timing-register-0]]
+.Custom timing register 0
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|time0
+|8
+|RW
+|Lower `8` bits of the time value required for the custom command
+|===

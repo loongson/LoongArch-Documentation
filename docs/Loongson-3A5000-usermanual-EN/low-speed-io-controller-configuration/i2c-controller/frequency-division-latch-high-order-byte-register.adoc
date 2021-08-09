@@ -1,0 +1,31 @@
+[[frequency-division-latch-high-order-byte-register]]
+==== Frequency Division Latch High-order Byte Register (`PRERhi`)
+
+Name: Frequency division latch high-order byte register
+
+Length: `[7:0]`
+
+Offset: `0x01`
+
+Reset value: `0xff`
+
+[[table-frequency-division-latch-high-order-byte-register]]
+.Frequency division latch high-order byte register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|PRERhi
+|8
+|RW
+|Store the high `8` bits of the division latch
+|===
+
+Assuming that the value of the divider latch is prescale, the frequency of the PCLK clock input from the LPB bus is `clock_a`, and the output frequency of the SCL bus is `clock_s`, the following relationship should be satisfied:
+
+`Prcescale = clock_a/(4*clock_s)-1`

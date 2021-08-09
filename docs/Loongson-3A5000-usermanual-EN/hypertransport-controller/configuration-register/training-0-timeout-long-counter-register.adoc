@@ -1,0 +1,29 @@
+[[training-0-timeout-long-counter-register]]
+==== Training 0 Timeout Long Counter Register
+
+Used in HyerTransport 3.0 mode Training 0 long count timeout threshold with counter clock frequency `1/4` of HyperTransport 3.0 link bus clock frequency.
+
+Offset: `0x1E4`
+
+Reset value: `0x000fffff`
+
+Name: Training 0 timeout count register
+
+[[table-training-0-timeout-long-counter-register]]
+.Training 0 timeout long counter register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|T0 time
+|32
+|0xfffff
+|R/W
+|Training 0 timeout long counter register
+|===

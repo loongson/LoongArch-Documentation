@@ -1,0 +1,129 @@
+[[descriptions-of-pins]]
+=== Descriptions of Pins
+
+Main control pins include `DO_TEST`, `ICCC_EN`, `NODE_ID[2:0]`, `CLKSEL[9:0]`, and `CHIP_CONFIG[5:0]`.
+
+[[descriptions-of-control-pins]]
+.Descriptions of control pins
+[%header,cols="2m,1,7"]
+|===
+d|Signal
+|Pull-up or Pull-down
+|Description
+
+|DO_TEST
+|Pull-up
+|`1'b1` indicates functional mode
+
+`1'b0` indicates test mode
+
+|ICCC_EN
+|Pull-down
+|`1'b1` indicates multi-chip coherent interconnect mode
+
+`1'b0` indicates single chip mode
+
+|NODE_ID[2:0]
+|
+|Indicates the processor number in multi-chip coherent interconnect mode
+
+|CLKSEL[9:0]
+|
+a|
+.HT clock control
+[%header,cols="1m,3"]
+!===
+d!Signal
+d!Description
+
+!CLKSEL[9]
+!`1'b1` indicates that HT PLL clock uses `CLKSEL[7:6]` to control
+
+`1'b0` indicates that initial frequency multiplier is `1X` and can be reconfigured by software
+
+!CLKSEL[8]
+!`1'b1` indicates that HT PLL uses the SYSCLK clock input
+
+`1'b0` indicates that HT PLL uses the differential clock input
+
+!CLKSEL[7:6]
+!`2'b00` indicates that PHY clock frequency is `1.6GHz`
+
+`2'b01` indicates that PHY clock frequency is `6.4GHz` 
+
+`2'b10` Reserved
+
+`2'b11` indicates that PHY clock frequency is `4.8GHz`
+
+!CLKSEL[5]
+!Reserved
+
+!CLKSEL[4]
+!`1'b1` - the reference clock is `25MHz`
+
+ `1'b0` - the reference clock is `100MHz`
+!===
+
+.MEM clock control (clock frequency should be 1/2 of the interface clock)
+[%header,cols="1m,3"]
+!===
+!CLKSEL[3:2]
+!Output Frequency
+
+!2'b00
+!`466MHz`
+
+!2'b01
+!`600MHz`
+
+!2'b10
+!Software configuration (PLL clock multiplier is `1.6`-`3.2GHz`)
+
+!2'b11
+!SYSCLK (`100MHz`/`25MHz`)
+!===
+
+.Main clock control (network and maximum processor core frequency)
+[%header,cols="1m,3"]
+!===
+!CLKSEL[1:0]
+!Output Frequency
+
+!2'b00
+!`1GHz`
+
+!2'b01
+!`2GHz`
+
+!2'b10
+!Software configuration (PLL clock multiplier is `4.8`-`6.4GHz`)
+
+!2'b11
+!SYSCLK (`100MHz`/`25MHz`)
+!===
+
+|CHIP_CONFIG[5:0]
+|
+a|
+.Chip configuration control
+[%header,cols="1m,3"]
+!===
+!CHIP_CONFIG[0]
+!SE function enable
+
+!CHIP_CONFIG[1]
+!Default HT Gen1 Mode
+
+!CHIP_CONFIG[2]
+!`NodeID[3]`
+
+!CHIP_CONFIG[3]
+!HT1-hi enters consistency mode by default
+
+!CHIP_CONFIG[4]
+!HT1-lo enters consistency mode by default and is used to support 8/16 way interconnects
+
+!CHIP_CONFIG[5]
+!On-chip clock debug enable (DCDL)
+!===
+|===

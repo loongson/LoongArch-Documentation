@@ -1,0 +1,235 @@
+[[observation-of-error-states]]
+==== Observation of Error States
+
+After a memory controller error, the corresponding system configuration registers can be accessed to get the corresponding error information and perform simple debugging operations.
+The register base address is `0x1fe00000` or `0x3ff00000`, which can also be accessed using the configuration register instruction, and the registers and their corresponding bits are as follows.
+
+[[memory-controller-0-error-status-observation-register]]
+.Memory controller 0 error status observation register
+[%header,cols="2,1m,1,6"]
+|===
+^|Register
+^d|Offset Address
+^|Read/Write
+^|Description
+
+|Memory controller 0 ECC set register `Mc0_ecc_set`
+|0x0600
+|RW
+|Memory controller 0 ECC set register
+
+`[5:0]`: MC0 `int_enable`, interrupt enable
+
+`[8]`: MC0 `int_trigger`, interrupt trigger configuration
+
+`[21:16]`: MC0 `int_vector` (RO), interrupt vector (read only)
+
+`[33:32]`: MC0 `ecc_enable`, ECC-related function enable
+
+`[40]`: MC0 `rd_before_wr`, write after read function enable
+
+|
+|0x0608
+|RW
+|Reserved
+
+|Memory controller 0 ECC counter register `Mc0_ecc_cnt`
+|0x0610
+|RW
+|Memory controller 0 ECC counter register
+
+`[7:0]`: MC0 `int_cnt`, configure the ECC checking trigger interrupt count threshold
+
+`[15:8]`: MC0 `int_cnt_err` (RO), ECC check one bit error count (read only)
+
+`[23:16]`: MC0 `int_cnt_fatal` (RO), ECC checking error count (read only)
+
+|Memory controller 0 ECC error count register `Mc0_ecc_cs_cnt`
+|0x0618
+|RO
+|Memory controller 0 ECC error count register
+
+`[7:0]`: MC0 `ecc_cnt_cs_0`, statistics on the number of CS0 ECC checking errors
+
+`[15:8]`: MC0 `ecc_cnt_cs_1`, statistics on the number of CS1 ECC checking errors
+
+`[23:16]`: MC0 `ecc_cnt_cs_2`, statistics on the number of CS2 ECC checking errors
+
+`[31:24]`: MC0 `ecc_cnt_cs_3`, statistics on the number of CS3 ECC checking errors
+
+`[39:32]`: MC0 `ecc_cnt_cs_4`, statistics on the number of CS4 ECC checking errors
+
+`[47:40]`: MC0 `ecc_cnt_cs_5`, statistics on the number of CS5 ECC checking errors
+
+`[55:48]`: MC0 `ecc_cnt_cs_6`, statistics on the number of CS6 ECC checking errors
+
+`[63:56]`: MC0 `ecc_cnt_cs_7`, statistics on the number of CS7 ECC checking errors
+
+|Memory controller 0 ECC checking register `Mc0_ecc_code`
+|0x0620
+|RO
+|Memory controller 0 ECC checking register
+
+`[7:0]`: MC0 `ecc_code_64`, 64-bit ECC checking, invalid when memory directory function is enabled
+
+`[41:32]`: MC0 `ecc_code_256`, 256-bit ECC checking, valid when memory directory function is enabled
+
+`[52:48]`: MC0 `ecc_code_dir`, memory directory ECC checking, valid only when the memory directory function is enabled
+
+`[60:56]`: MC0 `ecc_data_dir`, memory directory ECC data, valid only when the memory directory function is enabled
+
+|Memory controller 0 ECC error address register `Mc0_ecc_addr`
+|0x0628
+|RO
+|Memory controller 0 ECC error address register
+
+`[63:0]`: MC0 `ecc_addr`, ECC checking error address information
+
+|Memory controller 0 ECC error data register 0 `Mc0_ecc_data0`
+
+|0x0630
+|RO
+|Memory controller 0 ECC error data register 0
+
+`[63:0]`: `Mc0_ecc_data0`, data information in case of an ECC checking error.
+64-bit ECC mode data, or 256-bit ECC mode data `[63:0]`
+
+|Memory controller 0 ECC error data register 1 `Mc0_ecc_data1`
+|0x0638
+|RO
+|Memory controller 0 ECC error data register 1
+
+`[63:0]`: `Mc0_ecc_data1`, data information in case of an ECC checking error.
+256-bit ECC mode data `[127:64]`
+
+|Memory controller 0 ECC error data register 2 `Mc0_ecc_data2`
+|0x0640
+|RO
+|Memory controller 0 ECC error data register 2
+
+`[63:0]`: `Mc0_ecc_data1`, data information in case of an ECC checking error.
+256-bit ECC mode data `[191:128]`
+
+|Memory controller 0 ECC error data register 3 `Mc0_ecc_data3`
+|0x0648
+|RO
+|Memory controller 0 ECC error data register 3
+
+`[63:0]`: `Mc0_ecc_data3`, data information in case of an ECC checking error.
+256-bit ECC mode data `[255:192]`
+|===
+
+[[memory-controller-1-error-status-observation-register]]
+.Memory controller 1 error status observation register
+[%header,cols="2,1m,1,6"]
+|===
+^|Register
+^d|Offset Address
+^|Read/Write
+^|Description
+
+|Memory controller 1 ECC set register `Mc1_ecc_set`
+|0x0700
+|RW
+|Memory controller 1 ECC set register
+
+`[5:0]`: MC1 `int_enable`, interrupt enable
+
+`[8]`: MC1 `int_trigger`, interrupt trigger configuration
+
+`[21:16]`: MC1 `int_vector` (RO), interrupt vector (read only)
+
+`[33:32]`: MC1 `ecc_enable`, ECC-related function enable
+
+`[40]`: MC1 `rd_before_wr`, write after read function enable
+
+|
+|0x0708
+|RW
+|Reserved
+
+|Memory controller 1 ECC counter register `Mc1_ecc_cnt`
+|0x0710
+|RW
+|Memory controller 1 ECC counter register
+
+`[7:0]`: MC1 `int_cnt`, configure the ECC checking trigger interrupt count threshold
+
+`[15:8]`: MC1 `int_cnt_err` (RO), ECC check one bit error count (read only)
+
+`[23:16]`: MC1 `int_cnt_fatal` (RO), ECC checking error count (read only)
+
+|Memory controller 1 ECC error count register `Mc1_ecc_cs_cnt`
+|0x0718
+|RO
+|Memory controller 1 ECC error count register
+
+`[7:0]`: MC1 `ecc_cnt_cs_0`, statistics on the number of CS0 ECC checking errors
+
+`[15:8]`: MC1 `ecc_cnt_cs_1`, statistics on the number of CS1 ECC checking errors
+
+`[23:16]`: MC1 `ecc_cnt_cs_2`, statistics on the number of CS2 ECC checking errors
+
+`[31:24]`: MC1 `ecc_cnt_cs_3`, statistics on the number of CS3 ECC checking errors
+
+`[39:32]`: MC1 `ecc_cnt_cs_4`, statistics on the number of CS4 ECC checking errors
+
+`[47:40]`: MC1 `ecc_cnt_cs_5`, statistics on the number of CS5 ECC checking errors
+
+`[55:48]`: MC1 `ecc_cnt_cs_6`, statistics on the number of CS6 ECC checking errors
+
+`[63:56]`: MC1 `ecc_cnt_cs_7`, statistics on the number of CS7 ECC checking errors
+
+|Memory controller 1 ECC checking register `Mc1_ecc_code`
+|0x0720
+|RO
+|Memory controller 1 ECC checking register
+
+`[7:0]`: MC1 `ecc_code_64`, 64-bit ECC checking, invalid when memory directory function is enabled
+
+`[41:32]`: MC1 `ecc_code_256`, 256-bit ECC checking, valid when memory directory function is enabled
+
+`[52:48]`: MC1 `ecc_code_dir`, memory directory ECC checking, valid only when the memory directory function is enabled
+
+`[60:56]`: MC1 `ecc_data_dir`, memory directory ECC data, valid only when the memory directory function is enabled
+
+|Memory controller 1 ECC error address register `Mc1_ecc_addr`
+|0x0728
+|RO
+|Memory controller 1 ECC error address register
+
+`[63:0]`: MC1 `ecc_addr`, ECC checking error address information
+
+|Memory controller 1 ECC error data register 0 `Mc1_ecc_data0`
+
+|0x0730
+|RO
+|Memory controller 1 ECC error data register 0
+
+`[63:0]`: `Mc1_ecc_data0`, data information in case of an ECC checking error.
+64-bit ECC mode data, or 256-bit ECC mode data `[63:0]`
+
+|Memory controller 1 ECC error data register 1 `Mc1_ecc_data1`
+|0x0738
+|RO
+|Memory controller 1 ECC error data register 1
+
+`[63:0]`: Mc1_ecc_data1, data information in case of an ECC checking error.
+256-bit ECC mode data `[127:64]`
+
+|Memory controller 1 ECC error data register 2 `Mc1_ecc_data2`
+|0x0740
+|RO
+|Memory controller 1 ECC error data register 2
+
+`[63:0]`: Mc1_ecc_data1, data information in case of an ECC checking error.
+256-bit ECC mode data `[191:128]`
+
+|Memory controller 1 ECC error data register 3 `Mc1_ecc_data3`
+|0x0748
+|RO
+|Memory controller 1 ECC error data register 3
+
+`[63:0]`: `Mc1_ecc_data3`, data information in case of an ECC checking error.
+256-bit ECC mode data `[255:192]`
+|===

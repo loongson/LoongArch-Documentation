@@ -1,0 +1,198 @@
+[[accessing-by-address-4]]
+==== Accessing by Address
+
+This access is compatible with that of processors such as the 3A3000, where either `0x1fe00000` or `0x3ff00000` can be used for the base address.
+The `0x3ff00000` base address can be disabled via the `disable_0x3ff0` control bit in the Routing Configuration Register.
+
+[[io-control-register-address]]
+.I/O control register address
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|Intisr
+|0x1420
+|32-bit interrupt status register
+
+|Inten
+|0x1424
+|32-bit interrupt enable status register
+
+|Intenset
+|0x1428
+|32-bit set enable register
+
+|Intenclr
+|0x142c
+|32-bit clear enable register
+
+|Intedge
+|0x1434
+|32-bit trigger mode register
+
+|CORE0_INTISR
+|0x1440
+|32-bit interrupt status routed to `CORE0`
+
+|CORE1_INTISR
+|0x1448
+|32-bit interrupt status routed to `CORE1`
+
+|CORE2_INTISR
+|0x1450
+|32-bit interrupt status routed to `CORE2`
+
+|CORE3_INTISR
+|0x1458
+|32-bit interrupt status routed to `CORE3`
+|===
+
+Four processor cores are integrated in the Loongson 3A5000, and the 32-bit interrupt sources described above can be software configured to select the target processor core for the desired interrupt.
+Further, the interrupt sources can be routed to any of the processor cores `INT0` to `INT3`.
+Each of the 32 I/O interrupt sources corresponds to an 8-bit routing controller with the format and addresses shown in <<description-of-the-interrupt-destination-processor-core-routing-register,Description of the interrupt destination processor core routing register>> and <<interrupt-destination-processor-core-routing-register-address,Interrupt destination processor core routing register address>>.
+The routing register uses a vector approach to routing, e.g., `0x48` indicates routing to `INT2` of processor 3.
+
+Starting with the 3A5000, the interrupt pin routing bits are added in a coded manner and are enabled by the `CSR[0x420][49]` bit control.
+When this bit is enabled, the `[7:4]` bits in the table below change from a bitmap representation to a numeric encoding method.
+Configurable values `0`-`7` indicate interrupt pins `0`-`7`.
+For example, in this mode, `0x28` indicates routing to `INT2` on processor 3.
+
+[[description-of-the-interrupt-routing-register]]
+.Description of the interrupt routing register
+[%header,cols="1m,3"]
+|===
+d|Bit Field
+|Description
+
+|3:0
+|Processor core vector number for routing
+
+|7:4
+|Processor core interrupt pin vector number for routing
+|===
+
+[[interrupt-routing-register-address-1]]
+.Interrupt routing register address
+[%header,cols="1m,1m,2,1m,1m,2"]
+|===
+d|Name
+d|Offset Address
+|Description
+d|Name
+d|Offset Address
+|Description
+
+|Entry0
+|0x1400
+|`GPIO24`/`16`/`8`/`0`
+|Entry16
+|0x1410
+|`HT0-int0`
+
+|Entry1
+|0x1401
+|`GPIO25`/`17`/`9`/`1`
+|Entry17
+|0x1411
+|`HT0-int1`
+
+|Entry2
+|0x1402
+|`GPIO26`/`18`/`10`/`2`
+|Entry18
+|0x1412
+|`HT0-int2`
+
+|Entry3
+|0x1403
+|`GPIO27`/`19`/`11`/`3`
+|Entry19
+|0x1413
+|`HT0-int3`
+
+|Entry4
+|0x1404
+|`GPIO28`/`20`/`12`/`4`
+|Entry20
+|0x1414
+|`HT0-int4`
+
+|Entry5
+|0x1405
+|`GPIO29`/`21`/`13`/`5`
+|Entry21
+|0x1415
+|`HT0-int5`
+
+|Entry6
+|0x1406
+|`GPIO30`/`22`/`14`/`6`
+|Entry22
+|0x1416
+|`HT0-int6`
+
+|Entry7
+|0x1407
+|`GPIO31`/`23`/`15`/`7`
+|Entry23
+|0x1417
+|`HT0-int7`
+
+|Entry8
+|0x1408
+|`I2C0`
+|Entry24
+|0x1418
+|`HT1-int0`
+
+|Entry9
+|0x1409
+|`I2C1`
+|Entry25
+|0x1419
+|`HT1-int1`
+
+|Entry10
+|0x140a
+|`UART0`
+|Entry26
+|0x141a
+|`HT1-int2`
+
+|Entry11
+|0x140b
+|`MC0`
+|Entry27
+|0x141b
+|`HT1-int3`
+
+|Entry12
+|0x140c
+|`MC1`
+|Entry28
+|0x141c
+|`HT1-int4`
+
+|Entry13
+|0x140d
+|`SPI`
+|Entry29
+|0x141d
+|`HT1-int5`
+
+|Entry14
+|0x140e
+|`Thsens`
+|Entry30
+|0x141e
+|`HT1-int6`
+
+|Entry15
+|0x140f
+|`UART1`
+|Entry31
+|0x141f
+|`HT1-int7`
+|===

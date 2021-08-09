@@ -1,0 +1,50 @@
+[[uart-controller]]
+=== UART Controller
+
+The UART controller has the following features
+
+* Full duplex asynchronous data receive/send
+
+* Programmable data format
+
+* 16-bit programmable clock counter
+
+* Support for receive timeout detection
+
+* Multi-interrupt system with arbitration
+
+* FIFO-only operation
+
+* Compatible with NS16550A in terms of registers and functions
+
+Two UART interfaces are integrated inside the chip, and the functional registers are exactly the same, only the access base address is different.
+UART0 register physical address base address is `0x1FE001E0`.
+
+UART1 register physical address base address is `0x1FE001E8`.
+
+A physical address is also provided for each of the two UARTs, `0x1FE00100` (`UART0`) and `0x1FE00110` (`UART1`) respectively.
+The two additional registers `RFC` and `TFC` can be accessed through this set of addresses.
+
+include::uart-controller/data-transport-register.adoc[]
+
+include::uart-controller/interrupt-enable-register.adoc[]
+
+include::uart-controller/interrupt-identity-register.adoc[]
+
+include::uart-controller/fifo-control-register.adoc[]
+
+include::uart-controller/line-control-register.adoc[]
+
+include::uart-controller/modem-control-register.adoc[]
+
+include::uart-controller/line-state-register.adoc[]
+
+include::uart-controller/modem-state-register.adoc[]
+
+include::uart-controller/receive-fifo-counter.adoc[]
+
+include::uart-controller/transport-fifo-counter.adoc[]
+
+include::uart-controller/frequency-division-latchs.adoc[]
+
+include::uart-controller/use-of-new-registers.adoc[]

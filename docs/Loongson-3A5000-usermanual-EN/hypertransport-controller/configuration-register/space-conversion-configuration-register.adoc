@@ -1,0 +1,75 @@
+[[space-conversion-configuration-register]]
+==== Space Conversion Configuration Register
+
+Used to perform various transformations of the HT's configuration space.
+
+Offset: `0x168`
+
+Reset value: `0x00000000`
+
+Name: Configuration space extension address translation
+
+[[definition-of-configuration-space-extended-address-translation-register]]
+.Definition of configuration space extended address translation register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_rx_header_trans_ext
+|1
+|0x1
+|R/W
+|Adjust the converted address type1 flag bit of the configuration space (`0xFD_FE000000`) from 24 bits to 28 bits for unification with the EXT HEADER space
+
+|30
+|ht_rx_header_trans_en
+|1
+|0x1
+|R/W
+|Enable the high address (`[39:24]`) of the configuration space (`0xFD_FE000000`) to be converted
+
+|29:0
+|ht_rx_header_trans[53:24]
+|30
+|0xFE00
+|R/W
+|High address `[53:24]` after configuration space conversion (only `[53:25]` is actually available)
+|===
+
+Offset: `0x16C`
+
+Reset value: `0x00000000`
+
+Name: Extended address translation
+
+[[definition-of-extended-address-translation-register]]
+.Definition of extended address translation register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|30
+|ht_rx_ext_header_trans_en
+|1
+|0x0
+|R/W
+|Enables the high address (`[39:28]`) of the extended configuration space (`0xFE_00000000`) to be converted
+
+|29:0
+|ht_rx_ext_header_trans[53:24]
+|30
+|0x0
+|R/W
+|High address `[53:24]` after extended configuration space conversion (only `[53:29]` is actually available)
+|===

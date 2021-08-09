@@ -1,0 +1,51 @@
+[[parameter-control-register]]
+==== Parameter Control Register (`SFC_PARAM`)
+
+Name: SPI FLASH parameter control register
+
+Length: `[7:0]`
+
+Offset: `0x04`
+
+Reset value: `0x21`
+
+[[table-parameter-control-register]]
+.Parameter control register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:4
+|clk_div
+|4
+|RW
+|Clock division number selection (the division factor is the same as the `{spre, spr}` combination)
+
+|3
+|dual_io
+|1
+|RW
+|Use dual I/O mode with higher priority than fast read mode
+
+|2
+|fast_read
+|1
+|RW
+|Use fast read mode
+
+|1
+|burst_en
+|1
+|RW
+|SPI FLASH supports continuous address read mode
+
+|0
+|memory_en
+|1
+|RW
+|SPI FLASH read enable, when invalid `csn[0]` can be controlled by software
+|===

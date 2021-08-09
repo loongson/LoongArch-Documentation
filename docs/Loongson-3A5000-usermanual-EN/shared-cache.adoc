@@ -1,0 +1,219 @@
+[[shared-cache]]
+== Shared Cache (SCache)
+
+The SCache module is a three-level Cache shared by all processor cores within the Loongson 3A5000 processor.
+The main features of the SCache module include:
+
+* 16-item Cache access queue.
+
+* Keyword priority.
+
+* Supports Cache Consistency Protocol through directories.
+
+* Can be used in on-chip multi-core architectures or directly interfaced with single-processor IP.
+
+* 16-way group concatenation architecture.
+
+* Supports ECC checksum.
+
+* Supports DMA consistent read/write and prefetch reads.
+
+* Supports 16 types of shared Cache hashing.
+
+* Supports shared Cache by window lock.
+
+* Guaranteed read data return atomicity.
+
+The shared Cache module includes the shared Cache management module `scachemanage` and the shared Cache access module `scacheaccess`.
+`scachemanage` is responsible for processing access requests from processors and DMAs, while the shared Cache TAG, directory and data information is stored in the `scacheaccess` module.
+To reduce power consumption, the TAG, directory and data of the shared Cache can be accessed separately.
+The shared Cache status bits and `w` bits are stored together with TAG, TAG is stored in TAG RAM, directory is stored in DIR RAM and data is stored in DATA RAM.
+Failure request accesses the shared Cache and reads the TAG, directory of all roads at the same time and picks the directory according to TAG and reads the data according to the hit.
+Replacement requests, refill requests and write back requests operate only on the TAGs, directories and data of one way.
+
+To improve the performance of some specific computing tasks, a locking mechanism is added to the shared Cache.
+Blocks that fall in the locked area of the Shared Cache are locked and therefore will not be replaced out of the Shared Cache (unless all `16` paths of the Shared Cache contain locked blocks).
+
+The four sets of lock window registers inside the shared Cache module can be dynamically configured through the chip configuration register space, but it must be ensured that one of the `16` Shared Caches must not be locked.
+In addition, when the shared Cache receives a DMA write request, if the area to be written is hit and locked in the shared Cache, then the DMA write will be written directly to the shared Cache.
+
+[[shared-cache-lock-window-register-configuration]]
+.Shared Cache lock window register configuration
+[%header,cols="2m,1m,1m,3"]
+|===
+d|Name
+d|Address
+d|Bit Field
+|Description
+
+|Slock0_valid
+|0x00200
+|[63:63]
+|Valid bits for lock window 0
+
+|Slock0_addr
+|0x00200
+|[47:0]
+|Lock address for lock window 0
+
+|Slock0_mask
+|0x00240
+|[47:0]
+|Mask for lock window 0
+
+|Slock1_valid
+|0x00208
+|[63:63]
+|Valid bits for lock window 1
+
+|Slock1_addr
+|0x00208
+|[47:0]
+|Lock address for lock window 1
+
+|Slock1_mask
+|0x00248
+|[47:0]
+|Mask for lock window 1
+
+|Slock2_valid
+|0x00210
+|[63:63]
+|Valid bits for lock window 2
+
+|Slock2_addr
+|0x00210
+|[47:0]
+|Lock address for lock window 2
+
+|Slock2_mask
+|0x00250
+|[47:0]
+|Mask for lock window 2
+
+|Slock3_valid
+|0x00218
+|[63:63]
+|Valid bits for lock window 3
+
+|Slock3_addr
+|0x00218
+|[47:0]
+|Lock address for lock window 3
+
+|Slock3_mask
+|0x00258
+|[47:0]
+|Mask for lock window 3
+|===
+
+For example, when an address addr causes `slock0_valid && ((addr & slock0_mask) == (slock0_addr & slock0_mask))` to be `1`, the address is locked by lock window 0.
+
+The `4` SCache use the same configuration register with base address `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR), and offset address `0x0280`.
+
+[[shared-cache-configuration-register]]
+.Shared Cache configuration register (`SC_CONFIG`)
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|0
+|LRU en
+|RW
+|1'b1
+|SCache LRU replacement algorithm enable
+
+|16
+|Prefetch En
+|RW
+|1'b1
+|SCache prefetch function enable
+
+|22:20
+|Prefetch config
+|RW
+|3'h1
+|Stop prefetching when SCache prefetching exceeds the address range of the configured size
+
+`0` - `4KB`
+
+`1` - `16KB`
+
+`2` - `64KB`
+
+`3` - `1MB`
+
+`7` - Unlimited
+
+(Note: Valid when `SCID_SEL==0`)
+
+|26:24
+|Prefetch lookahead
+|RW
+|3'h2
+|SCache prefetch size
+
+`0` - Reserved
+
+`1` - `0x100`
+
+`2` - `0x200`
+
+`3` - `0x300`
+
+`4` - `0x400`
+
+`5` - `0x500`
+
+`6` - `0x600`
+
+`7` - `0x700`
+
+(Note: Valid when `SCID_SEL==0`)
+
+|30:28
+|Sc stall dirq cycle
+|RW
+|3'h2
+|Number of clock cycles of `SC` instruction blocking `dirq`
+
+`0` - `1` cycle (nonstall)
+
+`1` - `16`-`31` cycle random
+
+`2` - `32`-`63` cycle random
+
+`3` - `64`-`127` cycle random
+
+`4` - `128`-`255` cycle random
+
+Other - Invalid
+
+|31
+|MCC storefill en
+|RW
+|1'b0
+|MCC storefill function enable
+
+|34:32
+|
+|
+|
+|
+
+|35
+|MCC clean exclusive replace en
+|RW
+|1'b0
+|
+
+|36
+|MCC clean shared replace en
+|RW
+|1'b0
+|
+|===

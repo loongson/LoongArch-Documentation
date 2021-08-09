@@ -1,0 +1,43 @@
+[[chip-configuration-register]]
+== Chip Configuration Register
+
+The chip configuration registers in the Loongson3A5000 provide a mechanism for reading and writing configuration of various functions of the chip. The individual configuration registers are described in detail below.
+
+The base address of each chip configuration register in this chapter is 0x1fe00000, which can also be accessed using the configuration register instruction (IOCSR).
+
+CSR[A][B] in this document indicates bit B in the IOCSR register with offset address A, where B can be a range.
+
+
+include::chip-configuration-register/version-register.adoc[]
+
+include::chip-configuration-register/chip-characteristics-register.adoc[]
+
+include::chip-configuration-register/manufacturer-name-register.adoc[]
+
+include::chip-configuration-register/chip-name-register.adoc[]
+
+include::chip-configuration-register/function-configuration-register.adoc[]
+
+include::chip-configuration-register/pin-controller-driver-configuration-register.adoc[]
+
+include::chip-configuration-register/function-collection-register.adoc[]
+
+include::chip-configuration-register/temperature-collection-register.adoc[]
+
+include::chip-configuration-register/frequency-configuration-register.adoc[]
+
+include::chip-configuration-register/processor-core-frequency-division-configuration-register.adoc[]
+
+include::chip-configuration-register/processor-core-reset-control-register.adoc[]
+
+include::chip-configuration-register/routing-configuration-register.adoc[]
+
+include::chip-configuration-register/other-function-configuration-register.adoc[]
+
+include::chip-configuration-register/centigrade-temperature-register.adoc[]
+
+include::chip-configuration-register/sram-adjustment-register.adoc[]
+
+include::chip-configuration-register/fuse0-observation-register.adoc[]
+
+include::chip-configuration-register/fuse1-observation-register.adoc[]

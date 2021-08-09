@@ -1,0 +1,135 @@
+[[software-frequency-configuration-register]]
+==== Software Frequency Configuration Register
+
+The controller is used to switch to the link frequency and controller frequency supported by any protocol and PLL during operation; the specific switching method is: under the premise of enabling software configuration mode, set bit `1` of the software frequency configuration register and write the new clock-related parameters, including `div_refc` and `div_loop`, which determine the PLL output frequency, the link `div_hi_div` and `phy_lo_div`, and the controller's divide factor `core_div`.
+The controller will automatically reset the PLL and configure the new clock parameters by entering warm reset or `LDT` disconnect.
+
+`PHY_LINK_CLK` is the HT bus frequency.
+The clock frequency is calculated by the formula:
+
+When using `SYS_CLOCK` as the reference clock input and `SYS_CLOCK` is `25MHz` (`CLKSEL[8]` is `1` and `CLKSEL[5]` is `1`), the frequency is calculated as follows:
+
+HyperTransport 1.0:
+
+`PHY_LINK_CLK = 12.5MHz &#215; div_loop / div_refc / phy_div`
+
+HyperTransport 3.0:
+
+`PHY_LINK_CLK = 25MHz &#215; div_loop / div_refc / phy_div`
+
+In other cases, the frequency is calculated as:
+
+HyperTransport 1.0:
+
+`PHY_LINK_CLK = 50MHz &#215; div_loop / div_refc / phy_div`
+
+HyperTransport 3.0:
+
+`PHY_LINK_CLK = 100MHz &#215; div_loop / div_refc / phy_div`
+
+The wait time for PLL re-lock is approximately `30us` by default with system clk at `33M`; a custom wait count limit can also be written into the register.
+
+Note that in the 3A5000, `HT_CORE_CLK` is no longer controlled by this configuration, but by the NODE clock divider.
+
+Offset: `0x1F4`
+
+Reset value: `0x00000000`
+
+Name: Software frequency configuration register
+
+[[table-software-frequency-configuration-register]]
+.Software frequency configuration register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:27
+|PLL relock counter
+|5
+|0x0
+|R/W
+|Counter limit configuration register, when set counter select, the counter limit is `{PLL_relock_counter ,5'h1f}`, otherwise the count limit is `10'3ff`
+
+|26
+|Counter select
+|1
+|0x0
+|R/W
+|Lock Timer Custom Enable.
+
+`1'b0` - using the default count limit
+
+`1'b1` - calculated by `PLL_relock_counter`
+
+|25
+|Reserved
+|1
+|0x0
+|R
+|Reserved
+
+|24:16
+|Soft_div_loop
+|7
+|0x0
+|R/W
+|PLL internal frequency multiplication factor
+
+|15:12
+|Soft_div_refc
+|4
+|0x0
+|R/W
+|PLL internal dividing factor
+
+|11:8
+|Soft_phy_hi_div
+|4
+|0x0
+|R/W
+|High PHY frequency division factor
+
+|7:4
+|Soft_phy_lo_div
+|4
+|0x0
+|R/W
+|Low PHY frequency division factor
+
+|3
+|Locked
+|1
+|0x0
+|R
+|Lock Flag
+
+|2
+|Reserved
+|1
+|0x0
+|R
+|Reserved
+
+|1
+|Soft cofig enable
+|1
+|0x0
+|R/W
+|Software configuration enable bit.
+
+`1'b0` - disable software frequency configuration
+
+`1'b1` - enables software frequency configuration
+
+|0
+|Reserved
+|1
+|0x0
+|R
+|Reserved
+|===

@@ -1,0 +1,16 @@
+[[pic-interrupts]]
+==== PIC Interrupts
+
+The controller has made special support for PIC interrupts to speed up the processing of this type of interrupt.
+
+A typical PIC interrupt is completed by the following steps:
+
+. The PIC controller sends a PIC interrupt request to the system.
+. The system sends an interrupt vector query to the PIC controller.
+. The PIC controller sends an interrupt vector number to the system.
+. The system clears the corresponding interrupt on the PIC controller.
+
+Only after all the above `4` steps are completed, the PIC controller will send the next interrupt to the system.
+For the Loongson 3A5000 HyperTransport controller, the first `3` steps will be processed automatically and the PIC interrupt vector will be written to the corresponding location in the `256` interrupt vectors.
+And after the software system has processed the interrupt, it needs to process step 4, which is to issue a clear interrupt to the PIC controller.
+After that, the processing of the next interrupt starts.

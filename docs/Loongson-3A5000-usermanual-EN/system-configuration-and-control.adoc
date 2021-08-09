@@ -1,0 +1,6 @@
+[[system-configuration-and-control]]
+== System Configuration and Control
+
+include::system-configuration-and-control/chip-operating-modes.adoc[]
+
+include::system-configuration-and-control/descriptions-of-pins.adoc[]

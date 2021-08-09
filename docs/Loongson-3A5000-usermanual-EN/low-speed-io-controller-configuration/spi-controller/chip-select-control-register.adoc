@@ -1,0 +1,33 @@
+[[chip-select-control-register]]
+==== Chip Select Control Register (`SFC_SOFTCS`)
+
+Name: SPI FLASH chip select control register
+
+Length: `[7:0]`
+
+Offset: `0x05`
+
+Reset value: `0x00`
+
+[[table-chip-select-control-register]]
+.Chip select control register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:4
+|csn
+|4
+|RW
+|csn pin output
+
+|3:0
+|csen
+|4
+|RW
+|The `cs` line corresponding to the bit with `1` is controlled by the `[7:4]` bits
+|===

@@ -1,0 +1,337 @@
+[[interrupt-vector-register]]
+==== Interrupt Vector Register
+
+There are `256` interrupt vector registers, among which `Fix`, `Arbiter` and PIC interrupts on the HT bus are directly mapped to these `256` interrupt vectors, while other interrupts such as `SMI`, `NMI`, `INIT`, `INTA`, `INTB`, `INTC`, `INTD` can be mapped to any 8-bit interrupt vector through register `0x50[28:24]`.
+The mapping order is `{INTD, INTC, INTB, INTA, 1'b0, INIT, NMI, SMI}`.
+The corresponding value of the interrupt vector is `{Interrupt Index, internal vector [2:0]}`.
+
+By default, 256-bit interrupts can be distributed to 4-bit interrupt lines.
+When not using interrupts from the high 8-bit HT controller, 256-bit interrupts can also be distributed to 8-bit interrupt lines by setting `ht_int_8bit`.
+
+The 256 interrupt vectors are mapped to different interrupt lines by selecting different register configurations according to the interrupt routing method as follows:
+
+[[interrupt-vectors-mapping]]
+.Interrupt vectors mapping
+[%header,cols="2m,9*1m"]
+|===
+d|Number of interruptions
+d|Strip
+|0
+|1
+|2
+|3
+|4
+|5
+|6
+|7
+
+.3+|4
+
+X = [63:0]
+|1
+|[X]
+|[X+64]
+|[X+128]
+|[X+192]
+|-
+|-
+|-
+|-
+
+|2
+|[2X]
+|[2X+1]
+|[2X+128]
+|[2X+129]
+|-
+|-
+|-
+|-
+
+|4
+|[4X]
+|[4X+1]
+|[4X+2]
+|[4X+3]
+|-
+|-
+|-
+|-
+
+.3+|8
+
+X = [31:0]
+
+Y = [63:32]
+|1
+|[X]
+|[Y]
+|[X+64]
+|[Y+64]
+|[X+128]
+|[Y+128]
+|[X+192]
+|[Y+192]
+
+|2
+|[2X]
+|[2Y]
+|[2X+1]
+|[2Y+1]
+|[2X+128]
+|[2Y+128]
+|[2X+129]
+|[2Y+129]
+
+|4
+|[4X]
+|[4X+32]
+|[4X+1]
+|[4X+33]
+|[4X+2]
+|[4X+34]
+|[4X+3]
+|[4X+35]
+|===
+
+As an example of using a 4-bit interrupt line, the different mappings are as follows.
+
+`ht_int_stripe_1`:
+
+`[0,1,2,3......63]` Corresponding to interrupted line `0` / HT HI Corresponding to interrupted line `4`
+
+`[64,65,66,67......127]` Corresponding interrupt line `1` / HT HI Corresponding interrupt line `5`
+
+`[128,129,130,131 ......191]` corresponds to interrupted line `2` / HT HI corresponds to interrupted line `6`
+
+`[192,193,194,195 ......255]` corresponds to the broken line `3` / HT HI corresponds to the broken line `7`
+
+`ht_int_stripe_2`:
+
+`[0,2,4,6 ......126]` corresponds to interrupt line `0` / HT HI corresponds to interrupt line `4`
+
+`[1,3,5,7 ......127]` corresponds to interrupt line `1` / HT HI corresponds to interrupt line `5`
+
+`[128,130,132,134 ......254]` corresponds to interrupted line `2` / HT HI corresponds to interrupted line `6`
+
+`[129,131,133,135 ......255]` corresponds to the interrupt line `3` / HT HI corresponds to the interrupt line `7`
+
+`ht_int_stripe_4`:
+
+`[0,4,8,12 ......252]` corresponds to interrupt line `0` / HT HI corresponds to interrupt line `4`
+
+`[1,5,9,13 ......253]` corresponds to interrupt line `1` / HT HI corresponds to interrupt line `5`
+
+`[2,6,10,14 ......254]` corresponds to interrupted line `2` / HT HI corresponds to interrupted line `6`
+
+`[3,7,11,15 ......255]` corresponds to interrupted line `3` / HT HI corresponds to interrupted line `7`
+
+The following description of the interrupt vector corresponds to `ht_int_stripe_1`, the other two ways can be obtained from the above description.
+
+Offset: `0x80`
+
+Reset value: `0x00000000`
+
+Name: HT bus interrupt vector register [31:0]
+
+[[ht-bus-interrupt-vector-register-definition-1]]
+.HT bus interrupt vector register definition 1
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_case[31:0]
+|32
+|0x0
+|R/W
+|HT bus interrupt vector register `[31:0]` corresponds to interrupt line `0`.
+HT HI corresponds to interrupt line `4`
+|===
+
+Offset: `0x84`
+
+Reset value: `0x00000000`
+
+Name: HT bus interrupt vector register[63:32]
+
+[[ht-bus-interrupt-vector-register-definition-2]]
+.HT bus interrupt vector register definition 2
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_case[63:32]
+|32
+|0x0
+|R/W
+|HT bus interrupt vector register `[63:32]` corresponds to interrupt line `0`.
+HT HI corresponds to interrupt line `4`
+|===
+
+Offset: `0x88`
+
+Reset value: `0x00000000`
+
+Name: HT Bus Interrupt Vector Register [95:64]
+
+[[ht-bus-interrupt-vector-register-definition-3]]
+.HT bus interrupt vector register definition 3
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_case[95:64]
+|32
+|0x0
+|R/W
+|HT bus interrupt vector register `[95:64]` corresponds to interrupt line `1`.
+HT HI corresponds to interrupt line `5`
+|===
+
+Offset: `0x8c`
+
+Reset value: `0x00000000`
+
+Name: HT bus interrupt vector register [127:96]
+
+[[ht-bus-interrupt-vector-register-definition-4]]
+.HT bus interrupt vector register definition 4
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_case[127:96]
+|32
+|0x0
+|R/W
+|HT bus interrupt vector register `[127:96]` corresponds to interrupt line `1`.
+HT HI corresponds to interrupt line `5`
+|===
+
+Offset: `0x90`
+
+Reset value: `0x00000000`
+
+Name: HT bus interrupt vector register [159:128]
+
+[[ht-bus-interrupt-vector-register-definition-5]]
+.HT bus interrupt vector register definition 5
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_case[159:128]
+|32
+|0x0
+|R/W
+|HT bus interrupt vector register `[159:128]` corresponds to interrupt line `2`.
+HT HI corresponds to interrupt line `6`
+|===
+
+Offset: `0x94`
+
+Reset value: `0x00000000`
+
+Name: HT bus interrupt vector register [191:160]
+
+[[ht-bus-interrupt-vector-register-definition-6]]
+.HT bus interrupt vector register definition 6
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_case[191:160]
+|32
+|0x0
+|R/W
+|HT bus interrupt vector register `[191:160]` corresponds to interrupt line `2`.
+HT HI corresponds to interrupt line `6`
+|===
+
+Offset: `0x98`
+
+Reset value: `0x00000000`
+
+Name: HT bus interrupt vector register [223:192]
+
+[[ht-bus-interrupt-vector-register-definition-7]]
+.HT bus interrupt vector register definition 7
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_case[223:192]
+|32
+|0x0
+|R/W
+|HT bus interrupt vector register `[223:192]` corresponds to interrupt line `3`.
+HT HI corresponds to interrupt line `7`
+|===
+
+Offset: `0x9c`
+
+Reset value: `0x00000000`
+
+Name: HT bus interrupt vector register [255:224]
+
+[[ht-bus-interrupt-vector-register-definition-8]]
+.HT bus interrupt vector register definition 8
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Interrupt_case[255:224]
+|32
+|0x0
+|R/W
+|HT bus interrupt vector register `[255:224]` corresponds to interrupt line `3`.
+HT HI corresponds to interrupt line `7`
+|===

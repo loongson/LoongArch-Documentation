@@ -1,0 +1,104 @@
+[[control-of-temperature-sensors]]
+=== Control of temperature sensors
+
+The 3A5000 has `4` internal temperature sensors, which can be configured via registers to adjust the temperature/voltage monitoring, monitoring point configuration and monitoring frequency, etc.
+The output of each temperature sensor can also be directly observed for debugging (base address is `0x1FE00000`,It can also be accessed using the configuration register instruction (IOCSR), offset address of temperature sensor configuration register is `0x01580+vtsensor_id<<4`, offset address of temperature sensor data register is `0x01588+vtsensor_id<<4`).
+
+Note that the voltage monitoring function is currently not available
+
+[[description-of-temperature-sensor-configuration-register]]
+.Description of temperature sensor configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|0
+|Thsens_trigger
+|RW
+|0
+|Enable temperature sensor configuration.
+If set, monitoring mode and monitoring point can be selected by `thsens_mode` and `thsens_cluster`; `0` is the default temperature monitoring mode and the monitoring point is configured by `temp_cluster`
+
+|2
+|Thsens_mode
+|RW
+|0
+|`0`: temperature mode; `1`: voltage mode
+
+|3
+|Thsens_datarate
+|RW
+|0
+|Monitoring frequency:
+
+`0` - `10`–`20Hz`
+
+`1` - `325`–`650Hz`
+
+|6:4
+|Thsens_cluster
+|RW
+|0
+|Sensor monitoring point configuration: `0` is local monitoring point, `1`–`7` is remote monitoring point
+
+|8
+|Temp_valid
+|RW
+|0
+|Enable the temperature sensor output and replace the value of `Thsens0_out` and `Thsens0_overflow` in `CSR[0x198]` with the temperature monitoring value of this temperature sensor.
+
+|11:9
+|Temp_cluster
+|RW
+|0
+|Temperature sensor output monitoring point selection.
+It is disabled when `Thsens_trigger` is enabled
+|===
+
+[[description-of-temperature-sensor-data-register]]
+.Description of temperature sensor data register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|3
+|Out_mode
+|R
+|0
+|Monitoring mode for sensor configuration
+
+`0`: temperature mode; `1`: voltage mode
+
+|6:4
+|Out_cluster
+|R
+|0
+|Monitoring points for sensor configuration
+
+|7
+|Overflow
+|R
+|0
+|Overflow of sensor monitoring values
+
+|29:16
+|Data
+|R
+|0
+|Sensor readout monitoring values
+|===
+
+Calculation of the readout value:
+
+`Node temperature = data*731/0x4000 - 273` (temperature range `-40` degrees - `125` degrees)
+
+`Voltage = data*1.226/0x1000`
+

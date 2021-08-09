@@ -1,0 +1,92 @@
+[[interrupt-identity-register]]
+==== Interrupt Identity Register (`IIR`)
+
+Name: Interrupt source register
+
+Length: `[7:0]`
+
+Offset: `0x02`
+
+Reset value: `0xc1`
+
+[[table-interrupt-identity-register]]
+.Interrupt identity register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:4
+d|Reserved
+|4
+|R
+|Reserved
+
+|3:1
+|II
+|3
+|R
+|Bits to indicate the interrupt source, as detailed in the following table
+
+|0
+|INTp
+|1
+|R
+|Bits to indicate the interrupt
+|===
+
+[[table-of-interrupt-control-function]]
+.Table of interrupt control function
+[%header,cols="3*^1m,1,3*2"]
+|===
+d|Bit `3`
+d|Bit `2`
+d|Bit `1`
+d|Priority
+|Interrupt Type
+|Interrupt Source
+|Interrupt Reset Control
+
+|0
+|1
+|1
+|1st
+|Receive line status
+|Odd or even, overflow, frame errors, or interrupt interruptions
+|Read `LSR`
+
+|0
+|1
+|0
+|2nd
+|Valid data received
+|The number of characters in the `FIFO` reaches the level of a trigger
+|The number of characters in the `FIFO` is lower than the trigger value
+
+|1
+|1
+|0
+|2nd
+|Receive timeout
+|At least one character in the `FIFO`, but no operations, including read and write operations, during the 4-character transport time
+|Read receive `FIFO`
+
+|0
+|0
+|1
+|3rd
+|Transport save register is empty
+|Transport save register is empty
+|Write data to `THR` or read `IIR`
+
+|0
+|0
+|0
+|4th
+|Modem status
+|`CTS`, `DSR`, `RI` or `DCD`
+|Read `MSR`
+|===

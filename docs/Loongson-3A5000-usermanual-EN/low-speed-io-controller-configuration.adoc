@@ -1,0 +1,11 @@
+[[low-speed-io-controller-configuration]]
+== Low-speed I/O Controller Configuration
+
+The Loongson 3 I/O controllers include a UART controller, SPI controller, I2C and GPIO registers.
+These I/O controllers share an AXI port, and CPU requests are sent to the corresponding devices after address decoding.
+
+include::low-speed-io-controller-configuration/uart-controller.adoc[]
+
+include::low-speed-io-controller-configuration/spi-controller.adoc[]
+
+include::low-speed-io-controller-configuration/i2c-controller.adoc[]

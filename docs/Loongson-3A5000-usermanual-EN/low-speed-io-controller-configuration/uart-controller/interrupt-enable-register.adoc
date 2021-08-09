@@ -1,0 +1,59 @@
+[[interrupt-enable-register-2]]
+==== Interrupt Enable Register (`IER`)
+
+Name: Interrupt enable register
+
+Length: `[7:0]`
+
+Offset: `0x01`
+
+Reset value: `0x00`
+
+[[interrupt-enable-register]]
+.Interrupt enable register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:4
+d|Reserved
+|4
+|RW
+|Reserved
+
+|3
+|IME
+|1
+|RW
+|Modem status interrupt enable
+
+`0` - off, `1` - on
+
+|2
+|ILE
+|1
+|RW
+|Receiver line status interrupt enable
+
+`0` - off, `1` - on
+
+|1
+|ITxE
+|1
+|RW
+|Transport save register empty interrupt enable
+
+`0` - off, `1` - on
+
+|0
+|IRxE
+|1
+|RW
+|Receive valid data interrupt enable
+
+`0` - off, `1` - on
+|===

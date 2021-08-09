@@ -1,0 +1,13 @@
+[[inter-processor-interrupts-and-communication]]
+== Inter-Processor Interrupts and Communication
+
+The Loongson 3A5000 implements eight inter-processor interrupt registers (IPI) for each processor core to support interrupts and communication between processor cores during multi-core BIOS boot and OS runtime.
+
+Two different access modes are supported in the Loongson 3A5000, one is an address access mode compatible with processors such as the 3A3000, and the other is designed to support direct private access to the processor register space.
+Separate descriptions are provided in later sections.
+
+include::inter-processor-interrupts-and-communication/accessing-by-address.adoc[]
+
+include::inter-processor-interrupts-and-communication/accessing-by-configuration-register-instructions.adoc[]
+
+include::inter-processor-interrupts-and-communication/debug-support-for-configuration-register-instructions.adoc[]

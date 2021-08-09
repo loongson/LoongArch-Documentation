@@ -2,5 +2,5 @@
 === Description of HDA Control Register
 
 The HDA control registers are designed in full accordance with the HD audio Rev 1.0 specification.
-The following table lists the main register parameters.footnote:[Translator`'s note: The original table is missing.]
+The following table lists the main register parameters.{empty}footnote:[Translator`'s note: The original table is missing.]
 Refer to the HD audio Rev 1.0 manual for details.

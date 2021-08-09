@@ -1,0 +1,12 @@
+[[physical-address-space-layout]]
+== Physical Address Space Layout
+
+The Loongson 3 Seriesprocessor has a globally accessible hierarchical addressing design for system physical address distribution to ensure extended system development compatibility.
+The physical address width of the entire system is `48` bits.
+The entire address space is evenly distributed over 16 nodes according to the high `4` bits of the address, i.e., `44` bits of address space per node.
+
+include::physical-address-space-layout/physical-address-space-layout-between-nodes.adoc[]
+
+include::physical-address-space-layout/physical-address-space-layout-within-nodes.adoc[]
+
+include::physical-address-space-layout/address-routing-layout-and-configuration.adoc[]

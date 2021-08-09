@@ -1,0 +1,32 @@
+[[introduction-to-ddr4-sdram-controller-functions]]
+=== Introduction to DDR4 SDRAM Controller Functions
+
+The Loongson 3A5000 processor supports both DDP and 3DS packaging modes.
+The DDP supports up to `8` CSs (implemented by `8` DDR3/DDR4 SDRAM chip select signals, i.e., `4` double-sided memory sticks) and the 3DS supports up to `4` CSs (implemented by `8` DDR4 SDRAM chip select signals, i.e., `32` logical RANKS).
+A total of `22` bits of address bus (i.e., `18` bits of row address bus, `2` bits of logical Bank bus and `2` bits of logical Bank Group bus, where the row address bus is multiplexed with `RASn`, `CASn`, and `Wen`).
+
+The Loongson 3A5000 processor can adjust the DDR4 controller parameter settings to support different memory chip types when they are specifically selected for use.
+The maximum supported chip selection (`CS_n`) is `8`, the number of logical RANKS (`Chip ID`) is `8`, the number of row addresses (`ROW`) is `18`, the number of column addresses (`COL`) is `12`, the number of logical body selections (`BANK`) is `2` (DDR4), and the number of logical body groups (`BANK Group`) is `2`.
+The multiplexing relationship between `CS_n` and `Chip ID` can be matched, please see <<ddr4-sdram-parameter-configuration-format,DDR4 SDRAM Parameter Configuration Format>> for details.
+
+The physical address of the memory request sent by the CPU can be mapped in many different ways according to different configurations inside the controller.
+
+The memory control circuitry integrated in the Loongson 3A5000 processor only accepts memory read/write requests from the processor or external devices, and is in the Slave State for all memory read/write operations.
+
+The memory controller in the Loongson 3A5000 processor has the following features:
+
+* Fully flowing operation of commands, read and write data on the interface.
+
+* Memory command merging and sequencing to improve overall bandwidth.
+
+* Configuration register read and write ports, which can modify the basic parameters of memory devices.
+
+* Built-in dynamic delay compensation circuit (DCC) for reliable sending and receiving of data.
+
+* ECC function can detect 1-bit and 2-bit errors on the data path and can automatically correct 1-bit errors.
+
+* DDR3/4 SDRAM support and parameter configuration supports `x4`, `x8`, and `x16` particles.
+
+* Controller to PHY frequency ratio of `1/2`.
+
+* Support data transport rate range from `800Mbps` to `3200Mbps`.

@@ -1,0 +1,96 @@
+[[physical-address-space-layout-between-nodes]]
+=== Physical Address Space Layout Between Nodes
+
+The Loongson 3A5000 processor can be directly connected with `2`/`4`/`8`/`16` 3A5000 chips to build a CC-NUMA system, the processor number of each chip is determined by the pin `NODEID`, and the address space of each chip is distributed as follows:
+
+[[system-global-address-layout-at-the-node-level]]
+.System global address layout at the node level
+[%header,cols="4*^1m"]
+|===
+d|Chip Node ID (NODEID)
+d|`[47:44]` Bits of the Address
+d|Start address
+d|End address
+
+|0
+|0
+|0x0000_0000_0000
+|0x0FFF_FFFF_FFFF
+
+|1
+|1
+|0x1000_0000_0000
+|0x1FFF_FFFF_FFFF
+
+|2
+|2
+|0x2000_0000_0000
+|0x2FFF_FFFF_FFFF
+
+|3
+|3
+|0x3000_0000_0000
+|0x3FFF_FFFF_FFFF
+
+|4
+|4
+|0x4000_0000_0000
+|0x4FFF_FFFF_FFFF
+
+|5
+|5
+|0x5000_0000_0000
+|0x5FFF_FFFF_FFFF
+
+|6
+|6
+|0x6000_0000_0000
+|0x6FFF_FFFF_FFFF
+
+|7
+|7
+|0x7000_0000_0000
+|0x7FFF_FFFF_FFFF
+
+|8
+|8
+|0x8000_0000_0000
+|0x8FFF_FFFF_FFFF
+
+|9
+|9
+|0x9000_0000_0000
+|0x9FFF_FFFF_FFFF
+
+|10
+|10
+|0xA000_0000_0000
+|0xAFFF_FFFF_FFFF
+
+|11
+|11
+|0xB000_0000_0000
+|0xBFFF_FFFF_FFFF
+
+|12
+|12
+|0xC000_0000_0000
+|0xCFFF_FFFF_FFFF
+
+|13
+|13
+|0xD000_0000_0000
+|0xDFFF_FFFF_FFFF
+
+|14
+|14
+|0xE000_0000_0000
+|0xEFFF_FFFF_FFFF
+
+|15
+|15
+|0xF000_0000_0000
+|0xFFFF_FFFF_FFFF
+|===
+
+When the number of system nodes is less than `16` nodes, the `nodemask` field of the route setting register (`0x1fe00400`) should be set to ensure that a response can be obtained even if there is no physical node address when a guessed access occurs (2-way: `0x1`; 4-way: `0x3`; 8-way: `0x7`; 16-way: `0xF`;footnote:[Translator`'s note: The original content is missing.]).

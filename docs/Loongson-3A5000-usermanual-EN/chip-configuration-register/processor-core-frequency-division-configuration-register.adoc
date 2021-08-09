@@ -1,0 +1,67 @@
+[[processor-core-frequency-division-configuration-register]]
+=== Processor Core Frequency Division Configuration Register (`0x01D0`)
+
+The following registers are used for dynamic frequency division of the processor core.
+Using this register to set the frequency of the processor core, the frequency conversion operation can be done within 100ns with no additional overhead.
+The base address is `0x1fe00000` and the offset address is `0x01d0`.
+
+[[processor-core-software-frequency-division-configuration-register-1]]
+.Processor core software frequency division configuration
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|2:0
+|core0_freqctrl
+|RW
+|0x7
+|Core 0 frequency division control value
+
+|3
+|core0_en
+|RW
+|0x1
+|Core 0 clock enable
+
+|6:4
+|core1_freqctrl
+|RW
+|0x7
+|Core 1 frequency division control value
+
+|7
+|core1_en
+|RW
+|0x1
+|Core 1 clock enable
+
+|10:8
+|core2_freqctrl
+|RW
+|0x7
+|Core 2 frequency division control value
+
+|11
+|core2_en
+|RW
+|0x1
+|Core 2 clock enable
+
+|14:12
+|core3_freqctrl
+|RW
+|0x7
+|Core 3 frequency division control value
+
+|15
+|core3_en
+|RW
+|0x1
+|Core 3 clock enable
+|===
+
+Note: The clock frequency value after software dividing is equal to the original `(dividing control value + 1)/8`.

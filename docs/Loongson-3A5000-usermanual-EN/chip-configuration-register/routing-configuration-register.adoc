@@ -1,0 +1,112 @@
+[[routing-configuration-register]]
+=== Routing Configuration Register (`0x0400`)
+
+The following registers are used to control some of the routing settings within the chip.
+The base address is `0x1fe00000` and the offset address is `0x0400`.
+
+[[chip-routing-configuration-register]]
+.Chip routing configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|3:0
+|scid_sel
+|RW
+|0x0
+|Shared Cache hash bit control
+
+|7:4
+|Node_mask
+|RW
+|0xF
+|Node mask to avoid no response when guessing the address of an unused node
+
+|8
+|xrouter_en
+|RW
+|0x0
+|HT1 inter-chip routing enable control
+
+|9
+|disable_0x3ff0
+|RW
+|0x0
+|Disable routing via base address `0x3ff0_0000` of configuration register space
+
+|10
+|Fast_path_36_en
+|RW
+|0x0
+|Enable `36` fast paths (8-way)
+
+|11
+|Fast_path_27_en
+|RW
+|0x0
+|Enable `27` fast paths (8-way)
+
+|12
+|mcc_en
+|RW
+|0x0
+|MCC mode enable
+
+|14
+|Scahe_1MB
+|RW
+|
+|SCache capacity cut in half
+
+|19:16
+|ccsd_id
+|RW
+|0x0
+|
+
+|24
+|ccsd_en
+|RW
+|0x0
+|
+
+|31:30
+|mc_en
+|RW
+|0x3
+|Enable routing control for both MCs
+
+|37:32
+|interleave_bit
+|RW
+|0x0
+|Memory hash control
+
+|39
+|interleave_en
+|RW
+|0x0
+|Memory hash enable
+
+|43:40
+|ht_control
+|R
+|
+|Ht-related configuration pins
+
+|47:44
+|ht_reg_disable
+|RW
+|0x0
+|Close ht space for consistency mode to avoid routing HT space addresses to HT
+
+|60:56
+|Line_ag_cfg
+|RW
+|0x0
+|Cross-chip bandwidth balancing configuration
+|===

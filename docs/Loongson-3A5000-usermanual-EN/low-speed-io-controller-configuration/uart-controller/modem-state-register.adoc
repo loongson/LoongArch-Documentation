@@ -1,0 +1,69 @@
+[[modem-state-register]]
+==== MODEM State Register (`MSR`)
+
+Name: Modem status register
+
+Length: `[7:0]`
+
+Offset: `0x06`
+
+Reset value: `0x00`
+
+[[table-modem-state-register]]
+.MODEM state register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|CDCD
+|1
+|R
+|The inverse of the `DCD` input, or connected to `Out2` in loopback mode
+
+|6
+|CRI
+|1
+|R
+|The inverse of the `RI` input, or connected to `OUT1` in loopback mode
+
+|5
+|CDSR
+|1
+|R
+|The inverse of the `DSR` input, or connected to `DTR` in loopback mode
+
+|4
+|CCTS
+|1
+|R
+|The inverse of the `CTS` input, or connected to the `RTS` in loopback mode
+
+|3
+|DDCD
+|1
+|R
+|`DDCD` indicator bit
+
+|2
+|TERI
+|1
+|R
+|`RI` edge detection, RI state changes from low to high
+
+|1
+|DDSR
+|1
+|R
+|`DDSR` indicator bit
+
+|0
+|DCTS
+|1
+|R
+|`DCTS` indicator bit
+|===

@@ -1,0 +1,21 @@
+[[version-register]]
+=== Version Register (`0x0000`)
+
+The offset address is `0x0000`.
+
+[[table-version-register]]
+.Version register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|7:0
+|Version
+|R
+|8'h11
+|Configuration register version number
+|===

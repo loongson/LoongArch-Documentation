@@ -1,0 +1,63 @@
+[[control-register-1]]
+==== Control Register (`SPCR`)
+
+Name: SPI FLASH control register
+
+Length: `[7:0]`
+
+Offset: `0x00`
+
+Reset value: `0x10`
+
+[[table-control-register-1]]
+.Control register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|Spie
+|1
+|RW
+|Interrupt output enable signal (active high)
+
+|6
+|spe
+|1
+|RW
+|System operation enable signal (active high)
+
+|5
+|Reserved
+|1
+|RW
+|Reserved
+
+|4
+|mstr
+|1
+|RW
+|Master mode select bit, this bit is always `1`
+
+|3
+|cpol
+|1
+|RW
+|Clock polarity bits
+
+|2
+|cpha
+|1
+|RW
+|Clock phase bit of `1` indicates opposite phase, `0` indicates same phase
+
+|1:0
+|spr
+|2
+|RW
+|`sclk_o` frequency division setting, need to be used with ``sper```'s `spre`
+|===

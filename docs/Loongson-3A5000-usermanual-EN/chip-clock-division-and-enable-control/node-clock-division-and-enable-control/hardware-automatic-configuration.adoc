@@ -1,0 +1,10 @@
+[[hardware-automatic-configuration]]
+==== Hardware Automatic Configuration
+
+In addition to the active setting by the software, the node clock also supports the automatic frequency division setting triggered by the temperature sensor.
+
+The auto-division setting is set by the software in advance for different temperatures, and the corresponding auto-division setting will be triggered when the temperature of the temperature sensor reaches the corresponding preset value.
+
+In order to ensure the operation of the chip in a high-temperature environment, it can be set so that the high temperature automatic frequency reduction, so that the chip in excess of the preset range of active clock division, to achieve the effect of reducing the chip flip rate.
+See 12.3 for details on how to set it up.
+

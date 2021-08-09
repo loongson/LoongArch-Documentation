@@ -1,0 +1,255 @@
+[[accessing-by-address-3]]
+=== Accessing by Address
+
+For the Loongson 3A5000, the following registers can be accessed using base address `0x1fe0_0000`,It can also be accessed using the configuration register instruction (IOCSR).
+Of these, base address `0x3ff0_0000` can be turned off by the `disable_0x3ff0` control bit in the Routing Setup Register.
+See the tables below for specific register descriptions and addresses.
+
+[[registers-related-to-inter-processor-interrupt-and-their-functional-descriptions]]
+.Registers related to inter-processor interrupt and their functional descriptions
+[%header,cols="2m,1,6"]
+|===
+|Name
+|Read/Write
+|Description
+
+|IPI_Status
+|R
+|The processor core `INT4` interrupt line is set if any bit is set to `1` and the corresponding bit is enabled.
+
+|IPI_Enable
+|RW
+|32-bit enable register to control whether the corresponding interrupt bit is valid or not.
+
+|IPI_Set
+|W
+|32-bit set register.
+Write `1` to the corresponding bit, then the corresponding `STATUS` register bit is set to `1`.
+
+|IPI_Clear
+|W
+|32-bit clear register.
+Write `1` to the corresponding bit, then the corresponding `STATUS` register bit is cleared to `0`.
+
+|MailBox0
+|RW
+|Cache registers for passing parameters at boot time, accessible as 64-bit or 32-bit uncache.
+
+|MailBox01
+|RW
+|Cache registers for passing parameters at boot time, accessible as 64-bit or 32-bit uncache.
+
+|MailBox02
+|RW
+|Cache registers for passing parameters at boot time, accessible as 64-bit or 32-bit uncache.
+
+|MailBox03
+|RW
+|Cache registers for passing parameters at boot time, accessible as 64-bit or 32-bit uncache.
+|===
+
+The registers related to interprocessor interrupts and their functions in the Loongson 3A5000 are described as follows:
+
+[[list-of-inter-processor-interrupt-and-communication-registers-for-processor-core-0]]
+.List of inter-processor interrupt and communication registers for processor core 0
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|Core0_IPI_Status
+|0x1000
+|R
+|`IPI_Status` register of processor core 0
+
+|Core0_IPI_Enalbe
+|0x1004
+|RW
+|`IPI_Enalbe` register of processor core 0
+
+|Core0_IPI_Set
+|0x1008
+|W
+|`IPI_Set` register of processor core 0
+
+|Core0_IPI_Clear
+|0x100c
+|W
+|`IPI_Clear` register of processor core 0
+
+|Core0_MailBox0
+|0x1020
+|RW
+|`IPI_MailBox0` register of processor core 0
+
+|Core0_MailBox1
+|0x1028
+|RW
+|`IPI_MailBox1` register of processor core 0
+
+|Core0_MailBox2
+|0x1030
+|RW
+|`IPI_MailBox2` register of processor core 0
+
+|Core0_MailBox3
+|0x1038
+|RW
+|`IPI_MailBox3` register of processor core 0
+|===
+
+[[list-of-inter-processor-interrupt-and-communication-registers-for-processor-core-1]]
+.List of inter-processor interrupt and communication registers for processor core 1
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|Core1_IPI_Status
+|0x1100
+|R
+|`IPI_Status` register of processor core 1
+
+|Core1_IPI_Enalbe
+|0x1104
+|RW
+|`IPI_Enalbe` register of processor core 1
+
+|Core1_IPI_Set
+|0x1108
+|W
+|`IPI_Set` register of processor core 1
+
+|Core1_IPI_Clear
+|0x110c
+|W
+|`IPI_Clear` register of processor core 1
+
+|Core1_MailBox0
+|0x1120
+|R
+|`IPI_MailBox0` register of processor core 1
+
+|Core1_MailBox1
+|0x1128
+|RW
+|`IPI_MailBox1` register of processor core 1
+
+|Core1_MailBox2
+|0x1130
+|W
+|`IPI_MailBox2` register of processor core 1
+
+|Core1_MailBox3
+|0x1138
+|W
+|`IPI_MailBox3` register of processor core 1
+|===
+
+[[list-of-inter-processor-interrupt-and-communication-registers-for-processor-core-2]]
+.List of inter-processor interrupt and communication registers for processor core 2
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|Core2_IPI_Status
+|0x1200
+|R
+|`IPI_Status` register of processor core 2
+
+|Core2_IPI_Enalbe
+|0x1204
+|RW
+|`IPI_Enalbe` register of processor core 2
+
+|Core2_IPI_Set
+|0x1208
+|W
+|`IPI_Set` register of processor core 2
+
+|Core2_IPI_Clear
+|0x120c
+|W
+|`IPI_Clear` register of processor core 2
+
+|Core2_MailBox0
+|0x1220
+|R
+|`IPI_MailBox0` register of processor core 2
+
+|Core2_MailBox1
+|0x1228
+|RW
+|`IPI_MailBox1` register of processor core 2
+
+|Core2_MailBox2
+|0x1230
+|W
+|`IPI_MailBox2` register of processor core 2
+
+|Core2_MailBox3
+|0x1238
+|W
+|`IPI_MailBox3` register of processor core 2
+|===
+
+[[list-of-inter-processor-interrupt-and-communication-registers-for-processor-core-3]]
+.List of inter-processor interrupt and communication registers for processor core 3
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|Core3_IPI_Status
+|0x1300
+|R
+|`IPI_Status` register of processor core 3
+
+|Core3_IPI_Enalbe
+|0x1304
+|RW
+|`IPI_Enalbe` register of processor core 3
+
+|Core3_IPI_Set
+|0x1308
+|W
+|`IPI_Set` register of processor core 3
+
+|Core3_IPI_Clear
+|0x130c
+|W
+|`IPI_Clear` register of processor core 3
+
+|Core3_MailBox0
+|0x1320
+|R
+|`IPI_MailBox0` register of processor core 3
+
+|Core3_MailBox1
+|0x1328
+|RW
+|`IPI_MailBox1` register of processor core 3
+
+|Core3_MailBox2
+|0x1330
+|W
+|`IPI_MailBox2` register of processor core 3
+
+|Core3_MailBox3
+|0x1338
+|W
+|`IPI_MailBox3` register of processor core 3
+|===
+
+The above is a list of inter-processor interrupt-related registers for a single-node multiprocessor system composed of a single Loongson 3A5000 chip.
+When multiple Loongson 3A5000 chips are interconnected to form a multi-node CC-NUMA system, each node within a chip corresponds to a global system node number, and the IPI register addresses of the processor cores within the node are fixed at an offset from the base address of the node in the table above.
+For example, the IPI_Status address of processor core 0 of node 0 is `0x1fe01000`, while the processor address of processor 0 of node 1 is `0x10001fe01000`, and so on.

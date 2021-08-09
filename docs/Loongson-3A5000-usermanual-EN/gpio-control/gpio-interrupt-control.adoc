@@ -1,0 +1,53 @@
+[[gpio-interrupt-control]]
+=== GPIO Interrupt Control
+
+The GPIO pins in the 3A5000 can all be used as interrupt inputs.
+
+`GPIO00`, `GPIO08`, `GPIO16`, `GPIO24` share the interrupt controller's interrupt line `0`.
+
+`GPIO01`, `GPIO09`, `GPIO17`, `GPIO25` share the interrupt controller's interrupt line `1`.
+
+`GPIO02`, `GPIO10`, `GPIO18`, `GPIO26` share the interrupt controller's interrupt line `2`.
+
+`GPIO03`, `GPIO11`, `GPIO19`, `GPIO27` share the interrupt controller's interrupt line `3`.
+
+`GPIO04`, `GPIO12`, `GPIO20`, `GPIO28` share the interrupt controller's interrupt line `4`.
+
+`GPIO05`, `GPIO13`, `GPIO21`, `GPIO29` share the interrupt controller's interrupt line `5`.
+
+`GPIO06`, `GPIO14`, `GPIO22`, `GPIO30` share the interrupt controller's interrupt line `6`.
+
+`GPIO07`, `GPIO15`, `GPIO23`, `GPIO31` share the interrupt controller's interrupt line `7`.
+
+The interrupt enable of each GPIO is controlled by the configuration register `GPIO_INT_en` and the interrupt level is controlled by `GPIO_INT_POL`, the registers are as follows:
+
+The base address is `0x1fe00000` and the offset address is `0x0510`.
+
+[[table-interrupt-control-register-2]]
+.Interrupt control register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|31:0
+|GPIO_INT_Pol
+|RW
+|32'h0
+|GPIO interrupt active level configuration
+
+`0` - active low
+
+`1` - active high
+
+|63:32
+|GPIO_INT_en
+|RW
+|32'h0
+|GPIO interrupt enable contrl (active high)
+|===
+
+When each interrupt line on the interrupt controller enables only one of the GPIOs, an interrupt can be triggered at a fixed edge (falling edge when POL is set to `0`, rising edge when POL is set to `1`) and logged in the interrupt controller using edge triggering.

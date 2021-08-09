@@ -1,0 +1,174 @@
+[[hypertransport-hardware-configuration-and-initialization]]
+=== HyperTransport Hardware Configuration and Initialization
+
+The HyperTransport bus consists of a transmission signal bus and control signal pins, etc.
+The following table gives a description of the HyperTransport bus related pins and their functions.
+
+[[pin-signals-related-to-hypertransport-bus]]
+.Pin signals related to HyperTransport bus
+[%header,cols="1m,2,6"]
+|===
+d|Pins
+|Name
+|Description
+
+|HT0_8x2
+|Bus width configuration
+|1: The `16`-bit HyperTransport bus is configured as two separate `8`-bit buses, controlled by two separate controllers, with the address space differentiated as
+
+`HT0_Lo`: `address[40]` = `0`;
+
+`HT0_Hi`: `address[40]` = `1`.
+
+`0`: The 16-bit HyperTransport bus is used as one `16`-bit bus, controlled by HT0_Lo, and the address space is the address of HT0_Lo, i.e., `address[40]` = `0`; all signals of `HT0_Hi` are invalid.
+
+|HT0_Lo_mode
+|Master device mode
+|`1`: Set `HT0_Lo` to master device mode, in this mode, the bus control signals are driven by `HT0_Lo`, including `HT0_Lo_Powerok`, `HT0_Lo_Rstn`, `HT0_Lo_Ldt_Stopn`, etc.
+In this mode, these control signals can also be driven in both directions.
+Also this pin determines (inverts) the initial value of the register "Act as Slave", which is 0 if the Bridge bit in the packet on the HyperTransport bus is 1, otherwise it is `0`.
+Also, this register is `0` if the If the request address on the HyperTransport bus does not hit in the controller's receive window, it will be resent back to the bus as a P2P request, and if this register is `1`, it will respond as an error request if it does not hit.
+
+0: Set `HT0_Lo` to slave device mode, in this mode, the bus control signals and so on are driven by the other device, these control signals include `HT0_Lo_Powerok`, `HT0_Lo_Rstn`, `HT0_Lo_Ldt_Stopn`.
+In this mode, these control signals are driven by the other device, if they are not driven correctly, the HT bus cannot work.
+
+|HT0_Lo_Powerok
+|Bus Powerok
+|HyperTransport bus Powerok signal.
+
+controlled by `HT0_Lo` when HT0_Lo_Mode is `1`.
+
+When `HT0_Lo_Mode` is `0`, it is controlled by the other device.
+
+|HT0_Lo_Rstn
+|Bus Rstn
+|HyperTransport bus Rstn signal.
+
+controlled by `HT0_Lo` when HT0_Lo_Mode is `1`.
+
+When `HT0_Lo_Mode` is `0`, it is controlled by the other device.
+
+|HT0_Lo_Ldt_Stopn
+|Bus Ldt_Stopn
+|HyperTransport bus `Ldt_Stopn` signal.
+
+controlled by `HT0_Lo` when HT0_Lo_Mode is `1`.
+
+When `HT0_Lo_Mode` is `0`, it is controlled by the other device.
+
+|HT0_Lo_Ldt_Reqn
+|Bus Ldt_Reqn
+|HyperTransport bus `Ldt_Reqn` signal.
+
+|HT0_Hi_mode
+|Master device mode
+|1: Set `HT0_Hi` to master device mode, in this mode, the bus control signals and so on are driven by `HT0_Hi`, these control signals include `HT0_Hi_Powerok`, `HT0_Hi_Rstn`, `HT0_Hi_Ldt_Stopn`.
+In this mode, these control signals can also be driven in both directions.
+Also this pin determines (inverts) the initial value of the register "Act as Slave", which is `0` if the Bridge bit in the packet on the HyperTransport bus is `1`, otherwise it is `0`.
+In addition, this register is `0` if the If the request address on the HyperTransport bus does not hit in the controller's receive window, it will be resent back to the bus as a P2P request, and if this register is `1`, it will respond as an error request if it does not hit.
+
+`0`: Set `HT0_Hi` to slave device mode, in this mode, the bus control signals and so on are driven by the other device, these control signals include `HT0_Hi_Powerok`, `HT0_Hi_Rstn`, `HT0_Hi_Ldt_Stopn`.
+In this mode, these control signals are driven by the other device, if they are not driven correctly, the HT bus cannot work.
+
+|HT0_Hi_Powerok
+|Bus Powerok
+|HyperTransport bus Powerok signal.
+
+controlled by `HT0_Hi` when `HT0_Lo_Mode` is 1.
+
+When `HT0_Lo_Mode` is `0`, it is controlled by the other device.
+
+`HT0_8x2` with a value of `1` to control the high `8`-bit bus.
+
+When `HT0_8x2 `is `0`, it is invalid.
+
+|HT0_Hi_Rstn
+|Bus Rstn
+|HyperTransport bus Rstn signal.
+
+controlled by `HT0_Hi` when `HT0_Lo_Mode` is `1`.
+
+When `HT0_Lo_Mode` is `0`, it is controlled by the other device.
+
+`HT0_8x2` with a value of `1`, controlling the high `8`-bit bus.
+
+When `HT0_8x2` is `0`, it is invalid.
+
+|HT0_Hi_Ldt_Stopn
+|Bus Ldt_Stopn
+|HyperTransport bus `Ldt_Stopn` signal.
+
+controlled by `HT0_Hi` when `HT0_Lo_Mode` is `1`.
+
+When `HT0_Lo_Mode` is `0`, it is controlled by the other device.
+
+`HT0_8x2` is `1`, controlling the high `8`-bit bus.
+
+When `HT0_8x2` is `0`, it is invalid.
+
+|HT0_Hi_Ldt_Reqn
+|Bus Ldt_Reqn
+|HyperTransport bus `Ldt_Reqn` signal.
+
+`HT0_8x2` is 1 to control the high `8`-bit bus.
+
+When `HT0_8x2` is `0`, it is invalid.
+
+|HT0_Rx_CLKp[1:0]
+
+HT0_Rx_CLKn[1:0]
+
+HT0_Tx_CLKp[1:0]
+
+HT0_Tx_CLKp[1:0]
+
+|CLK[1:0]
+|HyperTransport bus CLK signal
+When `HT0_8x2` is `1`, `CLK[1]` is controlled by `HT0_Hi`
+
+`CLK[0]` is controlled by `HT0_Lo`
+
+When `HT0_8x2` is `0`, `CLK[1:0]` is controlled by `HT0_Lo`
+
+|`HT0_Rx_CTLp[1:0]`
+`HT0_Rx_CTLn[1:0]`
+
+`HT0_Tx_CTLp[1:0]`
+
+`HT0_Tx_CTLn[1:0]`
+|`CTL[1:0]`
+|HyperTransport bus CTL signal
+When `HT0_8x2` is 1, `CTL[1]` is controlled by HT0_Hi
+
+`CTL[0]` is controlled by HT0_Lo
+
+When HT0_8x2 is 0, `CTL[1]` is invalid
+
+`CTL[0]` is controlled by HT0_Lo
+
+|`HT0_Rx_CADp[15:0]`
+
+`HT0_Rx_CADn[15:0]`
+
+`HT0_Tx_CADp[15:0]`
+
+`HT0_Tx_CADn[15:0]`
+|`CAD[15:0]`
+|HyperTransport bus CAD signal
+
+When `HT0_8x2` is `1`, `CAD[15:8]` is controlled by `HT0_Hi`
+
+`CAD[7:0]` is controlled by HT0_Lo
+
+When `HT0_8x2` is `0`, `CAD[15:0]` is controlled by `HT0_Lo`
+|===
+
+The initialization of HyperTransport starts automatically after each reset.
+After a cold start the HyperTransport bus will automatically operate at the minimum frequency (`200MHz`) and minimum width (8-bit) and will try to perform a bus initialization handshake.
+Whether the initialization is completed or not can be read from the register `InitComplete` (see <<capability-registers,Capability Registers>>).
+After the initialization is complete, the width of the bus can be read from the `Link Width Out` and `Link Width In` registers (see <<capability-registers,Capability Registers>>).
+After initialization, the user can rewrite the `Link Width Out`, `Link Width In` and `Link Freq` registers.
+The corresponding registers of the other device can also be configured.
+After the configuration is completed, a hot reset of the bus or a re-initialization operation via the `HT_Ldt_Stopn` signal is required to make the rewritten register values effective.
+After the reinitialization, the HyperTransport bus will operate at the new frequency and width.
+It is important to note that the configuration of the devices on both sides of the HyperTransport needs to correspond to each other, otherwise the HyperTransport interface will not work properly.

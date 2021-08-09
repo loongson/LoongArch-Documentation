@@ -1,0 +1,67 @@
+[[command-control-register]]
+==== Command Control Register (`CR`)
+
+Name: Command register
+
+Length: `[7:0]`
+
+Offset: `0x04`
+
+Reset value: `0x00`
+
+[[table-command-control-register]]
+.Command control register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|STA
+|1
+|W
+|Generate the `START` signal
+
+|6
+|STO
+|1
+|W
+|Generate the `STOP` signal
+
+|5
+|RD
+|1
+|W
+|Generate the read signal
+
+|4
+|WR
+|1
+|W
+|Generate the write signal
+
+|3
+|ACK
+|1
+|W
+|Generate the response signal
+
+|2:1
+|Reserved
+|2
+|W
+|Reserved
+
+|0
+|IACK
+|1
+|W
+|Generate interrupt response signal
+|===
+
+Both are automatically cleared by the hardware after the I2C sends data.
+Read operation of these bits always reads back `0`.
+A bit `3` of `1` means that the controller does not send ack at the end of this transmission, and vice versa at the end.

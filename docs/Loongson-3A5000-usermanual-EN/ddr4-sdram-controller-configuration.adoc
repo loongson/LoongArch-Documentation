@@ -1,0 +1,10 @@
+[[ddr4-sdram-controller-configuration]]
+== DDR4 SDRAM Controller Configuration
+
+The Loongson 3A5000 processor`'s internally integrated memory controller is designed to comply with the DDR4 SDRAM industry standard (JESD79-4).
+
+include::ddr4-sdram-controller-configuration/introduction-to-ddr4-sdram-controller-functions.adoc[]
+
+include::ddr4-sdram-controller-configuration/ddr4-sdram-parameter-configuration-format.adoc[]
+
+include::ddr4-sdram-controller-configuration/software-programming-guide.adoc[]

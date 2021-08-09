@@ -1,0 +1,22 @@
+[[guide-to-the-use-of-spi-dual-quad-mode]]
+==== Guide to the Use of SPI Dual/Quad Mode
+
+In addition to the traditional single-wire mode, the SPI controller also supports two operating modes, dual mode and quad mode, for booting from the SPI FLASH.
+The SPI controller can be put into dual mode by setting the `dual_io` register, and quad mode by setting the `quad_io` register.
+The configuration code for these two registers can be added to the first few instructions of the BIOS code, and then the controller will be pointed to the corresponding operating mode after the configuration is completed, which can improve the boot-up speed.
+
+Note that some SPI FLASHs do not enable quad mode by default, or need to configure timing related parameters in quad mode (e.g.Dummy clocks).
+In order to increase the applicability of SPI controller to various FLASHs, this controller adds custom registers (`0x8`-`0xe`).
+The specific usage is:
+
+. Setting the Custom command register (`CMD`) (`0x9`), which is the command sent to the SPI FLASH.
+
+. Configuring the wait time into the custom timing registers `TIMER0`-`TIMER2` (`0xc`-`0xe`) if the SPI FLASH requires that the command sent this time takes a while to complete, otherwise these registers remain at the default value of `0`.
+
+. If writing configuration information to the SPI FLASH, the configuration information needs to be written to the custom data registers `BUF0`-`BUF1` (`0xa`-`0xb`); if reading configuration information to the SPI FLASH, these two registers store the read back values.
+
+. Configuration custom control register `CTRL[7:1]` where `CTRL[1]` (`nbmode`) represents that the multi-byte transport mode will be performed, and the number of bytes to be transported this time is given by `CTRL[7:4]` (`nbyte`).
+
+. Configure the custom control register `CTRL[0]` to start this transport.
+
+Generally, the registers to be configured are located in the non-volatile memory of FLASH, so the above configuration is only needed once.

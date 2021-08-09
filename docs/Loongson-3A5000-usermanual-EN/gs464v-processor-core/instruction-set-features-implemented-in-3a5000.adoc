@@ -1,0 +1,392 @@
+[[instruction-set-features-implemented-in-3a5000]]
+=== Instruction set features implemented in 3A5000
+
+The functional features of the Loongson instruction set implemented in the Loongson 3A5000 can be dynamically confirmed by the Loongson instruction set attribute identification mechanism.
+
+The CPUCFG instruction is a user-state instruction, which is used as CPUCFG rd, rj, where the source operand rj register holds the register number of the configuration information word to be accessed, and the returned configuration word information is written to the rd register, each configuration information word contains up to 32 bits of configuration information.
+ For example, bit 0 of configuration word 1 indicates whether the LA32 architecture is implemented, then this configuration information is expressed as CPUCFG.1.LA32[bit0], where 1 means that the font size of the configuration information word is 1, LA32 means that the helper name of this configuration information field is LA32, and bit 0 means that the field LA32 is located in bit 0 of the configuration word. 
+ If the configuration information needs to be expressed in multiple bits, then the location information will be recorded in the form of bitAA:BB, which means the consecutive (AA-BB+1) bits from the AAth to the BBth bit of the configuration information word.
+
+The following table gives a list of configuration information for the instruction set functions implemented in the 3A5000.
+The last column, "`Possible Value`", indicates a possible value to be read from this register, but does not imply that this is the value to be read from the 3A5000 processor.
+Please refer to the results of the actual hardware execution of the instruction, and make subsequent software judgments based on the actual read values.
+
+[[list-of-configuration-information-for-the-instruction-set-functions-implemented-in-the-3a5000]]
+.List of configuration information for the instruction set functions implemented in the 3A5000
+[cols="2*1,2,3,1"]
+|===
+^|Register Number
+^|Bit Field
+^|Name
+^|Description
+^|Possible Value
+
+^m|0x0
+^m|31:0
+m|PRId
+|Processor Identity
+m|32'h14_c010
+
+.12+^m|0x1
+^m|1:0
+m|ARCH
+|`2'b00` indicates implementation of simplified LA32; `2'b01` indicates implementation of LA32; `2'b10` indicates implementation of LA64.
+`2'b11` is reserved
+m|2'b10
+
+^m|2
+m|PGMMU
+|`1` indicates that the MMU supports page mapping mode
+m|1'b1
+
+^m|3
+m|IOCSR
+|`1` indicates support for the IOCSR instruction
+m|1'b1
+
+^m|11:4
+m|PALEN
+|The value of the supported physical address bits `PALEN` minus `1`
+m|8'd47
+
+^m|19:12
+m|VALEN
+|The value of the supported vitrual address bits `VALEN` minus `1`
+m|8'd47
+
+^m|20
+m|UAL
+|`1` indicates support for non-aligned memory access
+m|1'b1
+
+^m|21
+m|RI
+|`1` indicates support for the "`Read Inhibit`" page attribute
+m|1'b1
+
+^m|22
+m|EP
+|`1` indicates support for "`Execution Protection`" page attribute
+m|1'b1
+
+^m|23
+m|RPLV
+|`1` indicates support for `RPLV` page attributes
+m|1'b1
+
+^m|24
+m|HP
+|`1` indicates support for huge page page attributes
+m|1'b1
+
+^m|25
+m|IOCSR_BRD
+|`1` indicates a string with processor product information recorded at address `0` of the IOCSR access space
+m|1'b1
+
+^m|26
+m|MSG_INT
+|`1` means that the external interrupt uses the message interrupt mode, otherwise it is the level interrupt line mode
+m|1'b0
+
+.11+^m|0x2
+^m|0
+m|FP
+|`1` means support for basic floating-point instructions
+m|1'b1
+
+^m|1
+m|FP_SP
+|`1` indicates support for single-precision floating-point numbers
+m|1'b1
+
+^m|2
+m|FP_DP
+|`1` indicates support for double-precision floating-point numbers
+m|1'b1
+
+^m|5:03
+m|FP_ver
+|The version number of the floating-point arithmetic standard.
+`1` is the initial version number, indicating that it is compatible with the IEEE 754-2008 standard
+m|3'h1
+
+^m|6
+m|LSX
+|`1` indicates support for 128-bit vector extension
+m|1'b1
+
+^m|7
+m|LASX
+|`1` indicates support for 256-bit vector expansion
+m|1'b1
+
+^m|8
+m|COMPLEX
+|`1` indicates support for complex vector operation instructions
+m|1'b1
+
+^m|14
+m|LLFTP
+|`1` indicates support for constant frequency counter and timer
+m|1'b1
+
+^m|17:15
+m|LLFTP_ver
+|Constant frequency counter and timer version number.
+`1` is the initial version
+m|3'h1
+
+^m|21
+m|LSPW
+|`1` indicates support for the software page table walking instruction
+m|1'b1
+
+^m|22
+m|LAM
+|`1` indicates support `AM*` atomic memory access instruction
+m|1'b1
+
+.11+^m|0x3
+^m|0
+m|CCDMA
+|`1` indicates support for hardware Cache coherent DMA
+m|1'b1
+
+^m|1
+m|SFB
+|`1` indicates support for Store Fill Buffer (SFB)
+m|1'b1
+
+^m|3
+m|LLEXC
+|`1` indicates support for LL instruction to fetch exclusive block function
+m|1'b1
+
+^m|4
+m|SCDLY
+|`1` indicates support random delay function after SC
+m|1'b1
+
+^m|5
+m|LLDBAR
+|`1` indicates support LL automatic with dbar function
+m|1'b1
+
+^m|6
+m|ITLBT
+|`1` indicates that the hardware maintains the consistency between ITLB and TLB
+m|1'b1
+
+^m|7
+m|ICACHET
+|`1` indicates that the hardware maintains the data consistency between ICache and DCache in one processor core
+m|1'b1
+
+^m|10:8
+m|SPW_LVL
+|The maximum number of directory levels supported by the page walk instruction
+m|3'h4
+
+^m|11
+m|SPW_HP_HF
+|`1` indicates that the page walk instruction fills the TLB in half when it encounters a large page
+m|1'b1
+
+^m|12
+m|RVA
+|`1` indicates that the software configuration can be used to shorten the virtual address range
+m|1'b1
+
+^m|16:13
+m|RVAMAX-1
+|The maximum configurable virtual address is shortened by `-1`
+m|1'b1
+
+.2+^m|0x5
+^m|15:00
+m|CC_MUL
+|Constant frequency counter and timer and the corresponding multiplication factor of the clock used by the timer
+|N/A
+
+^m|31:16
+m|CC_DIV
+|Constant frequency counter and timer and the division coefficient corresponding to the clock used by the timer
+|N/A
+
+.5+^m|0x6
+^m|0
+m|PMP
+|`1` indicates support for the performance counter
+m|1'b1
+
+^m|3:1
+m|PMVER
+|In the performance monitor, the architecture defines the version number of the event, and `1` is the initial version
+m|3'h1
+
+^m|7:4
+m|PMNUM
+|Number of performance monitors minus `1`
+m|4'h3
+
+^m|13:08
+m|PMBITS
+|Number of bits of a performance monitor minus `1`
+m|6'h3f
+
+^m|14
+m|UPM
+|`1` indicates support for reading performance counter in user mode
+m|1'b1
+
+.17+^m|0xa
+^m|0
+m|L1 IU_Present
+|`1` indicates that there is a first-level instruction Cache or a first-level unified Cache
+m|1'b1
+
+^m|1
+m|L1 IU Unify
+|`1` indicates that the Cache shown by `L1 IU_Present` is the unified Cache
+m|1'b0
+
+^m|2
+m|L1 D Prwsent
+|`1` indicates there is a first-level data Cache
+m|1'b1
+
+^m|3
+m|L2 IU Present
+|`1` indicates there is a second-level instruction Cache or a second-level unified Cache
+m|1'b1
+
+^m|4
+m|L2 IU Unitfy
+|`1` indicates that the Cache shown by `L2 IU_Present` is the unified Cache
+m|1'b1
+
+^m|5
+m|L2 IU Private
+|`1` indicates that the Cache shown by `L2 IU_Present` is private to each core
+m|1'b1
+
+^m|6
+m|L2 IU Inclusive
+|`1` indicates that the Cache shown by `L2 IU_Present` has an inclusive relationship to the lower levels (L1)
+m|1'b0
+
+^m|7
+m|L2 D Present
+|`1` indicates there is a secondary data Cache
+m|1'b0
+
+^m|8
+m|L2 D Private
+|`1` indicates that the secondary data Cache is private to each core
+m|1'b0
+
+^m|9
+m|L2 D Inclusive
+|`1` indicates that the secondary data Cache has a containment relationship to the lower level (L1)
+m|1'b0
+
+^m|10
+m|L3 IU Present
+|`1` indicates there is a three-level instruction Cache or a three-level system Cache
+m|1'b1
+
+^m|11
+m|L3 IU Unify
+|`1` indicates that the Cache shown by `L3 IU_Present` is unified Cache
+m|1'b1
+
+^m|12
+m|L3 IU Private
+|`1` indicates that the Cache shown by `L3 IU_Present` is private to each core
+m|1'b0
+
+^m|13
+m|L3 IU Inclusive
+|`1` indicates that the Cache shown by `L3 IU_Present` has an inclusive relationship to the lower levels (L1 and L2)
+m|1'b1
+
+^m|14
+m|L3 D Present
+|`1` indicates there is a three-level data Cache
+m|1'b0
+
+^m|15
+m|L3 F Inclusive
+|`1` indicates that the three-level data Cache is private to each core
+m|1'b0
+
+^m|16
+m|L3 D Inclusive
+|`1` indicates that the three-level data Cache has an inclusive relationship to the lower levels (L1 and 12)
+m|1'b0
+
+.3+^m|0xb
+^m|15:0
+m|Way-1
+|Number of channels minus `1` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
+m|16'h3
+
+^m|23:16
+m|Index-log2
+|`log2(number of Cache rows per channel)` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
+m|8'h8
+
+^m|30:24
+m|Linesize-log2
+|`log2(Cache line bytes)` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
+m|8'h6
+
+.3+^m|0xc
+^m|15:0
+m|Way-1
+|Number of channels minus `1` (Cache corresponding to `L1 D Present` in Configuration Word `10`)
+m|16'h3
+
+^m|23:16
+m|Index-log2
+|`log2(number of Cache rows per channel)` (Cache corresponding to `L1 D Present` in Configuration Word `10`)
+m|8'h8
+
+^m|30:24
+m|Linesize-log2
+m|`log2(Cache row bytes)` (Cache corresponding to `L1 D Present` in configuration word `10`)
+m|8'h6
+
+.3+^m|0xd
+^m|15:0
+m|Way-1
+|Number of channels minus `1` (Cache corresponding to `L2 IU Present` in configuration word `10`)
+m|16'hf
+
+^m|23:16
+m|Index-log2
+|`log2(number of Cache rows per channel)` (Cache corresponding to `L2 IU Present` in configuration word `10`)
+m|8'h8
+
+^m|30:24
+m|Linesize-log2
+|`log2(Cache row bytes)` (Cache corresponding to `L2 IU Present` in configuration word `10`)
+m|8'h6
+
+.3+^m|0xe
+^m|15:00
+m|Way-1
+|Number of channels minus `1` (Cache corresponding to `L3 IU Present` in configuration word `10`)
+m|16'hf
+
+^m|23:16
+m|Index-log2
+|`log2(number of Cache rows per channel)` (Cache corresponding to `L3 IU Present` in configuration word `10`)
+m|8'h8
+
+^m|30:24
+m|Linesize-log2
+|`log2(Cache row bytes)` (Cache corresponding to `L3 IU Present` in configuration word `10`)
+m|8'h6
+|===

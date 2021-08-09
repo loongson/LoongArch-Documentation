@@ -1,0 +1,12 @@
+[[access-to-3a5000-control-and-status-registers]]
+=== Access to 3A5000 Control and Status Registers
+
+The 3A5000 supports configuration status register space access.
+The CSR is accessed using a new, independent addressing space called the CSR space that does not overlap with existing register space, memory space, or JTAG space.
+
+CSR read and write accesses are performed via the custom `IOCSRRD.B/H/W/D` and `IOCSRWR`.
+`IOCSRRD.B/H/W/D` is used as `IOCSRRD.B/H/W/D rd,rj`, where the source operand `rj` register holds the address of the CSR with access, and the CSR read back is written to the `rd` register.
+`IOCSRWR.B/H/W/D` is used as `IOCSRWR.B/H/W/D rd,rj`, where the source operand `rj` register holds the address of the CSR with access, and the source operand rd register holds the value of the CSR to be written.
+`IOCSRRD.B/H/W/D` and `IOCSRWR.B/H/W/D` are allowed to operate in the kernel state only.
+
+`IOCSRRD.B/H/W/D` and `IOCSRWR.B/H/W/D` instructions can be used instead of the original address-mapped configuration registers, i.e., the `0x1fe00000` and `0x3ff00000` spaces, as described in the relevant sections for access details.

@@ -1,0 +1,70 @@
+[[state-register-2]]
+==== State Register (`SR`)
+
+Name: Status register
+
+Length: `[7:0]`
+
+Offset: `0x04`
+
+Reset value: `0x00`
+
+[[table-state-register-2]]
+.State register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|RxACK
+|1
+|R
+|Receive response bit
+
+`1` - no receive the response bit
+
+`0` - receive the response bit
+
+|6
+|Busy
+|1
+|R
+|I2c bus busy flag bit
+
+`1` - bus is busy
+
+`0` - bus is free
+
+|5
+|AL
+|1
+|R
+|When the I2C core loses control of the I2C bus, this bit is `1`
+
+|4:2
+|Reserved
+|3
+|R
+|Reserved
+
+|1
+|TIP
+|1
+|R
+|Indicate the process of transport
+
+`1` - indicate that data is being transported
+
+`0` - indicate that data transport is complete
+
+|0
+|IF
+|1
+|R
+|Interrupt flag bit.
+When one data transport is finished, or another device initiates data transport, this bit is `1`
+|===

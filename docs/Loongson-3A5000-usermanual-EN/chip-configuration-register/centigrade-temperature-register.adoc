@@ -1,0 +1,29 @@
+[[centigrade-temperature-register]]
+=== Centigrade Temperature Register (`0x0428`)
+
+The following registers are used to observe the chip internal temperature sensor values. In degrees Celsius.
+The base address is `0x1fe00000` and the offset address is `0x0428`.
+This register is available only when `CSR[0x0008][0]` is valid.
+
+[[temperature-observation-register]]
+.Temperature observation register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|7:0
+|Centigrade temperature
+|RO
+|0x0
+|Centigrade temperature
+
+|63:8
+|
+|RW
+|0x0
+|
+|===

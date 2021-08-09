@@ -1,0 +1,135 @@
+[[function-configuration-register]]
+=== Function configuration Register (`0x0180`)
+
+The offset address is `0x0180`.
+
+[[function-configuration-register-1]]
+.Function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|0
+|
+|RW
+|1'b0
+|
+
+|1
+|
+|RW
+|1'b0
+|
+
+|3:2
+|
+|RW
+|2'b0
+|Reserved
+
+|4
+|MC0_disable_confspace
+|RW
+|1'b0
+|Whether to disable `MC0` DDR configuration space
+
+|5
+|MC0_defult_confspace
+|RW
+|1'b1
+|Routing all memory accesses to the configuration space
+
+|6
+|MCA0 clock en
+|RW
+|1'b1
+|`MCA0` clock enable
+
+|7
+|MC0_resetn
+|RW
+|1'b1
+|`MC0` software reset (active low)
+
+|8
+|MC0_clken
+|RW
+|1'b1
+|Whether to enable `MC0`
+
+|9
+|MC1_disable_confspace
+|RW
+|1'b0
+|Whether to disable `MC1` DDR configuration space
+
+|10
+|MC1_defult_confspace
+|RW
+|1'b1
+|Routing all memory accesses to the configuration space
+
+|11
+|MCA1 clock en
+|RW
+|1'b1
+|`MCA1` clock enable
+
+|12
+|MC1_resetn
+|RW
+|1'b1
+|`MC1` software reset (active low)
+
+|13
+|MC1_clken
+|RW
+|1'b1
+|Whether to enable `MC1`
+
+|26:24
+|HT0_freq_scale_ctrl
+|RW
+|3'b011
+|HT Controller 0 frequency division
+
+|27
+|HT0_clken
+|RW
+|1'b1
+|Whether to enable `HT0`
+
+|30:28
+|HT1_freq_scale_ctrl
+|RW
+|3'b011
+|HT Controller 1 frequency division
+
+|31
+|HT1_clken
+|RW
+|1'b1
+|Whether to enable `HT1`
+
+|42:40
+|Node_freq_ctrl
+|RW
+|3'b111
+|Node Frequency Division
+
+|43
+|-
+|RW
+|1'b1
+|
+
+|63:56
+|Cpu_version
+|R
+|2'h3D
+|CPU version
+|===

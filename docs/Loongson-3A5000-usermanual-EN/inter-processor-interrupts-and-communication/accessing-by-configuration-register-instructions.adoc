@@ -1,0 +1,142 @@
+[[accessing-by-configuration-register-instructions-3]]
+=== Accessing by Configuration Register Instructions
+
+In the Loongson 3A5000, a new processor core direct register access instruction has been added to provide access to configuration registers through private space.
+In order to use inter-processor interrupt registers more easily, some adjustments are made to the inter-processor interrupt register definitions in this mode.
+
+[[list-of-inter-processor-interrupt-and-communication-registers-for-the-current-processor-core]]
+.List of inter-processor interrupt and communication registers for the current processor core
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|perCore_IPI_Status
+|0x1000
+|R
+|`IPI_Status` register of the current processor core
+
+|perCore_IPI_Enalbe
+|0x1004
+|RW
+|`IPI_Enalbe` register of the current processor core
+
+|perCore_IPI_Set
+|0x1008
+|W
+|`IPI_Set` register of the current processor core
+
+|perCore_IPI_Clear
+|0x100c
+|W
+|`IPI_Clear` register of the current processor core
+
+|perCore_MailBox0
+|0x1020
+|RW
+|`IPI_MailBox0` register of the current processor core
+
+|perCore_MailBox1
+|0x1028
+|RW
+|`IPI_MailBox1` register of the current processor core
+
+|perCore_MailBox2
+|0x1030
+|RW
+|`IPI_MailBox2` register of the current processor core
+
+|perCore_MailBox3
+|0x1038
+|RW
+|`IPI_MailBox3` register of the current processor core
+|===
+
+In order to send inter-processor interrupt requests and MailBox communication to other cores, the following registers are accessed.
+
+[[processor-core-inter-processor-communication-registers-1]]
+.Processor core inter-processor communication registers
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|IPI_Send
+|0x1040
+|WO
+|32-bit interrupt distribution register
+
+`[31]`: wait for completion flag; when set to `1` it will wait for the interrupt to take effect
+
+`[30:26]`: reserved
+
+`[25:16]`: processor core number
+
+`[15:5]`: reserved
+
+`[4:0]`: interrupt vector number, corresponding to the vector in `IPI_Status`
+
+|Mail_Send
+|0x1048
+|WO
+|64-bit MailBox Cache register
+
+`[63:32]`: MailBox data
+
+`[31]`: wait for completion flag; when set to `1` it will wait for the write to take effect
+
+`[30:27]`: write data mask; each bit indicates that the bytes corresponding to the 32-bit write data will not really be written to the target address, such as `1000b` means write the `0`-`2` bytes, `0000b` means write all `0`-`3` bytes
+
+`[26]`: reserved
+
+`[25:16]`: processor core number
+
+`[15:5]`: reserved
+
+`[4:2]`: MailBox number
+
+`0` - MailBox0 low 32-bit
+
+`1` - MailBox0 high 32-bit
+
+`2` - MailBox1 low 32-bit
+
+`3` - MailBox1 high 32-bit
+
+`4` - MailBox2 low 32-bit
+
+`5` - MailBox2 high 32-bit
+
+`6` - MailBox3 low 32-bit
+
+`7` - MailBox4 high 32-bit
+
+`[1:0]`: reserved
+
+|FREQ_Send
+|0x1058
+|WO
+|32-bit frequency enable register
+
+`[31]`: wait for completion flag; when set to `1` it will wait for the setting to take effect
+
+`[30:27]`: write data mask; each bit indicates that the bytes corresponding to the 32-bit write data will not really be written to the target address, such as `1000b` means write the `0`-`2` bytes, `0000b` means write all `0`-`3` bytes
+
+`[26]`: reserved
+
+`[25:16]`: processor core number
+
+`[15:5]`: reserved
+
+`[4:0]`: write to the corresponding processor core private frequency configuration register
+
+`CSR[0x1050]`
+|===
+
+Note that since the Mail_Send register can only send `32` bits of data at a time, it must be split into two transmissions when sending 64 bits of data.
+Therefore, the target core needs to ensure the integrity of the transport by other software means while waiting for the contents of the `Mail_Box`.
+For example, after sending the `Mail_Box` data, an inter-processor interrupt is used to indicate that the transmission is complete.

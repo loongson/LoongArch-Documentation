@@ -1,0 +1,59 @@
+[[fifo-control-register]]
+==== FIFO Control Register (`FCR`)
+
+Name: FIFO control register
+
+Length: `[7:0]`
+
+Offset: `0x02`
+
+Reset value: `0xc0`
+
+[[table-fifo-control-register]]
+.FIFO control register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:6
+|TL
+|2
+|W
+|Receive trigger value for interrupt request from `FIFO`
+
+`00` - `1` byte
+
+`01` - `4` byte
+
+`10` - `8` byte
+
+`11` - `14` byte
+
+|5:3
+d|Reserved
+|3
+|W
+|Reserved
+
+|2
+|Txset
+|1
+|W
+|`1` indicates that clearing the contents of the transport `FIFO` and resetting its logic
+
+|1
+|Rxset
+|1
+|W
+|`1` indicates that clearing the contents of the receiving `FIFO` and resetting its logic
+
+|0
+d|Reserved
+|1
+|W
+|Reserved
+|===

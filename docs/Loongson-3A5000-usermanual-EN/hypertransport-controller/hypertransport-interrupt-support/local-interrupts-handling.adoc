@@ -1,0 +1,8 @@
+[[local-interrupts-handling]]
+==== Local Interrupts Handling
+
+In the traditional interrupt handling model, all interrupts are stored by the interrupt vector inside the HT controller and then distributed through the interrupt line of the HT controller connected to the interrupt router on the chip.
+In this case, HT interrupts are only available to CPU cores through a limited number of connections, and cannot be distributed across chips, so the usage scenario is rather limited.
+
+In this HT interrupt mode, when performing interrupt processing, the interrupt router on the chip is transparent to the software and the core goes directly to the interrupt vector of the HT controller (typically `0x90000efdfb000080`) for lookup and then per-bit processing.
+At this point, regardless of how the routing mode is configured, all interrupts on the HT controller are read directly.

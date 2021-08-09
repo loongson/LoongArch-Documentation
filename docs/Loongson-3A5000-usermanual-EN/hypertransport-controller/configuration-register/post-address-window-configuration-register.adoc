@@ -1,0 +1,165 @@
+[[post-address-window-configuration-register]]
+==== POST Address Window Configuration Register
+
+The address window hit formula is detailed in <<receive-address-window-configuration-register,Receive Address Window Configuration Register>>.
+
+The address in this window is the address received on the AXI bus.
+All write accesses that land in this window will be returned immediately on the `AXI B` channel and sent to the HT bus in the `POST WRITE` command format.
+Write requests not in this window, on the other hand, are sent to the HT bus in `NONPOST WRITE` format and wait for the HT bus response before returning to the AXI bus.
+
+Offset: `0x170`
+
+Reset value: `0x00000000`
+
+Name: HT bus POST address window 0 enable (internal access)
+
+[[ht-bus-post-address-window-0-enable]]
+.HT bus POST address window 0 enable (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_post0_en
+|1
+|0x0
+|R/W
+|HT bus POST address window 0, enable signal
+
+|30
+|ht_split0_en
+|1
+|0x0
+|R/W
+|HT access unpacking enable (corresponds to the external uncache ACC operation window of the CPU core)
+
+|29:23
+|Reserved
+|14
+|0x0
+|
+|Reserved
+
+|15:0
+|ht_post0_trans[39:24]
+|16
+|0x0
+|R/W
+|HT bus POST address window 0, `[39:24]` of the translated address
+|===
+
+Offset: `0x174`
+
+Reset value: `0x00000000`
+
+Name: HT bus POST address window 0 base address (internal access)
+
+[[ht-bus-post-address-window-0-base-address]]
+.HT bus POST address window 0 base address (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_post0_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus POST address Window 0, address base address of `[39:24]`
+
+|15:0
+|ht_post0_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus POST address window 0, address masked `[39:24]`
+|===
+
+Offset: `0x178`
+
+Reset value: `0x00000000`
+
+Name: HT bus POST address window 1 enable (internal access)
+
+[[ht-bus-post-address-window-1-enable]]
+.HT bus POST address window 1 enable (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_post1_en
+|1
+|0x0
+|R/W
+|HT bus POST address window 1, enable signal
+
+|30
+|ht_split1_en
+|1
+|0x0
+|R/W
+|HT access unpacking enable (corresponds to the external uncache ACC operation window of the CPU core)
+
+|29:16
+|Reserved
+|14
+|0x0
+|
+|Reserved
+
+|15:0
+|ht_post1_trans[39:24]
+|16
+|0x0
+|R/W
+|HT bus POST address window 1, `[39:24]` of the translated address
+|===
+
+Offset: `0x17c`
+
+Reset value: `0x00000000`
+
+Name: HT bus POST address window 1 base address (internal access)
+
+[[ht-bus-post-address-window-1-base-address]]
+.HT bus POST address window 1 base address (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_post1_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus POST address window 1, address base address of `[39:24]`
+
+|15:0
+|ht_post1_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus POST address window 1, `[39:24]` of address mask
+|===
+

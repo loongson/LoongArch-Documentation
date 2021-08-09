@@ -1,0 +1,66 @@
+[[clock-control-for-stable-counter]]
+==== Clock Control for Stable Counter
+
+The Stable counter can optionally use either the reference clock input or the master clock and can be controlled by software dividing mechanism for dividing the frequency.
+In general, it is recommended to use the reference clock input, which is able to be completely free from dynamic frequency tuning interference compared to the master clock.
+
+The following is the clock control register of the Stable counter.
+This register is located in the control chip other function configuration register.
+The base address is `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR), and the offset address `0x0420`.
+
+[[other-function-configuration-register-7]]
+.Other function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|20
+|stable_sel
+|RW
+|0x0
+|Stable clock selection
+
+`0`: SYS CLOCK
+
+`1`: NODE CLOCK
+
+|21
+|stable_resetn
+|RW
+|0x0
+|Stable clock reset control
+
+`1`: set reset state
+
+`0`: unset software reset
+
+|40
+|freqscale_mode_stable
+|RW
+|0x0
+|Frequency adjustment mode selection for stable clock
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+
+|46:44
+|freqscale_stable
+|RW
+|0x0
+|Stable clock frequency adjustment register
+
+|47
+|clken_stable
+|RW
+|0x0
+|Stable clock enable
+|===
+
+After the BIOS has configured the Stable counter clock source, the `MCSR` section in each processor core needs to be updated to control the values of `CPUCFG.0x4` and `CPUCFG.0x5`.
+Referring to the description in <<instruction-set-features-implemented-in-3a5000,Instruction set features implemented in 3A5000>>, `CPUCFG.0x4` should be filled with the crystal clock frequency in Hz; `CPUCFG.0x5[31:16]` should be filled with the dividing factor; `CPUCFG.0x5[15:0]` should be filled with the multiplication factor.
+The latter two should be filled in with the help of BIOS for calculation, so that the result of `CCFreq*CFM/CFD` is equal to the actual frequency of Stable Counter.

@@ -1,0 +1,20 @@
+[[chip-clock-division-and-enable-control]]
+== Chip Clock Division and Enable Control
+
+The Loongson 3A5000 can use a single external reference clock, `SYS_CLOCK`.
+The generation of each clock can depend on `SYS_CLOCK`, and the following sections describe each of these clocks.
+
+The Loongson 3A5000 has separate frequency dividing mechanisms for the processor core, on-chip network and shared Cache, HT controller, and GS132 core.
+In line with the 3A4000, the 3A5000 also supports `1/n` divider values,It can also be accessed using the configuration register instruction (IOCSR).
+
+The base address of each chip configuration register in this chapter is `0x1fe00000`.
+
+include::chip-clock-division-and-enable-control/introduction-to-chip-module-clock.adoc[]
+
+include::chip-clock-division-and-enable-control/processor-core-frequency-division-and-enable-control.adoc[]
+
+include::chip-clock-division-and-enable-control/node-clock-division-and-enable-control.adoc[]
+
+include::chip-clock-division-and-enable-control/ht-controller-frequency-ddivision-and-enable-control.adoc[]
+
+include::chip-clock-division-and-enable-control/stable-counter-frequency-ddivision-and-enable-control.adoc[]

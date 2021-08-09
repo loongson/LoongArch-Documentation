@@ -1,0 +1,99 @@
+[[transport-data-cache-size-register]]
+==== Transport Data Cache Size Register
+
+The data send Cache size register is used to observe the number of caches available on the transmitter for each data channel.
+
+Offset: `0x1D4`
+
+Reset value: `0x00000000`
+
+Name: Data send buffer size register
+
+[[table-transport-data-cache-size-register]]
+.Transport data Cache size register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|Reserved
+|1
+|0x0
+|R
+|Reserved
+
+|30
+|rx_buffer_r_data[4]
+|1
+|0x0
+|R/W
+|Bit `[4]` of the read data buffer initialization information of the receive buffer
+
+|29
+|rx_buffer_npc_data[4]
+|1
+|0x0
+|R/W
+|Bit `[4]` of the npc data buffer initialization information of the receive buffer
+
+|28
+|rx_buffer_pc_data[4]
+|1
+|0x0
+|R/W
+|Bit `[4]` of the pc data buffer initialization information of the receive buffer
+
+|27
+|rx_buffer_b_cmd[4]
+|1
+|0x0
+|R/W
+|Bit `[4]` of the bresponse command buffer initialization information of the receive buffer
+
+|26
+|rx_buffer_r_cmd[4]
+|1
+|0x0
+|R/W
+|Bit `[4]` of the read command buffer initialization information of the receive buffer
+
+|25
+|rx_buffer_npc_cmd[4]
+|1
+|0x0
+|R/W
+|Bit `[4]` of the npc command buffer initialization information of the receive buffer
+
+|24
+|rx_buffer_pc_cmd[4]
+|1
+|0x0
+|R/W
+|Bit `[4]` of the initialization information of the pc command buffer of the receive buffer
+
+|23:16
+|R_DATA_txbuffer
+|8
+|0x0
+|R
+|Number of `R` channel data buffers at the transmitter
+
+|15:8
+|NPC_DATA_txbuffer
+|8
+|0x0
+|R
+|Number of `NPC` channel data buffers on the transmitter side
+
+|7:0
+|PC_DATA_txbuffer
+|8
+|0x0
+|R
+|Number of `PC` channel data buffer at the sender
+|===

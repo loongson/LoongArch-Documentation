@@ -1,0 +1,20 @@
+[[initialization-operations]]
+==== Initialization Operations
+
+The initialization operation starts when the software writes `0x2` to register `Init_start` (`0x010`).
+Before setting the `Init_start` signal, all other registers must be set to the correct values.
+The DRAM initialization process in cooperation with hardware and software is as follows:
+
+. Set `pm_clk_sel_ckca` and `pm_clk_sel_ds`.
+
+. Set `pm_phy_init_start` to `1` to start initializing the PHY.
+
+.Wait for the DLL master module to lock, i.e., `pm_dll_init_done` to `1`.
+
+.Wait for `pm_dll_lock_*` or `pm_pll_lock_*` of all clock generation modules to become `1`.
+
+. Enabling all `pm_clken_*`.
+
+. Set `pm_init_start` to `1` to start initialization of the memory controller.
+
+.Wait for the memory controller initialization to complete, i.e., the value of `pm_dram_init` is the same as `pm_cs_enable`.

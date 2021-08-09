@@ -1,0 +1,41 @@
+[[link-initialization-debug-register]]
+==== Link Initialization Debug Register
+
+Used to configure whether to use the `CDRlock` signal provided by the PHY as the link CDR completion flag during link initialization in HyperTransport 3.0 mode.
+If the lock signal is ignored, the controller is required to count and wait for a certain amount of time before the default CDR is completed.
+
+Offset: `0x240`
+
+Reset value: `0x00000000`
+
+Name: Link initialization debug register
+
+[[table-link-initialization-debug-register]]
+.Link initialization debug register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|15
+|Cdr_ignore_enable
+|1
+|0x0
+|R/W
+|Whether to ignore CRC lock during link initialization and wait for completion by counter count.
+
+`1'b0` - wait for CDR lock
+
+`1'b1` - ignore CDR lock signal and wait by counter accumulation
+
+|14:0
+|Cdr_wait_counter
+|15
+|0x0
+|R/W
+|Wait for the counter count limit and finish counting based on the controller clock
+|===

@@ -1,0 +1,558 @@
+[[configuration-register]]
+=== Configuration Register
+
+The configuration register module is mainly used to control the configuration register access requests arriving from the `AXI SLAVE` side or the `HT RECEIVER` side, to perform external interrupt processing, and to store a large number of software-visible configuration registers used to control the various operating modes of the system.
+
+First of all, the configuration registers used to control the various actions of the HT controller are accessed and stored in this module, and the access offset address of this module is `0xFD_FB00_0000` to `0xFD_FBFF_FFFF` on the HT controller side.
+All software visible registers in the HT controller are shown in the following table:
+
+[[software-visible-registers-in-the-ht-controller]]
+.Software visible registers in the HT controller
+[%header,cols="2,1,4*2"]
+|===
+.16+|Enable
+m|0x00
+2+|Device ID
+2+|Vendor ID
+
+m|0x04
+2+|Status
+2+|Command
+
+m|0x08
+3+|Class Code
+|Revision ID
+
+m|0x0c
+|BIST
+|Header Type
+|Latency Timer
+|Cache Line Size
+
+m|0x10
+4+|
+
+m|0x14
+4+|
+
+m|0x18
+4+|
+
+m|0x1c
+4+|
+
+m|0x20
+4+|
+
+m|0x24
+4+|
+
+m|0x28
+4+|Cardbus CIS Pointer
+
+m|0x2c
+2+|Subsystem ID
+2+|Subsystem Vendor ID
+
+m|0x30
+4+|Expansion ROM Enable Address
+
+m|0x34
+3+|Reserved
+|Capabilities Pointer
+
+m|0x38
+4+|Reserved
+
+m|0x3c
+2+|Bridge Control
+|Interrupt Pin
+|Interrupt Line
+
+.7+|Cap 0 PRI
+m|0x40
+2+|Command
+|Capabilities Pointer
+|Capability ID
+
+m|0x44
+2+|Link Config 0
+2+|Link Control 0
+
+m|0x48
+2+|Link Config 1
+2+|Link Control 1
+
+m|0x4C
+2+|LinkFreqCap0
+|Link Error0/Link Freq 0
+|Revision ID
+
+m|0x50
+2+|LinkFreqCap1
+|Link Error1/Link Freq 1
+|Feature
+
+m|0x54
+2+|Error Handling
+|Enumeration Scratchpad
+|
+
+m|0x58
+2+|Reserved
+|Mem Limit Upper
+|Mem Enable Upper
+
+.3+|Cap 1 Retry
+m|0x60
+|Capability Type
+|Reserved
+|Capability Pointer
+|Capabiliter ID
+
+m|0x64
+|Status 1
+|Control 1
+|Status 0
+|Control 0
+
+m|0x68
+2+|Retry Count 1
+2+|Retry Count 0
+
+|CAP 3
+m|0x6C
+|Capability Type
+|Revision ID
+|Capability Pointer
+|Capabiliter ID
+
+.4+|CAP 4 Interrupt
+m|0x70
+|Capability Type
+|Index
+|Capability Pointer
+|Capabiliter ID
+
+m|0x74
+4+|Dataport
+
+m|0x78
+4+|IntrInfo[31:0]
+
+m|0x7C
+4+|IntrInfo[63:32]
+
+.16+|Int Vector
+m|0x80
+4+|INT Vector[31:0]
+
+m|0x84
+4+|INT Vector[63:32]
+
+m|0x88
+4+|INT Vector[95:64]
+
+m|0x8C
+4+|INT Vector[127:96]
+
+m|0x90
+4+|INT Vector[159:128]
+
+m|0x94
+4+|INT Vector[191:160]
+
+m|0x98
+4+|INT Vector[223:192]
+
+m|0x9C
+4+|INT Vector[255:224]
+
+m|0xA0
+4+|INT Enable[31:0]
+
+m|0xA4
+4+|INT Enable[63:32]
+
+m|0xA8
+4+|INT Enable[95:64]
+
+m|0xAC
+4+|INT Enable[127:96]
+
+m|0xB0
+4+|INT Enable[159:128]
+
+m|0xB4
+4+|INT Enable[191:160]
+
+m|0xB8
+4+|INT Enable[223:192]
+
+m|0xBC
+4+|INT Enable[255:224]
+
+.10+|CAP 5 Gen3
+m|0xC0
+|Capability Type
+|Cap Enum/Index
+|Capability Pointer
+|Capabiliter ID
+
+m|0xC4
+4+|Global Link Training
+
+m|0xC8
+4+|Transmitter Configuration 0
+
+m|0xCC
+4+|Receiver Configuration 0
+
+m|0xD0
+4+|Link Training 0
+
+m|0xD4
+4+|Frequency Extension
+
+m|0xD8
+4+|Transmitter Configuration 1
+
+m|0xDC
+4+|Receiver Configuration 1
+
+m|0xE0
+4+|Link Training 1
+
+m|0xE4
+4+|BIST Control
+
+6+|
+
+.16+|Enable
+m|0x100
+2+|Device ID
+2+|Vendor ID
+
+m|0x104
+2+|Status
+2+|Command
+
+m|0x108
+3+|Class Code
+|Revision ID
+
+m|0x10c
+|BIST
+|Header Type
+|Latency Timer
+|Cache Line Size
+
+m|0x110
+4+|
+
+m|0x114
+4+|
+
+m|0x118
+4+|
+
+m|0x11c
+4+|
+
+m|0x120
+4+|
+
+m|0x124
+4+|
+
+m|0x128
+4+|Cardbus CIS Pointer
+
+m|0x12c
+|Subsystem ID
+3+|Subsystem Vendor ID
+
+m|0x130
+4+|Expansion ROM Enable Address
+
+m|0x134
+3+|Reserved
+|Capabilities Pointer
+
+m|0x138
+4+|Reserved
+
+m|0x13c
+2+|Bridge Control
+|Interrupt Pin
+|Interrupt Line
+
+.10+|Receive Windows
+m|0x140
+4+|HT RX Enable 0
+
+m|0x144
+4+|HT RX Mask   0
+
+m|0x148
+4+|HT RX Enable 1
+
+m|0x14C
+4+|HT RX Mask   1
+
+m|0x150
+4+|HT RX Enable 2
+
+m|0x154
+4+|HT RX Mask   2
+
+m|0x158
+4+|HT RX Enable 3
+
+m|0x15C
+4+|HT RX Mask   3
+
+m|0x160
+4+|HT RX Enable 4
+
+m|0x164
+4+|HT RX Mask   4
+
+.2+|Header Trans
+m|0x168
+4+|HT RX Header Trans
+
+m|0x16C
+4+|HT RX EXT Header Trans
+
+.4+|Post Windows
+m|0x170
+4+|HT TX Post Enable 0
+
+m|0x174
+4+|HT TX Post Mask   0
+
+m|0x178
+4+|HT TX Post Enable 1
+
+m|0x17C
+4+|HT TX Post Mask   1
+
+.4+|Prefetchable Windows
+m|0x180
+4+|HT TX Prefetchable Enable 0
+
+m|0x184
+4+|HT TX Prefetchable Mask   0
+
+m|0x188
+4+|HT TX Prefetchable Enable 1
+
+m|0x18C
+4+|HT TX Prefetchable Mask   1
+
+.8+|Uncache Windows
+m|0x190
+4+|HT RX Uncache Enable 0
+
+m|0x194
+4+|HT RX Uncache Mask   0
+
+m|0x198
+4+|HT RX Uncache Enable 1
+
+m|0x19C
+4+|HT RX Uncache Mask   1
+
+m|0x1A0
+4+|HT RX Uncache Enable 2
+
+m|0x1A4
+4+|HT RX Uncache Mask   2
+
+m|0x1A8
+4+|HT RX Uncache Enable 3
+
+m|0x1AC
+4+|HT RX Uncache Mask   3
+
+.4+|P2P Windows
+m|0x1B0
+4+|HT RX P2P Enable 0
+
+m|0x1B4
+4+|HT RX P2P Mask   0
+
+m|0x1B8
+4+|HT RX P2P Enable 1
+
+m|0x1BC
+4+|HT RX P2P Mask   1
+
+.4+|APP Config
+m|0x1C0
+4+|APP Configuration 0
+
+m|0x1C4
+4+|APP Configuration 1
+
+m|0x1C8
+4+|RX Bus Value
+
+m|0x1CC
+4+|PHY status
+
+.4+|Buffer
+m|0x1D0
+4+|TX Buffer 0
+
+m|0x1D4
+4+|TX Buffer 1 / Rx buffer hi
+
+m|0x1D8
+4+|TX Buffer turning
+
+m|0x1DC
+4+|RX Buffer lo
+
+.5+|Training
+m|0x1E0
+4+|Training 0 Counter Short
+
+m|0x1E4
+4+|Training 0 Counter Long
+
+m|0x1E8
+4+|Training 1 Counter
+
+m|0x1EC
+4+|Training 2 Counter
+
+m|0x1F0
+4+|Training 3 Counter
+
+|PLL
+m|0x1F4
+4+|PLL Configuration
+
+.2+|PHY
+m|0x1F8
+4+|I/O Configuration
+
+m|0x1FC
+4+|PHY Configuration
+
+6+|
+
+.7+|DEBUG
+m|0x240
+4+|HT3 DEBUG 0
+
+m|0x244
+4+|HT3 DEBUG 1
+
+m|0x248
+4+|HT3 DEBUG 2
+
+m|0x24C
+4+|HT3 DEBUG 3
+
+m|0x250
+4+|HT3 DEBUG 4
+
+m|0x254
+4+|HT3 DEBUG 5
+
+m|0x258
+4+|HT3 DEBUG 6
+
+.4+|POST ID WINDOWS
+m|0x260
+4+|HT TX POST ID WIN0
+
+m|0x264
+4+|HT TX POST ID WIN1
+
+m|0x268
+4+|HT TX POST ID WIN2
+
+m|0x26C
+4+|HT TX POST ID WIN3
+
+.2+|POST ID WINDOWS
+m|0x270
+4+|INT TRANS WIN lo
+
+m|0x274
+4+|INT TRANS WIN hi
+|===
+
+The specific meaning of each register is shown in the following sections.
+
+include::configuration-register/bridge-control-register.adoc[]
+
+include::configuration-register/capability-registers.adoc[]
+
+include::configuration-register/error-retry-control-register.adoc[]
+
+include::configuration-register/retry-count-register.adoc[]
+
+include::configuration-register/revision-id-register.adoc[]
+
+include::configuration-register/interrupt-discovery-and-configuration.adoc[]
+
+include::configuration-register/interrupt-vector-register.adoc[]
+
+include::configuration-register/interrupt-enable-register.adoc[]
+
+include::configuration-register/link-train-register.adoc[]
+
+include::configuration-register/receive-address-window-configuration-register.adoc[]
+
+include::configuration-register/space-conversion-configuration-register.adoc[]
+
+include::configuration-register/post-address-window-configuration-register.adoc[]
+
+include::configuration-register/prefetchable-address-window-configuration-register.adoc[]
+
+include::configuration-register/uncache-address-window-configuration-register.adoc[]
+
+include::configuration-register/p2p-address-window-configuration-register.adoc[]
+
+include::configuration-register/controller-parameter-configuration-register.adoc[]
+
+include::configuration-register/receive-diagnostic-register.adoc[]
+
+include::configuration-register/phy-status-register.adoc[]
+
+include::configuration-register/transport-command-cache-size-register.adoc[]
+
+include::configuration-register/transport-data-cache-size-register.adoc[]
+
+include::configuration-register/transport-cache-debug-register.adoc[]
+
+include::configuration-register/receive-buffer-initialization-configuration-register.adoc[]
+
+include::configuration-register/training-0-timeout-short-counter-register.adoc[]
+
+include::configuration-register/training-0-timeout-long-counter-register.adoc[]
+
+include::configuration-register/training-1-counter-register.adoc[]
+
+include::configuration-register/training-2-counter-register.adoc[]
+
+include::configuration-register/training-3-counter-register.adoc[]
+
+include::configuration-register/software-frequency-configuration-register.adoc[]
+
+include::configuration-register/phy-impedance-matching-control-register.adoc[]
+
+include::configuration-register/phy-configuration-register.adoc[]
+
+include::configuration-register/link-initialization-debug-register.adoc[]
+
+include::configuration-register/ldt-debug-register.adoc[]
+
+include::configuration-register/ht-tx-post-id-window-configuration-register.adoc[]
+
+include::configuration-register/external-interrupt-conversion-configuration.adoc[]

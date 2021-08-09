@@ -1,0 +1,27 @@
+[[transport-data-register-1]]
+==== Transport Data Register (`TxFIFO`)
+
+Name: Transport data register
+
+Length: `[7:0]`
+
+Offset: `0x02`
+
+Reset value: `0x00`
+
+[[table-transport-data-register-1]]
+.Transport data register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|Tx FIFO
+|8
+|W
+|Transport data register
+|===

@@ -1,0 +1,54 @@
+[[control-register-2]]
+==== Control Register (`CTR`)
+
+Name: Control register
+
+Length: `[7:0]`
+
+Offset: `0x02`
+
+Reset value: `0x20`
+
+[[table-control-register-2]]
+.Control register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|EN
+|1
+|RW
+|Module operating enable bit
+
+`1` - normal operation mode
+
+`0` - operation of the division register
+
+|6
+|IEN
+|1
+|RW
+|Interrupt enable bit.
+`1` indicates enable interrupt
+
+|5
+|MST_EN
+|1
+|RW
+|Module master-slave selection
+
+`0`: slave mode
+
+`1`: master mode
+
+|4:0
+|Reserved
+|5
+|RW
+|Reserved
+|===

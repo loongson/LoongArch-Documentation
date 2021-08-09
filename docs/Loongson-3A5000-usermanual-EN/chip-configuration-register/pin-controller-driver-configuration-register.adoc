@@ -1,0 +1,87 @@
+[[pin-controller-driver-configuration-register]]
+=== Pin Controller Driver Configuration Register (`0x0188`)
+
+The offset address is `0x0188`.
+
+[[table-pin-controller-driver-configuration-register]]
+.Pin controller driver configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|15:0
+|
+|
+|
+|
+
+|19:16
+|HT sideband
+|RW
+|2'b0
+|HT control signal driver configuration
+
+|23:20
+|I2C
+|RW
+|2'b0
+|I2C control signal driver configuration
+
+|27:24
+|UART
+|RW
+|2'b0
+|UART control signal driver configuration
+
+|31:28
+|SPI
+|RW
+|2'b0
+|SPI control signal driver configuration
+
+|35:32
+|GPIO
+|RW
+|2'b0
+|GPIO control signal driver configuration
+
+|39:36
+|SE UART
+|RW
+|2'b0
+|SE UART control signal driver configuration
+
+|43:40
+|SE SPI
+|RW
+|2'b0
+|SE SPI control signal driver configuration
+
+|47:44
+|SE I2C
+|RW
+|2'b0
+|SE I2C control signal driver configuration
+
+|51:48
+|SE SCI
+|RW
+|2'b0
+|SE SCI control signal driver configuration
+
+|55:52
+|SE RNG
+|RW
+|2'b0
+|SE RNG control signal driver configuration
+
+|59:56
+|SE GPIO
+|RW
+|2'b0
+|SE GPIO control signal driver configuration
+|===

@@ -1,0 +1,12 @@
+[[hypertransport-interrupt-support]]
+=== HyperTransport Interrupt Support
+
+The HyperTransport controller provides `256` interrupt vectors to support `Fix`, `Arbiter`, and other types of interrupts, but does not provide support for hardware automatic EOI.
+For the above two supported types of interrupts, the controller automatically writes to the interrupt register after receiving them and performs interrupt notification to the system interrupt controller according to the setting of the interrupt mask register.
+See the description of the interrupt control registers in <<interrupt-vector-register,Interrupt Vector Register>> for specific interrupt control.
+
+include::hypertransport-interrupt-support/pic-interrupts.adoc[]
+
+include::hypertransport-interrupt-support/local-interrupts-handling.adoc[]
+
+include::hypertransport-interrupt-support/extended-interrupts-handling.adoc[]

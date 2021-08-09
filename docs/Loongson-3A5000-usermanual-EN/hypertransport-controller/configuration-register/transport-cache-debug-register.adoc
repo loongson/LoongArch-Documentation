@@ -1,0 +1,133 @@
+[[transport-cache-debug-register]]
+==== Transport Cache Debug Register
+
+The transmit buffer debug register is used to manually set the number of buffers on the transmit side of the HT controller and to adjust the number of different transmit buffers by increasing or decreasing.
+
+Offset: `0x1D8`
+
+Reset value: `0x00000000`
+
+Name: Send Cache debug register
+
+[[table-transport-cache-debug-register]]
+.Transport Cache debug register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|b_interleave
+|1
+|0x0
+|R/W
+|Consistent mode to enable interleaved transmission between channel `B` and other channels
+
+|30
+|nop_interleave
+|1
+|0x0
+|R/W
+|Enables interleaved transmission of flow control packets with other virtual channels
+
+|29
+|Tx_neg
+|1
+|0x0
+|R/W
+|Sender Cache debug symbols
+
+`0`: increase the number of registers
+
+`1`: decrease (the number of registers plus `1`)
+
+|28
+|Tx_buff_adj_en
+|1
+|0x0
+|R/W
+|Sender Cache debug enable register
+
+`0` &#8594; `1`: the value of this register will be incremented or decremented once
+
+|27:24
+|R_DATA_txadj
+|4
+|0x0
+|R/W
+|Increase or decrease the number of R channel data Cache at the transmitter.
+
+When `tx_neg` is 0, increase the number of `R_DATA_txadj`.
+
+When `tx_neg` is 1, decrease `R_DATA_txadj+1`
+
+|23:20
+|NPC_DATA_txadj
+|4
+|0x0
+|R/W
+|Increase or decrease the number of R channel data Cache at the transmitter.
+
+When tx_neg is `0`, increase the number of `R_DATA_txadj`.
+
+When tx_neg is `1`, decrease `R_DATA_txadj + 1` number of NPC channel data Cache increment/decrement on the transmitter side
+
+|19:16
+|PC_DATA_txadj
+|4
+|0x0
+|R/W
+|Increase or decrease the number of PC channel data Cache at the transmitter.
+
+When tx_neg is `0`, increase the number of `PC_DATA_txadj`.
+
+When tx_neg is `1`, decrease `PC_DATA_txadj+1`
+
+|15:12
+|B_CMD_txadj
+|4
+|0x0
+|R/W
+|Increase or decrease the number of B channel command Cache at the transmitter.
+
+When tx_neg is `0`, increase the number of `B_CMD_txadj`.
+
+When tx_neg is `1`, decrease `B_CMD_txadj+1`
+
+|11:8
+|R_CMD_txadj
+|4
+|0x0
+|R/W
+|Increase or decrease the number of R channel command Cache on the transmitter side.
+
+When tx_neg is `0`, increase the number of `R_CMD_txadj`.
+
+When tx_neg is `1`, decrease `R_CMD_txadj+1`
+
+|7:4
+|NPC_CMD_txadj
+|4
+|0x0
+|R/W
+|Increase or decrease the number of NPC channel command/data Cache on the transmitter side.
+
+When tx_neg is `0`, increase the number of `NPC_CMD_txadj`.
+
+When tx_neg is `1`, decrease `NPC_CMD_txadj+1`
+
+|3:0
+|PC_CMD_txadj
+|4
+|0x0
+|R/W
+|Increase or decrease the number of PC channel command Cache on the transmitter side.
+
+When tx_neg is `0`, increase the number of `PC_CMD_txadj`.
+
+When tx_neg is `1`, decrease `PC_CMD_txadj+1`
+|===

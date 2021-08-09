@@ -1,0 +1,64 @@
+[[error-retry-control-register]]
+==== Error Retry Control Register
+
+Used for HyerTransport 3.0 mode error retransmission enable, to configure the maximum number of Short Retry, to show whether the Retry counter is flipped or not.
+
+Offset: `0x64`
+
+Reset value: `0x00000000`
+
+Name: Error retry control register
+
+[[table-error-retry-control-register]]
+.Error Retry Control Register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:10
+|Reserved
+|22
+|0x0
+|R
+|Reserved
+
+|9
+|Retry Count Rollover
+|1
+|0x0
+|R
+|Retry Counter count rollover
+
+|8
+|Reserved
+|1
+|0x0
+|R
+|Reserved
+
+|7:6
+|Short Retry Attempts
+|2
+|0x0
+|R/W
+|Maximum number of Short Retry allowed
+
+|5:1
+|Reserved
+|5
+|0x0
+|R
+|
+
+|0
+|Link Retry Enable
+|1
+|0x0
+|R/W
+|Error reconnect function enable control
+|===

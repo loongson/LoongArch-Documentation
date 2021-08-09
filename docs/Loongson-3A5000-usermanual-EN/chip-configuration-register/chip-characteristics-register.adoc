@@ -1,0 +1,88 @@
+[[chip-characteristics-register]]
+=== Chip Characteristics Register (`0x0008`)
+
+This register identifies a number of software-related processor features for software to view before enabling a specific function.
+The offset address is `0x0008`.
+
+[[table-chip-characteristics-register]]
+.Chip characteristics register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|0
+|Centigrade
+|R
+|1'b1
+|`1` indicates that `CSR[0x428]` is valid
+
+|1
+|Node counter
+|R
+|1'b1
+|`1` indicates that `CSR[0x408]` is valid
+
+|2
+|MSI
+|R
+|1'b1
+|`1` indicates that `MSI` is available
+
+|3
+|EXT_IOI
+|R
+|1'b1
+|`1` indicates that `EXT_IOI` is available
+
+|4
+|IPI_percore
+|R
+|1'b1
+|`1` indicates that IPI is sent via VSR private address
+
+|5
+|Freq_percore
+|R
+|1'b1
+|`1` indicates that frequency is modulated via VSR private address
+
+|6
+|Freq_scale
+|R
+|1'b1
+|`1` indicates that dynamic frequency division is available
+
+|7
+|DVFS_v1
+|R
+|1'b1
+|`1` indicates that dynamic frequency adjustment `v1` is available
+
+|8
+|Tsensor
+|R
+|1'b1
+|`1` indicates that temperature sensor is available
+
+|9
+|Interrupt decoding
+|R
+|1'b1
+|Interrupt pin decoding mode is available
+
+|10
+|Flat Mode
+|R
+|1'b0
+|Traditional compatibility mode
+
+|11
+|Guest Mode
+|WR
+|1'b0
+|KVM Virtual Machine Mode
+|===

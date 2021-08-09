@@ -1,0 +1,93 @@
+[[accessing-by-address-1]]
+==== Accessing by Address
+
+The per-address access mode is compatible with the 3A3000 processor and uses the processor core software frequency divider setup register, which uses the same address for setup.
+
+Using this register to set the processor core for tuning allows the frequency conversion operation to be completed in `100ns` with no other additional overhead.
+The base address is `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR),and the offset address is `0x01d0`.
+
+[[processor-core-software-frequency-division-configuration-register-2]]
+.Processor core software frequency division configuration
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|2:0
+|core0_freqctrl
+|RW
+|0x7
+|Core 0 frequency division control value
+
+|3
+|core0_en
+|RW
+|0x1
+|Core 0 clock enable
+
+|6:4
+|core1_freqctrl
+|RW
+|0x7
+|Core 1 frequency division control value
+
+|7
+|core1_en
+|RW
+|0x1
+|Core 1 clock enable
+
+|10:8
+|core2_freqctrl
+|RW
+|0x7
+|Core 2 frequency division control value
+
+|11
+|core2_en
+|RW
+|0x1
+|Core 2 clock enable
+
+|14:12
+|core3_freqctrl
+|RW
+|0x7
+|Core 3 frequency division control value
+
+|15
+|core3_en
+|RW
+|0x1
+|Core 3 clock enable
+|===
+
+Note: The clock frequency value after software dividing is equal to the original `(dividing control value + 1)/8`.
+
+In addition to the frequency division configuration compatible with the 3A3000 processor, the clock frequency after frequency division can be adjusted from `(Frequency Division Control Value + 1)/8` to `1/(Frequency Division Control Value + 1)`` by setting the register in the 3A5000.
+This register is located in other function configuration register.
+The base address is `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR),and the offset address is `0x0420`.
+
+[[other-function-configuration-register-2]]
+.Other function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|35:32
+|freqscale_mode_core
+|RW
+|0x0
+|Frequency adjustment mode selection for each core
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+|===

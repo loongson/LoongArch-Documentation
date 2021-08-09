@@ -1,0 +1,27 @@
+[[transport-fifo-counter]]
+==== Transport FIFO Counter (`TFC`)
+
+Name: Transport FIFO Count value
+
+Length: `[7:0]`
+
+Offset: `0x09`
+
+Reset value: `0x00`
+
+[[table-transport-fifo-counter]]
+.Transport FIFO counter
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|RFC
+|8
+|R
+|Reflects the number of valid data in the current transport `FIFO`
+|===

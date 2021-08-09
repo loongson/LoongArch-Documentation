@@ -1,0 +1,168 @@
+[[physical-address-space-layout-within-nodes]]
+=== Physical Address Space Layout Within Nodes
+
+The Loongson 3A5000 uses a single node 4-core configuration, so the corresponding addresses of the DDR memory controller and HT bus integrated in the Loongson 3A5000 chip are contained in a 44-bit address space from `0x0` (inclusive) to `0x1000_0000_0000` (exclusive).
+Within each node, the 44-bit address space is further divided among all devices connected within the node, and requests are routed to the four shared Cache modules only when the access type is cached.
+Depending on the chip and system architecture configuration, if there is no slave device connected on a port, the corresponding address space is reserved address space and access is not allowed.
+
+The address space corresponding to each slave device side of the Loongson 3A5000 chip internal interconnect is as follows:
+
+[[address-distribution-within-nodes]]
+.Address layout within nodes
+[%header,cols="4*^1m"]
+|===
+d|Device
+d|the `[43:40]` bits of the address
+d|Start address within nodes
+d|End address within nodes
+
+|MC0
+|4
+|0x400_0000_0000
+|0x4FF_FFFF_FFFF
+
+|MC1
+|5
+|0x500_0000_0000
+|0x5FF_FFFF_FFFF
+
+|SE
+|c
+|0xC00_0000_0000
+|0xCFF_FFFF_FFFF
+
+|HT0 Lo controller
+|a
+|0xA00_0000_0000
+|0xAFF_FFFF_FFFF
+
+|HT0 Hi controller
+|b
+|0xB00_0000_0000
+|0xBFF_FFFF_FFFF
+
+|HT1 Lo controller
+|e
+|0xE00_0000_0000
+|0xEFF_FFFF_FFFF
+
+|HT1 Hi controller
+|f
+|0xF00_0000_0000
+|0xFFF_FFFF_FFFF
+|===
+
+Unlike the directional port mapping relationship, the Loongson 3A5000 can determine the cross-addressing method of the shared Cache based on the access behavior of the actual application.
+The address space corresponding to the four shared Cache modules in the node is determined based on one or two select bits of the address bits, and can be dynamically configured and modified by software.
+A configuration register named `SCID_SEL` is set to determine the address selection bits, as shown in the following table.
+By default the `[7:6]` address hash is used for distribution, i.e., the two bits of address `[7:6]` determine the corresponding shared Cache number.
+This register is addressed as 0x1fe00400 and can also be accessed using the configuration register instruction (IOCSR).
+
+[[scid-sel-address-bit-configuration]]
+.`SCID_SEL` Address bit configuration
+[%header,cols="4*^1m"]
+|===
+|SCID_SEL
+d|Address Bit Selection
+|SCID_SEL
+d|Address Bit Selection
+
+|4'h0
+|7: 6
+|4'h8
+|23:22
+
+|4'h1
+|9: 8
+|4'h9
+|25:24
+
+|4'h2
+|11:10
+|4'ha
+|27:26
+
+|4'h3
+|13:12
+|4'hb
+|29:28
+
+|4'h4
+|15:14
+|4'hc
+|31:30
+
+|4'h5
+|17:16
+|4'hd
+|33:32
+
+|4'h6
+|19:18
+|4'he
+|35:34
+
+|4'h7
+|21:20
+|4'hf
+|37:36
+|===
+
+The default distribution of the internal 44-bit physical addresses for each node of the Loongson 3A5000 processor is shown in the table below:
+
+[[table-44-bit-physical-address-layout-within-nodes]]
+.44-bit physical address layout within nodes
+[%header,cols="2*1,^1m"]
+|===
+|Address Range
+|Access Properties
+d|Destination
+
+|`addr[43:40]==4'ha`
+|Local node, uncache
+|HT0_LO
+
+|`addr[43:40]==4'hb`
+|Local node, uncache
+|HT0_HI
+
+|`addr[43:40]==4'hc`
+|Local node, uncache
+|SE
+
+|`addr[43:40]==4'he`
+|Local node, uncache
+|HT1_LO
+
+|`addr[43:40]==4'hf`
+|Local node, uncache
+|HT1_HI
+
+|`0x10000000`-`0x1fffffff`, `0x3ff00000`-`0x3ff0ffff` (can be turned off)
+|Local node, uncache
+|MISC
+
+|Mc interleave is `0` and is not the above address
+|Local node, uncache
+|MC0
+
+|Mc interleave is `1` and is not the above address
+|Local node, uncache
+|MC1
+
+|`SCache interleave` is `0` (address bit selection is determined by `scid_sel`)
+|Local node, Cache
+|Scache0
+
+|`SCache interleave` is `1` (address bit selection is determined by `scid_sel`)
+|Local node, Cache
+|Scache1
+
+|`SCache interleave` is `2` (address bit selection is determined by `scid_sel`)
+|Local node, Cache
+|Scache2
+
+|`SCache interleave` is `3` (address bit selection is determined by `scid_sel`)
+|Local node, Cache
+|Scache3
+|===

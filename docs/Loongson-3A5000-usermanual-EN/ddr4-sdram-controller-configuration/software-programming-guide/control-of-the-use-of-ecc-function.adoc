@@ -1,0 +1,13 @@
+[[control-of-the-use-of-ecc-function]]
+==== Control of the Use of ECC Function
+
+The ECC function is only available in 64-bit mode.
+`ecc_enable` (`0x1280`) consists of the following `2` control bits:
+
+`Ecc_enable[0]` controls whether to enable the ECC function, which is enabled only if this valid bit is set.
+`Ecc_enable[1]` controls whether to report errors through the processor's internal read response path, so that a read access with an ECC two-bit error can immediately cause an exception to occur in the processor core.
+
+In addition, ECC errors can be notified to the processor core via an interrupt.
+This interrupt is controlled through Int_enable.
+The interrupt consists of two vectors, `Int_vector[0]` for an ECC error (both 1-bit and 2-bit errors) and `Int_vecotr[1]` for an ECC two-bit error.
+Clearance of `Int_vector` is achieved by writing `1` to the corresponding bit.

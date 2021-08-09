@@ -1,0 +1,28 @@
+[[sram-adjustment-register]]
+=== SRAM Adjustment Register (`0x0430`)
+
+The following registers are used to adjust the operating frequency of Sram inside the processor core.
+The offset address is `0x0430`.
+
+[[processor-core-sram-adjustment-register]]
+.Processor core SRAM adjustment register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|31:0
+|sram_ctrl
+|RW
+|0x0
+|Inter-processor sram configuration register
+
+|63:32
+|
+|RW
+|0x0
+|
+|===

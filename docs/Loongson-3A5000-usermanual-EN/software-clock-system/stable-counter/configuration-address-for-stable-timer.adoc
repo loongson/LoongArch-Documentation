@@ -1,0 +1,129 @@
+[[configuration-address-for-stable-timer]]
+==== Configuration Address for Stable Timer
+
+Using the Stable counter clock source, a monotonically increasing timer counter and a timer timer that decrements down from the set value are implemented; each processor core has its own independent Stable counter and Stable timer.
+When the processor accesses the timer, it can only be accessed by `rdhwr`, `DRDTIME` and other specific instructions; when the processor accesses the timer, it can be accessed by address to load/store or by CSR configuration register instructions.
+
+[[address-access-method]]
+.Address access method
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|Core0_timer_config
+|0x1060
+|RW
+|Timer configuration register for processor core 0
+
+|Core0_timer_ticks
+|0x1070
+|R
+|Timer remaining value for processor core 0
+
+|Core1_timer_config
+|0x1160
+|RW
+|Timer configuration register for processor core 1
+
+|Core1_timer_ticks
+|0x1170
+|R
+|Timer remaining value for processor core 1
+
+|Core2_timer_config
+|0x1260
+|RW
+|Timer configuration register for processor core 2
+
+|Core2_timer_ticks
+|0x1270
+|R
+|Timer remaining value for processor core 2
+
+|Core3_timer_config
+|0x1360
+|RW
+|Timer configuration register for processor core 3
+
+|Core3_timer_ticks
+|0x1370
+|R
+|Timer remaining value for processor core 3
+|===
+
+[[configuration-register-instruction-access-method]]
+.Configuration register instruction access method
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|percore_timer_config
+|0x1060
+|RW
+|Timer configuration register of the current processor core
+
+|percore_timer_ticks
+|0x1070
+|R
+|Timer remaining value for the current processor core
+|===
+
+[[register-description]]
+.Register description
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+5+<|timer_config
+
+|63
+|1
+|RW
+|0x1
+|Reset to `1`, and should write `1`
+
+|62
+|Periodic
+|RW
+|0x0
+|Cycle count enable.
+When this bit is `1`, the timer is automatically reset to the value of the `InitVal` field in `timer_config` after decreasing to `0`
+
+|61
+|Enable
+|RW
+|0x0
+|General enable.
+The timer is active when this bit is `1`
+
+|47:0
+|InitVal
+|RW
+|0x0
+|The initial value for conducting the countdown
+
+5+<|timer_ticks
+
+|63:48
+|0
+|R
+|0x0
+|Value `0`
+
+|47:0
+|Ticks
+|R
+|0x0
+|The remaining value of the countdown.
+When not in a cycle count, the value will stay at `48'hffff_ffff_ffff` when the count is complete
+|===

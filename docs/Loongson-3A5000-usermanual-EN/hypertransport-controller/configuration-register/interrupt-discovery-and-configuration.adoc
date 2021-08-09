@@ -1,0 +1,138 @@
+[[interrupt-discovery-and-configuration]]
+==== Interrupt Discovery and Configuration
+
+Offset: `0x70`
+
+Reset value: `0x80000008`
+
+Name: Interrupt capability
+
+[[table-interrupt-capability-register]]
+.Interrupt capability register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:24
+|Capabilities Pointer
+|8
+|0x80
+|R
+|Interrupt discovery and configuration block
+
+|23:16
+|Index
+|8
+|0x0
+|R/W
+|Read register offset address
+
+|15:8
+|Capabilities Pointer
+|8
+|0x0
+|R
+|Capabilities Pointer
+
+|7:0
+|Capability ID
+|8
+|0x08
+|R
+|Hypertransport Capablity ID
+|===
+
+Offset: `0x74`
+
+Reset value: `0x00000000`
+Name: Dataport
+
+[[interrupt-dataport-register]]
+.Interrupt dataport register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|Dataport
+|32
+|0x0
+|R/W
+|When the previous register Index is `0x10`, the result of reading and writing this register is `0xa8` register, otherwise it is `0xac`
+|===
+
+Offset: `0x78`
+
+Reset value: `0xF8000000`
+
+Name: IntrInfo[31:0]
+
+[[interrupt-intrlnfo-register-1]]
+.Interrupt intrlnfo register 1
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:24
+|IntrInfo[31:24]
+|8
+|0xF8
+|R
+|Reserved
+
+|23:2
+|IntrInfo[23:2]
+|22
+|0x0
+|R/W
+|IntrInfo[23:2]
+
+When a PIC interrupt is issued, the value of IntrInfo is used to represent the interrupt vector
+
+|1:0
+|Reserved
+|2
+|0x0
+|R
+|Reserved
+|===
+
+Offset: `0x7c`
+
+Reset value: `0x00000000`
+
+Name: IntrInfo[63:32]
+
+[[interrupt-intrlnfo-register-2]]
+.Interrupt intrlnfo register 2
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:0
+|IntrInfo[63:32]
+|32
+|0x0
+|R
+|Reserved
+|===

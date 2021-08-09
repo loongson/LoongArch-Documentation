@@ -1,0 +1,305 @@
+[[accessing-by-address-5]]
+==== Accessing by Address
+
+The following are the associated extended I/O interrupt registers.
+As with the other configuration registers, the base address can be used as `0x1fe00000`, or can be accessed via the processor core's dedicated register configuration instructions.
+
+[[extended-io-interrupt-enable-register]]
+.Extended I/O interrupt enable register
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|EXT_IOIen[63:0]
+|0x1600
+|Interrupt enable configuration for extended I/O interrupt `[63:0]`
+
+|EXT_IOIen[127:64]
+|0x1608
+|Interrupt enable configuration for extended I/O interrupt `[127:64]`
+
+|EXT_IOIen[191:128]
+|0x1610
+|Interrupt enable configuration for extended I/O interrupt `[191:128]`
+
+|EXT_IOIen[255:192]
+|0x1618
+|Interrupt enable configuration for extended I/O interrupt `[255:192]`
+|===
+
+[[extended-io-interrupt-auto-rotation-enable-register]]
+.Extended I/O interrupt auto-rotation enable register
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|EXT_IOIbounce[63:0]
+|0x1680
+|Auto-rotation enable register for extended I/O interrupt `[63:0]`
+
+|EXT_IOIbounce[127:64]
+|0x1688
+|Auto-rotation enable register for extended I/O interrupt `[127:64]`
+
+|EXT_IOIbounce[191:128]
+|0x1690
+|Auto-rotation enable register for extended I/O interrupt `[191:128]`
+
+|EXT_IOIbounce[255:192]
+|0x1698
+|Auto-rotation enable register for extended I/O interrupt `[255:192]`
+|===
+
+[[extended-io-interrupt-interrupt-status-register]]
+.Extended I/O interrupt interrupt status register
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|EXT_IOIsr[63:0]
+|0x1700
+|Interrupt status for extended I/O interrupt `[63:0]`
+
+|EXT_IOIsr[127:64]
+|0x1708
+|Interrupt status for extended I/O interrupt `[127:64]`
+
+|EXT_IOIsr[191:128]
+|0x1710
+|Interrupt status for extended I/O interrupt `[191:128]`
+
+|EXT_IOIsr[255:192]
+|0x1718
+|Interrupt status for extended I/O interrupt `[255:192]`
+|===
+
+[[extended-io-interrupt-status-register-for-each-processor-core]]
+.Extended I/O interrupt status register for each processor core
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|CORE0_EXT_IOIsr[63:0]
+|0x1800
+|Interrupt status of extended I/O interrupt `[63:0]` routed to processor core 0
+
+|CORE0_EXT_IOIsr[127:64]
+|0x1808
+|Interrupt status of extended I/O interrupt `[127:64]` routed to processor core 0
+
+|CORE0_EXT_IOIsr[191:128]
+|0x1810
+|Interrupt status of extended I/O interrupt `[191:128]` routed to processor core 0
+
+|CORE0_EXT_IOIsr[255:192]
+|0x1818
+|Interrupt status of extended I/O interrupt `[255:192]` routed to processor core 0
+
+|CORE1_EXT_IOIsr[63:0]
+|0x1900
+|Interrupt status of extended I/O interrupt `[63:0]` routed to processor core 1
+
+|CORE1_EXT_IOIsr[127:64]
+|0x1908
+|Interrupt status of extended I/O interrupt `[127:64]` routed to processor core 1
+
+|CORE1_EXT_IOIsr[191:128]
+|0x1910
+|Interrupt status of extended I/O interrupt `[191:128]` routed to processor core 1
+
+|CORE1_EXT_IOIsr[255:192]
+|0x1918
+|Interrupt status of extended I/O interrupt `[255:192]` routed to processor core 1
+
+|CORE2_EXT_IOIsr[63:0]
+|0x1A00
+|Interrupt status of extended I/O interrupt `[63:0]` routed to processor core 2
+
+|CORE2_EXT_IOIsr[127:64]
+|0x1A08
+|Interrupt status of extended I/O interrupt `[127:64]` routed to processor core 2
+
+|CORE2_EXT_IOIsr[191:128]
+|0x1A10
+|Interrupt status of extended I/O interrupt `[191:128]` routed to processor core 2
+
+|CORE2_EXT_IOIsr[255:192]
+|0x1A18
+|Interrupt status of extended I/O interrupt `[255:192]` routed to processor core 2
+
+|CORE3_EXT_IOIsr[63:0]
+|0x1B00
+|Interrupt status of extended I/O interrupt `[63:0]` routed to processor core 3
+
+|CORE3_EXT_IOIsr[127:64]
+|0x1B08
+|Interrupt status of extended I/O interrupt `[127:64]` routed to processor core 3
+
+|CORE3_EXT_IOIsr[191:128]
+|0x1B10
+|Interrupt status of extended I/O interrupt `[191:128]` routed to processor core 3
+
+|CORE3_EXT_IOIsr[255:192]
+|0x1B18
+|Interrupt status of extended I/O interrupt `[255:192]` routed to processor core 3
+|===
+
+Similar to traditional I/O interrupts, the 256-bit interrupt source for Extended I/O interrupts can be software-configured to select the target processor core for the desired interrupt.
+
+However, the interrupt sources are not individually selected to route to any of the processor core interrupts INT0 through INT3, but rather the routing of INT interrupts is done in groups. 
+The following are the interrupt pin routing registers configured by group.
+
+Starting with the 3A5000, the interrupt pin routing bits have been added in a coded manner and are enabled by the `CSR[0x420][49]` bit control.
+When this bit is enabled, the `[3:0]` bits in the table below changes from a bitmap representation to a numeric encoding method.
+Configurable values `0`-`7` indicate interrupt pins `0`-`7`.
+For example, in this mode, `0x2` indicates routing to `INT2`.
+
+[[description-of-the-interrupt-pin-routing-register]]
+.Description of the interrupt pin routing register
+[%header,cols="1m,3"]
+|===
+d|Bit Field
+|Description
+
+|3:0
+|Processor core interrupt pin vector number for routing
+
+|7:4
+|Reserved
+|===
+
+[[interrupt-routing-register-address-2]]
+.Interrupt routing register address
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|EXT_IOImap0
+|0x14C0
+|Pin routing method of `EXT_IOI[31:0]`
+
+|EXT_IOImap1
+|0x14C1
+|Pin routing method of `EXT_IOI[63:32]`
+
+|EXT_IOImap2
+|0x14C2
+|Pin routing method of `EXT_IOI[95:64]`
+
+|EXT_IOImap3
+|0x14C3
+|Pin routing method of `EXT_IOI[127:96]`
+
+|EXT_IOImap4
+|0x14C4
+|Pin routing method of `EXT_IOI[159:128]`
+
+|EXT_IOImap5
+|0x14C5
+|Pin routing method of `EXT_IOI[191:160]`
+
+|EXT_IOImap6
+|0x14C6
+|Pin routing method of `EXT_IOI[223:192]`
+
+|EXT_IOImap7
+|0x14C7
+|Pin routing method of `EXT_IOI[255:224]`
+|===
+
+Each interrupt source additionally corresponds to an 8-bit routing controller with the format and address shown in <<description-of-the-interrupt-destination-processor-core-routing-register,Description of the interrupt destination processor core routing register>> and <<interrupt-destination-processor-core-routing-register-address,Interrupt destination processor core routing register address>>.
+The `[7:4]` bits are used to select the real node routing vector in <<interrupt-destination-node-mapping-method-configuration,Interrupt destination node mapping method configuration>>.
+The routing register uses a vector approach for routing, e.g., `0x48` indicates a route to processor core 3 of the node referred to by `EXT_IOI_node_type4`.
+
+[[description-of-the-interrupt-destination-processor-core-routing-register]]
+.Description of the interrupt destination processor core routing register
+[%header,cols="1m,3"]
+|===
+d|Bit Field
+|Description
+
+|3:0
+|Processor core vector number for routing
+
+|7:4
+|Selection of node mapping method of routing (as configured in <<interrupt-destination-node-mapping-method-configuration,Interrupt destination node mapping method configuration>>)
+|===
+
+Note that when using the rotating distribution mode (corresponding to an `EXT_IOIbounce` of `1`), rotate on the fully mapped mode of node number to processor core number.
+The setting of `EXT_IOIbounce` should follow the associated route mapping configuration.
+
+For example, when the setting in the tables above is `0x27` and the setting of `EXT_IOI_node_type2` in the the tables below is `0x0013`, the interrupt will rotate in turn on node 0 core 0, node 0 core 1, node 0 core 2, node 1 core 0, node 1 core 1, node 1 core 2, node 4 core 0, node 4 core 1, and node 4 core 2.
+
+When using fixed distribution mode (corresponding to an `EXT_IOIbounce` of `0`), only one bit on the bitmap of the node number is allowed to be `1`, or all `0` values, corresponding to local triggering.
+
+[[interrupt-destination-processor-core-routing-register-address]]
+.Interrupt destination processor core routing register address
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|EXT_IOImap_Core0
+|0x1C00
+|Processor core routing method of `EXT_IOI[0]`
+
+|EXT_IOImap_Core1
+|0x1C01
+|Processor core routing method of `EXT_IOI[1]`
+
+|EXT_IOImap_Core2
+|0x1C02
+|Processor core routing method of `EXT_IOI[2]`
+
+|......
+|
+|
+
+|EXT_IOImap_Core254
+|0x1CFE
+|Processor core routing method of `EXT_IOI[254]`
+
+|EXT_IOImap_Core255
+|0x1CFF
+|Processor core routing method of `EXT_IOI[255]`
+|===
+
+[[interrupt-destination-node-mapping-method-configuration]]
+.Interrupt destination node mapping method configuration
+[%header,cols="2*1m,3"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|EXT_IOI_node_type0
+|0x14A0
+|Mapping vector type `0` for `16` nodes (software configuration)
+
+|EXT_IOI_node_type1
+|0x14A2
+|Mapping vector type `1` for `16` nodes (software configuration)
+
+|EXT_IOI_node_type2
+|0x14A4
+|Mapping vector type `2` for `16` nodes (software configuration)
+
+|......
+|
+|
+
+|EXT_IOI_node_type15
+|0x14BE
+|Mapping vector type 15 for 16 nodes (software configuration)
+|===

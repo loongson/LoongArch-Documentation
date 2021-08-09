@@ -1,0 +1,45 @@
+[[hypertransport-controller-internal-window-configuration]]
+==== HyperTransport Controller Internal Window Configuration
+
+The HyperTransport interface of the Loongson 3A5000 processor provides a variety of rich address windows for users to use.
+The roles and functions of these address windows are described in the following table.
+
+[[address-window-provided-in-the-hypertransport-interface-of-the-loongson-3a5000-processor]]
+.Address window provided in the HyperTransport interface of the Loongson 3A5000 processor
+[%header,cols="2,1m,2,2,3"]
+|===
+|Address Window
+d|Number of windows
+|Acceptance bus
+|Role
+|Remarks
+
+|Receive window (See <<receive-address-window-configuration-register,Receive Address Window Configuration Register>> for window configuration)
+|3
+|HyperTransport
+|Determines whether to receive accesses issued on the HyperTransport bus.
+|When in master bridge mode (i.e., act_as_slave is 0 in the configuration register), only accesses falling in these address windows will be responded to by the internal bus, and other accesses will be considered as P2P accesses and re-sent back to the HyperTransport bus
+When in device mode (i.e., act_as_slave is `1` in the configuration register), only accesses falling in these address windows will be received and processed by the internal bus, and other accesses will be returned with errors according to the protocol.
+
+|Post window (see <<post-address-window-configuration-register,POST Address Window Configuration Register>> for window configuration)
+|2
+|Internal Bus
+|Determine whether to treat internal bus write accesses to the HyperTransport bus as Post Write
+|External write accesses that fall in these address spaces will be treated as Post Write.
+Post Write: in HyperTransport protocol, this write access does not need to wait for a write completion response, i.e., the write access completion response to the processor will be made after the controller issues this write access to the bus.
+
+|Prefetchable window (see <<prefetchable-address-window-configuration-register,Prefetchable Address Window Configuration Register>> for window configuration)
+|2
+|Internal Bus
+|Determines whether to receive internal Cache accesses as Fetch instructions accesses.
+|When the processor core is executed in a chaotic order, some guess read accesses or fetch accesses are issued to the bus, which are wrong for some I/O spaces.
+By default, such accesses will be returned directly by the HT controller without accessing the HyperTransport bus.
+Such accesses to the HyperTransport bus can be enabled through these windows.
+
+|Uncache window (see <<uncache-address-window-configuration-register,Uncache Address Window Configuration Register>> for window configuration)
+|2
+|HyperTransport
+|Determine whether to treat accesses on the HyperTransport bus as Uncache accesses to the internal
+|The I/O DMA accesses inside the Loongson 3A5000 processor will be accessed as Cache by default and will be determined by the SCache to be hit or miss, thus maintaining its I/O consistency information.
+The configuration of these windows allows accesses that hit in these windows to access memory directly as Uncache, without maintaining I/O consistency information through hardware.
+|===

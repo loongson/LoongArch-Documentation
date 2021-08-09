@@ -1,0 +1,150 @@
+[[prefetchable-address-window-configuration-register]]
+==== Prefetchable Address Window Configuration Register
+
+The address window hit formula is detailed in <<receive-address-window-configuration-register,Receive Address Window Configuration Register>>.
+
+The address in this window is the address received on the AXI bus.
+Fetch instructions and Cache accesses that land in this window are only sent to the HT bus.
+Other fetch or Cache accesses will not be sent to the HT bus, but will be returned immediately, or in the case of read instructions, the corresponding number of invalid reads.
+
+Offset: `0x180`
+
+Reset value: `0x00000000`
+
+Name: HT bus prefetchable address window 0 enable (Internal Access)
+
+[[ht-bus-prefetchable-address-window-0-enable]]
+.HT bus prefetchable address window 0 enable (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_prefetch0_en
+|1
+|0x0
+|R/W
+|HT bus prefetchable address window 0, enable signal
+
+|30:16
+|Reserved
+|15
+|0x0
+|R/W
+|Reserved
+
+|15:0
+|ht_prefetch0_trans[39:24]
+|16
+|0x0
+|R/W
+|HT bus prefetchable address window 0, `[39:24]` of the translated address
+|===
+
+Offset: `0x184`
+
+Reset value: `0x00000000`
+
+Name: HT bus prefetchable address window 0 base address (internal access)
+
+[[ht-bus-prefetchable-address-window-0-base-address]]
+.HT bus prefetchable address window 0 base address (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_prefetch0_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus prefetches address window 0, address base address of `[39:24]` bits
+
+|15:0
+|ht_prefetch0_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus prefetchable address window 0, `[39:24]` of address mask
+|===
+
+Offset: `0x188`
+
+Reset value: `0x00000000`
+
+Name: HT bus prefetchable address window 1 enable (internal access)
+
+[[ht-bus-prefetchable-address-window-1-enable]]
+.HT bus prefetchable address window 1 enable (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_prefetch1_en
+|1
+|0x0
+|R/W
+|HT bus prefetchable address window 1, enable signal
+
+|30:16
+|Reserved
+|15
+|0x0
+|
+|Reserved
+
+|15:0
+|ht_prefetch1_trans[39:24]
+|16
+|0x0
+|R/W
+|HT bus prefetchable address window 1, `[39:24]` of the translated address
+|===
+
+Offset: `0x18c`
+
+Reset value: `0x00000000`
+
+Name: HT bus prefetchable address window 1 base address (internal access)
+
+[[HT-bus-prefetchable-address-window-1-base-address]]
+.HT bus prefetchable address window 1 base address (internal access)
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_prefetch1_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus prefetchable address window 1, address base address of `[39:24]`
+
+|15:0
+|ht_prefetch1_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus prefetchable address window 1, address masked `[39:24]`
+|===

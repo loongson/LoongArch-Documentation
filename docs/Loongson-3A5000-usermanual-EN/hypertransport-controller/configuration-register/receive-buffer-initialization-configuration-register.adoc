@@ -1,0 +1,69 @@
+[[receive-buffer-initialization-configuration-register]]
+==== Receive Buffer Initialization Configuration Register
+
+Offset: `0x1DC`
+
+Reset value: `0x07778888`
+
+Name: Receive buffer initialization configuration register
+
+[[table-receive-buffer-initialization-configuration-register]]
+.Receive buffer initialization configuration register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|27:24
+|rx_buffer_r_data
+|4
+|0x0
+|R/W
+|Read data buffer initialization information of the receive buffer
+
+|23:20
+|rx_buffer_npc_data
+|4
+|0x0
+|R/W
+|Npc data buffer initialization information of the receive buffer
+
+|19:16
+|rx_buffer_pc_data
+|4
+|0x0
+|R/W
+|Receive buffer initialization information for pc data buffer
+
+|15:12
+|rx_buffer_b_cmd
+|4
+|0x0
+|R/W
+|Receive the bresponse command buffer initialization information of the buffer
+
+|11:8
+|rx_buffer_r_cmd
+|4
+|0x0
+|R/W
+|Receive the read command buffer initialization information of the buffer
+
+|7:4
+|rx_buffer_npc_cmd
+|4
+|0x0
+|R/W
+|Npc command buffer initialization information of the receive buffer
+
+|3:0
+|rx_buffer_pc_cmd
+|4
+|0x0
+|R/W
+|Receive the pc command buffer initialization information of the buffer
+|===

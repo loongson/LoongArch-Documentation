@@ -1,0 +1,48 @@
+[[software-configuration]]
+==== Software Configuration
+
+The software setup method is compatible with the 3A3000 processor and uses the same address to set the node frequency division bits in the Function Setup register.
+
+This register has a base address of `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR), and an offset address of `0x0180`.
+
+[[function-configuration-register-2]]
+.Function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|42:40
+|Node0_freq_ctrl
+|RW
+|3'b111
+|Node 0 frequency division
+|===
+
+In line with the processor core's dividing control, the node clock can also be adjusted from `(dividing control value + 1)/8` to `1/(dividing control value + 1)` after dividing by setting the register.
+This register is located in other function configuration register.
+The base address is `0x1fe00000` and the offset address is `0x0420`.
+
+[[other-function-configuration-register-4]]
+.Other function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|36
+|freqscale_mode_node
+|RW
+|0x0
+|Frequency adjustment mode selection for nodes
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+|===

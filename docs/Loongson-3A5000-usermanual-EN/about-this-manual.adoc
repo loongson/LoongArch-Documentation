@@ -1,0 +1,51 @@
+== About this manual
+
+=== Copyright Statement
+
+The copyright of this document belongs to Loongson Technology Corporation Limited.
+Without written permission, no company or individualmay disclose, reproduce or otherwise distribute any part of this document to third parties.
+Otherwise, they will be held legally responsible.
+
+=== Disclaimer
+
+This document provides only periodic information, and the contents contained may be updated at any time without notice, depending on the actual situation of the product.
+Loongson Technology Corporation Limited is not responsible for any direct or indirect damage aused by the improper use of the document.
+
+=== Loongson Technology Corporation Limited
+
+Building No.2, Loongson Industrial Park, +
+Zhongguancun Environmental Protection Park, Haidian District, Beijing
+
+Tel: 010-62546668
+
+Fax: 010-62600826
+
+=== Reading Guide
+
+This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
+It provides detailed descriptions of the chip system architecture, functions and configurations of the main modules, register lists and bit fields.
+
+=== Translator`'s Note
+
+These documents were translated by Yanteng Si and Feiyang Chen.
+
+This is the translation of https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.02-CN.pdf.
+
+Due to the limited knowledge of the translators, there are some inevitable errors and omissions existing in this document, please feel free to correct.
+
+=== License
+
+include::../../LICENSE[]
+
+=== Contributors
+
+Since the release of the project, we have gotten several errata and content changes donated.
+Here are all the people who have contributed to https://github.com/loongson/LoongArch-Documentation[LoongArch Documentation] as an open source project.
+Thank you everyone for helping make this a better book for everyone.
+
+The contributors are listed in alphabetical order.
+
+[source]
+----
+include::../../contributors.txt[]
+----

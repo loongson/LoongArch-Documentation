@@ -1,0 +1,97 @@
+[[hypertransport-space]]
+==== HyperTransport Space
+
+The default address window distribution of the four HyperTransport interfaces in the Loongson 3A5000 processor is as follows.
+
+[[default-address-window-layout-of-the-4-HyperTransport-interfaces]]
+.Default address window layout of the 4 HyperTransport interfaces
+[%header,cols="3*1m,1"]
+|===
+d|Base Address
+d|End Address
+d|Size
+|Definition
+
+|0x0A00_0000_0000
+|0x0AFF_FFFF_FFFF
+|1 Tbytes
+|HT0_LO Window
+
+|0x0B00_0000_0000
+|0x0BFF_FFFF_FFFF
+|1 Tbytes
+|HT0_HI Window
+
+|0x0E00_0000_0000
+|0x0EFF_FFFF_FFFF
+|1 Tbytes
+|HT1_LO Window
+
+|0x0F00_0000_0000
+|0x0FFF_FFFF_FFFF
+|1 Tbytes
+|HT1_HI Window
+|===
+
+By default (no additional system address windows are configured), the software accesses each HyperTransport interface based on the address space described above, and can also access it from other address spaces by configuring the address windows on the cross-switch (see <<address-routing-layout-and-configuration,Address Routing Layout and Configuration>>).
+The internal 40-bit address space of each HyperTransport interface has the address windows distributed as shown in the table below.
+
+[[address-window-distribution-inside-the-hypertransport-interface-of-the-loongson-3-processor]]
+.Address window distribution inside the HyperTransport interface of the Loongson 3 processor
+[%header,cols="3*1m,1"]
+|===
+d|Base Address
+d|end address
+d|Size
+|Definition
+
+|0x00_0000_0000
+|0xFC_FFFF_FFFF
+|1012 Gbytes
+|MEM Space
+
+|0xFD_0000_0000
+|0xFD_F7FF_FFFF
+|3968 Mbytes
+|Reserved
+
+|0xFD_F800_0000
+|0xFD_F8FF_FFFF
+|16 Mbytes
+|Interrupt
+
+|0xFD_F900_0000
+|0xFD_F90F_FFFF
+|1 Mbyte
+|PIC Interrupt Response
+
+|0xFD_F910_0000
+|0xFD_F91F_FFFF
+|1 Mbyte
+|System Information
+
+|0xFD_F920_0000
+|0xFD_FAFF_FFFF
+|30 Mbytes
+|Reserved
+
+|0xFD_FB00_0000
+|0xFD_FBFF_FFFF
+|16 Mbytes
+|HT Controller Configuration Space
+
+|0xFD_FC00_0000
+|0xFD_FDFF_FFFF
+|32 Mbytes
+|I/O space
+
+|0xFD_FE00_0000
+|0xFD_FFFF_FFFF
+|32 Mbytes
+
+|HT Controller Configuration Space
+|0xFE_0000_0000
+|0xFF_FFFF_FFFF
+|8 Gbytes
+|Reserved
+|===

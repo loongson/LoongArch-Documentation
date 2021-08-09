@@ -1,0 +1,166 @@
+[[traditional-io-interrupts]]
+=== Traditional I/O Interrupts
+
+The legacy interrupts on the Loongson 3A5000 chip support `32` interrupt sources managed in a unified manner as shown in the figure below.
+Any of the I/O interrupt sources can be configured to enable or disable, how it is triggered, and the target processor core interrupt pin to be routed.
+Legacy interrupts do not support cross-chip distribution of interrupts, and can only interrupt processor cores within the same processor chip.
+
+[[interrupt-routing-of-loongson-3a5000-processor]]
+.Interrupt routing of Loongson 3A5000 processor
+image::interrupt-routing-of-loongson-3a5000-processor.png[]
+
+The interrupt-related configuration registers are in the form of bits to control the corresponding interrupt lines, and the interrupt control bit connections and attributes are configured in the following table.
+
+The configuration of interrupt enable (Enable) has three registers: `Intenset`, `Intenclr` and `Inten`.
+`Intenset` sets the interrupt enable, the interrupt corresponding to the bit written `1` in the `Intenset` register is enabled.
+`Intenclr` clears the interrupt enable, the interrupt corresponding to the bit written `1` in the `Intenclr` register is cleared.
+The `Inten` register reads the current status of each interrupt enable.
+The edge-triggered interrupt signal is selected by the `Intedge` configuration register, with a write of `1` for edge-triggered and a write of `0` for level-triggered.
+The interrupt handler can clear the interrupt record by using the corresponding bit of `Intenclr`.
+Clearing the interrupt will also clear the interrupt enable.
+
+[[table-interrupt-control-register]]
+.Interrupt control register
+[%header,cols="^1,4*^1,^2"]
+|===
+.2+|Bit Field
+5+|Read/Write (Default Value)
+
+|Intedge
+|Inten
+|Intenset
+|Intenclr
+|Interrupt Source
+
+m|0
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`GPIO24`/`16`/`8`/`0`/`SC0`
+
+m|1
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`GPIO25`/`17`/`9`/`1`/`SC1`
+
+m|2
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`GPIO26`/`18`/`10`/`2`/`SC2`
+
+m|3
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`GPIO27`/`19`/`11`/`3`/`SC3`
+
+m|4
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`GPIO28`/`20`/`12`/`4`
+
+m|5
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`GPIO29`/`21`/`13`/`5`
+
+m|6
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`GPIO30`/`22`/`14`/`6`
+
+m|7
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`GPIO31`/`23`/`15`/`7`
+
+m|8
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`I2C0`
+
+m|9
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`I2C1`
+
+m|10
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`UART0`
+
+m|11
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`MC0`
+
+m|12
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`MC1`
+
+m|13
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`SPI`
+
+m|14
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`Thsens`
+
+m|15
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`UART1`
+
+m|23:16
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`HT0[7:0]`
+
+m|31:24
+|RW (`0`)
+|R (`0`)
+|RW (`0`)
+|RW (`0`)
+|`HT1[7:0]`
+|===
+
+Similar to inter-processor interrupts, the base address of I/O interrupts can also be accessed using `0x1fe00000`, or through the processor core's dedicated register configuration instructions.
+
+include::traditional-io-interrupts/accessing-by-address.adoc[]
+
+include::traditional-io-interrupts/accessing-by-configuration-register-instructions.adoc[]

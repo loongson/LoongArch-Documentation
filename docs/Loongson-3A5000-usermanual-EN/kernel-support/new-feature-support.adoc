@@ -1,0 +1,7 @@
+[[new-feature-support]]
+=== New Feature Support
+
+In order to use the new features provided by the 3A5000 processor in the kernel, they can be identified or enabled according to the following methods.
+Only the parts that can improve system performance are described here.
+
+include::new-feature-support/extended-interrupt-mode.adoc[]

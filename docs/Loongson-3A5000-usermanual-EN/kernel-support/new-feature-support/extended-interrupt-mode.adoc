@@ -1,0 +1,118 @@
+[[extended-interrupt-mode]]
+==== Extended Interrupt Mode
+
+In order to enable the extended interrupt mode in the kernel, set it up in the following order.
+
+. Extended interrupt mode support is identified by `CSR[0x8][3]`.
+
+. The external interrupt translation register of the HT controller that is expected to support extended interrupt mode needs to be configured to the correct value in PMON.
+The registers are defined as follows and set to the following values:
++
+`INT_trans_en = 0 //Use CSR register for enable control`, `CSR[0x420][48]` and this register can both enable extended interrupt mode, in PMON the default does not enable this mode, by the kernel configuration `CSR[0x420][48]` to turn on
++
+`INT_trans_allow = 1 // Allow external interrupt transition function`
++
+`INT_trans_addr = 0x1000000001140 // Extended interrupt register address`, see 14.3.3.
++
+`INT_trans_cache = 0 //Uncache mode`
++
+Offset: `0x270`
++
+Reset value: `0x00000000`
++
+Name: HT RX INT TRANS Lo
++
+[[ht-rx-int-trans-lo-1]]
+.HT RX INT TRANS Lo
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:4
+|INT_trans_addr[31:4]
+|28
+|0x0
+|R/W
+|Low order bits of interrupt translation address
+
+|3:0
+d|Reserved
+|4
+|0x0
+|R
+|Reserved
+|===
++
+Offset: `0x274`
++
+Reset value: `0x00000000`
++
+Name: HT RX INT TRANS Hi
++
+[[ht-rx-int-trans-hi-1]]
+.HT RX INT TRANS Hi
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|INT_trans_en
+|1
+|0x0
+|R/W
+|Interrupt transition enable
+
+|30
+|INT_trans_allow
+|1
+|0x0
+|R/W
+|Whether to allow interrupt transition
+
+|29:26
+|INT_trans_cache
+|4
+|0x0
+|R/W
+|Interrupt Transition `Cache` Field
+
+|25:0
+|INT_trans_addr[58:32]
+|26
+|0x0
+|R/W
+|High order bits of interrupt translation address
+|===
+
+. The kernel first identifies the extended interrupt mode support by `CSR[0x8][3]`, and then enables the extended interrupt mode by register `CSR[0x420][48]`.
++
+The base address is `0x1fe00000`, It can also be accessed using the configuration register instruction (IOCSR), and the offset address is `0x0420`.
++
+[[other-function-configuration-register-10]]
+.Other function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|48
+|EXT_INT_en
+|RW
+|0x0
+|Extended I/O interrupt enable
+|===
+
+. Set the corresponding routing and internal control for the extended interrupt mode.

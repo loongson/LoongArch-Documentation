@@ -1,0 +1,99 @@
+[[phy-status-register]]
+==== PHY Status Register
+
+Used to observe the PHY-related status and debug.
+
+Offset: `0x1CC`
+
+Reset value: `0x83308000`
+
+Name: PHY status register
+
+[[table-phy-status-register]]
+.PHY status register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:29
+|Reserved
+|3
+|0x0
+|R
+|Reserved
+
+|28
+|dll locked hi
+|1
+|0x0
+|R
+|High `8` bits - bit DLL locking
+
+|27
+|dll locked lo
+|1
+|0x0
+|R
+|Low `8` bits - bit DLL locking
+
+|26
+|cdr locked hi
+|1
+|0x0
+|R
+|High `8` - bit CDR locking
+
+|25
+|cdr locked lo
+|1
+|0x0
+|R
+|Low `8` bits - bit CDR lock
+
+|24
+|phase locked
+|1
+|0x0
+|R
+|Phase Lock
+
+|23:20
+|phy state
+|4
+|0x0
+|R
+|PHY Status
+
+|19:17
+|tx training status
+|3
+|0x0
+|R
+|`TX` training state
+
+|16:14
+|rx training status
+|3
+|0x0
+|R
+|`RX` training status
+
+|13:8
+|Init done
+|6
+|0x0
+|R
+|Initialization complete
+
+|7:0
+|Reserved
+|8
+|
+|R
+|Reserved
+|===

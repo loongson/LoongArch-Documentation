@@ -1,0 +1,30 @@
+[[i2c-controller]]
+=== I2C Controller
+
+This chapter gives a detailed description of the I2C and its configuration for use.
+The system chip has an integrated I2C interface, which is mainly used to implement the exchange of data between two devices.
+The I2C bus is a serial bus consisting of a data line SDA and a clock SCL to send and receive data.
+Bi-directional transmission is performed between devices with a maximum transmission rate of 400kbps.
+
+The I2C controller integrated in the Loongson 3A5000 can act as either a master or a slave device, and the two modes are switched between by configuring internal registers.
+As a slave device, it is only used to read the internal temperature of the chip, and the address of the slave device is specified by register `SLV_CTRL[6:0]`.
+
+The physical address base address of the I2C0 controller register is `0x1FE00120`.
+The I2C1 controller register physical address base address is `0x1FE00130`.
+The specific internal registers are described below.
+
+include::i2c-controller/frequency-division-latch-low-order-byte-register.adoc[]
+
+include::i2c-controller/frequency-division-latch-high-order-byte-register.adoc[]
+
+include::i2c-controller/control-register.adoc[]
+
+include::i2c-controller/transport-data-register.adoc[]
+
+include::i2c-controller/receive-data-register.adoc[]
+
+include::i2c-controller/command-control-register.adoc[]
+
+include::i2c-controller/state-register.adoc[]
+
+include::i2c-controller/slave-device-controller-register.adoc[]

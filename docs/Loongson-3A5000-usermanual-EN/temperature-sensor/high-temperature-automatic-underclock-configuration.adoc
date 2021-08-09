@@ -1,0 +1,90 @@
+[[high-temperature-automatic-underclock-configuration]]
+=== High Temperature Automatic Underclock Configuration
+
+In order to ensure the operation of the chip in a high temperature environment, it can be set to make the high temperature automatic frequency reduction, so that the chip is actively clocked when it exceeds the preset range to achieve the effect of reducing the chip flip rate.
+
+For the high-temperature downconversion function, there are four sets of control registers to set its behavior.
+Each set of registers contains the following four control bits:
+
+`GATE`: Set the threshold value for high or low temperature.
+When the input temperature is higher than the high temperature threshold or lower than the low temperature threshold, the frequency dividing operation will be triggered.
+
+`EN`: Enable control.
+The setting of this group of registers is valid only after setting `1`.
+
+`SEL`: Input temperature selection.
+This register is used to configure which sensor's temperature is selected as input.
+
+`FREQ`: Frequency division number.
+When the dividing operation is triggered, the clock is divided using the preset `FREQ`.
+The dividing mode is controlled by `freqscale_mode_node`.
+
+Its base address is `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR).
+
+[[description-of-high-temperature-underclock-control-register-2]]
+.Description of high-temperature underclock control register
+[%header,cols="2,1m,1,6"]
+|===
+|Register
+d|Address
+|Read/Write
+|Description
+
+|High-temperature underclock control register `Thsens_freq_scale`
+|0x1480
+|RW
+|The four groups of configurations are prioritized from highest to lowest
+
+`[7:0]`: `Scale_gate0`: high temperature threshold 0, beyond which the frequency will be reduced
+
+`[8:8]`: `Scale_en0`: high temperature underclock enable 0
+
+`[11:10]`: `Scale_Sel0`: select temperature sensor input source for high temperature underclock 0
+
+`[14:12]`: `Scale_freq0`: frequency division value at underclock
+
+`[23:16]`: `Scale_gate1`: high temperature threshold 1, beyond which the frequency will be reduced
+
+`[24:24]`: `Scale_en1`: high temperature underclock enable 1
+
+`[27:26]`: `Scale_Sel1`: select temperature sensor input source for high temperature underclock 1
+
+`[30:28]`: `Scale_freq1`: frequency division value at underclock
+
+`[39:32]`: `Scale_gate2`: high temperature threshold 2, beyond which the frequency will be reduced
+
+`[40:40]`: `Scale_en2`: high temperature underclock enable 2
+
+`[43:42]`: `Scale_Sel2`: select temperature sensor input source for high temperature underclock 2
+
+`[46:44]`: `Scale_freq2`: frequency division value at underclock
+
+`[55:48]`: `Scale_gate3`: high temperature threshold 3, beyond which the frequency will be reduced
+
+`[56:56]`: `Scale_en3`: high temperature underclock enable 3
+
+`[59:58]`: `Scale_Sel3`: select temperature sensor input source for high temperature underclock 3
+
+`[62:60]`: `Scale_freq3`: frequency division value at underclock
+
+|Thsens_freq_scale_up
+|0x1490
+|RW
+|High order bits of temperature sensor control register
+
+`[7:0]`: `Scale_Hi_gate0`: high 8-bit
+
+`[15:8]`: `Scale_Hi_gate1`: high 8-bit
+
+`[23:16]`: `Scale_Hi_gate2`: high 8-bit
+
+`[31:24]`: `Scale_Hi_gate3`: high 8-bit
+
+`[39:32]`: `Scale_Lo_gate0`: high 8-bit
+
+`[47:40]`: `Scale_Lo_gate1`: high 8-bit
+
+`[55:48]`: `Scale_Lo_gate2`: high 8-bit
+
+`[63:56]`: `Scale_Lo_gate3`: high 8-bit
+|===

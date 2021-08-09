@@ -1,0 +1,27 @@
+[[custom-data-register-1]]
+==== Custom Data Register 1 (`BUF1`)
+
+Name: SPI FLASH custom data register 1
+
+Length: `[7:0]`
+
+Offset: `0x0b`
+
+Reset value: `0x00`
+
+[[table-custom-data-register-1]]
+.Custom data register 1
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|buf1
+|8
+|RW
+|When transporting a write command to the SPI, this register configures the second byte of data sent; when transporting a read command to the SPI, this register stores the second data read back.
+|===

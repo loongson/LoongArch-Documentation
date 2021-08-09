@@ -1,0 +1,124 @@
+[[link-train-register]]
+==== Link Train Register
+
+HyperTransport 3.0 Link initialization and link training control registers.
+
+Offset: `0xD0`
+
+Reset value: `0x00000070`
+
+Name: Link train register
+
+[[table-link-train-register]]
+.Link Train Register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:23
+|Reserved
+|9
+|0x0
+|R
+|Reserved
+
+|22:21
+|Transmitter LS select
+|2
+|0x0
+|R/W
+|Link status of the sender in Disconnected or Inactive state.
+
+`2'b00 LS1`
+
+`2'b01 LS0`
+
+`2'b10 LS2`
+
+`2'b11 LS3`
+
+|14
+|Dsiable Cmd Throttling
+|1
+|0x0
+|R/W
+|In HyperTransport 3.0 mode, only one Non-info CMD can appear in any four consecutive DWSs by default.
+
+`1'b0` - enable cmd throttling
+
+`1'b1` - disable cmd throttling
+
+|13:10
+|Reserved
+|4
+|0x0
+|R
+|Reserved
+
+|8:7
+|Receiver LS select
+|2
+|0x0
+|R/W
+|Link status of the receiving end in Disconnected or Inactive state.
+
+`2'b00 LS1`
+
+`2'b01 LS0`
+
+`2'b10 LS2`
+
+`2'b11 LS3`
+
+|6:4
+|Long Retry Count
+|3
+|0x7
+|R/W
+|Long Retry Maximum number of times
+
+|3
+|Scrambling Enable
+|1
+|0x0
+|R/W
+|Enable or disable Scramble
+
+`0`: disable scramble
+
+`1`: enable scramble
+
+|2
+|8B10B Enable
+|1
+|0x0
+|R/W
+|Whether to enable `8B10B`
+
+`0`: disabled `8B10B`
+
+`1`: enable `8B10B`
+
+|1
+|AC
+|1
+|0x0
+|R
+|Whether AC mode is detected
+
+`0`: `AC` mode is not detected
+
+`1`: `AC` mode is detected
+
+|0
+|Reserved
+|1
+|0x0
+|R
+|Reserved
+|===

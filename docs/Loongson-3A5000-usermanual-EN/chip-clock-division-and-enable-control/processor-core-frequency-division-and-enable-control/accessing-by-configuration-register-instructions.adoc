@@ -1,0 +1,71 @@
+[[accessing-by-configuration-register-instructions-1]]
+==== Accessing by Configuration Register Instructions
+
+In addition to the traditional per-address access mode, the 3A5000 also supports access to private frequency division configuration registers using the configuration register instruction.
+
+Note that the private frequency division configuration register control is mutually exclusive with the original processor core software frequency division setup register control, and only one of the two can be used.
+The choice is made by using the corresponding bit on the other function configuration register.
+This register has a base address of `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR), and an offset address of `0x0420`.
+
+[[other-function-configuration-register-3]]
+.Other function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|22
+|freqscale_percore
+|RW
+|0x0
+|Enable private frequency adjustment registers for each core
+
+|23
+|clken_percore
+|RW
+|0x0
+|Enable private clock for each core
+|===
+
+When `freqscale_percore` is set to `1`, the freqscale bit in the private divider configuration register is used to set the divider for its own clock (including `freqscale_mode`).
+When `freqscale_percore` is set to `1`, the `clken_mode` bit in the private frequency division configuration register is used to set the clock enable.
+Bit in the private frequency division configuration register is used to control the clock enable when `clken_percore` is set to `1`.
+
+This configuration register is defined as follows.
+The offset address is `0x1050`.
+
+[[processor-core-private-frequency-division-register]]
+.Processor core private frequency division register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|4
+|freqscale_mode
+|RW
+|0x0
+|Current processor core frequency division mode selection
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+
+|3
+|clken
+|RW
+|0x0
+|Current processor core clock enable
+
+|2:0
+|freqscale
+|RW
+|0x0
+|Current processor core frequency divider configuration
+|===

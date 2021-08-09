@@ -1,0 +1,65 @@
+[[processor-core-reset-control-register]]
+=== Processor Core Reset Control Register (`0x01D8`)
+
+The following registers are used for software-controlled reset of the processor core.
+To reset, set resetn to `0`, resetn_pre to `0`, wait `500` microseconds, `resetn_pre` to `1`, and reset `n` to `1` to complete the reset process.
+The base address of this register is `0x1fe00000` and the offset address is `0x01d8`.
+
+[[processor-core-software-reset-control-register]]
+.Processor core software reset control register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|0
+|Core0_resetn_pre
+|RW
+|0x1
+|Core 0 reset auxiliary control
+
+|1
+|Core0_resetn
+|RW
+|0x1
+|Core 0 reset
+
+|2
+|Core1_resetn_pre
+|RW
+|0x1
+|Core 1 reset auxiliary control
+
+|3
+|Core1_resetn
+|RW
+|0x1
+|Core 1 reset
+
+|4
+|Core2_resetn_pre
+|RW
+|0x1
+|Core 2 reset auxiliary control
+
+|5
+|Core2_resetn
+|RW
+|0x1
+|Core 2 reset
+
+|6
+|Core3_resetn_pre
+|RW
+|0x1
+|Core 3 reset auxiliary control
+
+|7
+|Core3_resetn
+|RW
+|0x1
+|Core 3 reset
+|===

@@ -1,0 +1,6 @@
+[[kernel-support]]
+== Kernel Support
+
+include::kernel-support/new-feature-support.adoc[]
+
+include::kernel-support/configuration-register-instruction-debug-support.adoc[]

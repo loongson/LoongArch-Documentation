@@ -1,0 +1,27 @@
+[[receive-fifo-counter]]
+==== Receive FIFO Counter (`RFC`)
+
+Name: Receive FIFO count value
+
+Length: `[7:0]`
+
+Offset: `0x08`
+
+Reset value: `0x00`
+
+[[table-receive-fifo-counter]]
+.Receive FIFO counter
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|RFC
+|8
+|R
+|Reflects the number of valid data in the current received `FIFO`
+|===

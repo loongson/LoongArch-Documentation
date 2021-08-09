@@ -1,0 +1,33 @@
+[[extended-interrupts-handling]]
+==== Extended Interrupts Handling
+
+The extended I/O interrupts implemented in the 3A5000 can greatly increase the flexibility of interrupt distribution and interrupt handling.
+
+In HT's interrupt expansion mode, interrupts other than PIC interrupts are written directly to the new extended interrupt register on the chip interrupt router, and then routed or distributed according to the relevant configuration of the extended interrupt register.
+
+After using the extended I/O interrupts, the HT controller is transparent to the software when processing the interrupts, and the cores read the interrupt status directly from the extended I/O status register (configuration space `0x1800`) for processing, and each core only reads the interrupt status of the interrupt itself and processes it without interference between different cores.
+
+Interrupt forwarding is performed on the HT controller by enabling the external interrupt transition configuration register.
+As described in <<external-interrupt-conversion-configuration,External Interrupt Conversion Configuration>>, the software needs to set `HT_int_trans` to the target address of the Extended I/O Interrupt Trigger Register.
+The address of this register in the 3A5000 is `0x1fe01140`, or `0x10000_00001140`.
+
+Before the kernel can use the extended interrupt processing, it needs to enable the corresponding bit in the "`Other function settings register`".
+This register has a base address of `0x1fe00000`, It can also be accessed using the configuration register instruction (IOCSR), and an offset address of `0x0420`.
+
+[[other-function-configuration-register-9]]
+.Other function configuration register
+
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|51:48
+|EXT_INT_en
+|RW
+|0x0
+|Extended I/O interrupt enable
+|===

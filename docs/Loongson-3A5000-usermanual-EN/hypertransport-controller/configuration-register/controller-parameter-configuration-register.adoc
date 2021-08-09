@@ -1,0 +1,328 @@
+[[controller-parameter-configuration-register]]
+==== Controller Parameter Configuration Register
+
+Offset: `0x1C0`
+
+Reset value: `0x00904321`
+
+Name: APP CONFIG 0
+
+[[definition-of-controller-parameter-configuration-register-0]]
+.Definition of controller parameter configuration register 0
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:30
+|Reserved
+|1
+|0x0
+|
+|Reserved
+
+|29
+|Ldt Stop Gen
+|1
+|0x0
+|R/W
+|Putting the bus into `LDT DISCONNECT` mode
+
+The correct way is: `0` &#8594; `1`
+
+|28
+|Ldt Req Gen
+|1
+|0x0
+|R/W
+|Wake up HT bus from `LDT DISCONNECT`, set `LDT_REQ_n`
+
+The correct way is to set `0` and then `1`: `0` &#8594; `1`
+
+In addition, a direct read/write request to the bus can also wake up the bus automatically
+
+|27
+|rx sample en
+|1
+|0x0
+|R/W
+|Enable cad and ctl for sample input, displayed in the `0x1c8` register for debugging
+
+|26
+|Dword Write
+|1
+|0x1
+|R/W
+|For 32/64/128/256-bit MEM write access, whether to use the Dword Write command format (Byte Write method of writing will be converted to 128-bit write with `MASK` on reception)
+
+|25
+|Dword Write cfg
+|1
+|0x1
+|R/W
+|For configuration space write access, whether to use the Dword Write command format (Byte Write method of writing will be converted to 128-bit write with `MASK` when received)
+
+|24
+|Dword Write I/O
+|1
+|0x1
+|R/W
+|For I/O space write access, whether to use the Dword Write command format (Byte Write method of writing will be converted to 128-bit write with `MASK` when received)
+
+|23
+|axi aw resize
+|1
+|0x0
+|RW
+|Whether to reset the size of the 128-bit write with `MASK` by `Mask`
+
+|22
+|Coherent Mode
+|1
+|0x0
+|RW
+|Whether it is processor consistency mode, the initial value is determined by the `ICCC_EN` pin and takes effect after reset
+
+|21
+|Coherent_split
+|1
+|0x0
+|RW
+|Consistency mode, split all packets into `32` byte processing
+
+|20
+|Not Care Seqid
+|1
+|0x0
+|R/W
+|Whether the receiver does not care about HT sequential relations
+
+|19:16
+|Fixed Seqid
+|4
+|0x0
+|R/W
+|Configure Seqid issued by HT bus when `Not Axi2Seqid` is valid
+
+|15:12
+|Priority Nop
+|4
+|0x4
+|R/W
+|HT bus Nop flow control packet priority
+
+|11:8
+|Priority NPC
+|4
+|0x3
+|R/W
+|Non Post channel read/write priority
+
+|7:4
+|Priority RC
+|4
+|0x2
+|R/W
+|Response channel read/write priority
+
+|3:0
+|Priority PC
+|4
+|0x1
+|R/W
+|Post channel read/write priority
+
+`0x0`: Highest priority
+
+`0xF`: Lowest priority
+
+For each channel priority are used according to the time change to increase the priority policy, the group memory is used to configure the initial priority of each channel
+|===
+
+Offset: `0x1C4`
+
+Reset value: `0x00904321`
+
+Name: APP CONFIG1
+
+[[definition-of-controller-parameter-configuration-register-1]]
+.Definition of controller parameter configuration register 1
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|tx post split en
+|1
+|0x0
+|R/W
+|Enable write unwrapping when the tx post ID window hits (all write requests that cross a 32-byte bound are split into two consecutive write requests (byte write))
+
+|30
+|tx wr passPW pc
+|1
+|0x0
+|R/W
+|Set the `passPW` bit to `1` for all outgoing Post channel write requests
+
+|29
+|tx wr passPW npc
+|1
+|0x0
+|R/W
+|Set the `passPW` bit to `1` for all outgoing Nonpost channel write requests
+
+|28
+|tx rd passPW
+|1
+|0x0
+|R/W
+|Set the `passPW` bit to `1` for all outgoing read requests
+
+|27
+|stop same id wr
+|1
+|0x0
+|R/W
+|When the sender encounters a write request with the same `AXI ID`, it stops sending until the previous request with the same `ID` returns.
+
+|26
+|stop same id rd
+|1
+|0x0
+|R/W
+|When the sender encounters a read request with the same `AXI ID`, it stops sending until the previous request with the same `ID` returns.
+
+|25
+|Not axi2seqid wr
+|1
+|0x0
+|R/W
+|Disable the conversion of write request `AXI ID` to `seqid`, use fixed `seqid` directly
+
+|24
+|Not axi2seqid rd
+|1
+|0x0
+|R/W
+|Disable the conversion of `AXI ID` to `seqid` for read requests, use fixed `seqid` directly
+
+|23:22
+|Reserved
+|2
+|0x0
+|R/W
+|Reserved
+
+|21
+|act as slave
+|1
+|0x1
+|R/W
+|Set `SLAVE` mode
+
+|20
+|Host hide
+|1
+|0x0
+|R/W
+|Disable access to the configuration register space at the receiving end
+
+|19:16
+|Rrequest delay
+|4
+|0x3
+|R/W
+|Used to control the random delay range of Rrequest transmission in consistency mode
+
+`000`: `0` delay
+
+`001`: Random delay `0-8`
+
+`010`: Random delay `8-15`
+
+`011`: Random delay `16-31`
+
+`100`: Random delay `32-63`
+
+`101`: Random Delay `64-127`
+
+`110`: Random Delay `128-255`
+
+`111`: `0` delay
+
+|15
+|Crc Int en
+|1
+|0x0
+|R/W
+|Enable interrupt sending on CRC error
+
+|14:12
+|Crc Int route
+|3
+|0x0
+|R/W
+|Interrupt pin selection in case of CRC interrupt
+
+|11
+|Reserved
+|
+|
+|
+|
+
+|10
+|ht int 8 bit
+|1
+|0x0
+|R/W
+|Use of `8` interrupted wires
+
+|9:8
+|ht_int_stripe
+|2
+|0x0
+|R/W
+|Corresponding to the `3` interrupt routing methods, described in the interrupt vector register
+
+`0x0`: `ht_int_stripe_1`
+
+`0x1`: `ht_int_stripe_2`
+
+`0x2`: `ht_int_stripe_4`
+
+|4:0
+|Interrupt Index
+|5
+|0x0
+|R/W
+|Which interrupt vector to redirect interrupts other than standard interrupts (including `SMI`, `NMI`, `INIT`, `INTA`, `INTB`, `INTC`, `INTD`).
+
+There are `256` interrupt vectors in total, this register represents the high `5` bits of the interrupt vector, and the internal interrupt vector is as follows.
+
+`000`: `SMI`
+
+`001`: `NMI`
+
+`010`: `INIT`
+
+`011`: `Reservered`
+
+`100`: `INTA`
+
+`101`: `INTB`
+
+`110`: `INTC`
+
+`111`: `INTD`
+|===

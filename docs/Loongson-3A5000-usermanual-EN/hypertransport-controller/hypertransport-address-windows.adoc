@@ -1,0 +1,6 @@
+[[hypertransport-address-windows]]
+=== HyperTransport Address Windows
+
+include::hypertransport-address-windows/hypertransport-space.adoc[]
+
+include::hypertransport-address-windows/hypertransport-controller-internal-window-configuration.adoc[]

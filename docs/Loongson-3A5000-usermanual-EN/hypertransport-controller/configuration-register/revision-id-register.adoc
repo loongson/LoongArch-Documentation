@@ -1,0 +1,47 @@
+[[revision-id-register]]
+==== Revision ID Register
+
+Used to configure the controller version, configure it to a new version number and take effect via Warm Reset.
+
+Offset: `0x6C`
+
+Reset value: `0x00200000`
+
+Name: Revision ID register
+
+[[table-revision-id-register]]
+.Revision ID Register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:24
+|Reserved
+|8
+|0x0
+|R
+|Reserved
+
+|23:16
+|Revision ID
+|8
+|0x20
+|R/W
+|Revision ID control register.
+
+`0x20`: HyperTransport 1.00.
+
+`0x60`: HyperTransport 3.00
+
+|15:0
+|Reserved
+|16
+|0x0
+|R
+|Reserved
+|===

@@ -1,0 +1,77 @@
+[[spi-controller]]
+=== SPI Controller
+
+The SPI controller has the following features:
+
+* Full-duplex synchronous serial data transmission
+
+* Variable length byte transport support up to `4`
+
+* Master mode support
+
+* Mode failure generates an error flag and issues an interrupt request
+
+* Dual buffered receivers
+
+* Polarity and phase programmable serial clock
+
+* SPI can be controlled in wait mode
+
+* Boot from SPI support
+
+* Dual/Quad mode SPI FLASH support
+
+The SPI controller register physical address base address is `0x1FE001F0`.
+
+[%header,cols="1,2*1m"]
+|===
+|Address Name
+d|Address Range
+d|Size
+
+|SPI Boot
+|0X1FC0_0000-0X1FD0_0000
+|1MByte
+
+|SPI Memory
+|0X1D00_0000-0X1E00_0000
+|16MByte
+
+|SPI Register
+|0X1FE0_01F0-0X1FE0_01FF
+|16Byte
+|===
+
+The SPI Boot address space is the first address space accessed by the processor when the system boots up, and the `0xBFC00000` address is automatically routed to the SPI.
+
+The SPI Memory space can also be accessed directly through a read request from the CPU, and its minimum `1M` bytes overlap with the SPI BOOT space.
+
+include::spi-controller/control-register.adoc[]
+
+include::spi-controller/state-register.adoc[]
+
+include::spi-controller/transport-data-register.adoc[]
+
+include::spi-controller/external-register.adoc[]
+
+include::spi-controller/parameter-control-register.adoc[]
+
+include::spi-controller/chip-select-control-register.adoc[]
+
+include::spi-controller/timing-control-register.adoc[]
+
+include::spi-controller/custom-controller-register.adoc[]
+
+include::spi-controller/custom-command-register.adoc[]
+
+include::spi-controller/custom-data-register-0.adoc[]
+
+include::spi-controller/custom-data-register-1.adoc[]
+
+include::spi-controller/custom-timing-register-0.adoc[]
+
+include::spi-controller/custom-timing-register-1.adoc[]
+
+include::spi-controller/custom-timing-register-2.adoc[]
+
+include::spi-controller/guide-to-the-use-of-spi-dual-quad-mode.adoc[]

@@ -1,0 +1,45 @@
+[[bridge-control-register]]
+==== Bridge Control Register
+
+Offset: `0x3C`
+
+Reset value: `0x00000000`
+
+Name: Bus reset control
+
+[[table-bridge-control-register]]
+.Bridge control register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:23
+|Reserved
+|9
+|0x0
+|
+|Reserved
+
+|22
+|Reset
+|1
+|0x0
+|R/W
+|Bus reset control.
+
+`0` &#8594; `1`: `HT_RSTn` set to `0`, bus reset
+
+`1` &#8594; `0`: `HT_RSTn` is set to `1`, the bus is unreset
+
+|21:0
+|Reserved
+|22
+|0x0
+|
+|Reserved
+|===

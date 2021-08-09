@@ -1,0 +1,51 @@
+[[function-collection-register]]
+=== Function Collection Register (`0x0190`)
+
+The offset address is `0x0190`.
+
+[[table-function-collection-register]]
+.Function collection register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|31:0
+|
+|R
+|
+|Reserved
+
+|37:32
+|Chip_config
+|R
+|
+|Motherboard configuration control
+
+|47:38
+|Sys_clkseli
+|R
+|
+|On-board frequency multiplier configuration
+
+|55:48
+|Bad_ip_core
+|R
+|
+|core7-core0 are bad or not
+
+|57:56
+|Bad_ip_ddr
+|R
+|
+|`2` DDR controllers are bad or not
+
+|61:60
+|Bad_ip_ht
+|R
+|
+|`2` HT Controllers are bad or not
+|===

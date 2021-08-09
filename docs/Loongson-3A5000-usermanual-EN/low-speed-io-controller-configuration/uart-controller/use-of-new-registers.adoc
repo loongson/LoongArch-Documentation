@@ -1,0 +1,9 @@
+[[use-of-new-registers]]
+==== Use of New Registers
+
+The new receive FIFO counter (`RFC`) allows the CPU to detect the number of valid data in the Receive FIFO, so that the CPU can read multiple data continuously after receiving an interrupt, improving the CPU's ability to process UART received data.
+
+Transport FIFO Counter (`TFC`) for the CPU to detect the number of valid data in the transport FIFO, whereby the CPU can continuously send multiple data while ensuring that the transport FIFO does not overflow, improving the CPU's ability to process UART transport data.
+
+Frequency divider latch 3 (i.e. fractional divider register) is used to solve the problem that the required baud rate cannot be obtained accurately by dividing by integers only.
+The integer part of the quotient is assigned to the `MSB` and `LSB` by the divider latch, and the fractional part is assigned to the divider latch `D_DIV` by multiplying by `256`.

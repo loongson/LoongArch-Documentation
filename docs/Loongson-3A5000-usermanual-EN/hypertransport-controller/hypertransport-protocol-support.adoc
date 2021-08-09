@@ -1,0 +1,242 @@
+[[hypertransport-protocol-support]]
+=== HyperTransport Protocol Support
+
+The Loongson 3A5000's HyperTransport bus supports most commands in the version 1.03/3.0 protocol and includes some extended commands in the extended conformance protocol that supports multi-chip interconnects.
+The commands that can be received by the HyperTransport receiver in both of these modes are shown in the table below.
+Note that atomic operation commands for the HyperTransport bus are not supported.
+
+[[commands-that-can-be-received-by-the-hypertransport-receiver]]
+.Commands that can be received by the HyperTransport receiver
+[%header,cols="3*1m,2*3"]
+|===
+d|Encode
+d|Channel
+d|Commands
+|Standard mode
+|extension (consistency)
+
+|000000
+d|-
+|NOP
+|Empty package or flow control
+|
+
+|000001
+|NPC
+|FLUSH
+|No operation
+|
+
+|x01xxx
+|NPC
+
+or
+
+PC
+|Write
+|bit `5:0` - Nonposted
+
+`1` - Posted
+
+bit `2:0` - Byte
+
+`1` - Doubleword
+
+bit `1`: Don`'t Care
+
+bit `0`: Don`'t Care
+|bit `5`: Must be `1`, POSTED
+
+bit `2:0` - Byte
+
+`1` - Doubleword
+
+bit `1`: Don`'t Care
+
+bit `0`: Must be `1`
+
+|01xxxx
+|NPC
+|Read
+|bit `3`: Don`'t Care
+
+bit `2:0` - Byte
+
+`1` - Doubleword
+
+bit `1`: Don`'t Care
+
+bit `0`: Don`'t Care
+|bit `3`: Don`'t Care
+
+bit `2:0` - Byte
+
+`1` - Doubleword
+
+bit `1`: Don`'t Care
+
+bit `0`: Must be `1`
+
+|110000
+|R
+|RdResponse
+|Read operation returns
+|
+
+|110011
+|R
+|TgtDone
+|The write operation returns
+|
+
+|110100
+|PC
+|WrCoherent
+d|----
+|Write command extension
+
+|110101
+|PC
+|WrAddr
+d|----
+|Write address extension
+
+|111000
+|R
+|RespCoherent
+d|----
+|Read Response Extension
+
+|111001
+|NPC
+|RdCoherent
+d|----
+|Read command extension
+
+|111010
+|PC
+|Broadcast
+|No operation
+|
+
+|111011
+|NPC
+|RdAddr
+d|----
+|Read Address Extension
+
+|111100
+|PC
+|FENCE
+|Guaranteed sequential relationships
+|
+
+|111111
+d|-
+|Sync/Error
+|Sync/Error
+|
+|===
+
+For the sender, the commands that will be sent out in both modes are shown in the table below.
+
+[[commands-that-will-be-transported-in-both-modes]]
+.Commands that will be transported in both modes
+[%header,cols="3*1m,2*3"]
+|===
+d|Code
+d|Channel
+d|Commands
+|Standard mode
+|extension (consistency)
+
+|000000
+d|-
+|NOP
+|Blanket or flow control
+|
+
+|x01x0x
+|NPC
+
+or
+
+PC
+|Write
+|bit `5:0` - Nonposted
+
+`1` - Posted
+bit `2:0` - Byte
+
+`1` - Doubleword
+bit `0`:Must be `0`
+
+|bit `5`:Must be `1`, POSTED
+
+bit `2:0` - Byte
+
+`1` - Doubleword
+bit `0`:Must be `1`
+
+|010x0x
+|NPC
+|Read
+|bit `2:0` - Byte
+
+`1` - Doubleword
+
+bit `0`:Don`'t Care
+|bit `2:0` - Byte
+
+`1` - Doubleword
+
+bit `0`:Must be `1`
+
+|110000
+|R
+|RdResponse
+|Read operation returns
+|
+
+|110011
+|R
+|TgtDone
+|The write operation returns
+|
+
+|110100
+|PC
+|WrCoherent
+d|----
+|Write command extension
+
+|110101
+|PC
+|WrAddr
+d|----
+|Write address extension
+
+|111000
+|R
+|RespCoherent
+d|----
+|Read Response Extension
+
+|111001
+|NPC
+|RdCoherent
+d|----
+|Read command extension
+
+|111011
+|NPC
+|RdAddr
+d|----
+|Read Address Extension
+
+|111111
+d|-
+|Sync/Error
+|Will only forward
+|
+|===

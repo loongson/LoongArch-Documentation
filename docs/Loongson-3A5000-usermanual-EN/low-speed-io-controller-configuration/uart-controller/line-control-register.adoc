@@ -1,0 +1,96 @@
+[[line-control-register]]
+==== Line Control Register (`LCR`)
+
+Name: Line control register
+
+Length: `[7:0]`
+
+Offset: `0x03`
+
+Reset value: `0x03`
+
+[[table-line-control-register]]
+.Line control register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|dlab
+|1
+|RW
+|Frequency division latch access bit
+
+`1` - access to the operating frequency divider latch
+
+`0` - access to the operation normal register
+
+|6
+|bcb
+|1
+|RW
+|Interrupt control bit
+
+`1` - at this time the output of the serial port is set to `0` (interrupted state)
+
+`0` - normal operation
+
+|5
+|spb
+|1
+|RW
+|Specify parity bit
+
+`0` - No need to specify parity bit
+
+`1` - If the `LCR[4]` bit is `1` then the transport and parity bit is `0`.
+If the `LCR[4]` bit is `0` then the transport and parity bit is `1`
+
+|4
+|eps
+|1
+|RW
+|Parity bit selection
+
+`0` - Odd number of ``1``s in each character (including data and the parity bit)
+
+`1` - Even number of ``1``s in each character
+
+|3
+|pe
+|1
+|RW
+|Parity bits enable
+
+`0` - no parity bits
+
+`1` - generate parity bits on output, and determine parity bits on input
+
+|2
+|sb
+|1
+|RW
+|Define the number of bits to generate the stop bit
+
+`0` - `1` stop bit
+
+`1` - `1.5` stop bits at 5-bit character length, `2` stop bits at other lengths
+
+|1:0
+|bec
+|2
+|RW
+|Set the number of bits per character
+
+`00` - `5` bits
+
+`01` - `6` bits
+
+`10` - `7` bits
+
+`11` - `8` bits
+|===

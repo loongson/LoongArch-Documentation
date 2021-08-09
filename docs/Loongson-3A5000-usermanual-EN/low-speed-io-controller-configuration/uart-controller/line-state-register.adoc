@@ -1,0 +1,102 @@
+[[line-state-register]]
+==== Line State Register (`LSR`)
+
+Name: Line status register
+
+Length: `[7:0]`
+
+Offset: `0x05`
+
+Reset value: `0x00`
+
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7
+|ERROR
+|1
+|R
+|Error indication bit
+
+`1` - at least one of parity bit error, frame error or interrupted interrupt
+
+`0` - no errors
+
+|6
+|TE
+|1
+|R
+|Transport empty indication bit
+
+`1` - both the transport `FIFO` and the transport shift register are empty.
+Clear when writing data to the transport `FIFO`
+
+`0` - data exists
+
+|5
+|TFE
+|1
+|R
+|Transport `FIFO` bit empty indication bit
+
+`1` - the current transport `FIFO` is empty and is cleared when writing data to the transport `FIFO`
+
+`0` - data exists
+
+|4
+|BI
+|1
+|R
+|interrupted interrupt indication bit
+
+`1` - when received `start bit + data + parity bit + stop bit` are all `0`, there is an interrupted interrupt
+
+`0` - the interrupt is not interrupted
+
+|3
+|FE
+|1
+|R
+|Frame error indication bit
+
+`1` - the received data has no stop bit
+
+`0` - no errors
+
+|2
+|PE
+|1
+|R
+|Parity bit error indication bit
+
+`1` - current received data has parity error
+
+`0` - no parity errors
+
+|1
+|OE
+|1
+|R
+|Data overflow indication bit
+
+`1` - data overflow exists
+
+`0` - no overflow
+
+|0
+|DR
+|1
+|R
+|Receive data valid indication bit
+
+`0` - no data in the `FIFO`
+
+`1` - data exists in the `FIFO`
+|===
+
+When reading this register, `LSR[4:1]` and `LSR[7]` are cleared to zero, `LSR[6:5]` is cleared when writing data to the transmit `FIFO`, and `LSR[0]` is judged for the receive `FIFO`.

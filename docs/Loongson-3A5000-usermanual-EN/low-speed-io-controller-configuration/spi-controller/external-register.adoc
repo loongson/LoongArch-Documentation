@@ -1,0 +1,94 @@
+[[external-register]]
+==== External Register (`SPER`)
+
+Name: External register
+
+Length: `[7:0]`
+
+Offset: `0x03`
+
+Reset value: `0x00`
+
+[[table-external-register]]
+.External register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:6
+|icnt
+|2
+|RW
+|Send an interrupt request signal after how many bytes have been transported
+
+`00` - 1 byte
+
+`01` - 2 bytes
+
+`10` - 3 bytes
+
+`11` - 3 bytes
+
+|5:2
+|Reserved
+|4
+|RW
+|Reserved
+
+|1:0
+|spre
+|2
+|RW
+|Set the ratio of the frequency division together with `spr`
+|===
+
+[[frequency-division-factor]]
+.Frequency division factor
+[%header,cols="13*1m"]
+|===
+|spre
+|00
+|00
+|00
+|00
+|01
+|01
+|01
+|01
+|10
+|10
+|10
+|10
+
+|spr
+|00
+|01
+|10
+|11
+|00
+|01
+|10
+|11
+|00
+|01
+|10
+|11
+
+d|Frequency division factor
+|2
+|4
+|16
+|32
+|8
+|64
+|128
+|256
+|512
+|1024
+|2048
+|4096
+|===

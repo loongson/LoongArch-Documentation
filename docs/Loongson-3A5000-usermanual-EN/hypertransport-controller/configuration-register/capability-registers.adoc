@@ -1,0 +1,366 @@
+[[capability-registers]]
+==== Capability Registers
+
+Offset: `0x40`
+
+Reset value: `0x20010008`
+
+Name: Command, capabilities pointer, capability ID
+
+[[definition-of-command-capabilities-pointer-capability-id-registers]]
+.Definition of command, capabilities pointer, capability ID registers
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:29
+|Slave/Pri
+|3
+|0x0
+|R
+|Command format is HOST/Sec
+
+|28:26
+|Reserved
+|2
+|0x0
+|R
+|Reserved
+
+|25:21
+|Unit Count
+|5
+|0x0
+|R/W
+|Provided to the software for recording the current number of Units
+
+|20:16
+|Unit ID
+|5
+|0x0
+|
+|HOST mode: can be used to record the number of IDs used
+
+SLAVE mode: record own Unit ID
+
+HOST/SLAVE mode is controlled by act_as_slave register
+
+|15:08
+|Capabilities Pointer
+|8
+|0x60
+|R
+|Next cap register offset address
+
+|7:0
+|Capability ID
+|8
+|0x08
+|R
+|HyperTransport capability ID
+|===
+
+Offset: `0x44`
+
+Reset value: `0x00112000`
+
+Name: Link config, link control
+
+[[definition-of-link-config-link-control-registers]]
+.Definition of link config, link control registers
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|30:28
+|Link Width Out
+|3
+|0x0
+|R/W
+|Sender Width
+
+The value after a cold reset is the maximum width of the current connection, the value written to this register will take effect after the next hot reset or HT Disconnect
+
+`000`: 8-bit mode
+
+`001`: 16-bit mode
+
+|27
+|Reserved
+|1
+|0x0
+|
+|Reserved
+
+|26:24
+|Link Width In
+|3
+|0x0
+|R/W
+|Receiver width
+
+The value after a cold reset is the maximum width of the current connection, and the value written to this register will take effect after the next hot reset or HT Disconnect
+
+|23
+|Dw Fc out
+|1
+|0x0
+|R
+|Double-word flow control is not supported on the transmitter side
+
+|22:20
+|Max Link Width out
+|3
+|0x1
+|R
+|HT Maximum width of HT bus transmitter: `16` bits
+
+|19
+|Dw Fc In
+|1
+|0x0
+|R
+|Receive side does not support double-word flow control
+
+|18:16
+|Max Link Width In
+|3
+|0x1
+|R
+|Maximum width of HT bus receiver side: `16` bits
+
+|15:14
+|Reserved
+|2
+|0x0
+|
+|Reserved
+
+|13
+|LDTSTOP#
+|1
+|0x1
+|R/W
+|Whether to turn off HT PHY when HT bus enters HT Disconnect state
+
+`1`: Turn off
+
+`0`: No shutdown
+
+|12:10
+|Reserved
+|3
+|0x0
+|
+|Reserved
+|9
+|CRC Error (hi)
+|1
+|0x0
+|R/W
+|CRC error occurs in high `8` bits
+
+|8
+|CRC Error (lo)
+|1
+|0x0
+|R/W
+|CRC error occurs in low `8` bits
+
+|7
+|Trans off
+|1
+|0x0
+|R/W
+|HT PHY Off Control
+When in `16`-bit bus operation mode
+
+`1`: Turn off high/low `8`-bit HT PHY
+
+`0`: Enable Low 8-bit HT PHY, High 8-bit HT PHY is controlled by bit `0`
+
+|6
+|End of Chain
+|0
+|0x0
+|R
+|HT bus end
+
+|5
+|Init Complete
+|1
+|0x0
+|R
+|Whether HT bus initialization is complete
+
+|4
+|Link Fail
+|1
+|0x0
+|R
+|Indicates connection failure
+
+|3:2
+|Reserved
+|2
+|0x0
+|
+|Reserved
+
+|1
+|CRC Flood Enable
+|1
+|0x0
+|R/W
+|Whether to flood HT bus when CRC error occurs
+
+|0
+|Trans off (hi)
+|1
+|0x0
+|R/W
+|High `8`-bit PHY shutdown control when running `8`-bit protocol with `16`-bit HT bus
+
+`1`: Turn off High `8`-bit HT PHY
+
+`0`: Enable High `8`-bit HT PHY
+|===
+
+Offset: `0x4C`
+
+Reset value: `0x80250023`
+
+Name: Revision ID, link freq, link error, link freq cap
+
+[[definition-of-revision-id-link-freq-link-error-link-freq-cap-registers]]
+.Definition of revision id, link freq, link error, link freq capregisters
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|Link Freq Cap
+|16
+|0x0000
+|R
+|HT bus frequency supported, with different values generated depending on the external PLL settings (this bit is meaningless when using the software configuration PLL (`0x1F4`))
+
+`{3.2G, 2.6G, 2.4G, 2.2G, 2.0G, 1.8G, 1.6G, 1.4G, 1.2G, 1.0G, 800M, 600M, 500M, 400M, 300M, 200M}`
+
+|15:14
+|Reserved
+|2
+|0x0
+|
+|Reserved
+
+|13
+|Over Flow Error
+|1
+|0x0
+|R
+|HT bus packet overflow
+
+|12
+|Protocol Error
+|1
+|0x0
+|R/W
+|Protocol error, meaning an unrecognizable command was received on the HT bus
+
+|11:8
+|Link Freq
+|4
+|0x0
+|R/W
+|HT bus operating frequency, the value written to this register will take effect after the next thermal reset or HT Disconnect, the value set corresponds to the Link Freq Cap bit (when using software configuration PLL (`0x1F4`), this bit is meaningless)
+
+|7:0
+|Revision ID
+|8
+|0x60
+|R/W
+|Version number: `3.0`
+|===
+
+Offset: `0x50`
+
+Reset value: `0x00000002`
+
+Name: Feature capability
+
+[[definition-of-feature-capability-registers]]
+.Definition of feature registers
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:9
+|Reserved
+|23
+|0x0
+|
+|Reserved
+
+|8
+|Extended Register
+|1
+|0x0
+|R
+|No
+
+|7:4
+|Reserved
+|3
+|0x0
+|
+|Reserved
+
+|3
+|Extended CTL Time
+|1
+|0x0
+|R
+|Not needed
+
+|2
+|CRC Test Mode
+|1
+|0x0
+|R
+|Not supported
+
+|1
+|LDTSTOP#
+|1
+|0x1
+|R
+|Support LDTSTOP#
+
+|0
+|Isochronous Mode
+|1
+|0x0
+|R
+|Not supported
+|===

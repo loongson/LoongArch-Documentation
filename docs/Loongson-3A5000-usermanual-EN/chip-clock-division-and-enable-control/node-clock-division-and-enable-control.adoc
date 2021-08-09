@@ -1,0 +1,10 @@
+[[node-clock-division-and-enable-control]]
+=== Node Clock Division and Enable Control
+
+The node clock is the clock used by the on-chip network and shared Cache, and has two different control modes, a software setting mode and a hardware automatic frequency division setting.
+
+The node clock does not support full shutdown, so there is no corresponding clken control bit.
+
+include::node-clock-division-and-enable-control/software-configuration.adoc[]
+
+include::node-clock-division-and-enable-control/hardware-automatic-configuration.adoc[]

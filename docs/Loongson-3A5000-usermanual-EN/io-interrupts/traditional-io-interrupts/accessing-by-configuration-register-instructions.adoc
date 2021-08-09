@@ -1,0 +1,19 @@
+[[accessing-by-configuration-register-instructions-4]]
+==== Accessing by Configuration Register Instructions
+
+In the Loongson 3A5000, the configuration registers can also be accessed through private space using the same access method as the configuration register instruction.
+The offset address used by the instruction is the same as that accessed through the address.
+In addition, for the convenience of users, a dedicated private interrupt status register is set for different current interrupt states of each core, as shown in the following table.
+
+[[processor-core-private-interrupt-status-register]]
+.Processor core private interrupt status register
+[%header,cols="2m,1m,^2"]
+|===
+d|Name
+d|Offset Address
+|Description
+
+|perCore_INTISR
+|0x1010
+|32-bit interrupt status routing to the current processor core
+|===

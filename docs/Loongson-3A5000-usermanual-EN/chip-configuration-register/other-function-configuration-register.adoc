@@ -1,0 +1,251 @@
+[[other-function-configuration-register]]
+=== Other Function Configuration Register (`0x0420`)
+
+The following registers are used to control some of the functions enabled within the chip.
+The base address is `0x1fe00000` and the offset address is `0x0420`.
+
+[[other-function-configuration-register-1]]
+.Other function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|0
+|disable_jtag
+|RW
+|0x0
+|Completely disable the JTAG interface
+
+|1
+|disable_jtag_gs464
+|RW
+|0x0
+|Completely disable the GS464JTAG debug interface
+
+|2
+|disable_gs132
+|RW
+|0x0
+|Completely disable GS132
+
+|3
+|disable_jtag_gs132
+|RW
+|0x0
+|Completely disable the GS132 JTAG debug interface
+
+|4
+|Disable_antifuse0
+|RW
+|0x0
+|Disable fuse
+
+|5
+|Disable_antifuse1
+|RW
+|0x0
+|Disable fuse
+
+|6
+|Disable_ID
+|RW
+|0x0
+|Disable ID modification
+
+|7
+|
+|
+|
+|Reserved
+
+|8
+|resetn_gs132
+|RW
+|0x0
+|GS132 reset control
+
+|9
+|sleeping_gs132
+|R
+|0x0
+|GS132 go to sleep
+
+|10
+|soft_int_gs132
+|RW
+|0x0
+|GS132 inter-processor interrupt register
+
+|15:12
+|core_int_en_gs132
+|RW
+|0x0
+|GS132 I/O interrupt enable for each core
+
+|18:16
+|freqscale_gs132
+|RW
+|0x0
+|GS132 frequency division control
+
+|19
+|clken_gs132
+|RW
+|0x0
+|GS132 clock enable
+
+|20
+|stable_sel
+|RW
+|0x0
+|Stable clock selection
+
+`0`: SYS CLOCK
+
+`1`: NODE CLOCK
+
+|21
+|stable_resetn
+|RW
+|0x0
+|Stable clock reset control
+
+|22
+|freqscale_percore
+|RW
+|0x0
+|Enable private frequency adjustment registers for each core
+
+|23
+|clken_percore
+|RW
+|0x0
+|Enable private clock for each core
+
+|27:24
+|confbus_timeout
+|RW
+|0x8
+|Configure the bus timeout configuration.
+The actual time is the power of `2`.
+
+|29:28
+|HT_softresetn
+|RW
+|0x3
+|HT Controller software reset control
+
+|35:32
+|freqscale_mode_core
+|RW
+|0x0
+|Frequency adjustment mode selection for each core
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+
+|36
+|freqscale_mode_node
+|RW
+|0x0
+|Frequency adjustment mode selection for nodes
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+
+|37
+|freqscale_mode_gs132
+|RW
+|0x0
+|Frequency adjustment mode selection for GS132
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+
+|39:38
+|freqscale_mode_HT
+|RW
+|0x0
+|Frequency adjustment mode selection for each HT
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+
+|40
+|freqscale_mode_stable
+|RW
+|0x0
+|Frequency adjustment mode selection for stable clock
+
+`0`: `(n+1)/8`
+
+`1`: `1/(n+1)`
+
+|43:41
+|
+|
+|
+|Reserved
+
+|46:44
+|freqscale_stable
+|RW
+|0x0
+|Stable clock frequency adjustment register
+
+|47
+|clken_stable
+|RW
+|0x0
+|Stable clock enable
+
+|48
+|EXT_INT_en
+|RW
+|0x0
+|Extended I/O interrupt enable
+
+|49
+|INT_encode
+|RW
+|0x0
+|Enable interrupt pin encode mode
+
+|53:52
+|
+|
+|
+|
+
+|54
+|
+|
+|
+|
+
+|57:56
+|thsensor_sel
+|RW
+|0x0
+|Temperature sensor selection
+
+|62:60
+|Auto_scale
+|R
+|0x0
+|Current value auto frequency adjustment
+
+|63
+|Auto_scale_doing
+|R
+|0x0
+|Flags in effect auto frequency adjustment
+|===

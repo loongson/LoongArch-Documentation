@@ -1,0 +1,31 @@
+[[interrupt-control-register]]
+=== Interrupt Control Register (`0x0510`)
+
+The base address is `0x1fe00000` and the offset address is `0x0510`.
+
+[[interrupt-control-register-1]]
+.Interrupt control register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|31:0
+|GPIO_INT_Pol
+|RW
+|32'h0
+|GPIO interrupt active level configuration
+
+`0` - active low
+
+`1` - active high
+
+|63:32
+|GPIO_INT_en
+|RW
+|32'h0
+|GPIO interrupt enable contrl (active high)
+|===

@@ -1,0 +1,54 @@
+[[timing-control-register]]
+==== Timing Control Register (`SFC_TIMING`)
+
+Name: SPI FLASH timing control register
+
+Length: `[7:0]`
+
+Offset: `0x06`
+
+Reset value: `0x03`
+
+[[table-timing-control-register]]
+.Timing control register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:4
+|Reserved
+|4
+|RW
+|Reserved
+
+|3
+|quad_io
+|1
+|RW
+|4-wire mode enable.
+`1` indicates valid
+
+|2
+|tFast
+|1
+|RW
+|
+
+|1:0
+|tCSH
+|2
+|RW
+|The minimum invalidation time of the SPI FLASH chip select signal, calculated as the clock period `T` after frequency division
+
+`00`: `1T`
+
+`01`: `2T`
+
+`10`: `4T`
+
+`11`: `8T`
+|===

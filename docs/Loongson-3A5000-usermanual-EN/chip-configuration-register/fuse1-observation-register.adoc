@@ -1,0 +1,22 @@
+[[fuse1-observation-register]]
+=== `FUSE1` Observation Register (`0x0470`)
+
+The following registers are used to observe the `Fuse1` values visible to some software.
+The offset address is `0x0470`.
+
+[[table-fuse1-observation-register]]
+.`FUSE1` observation register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|127:0
+|Fuse_1
+|RW
+|0x0
+|
+|===

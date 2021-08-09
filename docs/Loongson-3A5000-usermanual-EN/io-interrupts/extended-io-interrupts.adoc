@@ -1,0 +1,35 @@
+[[extended-io-interrupts]]
+=== Extended I/O Interrupts
+
+In addition to being compatible with the traditional I/O interrupt method, the 3A5000 supports extended I/O interrupts, which are used to distribute 256-bit interrupts on the HT bus directly to each processor core instead of forwarding them through the HT interrupt line, increasing the flexibility of I/O interrupt usage.
+
+Before the core can use the extended I/O interrupt, it needs to enable the corresponding bit in the "`Other function configuration register`".
+This register has a base address of `0x1fe00000`,It can also be accessed using the configuration register instruction (IOCSR), an offset address of `0x0420`.
+
+[[other-function-configuration-register-8]]
+.Other function configuration register
+[%header,cols="^1m,2m,^1,^1m,3"]
+|===
+d|Bit Field
+^d|Name
+|Read/Write
+d|Reset Value
+^|Description
+
+|48
+|EXT_INT_en
+|RW
+|0x0
+|Extended I/O interrupt enable
+|===
+
+In Extended I/O interrupt mode, HT interrupts can be forwarded directly across slices and distributed in rotation.
+In the current version, up to `s` extended interrupt vectors can be supported.
+
+include::extended-io-interrupts/accessing-by-address.adoc[]
+
+include::extended-io-interrupts/accessing-by-configuration-register-instructions.adoc[]
+
+include::extended-io-interrupts/extended-io-interrupt-trigger-register.adoc[]
+
+include::extended-io-interrupts/difference-in-handling-between-extended-io-interrupts-and-traditional-ht-interrupts.adoc[]

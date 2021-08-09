@@ -1,0 +1,31 @@
+[[introduction-to-the-loongson-family-of-processors]]
+=== Introduction to the Loongson Family of Processors
+
+Loongson processors mainly include three series. 
+Loongson Series 1 processor adopts GS232 or GS132 series processor cores and integrates various peripheral interfaces to form application-specific monolithic solutions, which are mainly applied to IOT terminals, instrumentation devices, data acquisition and other fields. 
+Loongson Series 2 processor adopts GS464 or GS232 series processor cores and integrates various peripheral interfaces to form a high-performance low-power SoC chip for network devices, industrial terminals, intelligent manufacturing, etc. 
+Loongson Series 3 processors integrate multiple GS464 series processor cores and necessary storage and IO interfaces on-chip, targeting high-end embedded computers, desktops, servers and other applications.
+
+The Loongson 3 multi-core series processors are designed based on a scalable multi-core interconnect architecture, which integrates multiple high-performance processor cores and a large amount of Level 2 Cache on a single chip, and interconnects multiple chips through high-speed I/O interfaces to form a larger scale system.
+
+The scalable interconnect architecture adopted by Loongson 3 is shown in the figure below.
+Each node consists of `8 &#215; 8` cross-switches, with each cross-switch connecting four processor cores and four shared caches, and interconnecting with other nodes in four directions: East (E), South (N), West (W), and North (N).
+
+[[system-architecture-of-loongson-3]]
+.Loongson 3 System architecture
+image::loongson-3-system-architecture.png[]
+
+The node structure of the Loongson 3 is shown in the figure below.
+Each node has two levels of AXI cross-switches connecting the processor, the shared Cache, the memory controller, and the I/O controller.
+The first level AXI cross-switch (called X1 Switch) connects the processor and the shared Cache, and the second level cross-switch (called X2 Switch) connects the shared Cache and the memory controller.
+
+[[loongson-3-node-structure]]
+.Loongson 3 node structure
+image::loongson-3-node-structure.png[]
+
+In each node, up to `8 &#215; 8 X1` cross switches are connected to four GS464 processor cores (`P0`, `P1`, `P2`, `P3` in the figure) through four Master ports.
+The four interleave shared Cache blocks (`S0`, `S1`, `S2`, `S3` in the figure) are universally addressed through the four slave ports.
+Other nodes or I/O nodes in the East, South, West and North directions are connected via four pairs of Master/Slave ports (`EM`/`ES`, `SM`/`SS`, `WM`/`WS`, `NM`/`NS` in the figure).
+
+The `X2` cross-switch connects four shared Caches via four Master ports, at least one Slave port to a memory controller, and at least one slave port to a configuration module (`Xconf`) of the cross-switch that is used to configure the address windows of `X1` and `X2` of this node.
+Additional memory controllers, I/O ports, can be connected as needed.

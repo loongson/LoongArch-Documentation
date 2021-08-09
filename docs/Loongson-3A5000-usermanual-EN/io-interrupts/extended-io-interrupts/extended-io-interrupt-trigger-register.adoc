@@ -1,0 +1,24 @@
+[[extended-io-interrupt-trigger-register]]
+==== Extended I/O Interrupt Trigger Register
+
+To support the dynamic distribution of extended I/O interrupts, an extended I/O interrupt trigger register is added to the configuration register to set the corresponding I/O interrupts to be set.
+This register can be used for debugging or testing interrupts in normal times.
+
+The description of this register is as follows:
+
+[[extended-io-interrupt-trigger-register-1]]
+.Extended I/O interrupt trigger register
+[%header,cols="3m,^1m,^1,3"]
+|===
+^d|Name
+d|Offset Address
+|Read/Write
+^|Description
+
+|EXT_IOI_send
+|0x1140
+|WO
+|Extended I/O interrupt setting register
+
+`[7:0]` is the interrupt vector expected to be set
+|===

@@ -1,0 +1,17 @@
+[[gpio-control]]
+== GPIO Control
+
+Up to `32` GPIOs are provided in the 3A5000 for system use, and most of them are multiplexed with other functions.
+The GPIOs can also be configured as interrupt inputs and their interrupt levels can be set through register settings.
+
+The base address of each chip configuration register in this chapter is `0x1fe00000`.
+
+include::gpio-control/output-enable-register.adoc[]
+
+include::gpio-control/input-output-register.adoc[]
+
+include::gpio-control/interrupt-control-register.adoc[]
+
+include::gpio-control/gpio-pin-function-multiplexing-table.adoc[]
+
+include::gpio-control/gpio-interrupt-control.adoc[]

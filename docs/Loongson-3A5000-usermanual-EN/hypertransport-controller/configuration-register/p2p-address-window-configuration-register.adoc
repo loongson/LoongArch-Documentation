@@ -1,0 +1,135 @@
+[[p2p-address-window-configuration-register]]
+==== P2P Address Window Configuration Register
+
+The address window hit formula is detailed in <<receive-address-window-configuration-register,Receive Address Window Configuration Register>>.
+
+The address of this window is the address received on the HT bus.
+The read and write commands that land on the address of this window are forwarded directly back to the bus as P2P commands, and this window has the highest priority compared to the normal receive window and the uncache window.
+
+Offset: `0x1B0`
+
+Reset value: `0x00000000`
+
+Name: HT bus P2P address window 0 enable (external access)
+
+[[definition-of-ht-bus-p2p-address-window-0-enable-register]]
+.Definition of HT bus P2P address window 0 enable (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_rx_p2p0_en
+|1
+|0x0
+|R/W
+|HT bus P2P address window 0, enable signal
+
+|29:0
+|ht_rx_p2p0_trans[53:24]
+|30
+|0x0
+|R/W
+|HT bus P2P address window 0, `[53:24]` of the translated address
+|===
+
+Offset: `0x1B4`
+
+Reset value: `0x00000000`
+
+Name: HT bus P2P address window 0 base address (external access)
+
+[[definition-of-ht-bus-p2p-address-window-0-base-address-register]]
+.Definition of HT bus P2P address window 0 base address (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_rx_p2p0_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus P2P address window 1, address base address of `[39:24]`
+
+|15:0
+|ht_rx_p2p0_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus P2P address window 1, address masked `[39:24]`
+|===
+
+Offset: `0x1B8`
+
+Reset value: `0x00000000`
+
+Name: HT bus P2P address window 1 enable (external access)
+
+[[definition-of-ht-bus-p2p-address-window-1-enable-register]]
+.Definition of HT bus P2P address window 1 enable (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31
+|ht_rx_p2p1_en
+|1
+|0x0
+|R/W
+|HT bus P2P address window 1, enable signal
+
+|29:0
+|ht_rx_p2p1_trans[53:24]
+|30
+|0x0
+|R/W
+|HT bus P2P address window 1, `[53:24]` of the translated address
+|===
+
+Offset: `0x1BC`
+
+Reset value: `0x00000000`
+
+Name: HT bus P2P address window 1 base address (external access)
+
+[[definition-of-ht-bus-p2p-address-window-1-base-address-register]]
+.Definition of HT bus P2P address window 1 base address (external access) register
+[%header,cols="^1m,2m,^1m,^1m,^1,3"]
+|===
+d|Bit Field
+^d|Name
+d|Length
+d|Reset Value
+|Read/Write
+^|Description
+
+|31:16
+|ht_rx_p2p1_base[39:24]
+|16
+|0x0
+|R/W
+|HT bus P2P address window 1, address base address of `[39:24]`
+
+|15:0
+|ht_rx_p2p1_mask[39:24]
+|16
+|0x0
+|R/W
+|HT bus P2P address window 1, address masked `[39:24]`
+|===

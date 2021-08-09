@@ -1,0 +1,37 @@
+[[temperature-status-detection-and-control]]
+=== Temperature Status Detection and Control
+
+The pins `PROCHOTn` and `THERMTRIPn` are used for temperature status detection and control, which are multiplexed with `GPIO14` and `GPIO15` respectively.
+`PROCHOTn` can be used as both input and output, while `THERMTRIPn` has only output function.
+When `PROCHOTn` is used as an input, the chip is controlled by the external temperature detection circuit, and the external temperature detection circuit can set `PROCHOTn` to `0` when it needs to lower the chip temperature, and the chip will take down frequency measures after receiving this low level.
+When `PROCHOTn` is an output, the chip can output high-temperature interrupts, and select one of the four interrupts set by the high-temperature interrupt control register through the `prochotn_o_sel` register.
+Select one of the four interrupts set in the high-temperature interrupt control register as the external high-temperature interrupt.
+
+`THERMTRIPn` as output is selected by the chip from the `4` interrupts set by the high-temperature interrupt control register through the `thermtripn_o_sel` register as the outgoing high-temperature interrupt.
+
+Although both `THERMTRIPn` and `PROCHOTn` are external high temperature interrupts, `THERMTRIPn` has a higher degree of urgency than `PROCHOTn`.
+When `PROCHOTn` is set, the external temperature control circuit can also take certain measures, such as increasing the fan speed.
+In contrast, when `THERMTRIPn` is set, the external power control circuitry should take direct emergency power-off measures.
+
+The specific control registers are as follows:
+
+[[description-of-temperature-status-detection-and-control]]
+.Description of temperature status detection and control register
+[%header,cols="2,1m,1,6"]
+|===
+|Register
+d|Address
+|Read/Write
+|Description
+
+|Temperature status detection and control register `Thsens_hi_ctrl`
+|0x1498
+|RW
+|`[0:0]`: `prochotn_oe`: `PROCHOTn` pin output enable control, `0` for output, `1` for input
+
+`[5:4]`: `prochotn_o_sel`: `PROCHOTn` high temperature interrupt output selection
+
+`[10:8]`: `prochotn_freq_scale`: `PROCHOTn` frequency division value when input is valid
+
+`[17:16]`: `thermtripn_o_sel`: `THERMTRIPn` high temperature interrupt output selection
+|===

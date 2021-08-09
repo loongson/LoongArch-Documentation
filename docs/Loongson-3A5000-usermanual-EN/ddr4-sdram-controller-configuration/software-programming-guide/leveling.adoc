@@ -1,0 +1,66 @@
+[[leveling]]
+==== Leveling
+
+The Leveling operation is an operation used in DDR3/4 to intelligently configure the phase relationship between various signals in the memory controller read and write operations.
+It usually includes Write Leveling, Read Leveling and GateLeveling.
+In this controller, only Write Leveling and Gate Leveling are implemented, and Read Leveling is not implemented.
+The software needs to judge the correctness of reading and writing to achieve the functions accomplished by Read Leveling.
+In addition to the DQS phase and GATE phase operated in the Leveling process, the configuration methods of Write DQ phase and Read DQ phase can be calculated based on these last confirmed phases.
+In addition, the design supports a bit-deskew function to compensate the delay difference between different bits within a dataslice.
+
+===== Write Leveling
+
+Write Leveling is used to configure the phase relationship between the write DQS and the clock, and the software programming needs to refer to the following steps.
+
+. Complete the controller initialization, see the previous subsection.
+
+. Set `Dll_wrdqs_x` (`x = 0...8`) to `0x20`.
+
+. Set `Dll_wrdq_x` (`x = 0..8`) to `0x0`.
+
+. Set `Lvl_mode` to `2'b01`.
+
+. Sample the `Lvl_ready` register, if it is `1`, it means that the Write Leveling request can start.
+
+. Set `Lvl_req` to `1`.
+
+. Sample the `Lvl_done` register, if it is `1`, a Write Leveling request is complete.
+
+. Sample the `Lvl_resp_x` register, if it is `0`, increments the corresponding Dll_wrdq_x[6:0] and `dll_1xdly[6:0]` by `1`, and repeats 5-7 until `Lvl_resp_x` is `1`, then moves to 9; if it is `1`, increments the corresponding `Dll_wrdq_x[6:0]` and `dll_1xdly[6:0]` by `1` and repeat 5-7 until `Lvl_resp_x` is `0`, then continue to increase the corresponding `Dll_wrdq_x[6:0]` and `dll_1xdly[6:0]` by `1` and repeat 5-7 until `Lvl_resp_x` is `1`, then turn to 9.
+
+. Subtract `0x40` from the values of `Dll_wrdq_x` and `dll_1xdly`, at which point the values of `Dll_wrdq_x` and `dll_1xdly` should be the correct values to set.
+
+. Set `pm_dly_2x` according to the DIMM type, for the particles to the right of the 0x0 bound the corresponding `pm_dly_2x` value is increased by `0x010101`.
+
+. Set `Lvl_mode` (`0x700`) to `2'b00` to exit Write Leveling mode.
+
+===== Gate Leveling
+
+Gate Leveling is used to configure the timing of the enable sample read DQS window within the controller, refer to the following steps for software programming.
+
+. Complete controller initialization, see previous subsection.
+
+. Completing Write Leveling, see previous section.
+
+. Set `Dll_gate_x` (`x = 0...8`) to `0`.
+
+. Set Lvl_mode to `2'b10`.
+
+. Sample the `Lvl_ready` register; if it is `1`, the Gate Leveling request can start.
+
+. Set `Lvl_req` to `1`.
+
+. Sample the Lvl_done register, if it is `1`, a Gate Leveling request is complete.
+
+. Sample the `Lvl_resp_x[0]` register, if the first sample finds `Lvl_resp_x[0]` to be `1`, increase the corresponding `Dll_gate_x[6:0]` by `1` and repeat 6-8 until the sample result is `0`; otherwise proceed to the next step.
+
+. If the sampling result is `0`, increment the corresponding `Dll_gate_x[6:0]` by `1` and repeat 6-9; if it is `1`, the Gate Leveling operation has succeeded.
+
+. Set pm_rdedge_sel (`11`) according to the value of pm_rddqs_phase to set `Dll_gate_x` (`x =
+0...8`) minus `0x20`.
+
+. If the value of `Lvl_resp_x[7:5]` and `Lvl_resp_x[4:2]` changes, if each increases to `Burst_length/2`, proceed to step `13`; if it is not `4`, it may be necessary to add or subtract `Rd_oe_begin_x` a plus or minus operation may be required for `Rd_oe_begin_x`, and if greater than `Burst_length/2`, some fine-tuning of the value of `Dll_gate_x` is likely to be required.
+
+. Set `Lvl_mode` (`0x700`) to `2'b00` to exit Gate Leveling mode.
+
+. This ends the Gate Leveling operation.

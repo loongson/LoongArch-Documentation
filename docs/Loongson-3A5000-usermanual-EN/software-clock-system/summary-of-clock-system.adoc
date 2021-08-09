@@ -1,0 +1,10 @@
+[[summary-of-clock-system]]
+=== Summary of Clock System
+
+The new Stable counter in Loongson 3A5000 has an advantage over the node counter and CP0counter in terms of stability, as it does not change with other clocks (node clock and core clock).
+
+In terms of ease of use, the Stable counter is also easier to access, using instruction for both user and Guest states.
+Stable counter is the preferred solution for software reference clock systems.
+
+Node clock is more of a design for legacy compatibility and is a backup solution for the clock system.
+It will be phased out in future chip designs.

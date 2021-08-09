@@ -1,0 +1,27 @@
+[[frequency-division-latch-low-order-byte-register]]
+==== Frequency Division Latch Low-order Byte Register (`PRERlo`)
+
+Name: Frequency division latch low-order byte register
+
+Length: `[7:0]`
+
+Offset: `0x00`
+
+Reset value: `0xff`
+
+[[table-frequency-division-latch-low-order-byte-register]]
+.Frequency division latch low-order byte register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:0
+|PRERlo
+|8
+|RW
+|Store the lower `8` bits of the division latch
+|===

@@ -1,0 +1,52 @@
+[[hypertransport-multi-processor-support]]
+=== HyperTransport Multi-processor Support
+
+The loongson3 processor uses the HyperTransport interface for multiprocessor interconnects and can automatically maintain consistency requests between `2`-`8` chips in hardware.
+
+*Loongson 3 Interconnect Routing*
+
+Loongson 3 interconnect routing has two methods, one is to use the simple `X`-`Y` routing method.
+If a request is sent from `11` to `00`, it is routed from `11` to `00`, first in the `X` direction, from `11` to `10`, and then in the `Y` direction, from `10` to `00`.
+When its response returns from `00` to `11`, it is routed first in the `X` direction, from `00` to `01`, and then in the `Y` direction, from `01` to `11`.
+from `00` to `01`, and then the `Y` direction, from `01` to `11`.
+The other is diagonal direct access, which is achieved by connecting two diagonal chips in hardware to greatly reduce access latency, and this access requires separate enablement through software.
+Due to the characteristics of this algorithm, a variety of different approaches can be used when building multi-chip interconnects.
+
+*Structure of Four Loongson 3 Chips Interconnected*
+
+The four CPUs are connected in a two-by-two ring structure.
+Each CPU is connected to two adjacent chips using the two 8-bit controllers of `HT0` and to the diagonal chip using `HT1 HI`, resulting in the interconnection structure shown below:
+
+[[structure-of-four-loongson-3-chips-interconnected]]
+.Structure of four Loongson 3 chips interconnected
+image::structure-of-four-loongson-3-chips-interconnected.png[]
+
+*Structure of Sixteen Loongson 3 Chips Interconnected*
+
+The sixteen interconnects use the remaining `HT1_LO` after the above four interconnects (called Clusters) for interconnecting between Clusters.
+The structure is as follows:
+
+[[structure-of-sixteen-loongson-3-chips-interconnected]]
+.Structure of sixteen Loongson 3 chips interconnected
+image::structure-of-sixteen-loongson-3-chips-interconnected.png[]
+
+*Structure of Two Loongson 3 Chips with 8-bit Interconnection*
+
+8-bit HT bus interconnect.
+In this interconnect, only 8-bit HT interconnects can be used between the two processors.
+The two chip numbers are `00` and `01` respectively, and from the routing algorithm, it can be known that both chips access each other through the same 8-bit HT bus as in the four-chip interconnect.
+This is shown below:
+
+[[structure-of-two-loongson-3-chips-with-8-bit-interconnection]]
+.Structure of two Loongson 3 chips with 8-bit interconnection
+image::structure-of-two-loongson-3-chips-with-8-bit-interconnection.png[]
+
+However, the HT bus can be used in 16-bit mode at the widest, and the resulting connection method to maximize bandwidth should be to use a 16-bit interconnect structure.
+In Loongson 3, as long as the `HT0` controller is set to 16-bit mode, all commands sent to the HT0 controller will be sent to `HT0_LO` instead of to `HT0_HI` or `HT0_LO` respectively according to the routing table as before, so that the 16-bit bus for interconnection can be used.
+So, only need to configure the 16-bit mode of `CPU0` and `CPU1` correctly and connect the high and low buses correctly to use the 16-bit HT bus interconnect.
+This interconnection structure can also be accessed using the 8-bit HT bus protocol.
+The resulting interconnection structure is as follows:
+
+[[structure-of-two-loongson-3-chips-with-16-bit-interconnection]]
+.Structure of two Loongson 3 chips with 16-bit interconnection
+image::structure-of-two-loongson-3-chips-with-16-bit-interconnection.png[]

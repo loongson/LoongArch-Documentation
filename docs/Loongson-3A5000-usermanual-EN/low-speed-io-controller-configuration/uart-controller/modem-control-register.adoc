@@ -1,0 +1,71 @@
+[[modem-control-register]]
+==== MODEM Control Register (`MCR`)
+
+Name: Modem control register
+
+Length: `[7:0]`
+
+Offset: `0x04`
+
+Reset value: `0x00`
+
+[[table-modem-control-register]]
+.MODEM Control Register
+[%header,cols="1m,2m,1m,1,5"]
+|===
+^d|Bit Field
+^d|Name
+^d|Length
+^|Read/Write
+^|Description
+
+|7:5
+d|Reserved
+|3
+|W
+|Reserved
+
+|4
+|Loop
+|1
+|W
+|Loopback mode control bit
+
+`0` - normal operation
+
+`1` - Loopback mode.
+In the loopback mode, the `TXD` output is always `1` and the output shift register is directly connected to the input shift register.
+Other connections are listed below.
+
+`DTR` &#8594; `DSR`
+
+`RTS` &#8594; `CTS`
+
+`Out1` &#8594; `RI`
+
+`Out2` &#8594; `DCD`
+
+|3
+|OUT2
+|1
+|W
+|Connect to `DCD` input in loopback mode
+
+|2
+|OUT1
+|1
+|W
+|Connect to `RI` input in loopback mode
+
+|1
+|RTSC
+|1
+|W
+|`RTS` signal control bit
+
+|0
+|DTRC
+|1
+|W
+|`DTR` signal control bit
+|===
