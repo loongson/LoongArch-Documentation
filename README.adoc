@@ -7,6 +7,8 @@ Loongson Technology Corporation Limited
 
 == Introduction
 
+test
+
 This is the translation of LoongArch documentation.
 
 * You can find documents online https://loongson.github.io/LoongArch-Documentation[here].
