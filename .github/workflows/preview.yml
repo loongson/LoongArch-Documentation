@@ -1,8 +1,9 @@
 name: Preview
 
 on:
-  pull_request:
-    branches: [ main ]
+  pull_request_target:
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -11,6 +12,8 @@ jobs:
       BUNDLE_GEMFILE: Gemfile
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -45,4 +48,4 @@ jobs:
           description: 'Deployed, click "Details" to view ->'
           state: 'success'
           target_url: https://loongson.github.io/LoongArch-Documentation-Preview
-          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          sha: ${{ github.event.pull_request.head.sha || github.sha }}
