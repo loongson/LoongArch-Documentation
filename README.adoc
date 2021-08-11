@@ -43,10 +43,10 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 ** link:Loongson-7A1000-usermanual-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[Original document].
 
-* LoongArch ABI: This manual describes the LoongArch ABI.
-** link:LoongArch-ABI-EN.html[HTML version].
-** link:LoongArch-ABI-EN.pdf[PDF version].
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ABI-v1.00-CN.pdf[Original document].
+* LoongArch ELF ABI: This manual describes the LoongArch ELF ABI.
+** link:LoongArch-ELF-ABI-EN.html[HTML version].
+** link:LoongArch-ELF-ABI-EN.pdf[PDF version].
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ELF-ABI-v1.00-CN.pdf[Original document].
 
 == Translator`'s Note
 
