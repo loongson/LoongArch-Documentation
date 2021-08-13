@@ -1,3 +1,5 @@
+Chenghua Xu <xuchenghua@loongson.cn>
 FreeFlyingSheep <chenfeiyang@loongson.cn>
 qmuntal <quimmuntal@gmail.com>
 sterling-teng <siyanteng@loongson.cn>
+Wu Xiaotian <wuxiaotian@loongson.cn>
