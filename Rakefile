@@ -1,5 +1,5 @@
 namespace :book do
-    books = FileList['*.adoc']
+    books = FileList['docs/*.adoc']
 
     desc 'build basic book formats'
     task :all =>[:html, :pdf]
@@ -8,7 +8,7 @@ namespace :book do
     task :html, [:arg] do |t, args|
         args.with_defaults(:arg => books)
         puts 'Converting to HTML...'
-        `bundle exec asciidoctor -v -b html5 -a stylesheet=themes/html.css -a data-uri #{args[:arg]}`
+        `bundle exec asciidoctor -v -b html5 -a stylesheet=../themes/html.css -a data-uri -D public #{args[:arg]}`
         puts ' -- HTML conversion done!'
     end
 
@@ -16,14 +16,12 @@ namespace :book do
     task :pdf, [:arg] do |t, args|
         args.with_defaults(:arg => books)
         puts 'Converting to PDF... (this will take a while)'
-        `bundle exec asciidoctor-pdf -v -a pdf-theme=themes/pdf.yml -a pdf-fontsdir="fonts;GEM_FONTS_DIR" #{args[:arg]}`
+        `bundle exec asciidoctor-pdf -v -a pdf-theme=themes/pdf.yml -a pdf-fontsdir="fonts;GEM_FONTS_DIR" -D public #{args[:arg]}`
         puts ' -- PDF conversion done!'
     end
 
     desc 'Clean all generated files'
     task :clean do |t|
-        FileList['*.html', '*.pdf'].each do |file|
-            rm file
-        end
+        rm_rf 'public'
     end
 end

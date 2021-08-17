@@ -1,4 +1,4 @@
-extends: default
+extends: default-with-fallback-font
 font:
   catalog:
     merge: true
@@ -13,6 +13,9 @@ font:
       italic: Roboto_Mono/RobotoMono-Italic.ttf
       bold_italic: Roboto_Mono/RobotoMono-BoldItalic.ttf
     DroidSansFallback: Droid_Sans_Fallback/DroidSansFallback.ttf
+  fallbacks:
+  - M+ 1p Fallback
+  - DroidSansFallback
 base:
   font_family: Roboto
 literal:

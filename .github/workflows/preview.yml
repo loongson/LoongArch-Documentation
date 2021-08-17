@@ -25,13 +25,6 @@ jobs:
         run: |
           bundle exec rake book:all
 
-      - name: Copy
-        run: |
-          mkdir -p public
-          mv README.html index.html
-          cp *.html public
-          cp *.pdf public
-
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

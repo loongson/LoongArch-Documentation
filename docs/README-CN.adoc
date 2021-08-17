@@ -1,0 +1,191 @@
+= 龙芯架构文档
+龙芯中科技术股份有限公司
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+:toc-title: 目录
+:scripts: cjk
+
+== 简介
+
+这是龙芯架构官方文档。
+
+* 您可以在 https://loongson.github.io/LoongArch-Documentation[这里] 找到在线文档。
+
+* 您可以在 https://github.com/loongson/LoongArch-Documentation/releases[这里] 找到所有历史版本。
+
+因为文档中存在过长的表格，而且 HTML 版本的主题更易定制，所以 HTML 版本比 PDF 版本更好阅读。
+为了方便下载，每个 HTML 页面都嵌入了 CSS 和图像。
+
+== 文档
+
+* 龙芯架构参考手册 - 卷一：基础架构： 该手册介绍了龙芯架构中基础架构部分的内容。
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[原始文档] 。
+
+* 龙芯架构参考手册 - 卷二：向量指令扩展： 该手册介绍了龙芯架构中向量指令扩展（SIMD 和 高级 SIMD 扩展）部分的内容。
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol2-v1.00-CN.pdf[原始文档] 。
+
+* 龙芯架构参考手册 - 卷三：虚拟化及二进制翻译扩展：该手册介绍了龙芯架构中虚拟化及二进制翻译扩展部分的内容。
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol3-v1.00-CN.pdf[原始文档] 。
+
+* 龙芯 3A5000/3B5000 处理器寄存器使用手册 - 多核处理架构、寄存器描述与系统软件编程指南：该手册介绍了龙芯 3A5000/3B5000 多核处理器架构与寄存器描述。
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.02-CN.pdf[原始文档] 。
+
+* 龙芯 7A1000 桥片用户手册：该手册介绍了桥片总体架构、时钟结构、地址空间、配置寄存器以及各个功能接口，主要供 BIOS 和内核开发人员使用。
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[原始文档] 。
+
+* LoongArch ELF ABI：该手册介绍了 LoongArch ELF ABI。
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ELF-ABI-v1.00-CN.pdf[原始文档] 。
+
+[[getting-start]]
+== 开始
+
+我们 *强烈建议* 您在 Linux/UNIX 或 macOS 上开发。
+如果您想在 Windows 上开发, 先参阅 <<developing-on-windows,在 Windows 上开发>> 。
+
+. 确保 https://www.ruby-lang.org/en/downloads[Ruby 开发环境] 已经安装。
+
+. 安装 bunlder：
++
+[source]
+----
+gem install bundler
+----
+
+. 克隆该项目：
++
+[source]
+----
+git clone https://github.com/loongson/LoongArch-Documentation
+----
+
+. 进入项目仓库，并使用 bundle 命令安装 gems 到该项目（这会花一些时间，期间大约 `20MB` 的数据会被下载）：
++
+[source]
+----
+cd LoongArch-Documentation && bundle config set --local path .bundle/gems && bundle
+----
+
+. 现在您可以生产文档了。
++
+* 把 AsciiDoc 转换成 HTML 和 PDF：
++
+[source]
+----
+bundle exec rake book:all
+----
+
+* 只把 AsciiDoc 转换成 HTML：
++
+[source]
+----
+bundle exec rake book:html
+----
+
+* 只把 AsciiDoc 转换成 PDF：
++
+[source]
+----
+bundle exec rake book:pdf
+----
+
+* 把特定的 `book.adoc` 转换成 HTML：
++
+[source]
+----
+bundle exec rake book:html['book.adoc']
+----
+
+* 把特定的 `book.adoc` 转换成 PDF：
++
+[source]
+----
+bundle exec rake book:pdf['book.adoc']
+----
+
+== 疑问
+
+[qanda]
+我需要做哪些准备工作？::
+根据 <<getting-start,开始>> 部分安装环境, 接着参考 <<references,引用>> 部分来获取更多信息。
+
+为什么不用自动生成的章节编号？::
+因为存在着许多重复的标题，自定义的章节编号（`+[[id]]+`）在被引用时会更好（`+<<id,name>>+`）。
+
+为什么不用 HTML 实体的名称？::
+Asciidoctor PDF 不支持所有的 HTML 实体名称（例如 `+&times;+`）, 所以在此处您必须使用 HTML 实体的编号（例如 `+&#215;+`）。
+
+有辅助编辑文档的工具吗？::
+https://github.com/FreeFlyingSheep/golang-asciidoc-tools[Golang AsciiDoc Tools] 仓库中有一些可能有用的工具（例如生成表格的目录的工具）。
+
+== 贡献
+
+*感谢您花时间为该项目作贡献！*
+
+您可以直接创建一个 issue 或发起一个 pull request。
+如果您提交了一个 pull request，在成功渲染后，您可以在 https://loongson.github.io/LoongArch-Documentation-Preview[这里] 看到预览版本。
+
+HTML 版本的文档会被自动部署，而 PDF 版本的文档则由手动发布。
+如果您在 https://github.com/loongson/LoongArch-Documentation/releases[release 页面] 上的文档中发现问题，请复查它是否依然在该仓库中存在。
+这个问题可能已经被更正，而修改的内容还未发布。
+
+`gh-pages` 分支是由 https://docs.github.com/en/actions[Github Actions] 自动生成的，用于给 https://docs.github.com/en/pages[Github Pages] 来发布项目网站。
+所以您不应该直接修改该分支。
+
+[[references]]
+== 引用
+
+* 该项目的灵感来源于 https://github.com/progit/progit2[Pro Git, Second Edition] 。
+
+* 该项目使用 https://asciidoctor.org[Asciidoctor] 来生成 HTML 文档，使用 https://github.com/asciidoctor/asciidoctor-pdf[Asciidoctor PDF] 来生成 PDF 文档。
+
+* AsciiDoc 的语法见 https://docs.asciidoctor.org/asciidoc/latest[AsciiDoc Language Documentation] 。
+
+* Asciidoctor 的 CSS 样式表见 https://github.com/darshandsoni/asciidoctor-skins[
+asciidoctor-skins] 。
+Asciidoctor PDF 从 AsciiDoc 生成的 PDF 的样式见 https://github.com/asciidoctor/asciidoctor-pdf/blob/main/docs/theming-guide.adoc[Asciidoctor PDF Theming Guide] 。
+
+== 问题解决
+
+[[developing-on-windows]]
+=== 在 Windows 上开发
+
+一些文件的路径过长，超过了 Windows API 的 260 个字符的限制，这可能导致一些奇怪的问题。
+
+在 Windows 10 1607 版本或更新的版本中，这些问题能被解决。
+如果您使用了一个早期的版本，或者您不想进行一些额外的操作，您可以考虑使用 Docker，具体细节参考 <<developing-on-docker,在 Docker 上开发>> 。
+
+. https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation#enable-long-paths-in-windows-10-version-1607-and-later[启用] 长路径支持。
+
+. 使用最新的 https://git-scm.com/downloads[Git] 。
+运行 `git config --global core.longpaths true` 来修改全局配置或在仓库中运行 `git config core.longpaths true` 来修改本地配置。
+
+. 使用最新的 https://www.jruby.org/download[JRuby] 来替代 Ruby。
+
+剩余部分和 <<getting-start,开始>> 部分的一样，但 JRuby 运行起来要慢得多，而且在运行命令时可能会伴随 cmd 弹窗。
+
+[[developing-on-docker]]
+=== 在 Docker 上开发
+
+我们假设您知道如何使用 https://www.docker.com[Docker] 进行开发。
+如果您不知道，请参考 https://docs.docker.com/get-started/overview[官方教程] 。
+
+您可能会觉得官方的 https://hub.docker.com/r/asciidoctor/docker-asciidoctor[Docker 容器] 很有用。
+
+== 许可证
+
+include::../LICENSE[]
+
+== 贡献者
+
+自从该项目发布，我们已经收到了一些纠错和贡献的内容修改。
+下面列出所有为开源项目 https://github.com/loongson/LoongArch-Documentation[LoongArch Documentation] 作贡献的人。
+感谢每一个帮助完善该项目的人。
+
+贡献者按字母顺序列出：
+
+[source]
+----
+include::../contributors.txt[]
+----

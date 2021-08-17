@@ -1,12 +1,13 @@
 = LoongArch Documentation
 Loongson Technology Corporation Limited
-
-* https://loongson.github.io/LoongArch-Documentation/README-EN.html[English]
-* https://loongson.github.io/LoongArch-Documentation/README-CN.html[中文]
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
 
 == Introduction
 
-The official documentation for LoongArch.
+This is the English translation of LoongArch documentation.
 
 * You can find documents online https://loongson.github.io/LoongArch-Documentation[here].
 
@@ -18,34 +19,40 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 == Documents
 
 * LoongArch Reference Manual - Volume 1: Basic Architecture: This manual describes the basic part of the LoongArch architecture.
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html[HTML version].
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.pdf[PDF version].
+** link:LoongArch-Vol1-EN.html[HTML version].
+** link:LoongArch-Vol1-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[Original document].
 
 * LoongArch Reference Manual - Volume 2: Vector Extensions: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture.
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol2-EN.html[HTML version].
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol2-EN.pdf[PDF version].
+** link:LoongArch-Vol2-EN.html[HTML version].
+** link:LoongArch-Vol2-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol2-v1.00-CN.pdf[Original document].
 
 * LoongArch Reference Manual - Volume 3: Virtualization and Binary Translation Extensions: This manual describes the virtualization and binary translation extensions of the LoongArch architecture.
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol3-EN.html[HTML version].
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol3-EN.pdf[PDF version].
+** link:LoongArch-Vol3-EN.html[HTML version].
+** link:LoongArch-Vol3-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol3-v1.00-CN.pdf[Original document].
 
 * Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
-** https://loongson.github.io/LoongArch-Documentation/Loongson-3A5000-usermanual-EN.html[HTML version].
-** https://loongson.github.io/LoongArch-Documentation/Loongson-3A5000-usermanual-EN.pdf[PDF version].
+** link:Loongson-3A5000-usermanual-EN.html[HTML version].
+** link:Loongson-3A5000-usermanual-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.02-CN.pdf[Original document].
 
 * Loongson 7A1000 Bridge User Manual: This manual describes the overall bridge architecture, clock structure, address space, configuration registers, and individual functional interfaces, primarily for BIOS and kernel developers.
-** https://loongson.github.io/LoongArch-Documentation/Loongson-7A1000-usermanual-EN.html[HTML version].
-** https://loongson.github.io/LoongArch-Documentation/Loongson-7A1000-usermanual-EN.pdf[PDF version].
+** link:Loongson-7A1000-usermanual-EN.html[HTML version].
+** link:Loongson-7A1000-usermanual-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[Original document].
 
 * LoongArch ELF ABI: This manual describes the LoongArch ELF ABI.
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-ELF-ABI-EN.html[HTML version].
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-ELF-ABI-EN.pdf[PDF version].
+** link:LoongArch-ELF-ABI-EN.html[HTML version].
+** link:LoongArch-ELF-ABI-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ELF-ABI-v1.00-CN.pdf[Original document].
+
+== Translator`'s Note
+
+Due to the limited knowledge of the translators, there are some inevitable errors and omissions existing in this document, please feel free to correct.
+
+_P.S._ Since the academic level of the original authors is extraordinary high, words and phrases in the original documents are so profound that the translators with limited knowledge could not express them accurately even if they tried their best.
 
 == Getting Start
 
@@ -180,7 +187,7 @@ You may find the official https://hub.docker.com/r/asciidoctor/docker-asciidocto
 
 == License
 
-link:LICENSE[License]
+include::../LICENSE[]
 
 == Contributors
 
@@ -190,4 +197,7 @@ Thank you everyone for helping make this project better.
 
 The contributors are listed in alphabetical order:
 
-link:contributors.txt[Contributors]
+[source]
+----
+include::../contributors.txt[]
+----

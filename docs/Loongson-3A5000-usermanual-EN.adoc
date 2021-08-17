@@ -1,0 +1,49 @@
+= Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide
+Loongson Technology Corporation Limited
+v1.02
+:title-separator: -
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:imagesdir: ../images/Loongson-3A5000-usermanual-EN
+:toc: left
+:toclevels: 4
+:sectnumlevels: 4
+
+include::Loongson-3A5000-usermanual-EN/table-of-contents.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/about-this-manual.adoc[]
+
+:sectnums:
+
+include::Loongson-3A5000-usermanual-EN/introduction.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/system-configuration-and-control.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/physical-address-space-layout.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/chip-configuration-register.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/chip-clock-division-and-enable-control.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/software-clock-system.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/gpio-control.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/gs464v-processor-core.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/shared-cache.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/inter-processor-interrupts-and-communication.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/io-interrupts.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/temperature-sensor.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/ddr4-sdram-controller-configuration.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/hypertransport-controller.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/low-speed-io-controller-configuration.adoc[]
+
+include::Loongson-3A5000-usermanual-EN/kernel-support.adoc[]
