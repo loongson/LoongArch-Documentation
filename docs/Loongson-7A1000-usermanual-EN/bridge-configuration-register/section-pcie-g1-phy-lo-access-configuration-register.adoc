@@ -2,7 +2,7 @@
 === `PCIE_G1 PHY LO` Access Configuration Register
 
 This group of registers is used to control the configuration access operation that generates the PCIE_G1 PHY LO internal control register. 
-This register controls the the lower 4 data links (lane0–3) of PCIE_G1.
+This register controls the the lower 4 data links (lane0-3) of PCIE_G1.
 
 Address Offset: `0610`-`0613h`
 

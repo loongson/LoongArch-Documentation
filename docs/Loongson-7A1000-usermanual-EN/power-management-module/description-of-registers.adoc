@@ -22,12 +22,12 @@ m|SOC
 3+|Description
 
 m|25
-3+<|*`PWRBTN_LVL` – RO*
+3+<|*`PWRBTN_LVL` - RO*
 
 This bit indicates the current `PWRBTNn` signal status.
 
 m|24
-3+<|*`PWRTYP` – RO*
+3+<|*`PWRTYP` - RO*
 
 This bit indicates the power supply mode.
 
@@ -60,7 +60,7 @@ m|31:14
 3+<|Reserved
 
 m|13
-3+<|*`VSB_GATEn_EN` – R/W*
+3+<|*`VSB_GATEn_EN` - R/W*
 
 Enables or disables the `VSB_GATEn` function.
 
@@ -71,7 +71,7 @@ This bit is configured by the system after re-powering.
 If the motherboard uses the `VSB_GATEn` pin as the power management control signal, the system software must write `1` to this bit.
 
 m|12:11
-3+<|*`VSB_GATEn_DLY` – R/W*
+3+<|*`VSB_GATEn_DLY` - R/W*
 
 Used to control the duration of the `VSB_GATEn` signal relative to S3n from S0 to S3 and S3 to S0 (the time advanced when sleeping and the time delayed when waking up).
 
@@ -89,23 +89,23 @@ m|10:8
 3+<|Reserved
 
 m|7
-3+<|*`USB_GMAC_OK` – R/W*
+3+<|*`USB_GMAC_OK` - R/W*
 
 If `RSMRSTn` is valid, this bit is `0`, indicating that USB and GMAC are not configured and cannot wake up the system.
 The system will configure this bit after re-powering.
 
 m|6
-3+<|*`CTT_STS` – R/WC*
+3+<|*`CTT_STS` - R/WC*
 
 The system enters the G2/S5 state when a temperature trip occurs in the S0 state, and this bit is used to detect the logged event status after re-powering the system.
 
 m|5
-3+<|*`CTT_EN` – R/W*
+3+<|*`CTT_EN` - R/W*
 
 Enable the temperature trip protection mechanism.
 
 m|4
-3+<|*`LID_OPEN` – RO*
+3+<|*`LID_OPEN` - RO*
 
 Display status detection bit.
 
@@ -117,7 +117,7 @@ m|3
 3+<|Reserved
 
 m|2
-3+<|*`SRS` (System Reset Status) – R/WC*
+3+<|*`SRS` (System Reset Status) - R/WC*
 
 0: `SYS_RESETn` has not been pressed
 
@@ -125,13 +125,13 @@ m|2
 This bit should be checked after system reset and clear it accordingly.
 
 m|1
-3+<|*`PWROK_FLR` (PWROK Failure) – R/WC*
+3+<|*`PWROK_FLR` (PWROK Failure) - R/WC*
 
 When the system is in the S0 state, the PWROK signal becomes invalid and this bit is set to `1`.
 Software writes `1` to clear this bit.
 
 m|0
-3+<|*`DRAM_INIT` – R/W*
+3+<|*`DRAM_INIT` - R/W*
 
 This bit does not affect the hardware function, PMON will set this bit to `1` before DRAM initialization, and write `0` to this bit after finishing DRAM initialization, software can use this bit to check if DRAM initialization has been interrupted.
 |===
@@ -157,7 +157,7 @@ m|31:9
 3+<|Reserved
 
 m|8
-3+<|*`WOL_EN` – R/W*
+3+<|*`WOL_EN` - R/W*
 
 Controls whether the `SLPLANn` signal is active when the system is in the low-power state.
 When the system is in the operating state, `SLPLANn` is held high.
@@ -168,7 +168,7 @@ When the system is in the operating state, `SLPLANn` is held high.
 If the system is powered by the battery, `WOL_BAT_EN` determines whether `SLPLANn` is pulled low.
 
 m|7
-3+<|*`WOL_BAT_EN` – R/W*
+3+<|*`WOL_BAT_EN` - R/W*
 
 When the system enters a low-power state and is battery powered and `WOL_EN` is high.
 
@@ -177,7 +177,7 @@ When the system enters a low-power state and is battery powered and `WOL_EN` is 
 `1`: `SLPLANn` is pulled low.
 
 m|6:5
-3+<|*`S3_ASSERTION_WIDTH` – R/W*
+3+<|*`S3_ASSERTION_WIDTH` - R/W*
 
 The 2 bits represent the minimum time interval between when the `S3n` signal is valid and when it is invalid again.
 
@@ -190,7 +190,7 @@ The 2 bits represent the minimum time interval between when the `S3n` signal is 
 `00`: `60us`
 
 m|4:3
-3+<|*`S4_ASSERTION_WIDTH` – R/W*
+3+<|*`S4_ASSERTION_WIDTH` - R/W*
 
 The 2 bits represent the minimum time interval between when the `S4n` signal is valid and when it is invalid again.
 
@@ -203,14 +203,14 @@ The 2 bits represent the minimum time interval between when the `S4n` signal is 
 `00`: `125us`
 
 m|2
-3+<|*`S4_ASSERTION_EN` – R/W*
+3+<|*`S4_ASSERTION_EN` - R/W*
 
 `0`: The interval between valid and re-invalidation of the `S4n` signal is several RTC periods.
 
 `1`: The interval between valid and re-invalidation of the `S4n` signal is determined by `S4_ASSERTION_WIDTH`.
 
 m|1
-3+<|*`PWR_FLR` (Power Failure) – R/WC*
+3+<|*`PWR_FLR` (Power Failure) - R/WC*
 
 This bit is in the RTC domain and can only be reset by `RTC_RSTn`.
 
@@ -218,7 +218,7 @@ This bit is in the RTC domain and can only be reset by `RTC_RSTn`.
 The software clears this bit by writing `1`.
 
 m|0
-3+<|*`AFTERG3_EN` – R/W*
+3+<|*`AFTERG3_EN` - R/W*
 
 This bit determines the action of the system after it enters the G3 state and the power is restored.
 
@@ -252,7 +252,7 @@ m|31:16
 m|
 
 m|15
-4+<|*`WAK_STS` (Wake Status) – R/WC*
+4+<|*`WAK_STS` (Wake Status) - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 
@@ -260,7 +260,7 @@ m|15
 m|Resume
 
 m|14
-4+<|*`PCIEXP_WAKE_STS` – R/WC*
+4+<|*`PCIEXP_WAKE_STS` - R/WC*
 
 `1`: PCIE wake-up event occurs
 
@@ -272,7 +272,7 @@ m|13:12
 m|
 
 m|11
-4+<|*`PRBTNOR_STS` (Power Button Override Status) – R/WC*
+4+<|*`PRBTNOR_STS` (Power Button Override Status) - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 
@@ -280,7 +280,7 @@ m|11
 m|RTC
 
 m|10
-4+<|*`RTC_STS` (RTC Status) – R/WC*
+4+<|*`RTC_STS` (RTC Status) - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 
@@ -293,7 +293,7 @@ m|9
 m|
 
 m|8
-4+<|*`PWRBTN_STS` (Power Button Status) – R/WC*
+4+<|*`PWRBTN_STS` (Power Button Status) - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 Thermal trip will clear this bit.
@@ -308,7 +308,7 @@ m|7:1
 m|
 
 m|0
-4+<|TMROF_STS (PM Timer Overflow Status) – R/WC
+4+<|TMROF_STS (PM Timer Overflow Status) - R/WC
 `0`: Software writes `1` to clear this bit.
 
 `1`: When the highest bit of the 24-bit counter (`20ns` per clock cycle) is inverted, this bit is set to `1`.
@@ -339,7 +339,7 @@ m|31:15
 m|
 
 m|14
-4+<|*`PCIEXP_WAKE_DIS` – R/W*
+4+<|*`PCIEXP_WAKE_DIS` - R/W*
 
 When this bit is set, no PCIE wake-up event is generated, but the value of this bit does not affect the value of `PCIEXP_WAKE_STS`.
 m|resume
@@ -349,7 +349,7 @@ m|13:11
 m|
 
 m|10
-4+<|*`RTC_EN` (RTC Event Enable) – R/W*
+4+<|*`RTC_EN` (RTC Event Enable) - R/W*
 
 RTC wake-up and interrupt enable.
 m|rtc
@@ -359,7 +359,7 @@ m|9
 m|
 
 m|8
-4+<|*`PWRBTN_EN` (Power Button Enable) – R/W*
+4+<|*`PWRBTN_EN` (Power Button Enable) - R/W*
 
 `PWRBTN` interrupt event generation enable, this bit does not affect `PWRBTN` wake-up event generation.
 m|resume
@@ -369,7 +369,7 @@ m|7:1
 m|
 
 m|0
-4+<|*TMROF_EN (PM Timer Overflow Enable) – R/W*
+4+<|*TMROF_EN (PM Timer Overflow Enable) - R/W*
 
 If this bit is set, `TMROF_STS` will generate an interrupt.
 m|SOC
@@ -398,13 +398,13 @@ m|31:14
 |
 
 m|13
-4+<|*SLP_EN (Sleep Enable) – R/W*
+4+<|*SLP_EN (Sleep Enable) - R/W*
 
 Writing `1` to this bit will cause the system to enter the `SLP_TYP` declared hibernation state, and this bit will automatically revert to `0` upon entering the associated hibernation state.
 m|resume
 
 m|12:10
-4+<|*`SLP_TYP` (Sleep Type) – R/W*
+4+<|*`SLP_TYP` (Sleep Type) - R/W*
 
 This 3 bits indicate the hibernation state of the system.
 
@@ -433,7 +433,7 @@ m|9:1
 m|
 
 m|0
-4+<|*`INT_EN` – R/W*
+4+<|*`INT_EN` - R/W*
 
 Interrupt enable switch to enable the generation of interrupt signals for the power management controller.
 m|SOC
@@ -460,7 +460,7 @@ m|31:24
 3+<|Reserved
 
 m|23:0
-3+<|*`TMR_VAL` (Timer Value) – RO*
+3+<|*`TMR_VAL` (Timer Value) - RO*
 
 Counter counts with a period of `8ns`.
 When the `23` bit is inverted, the `TNROF_STS` bit is set.
@@ -488,7 +488,7 @@ m|31:16
 3+<|Reserved
 
 m|15:10
-3+<|*`USB[5:0]_STS` – R/WC*
+3+<|*`USB[5:0]_STS` - R/WC*
 
 Only the bit `10` is meaningful, the `15:11` bits are meaningless for now.
 
@@ -500,14 +500,14 @@ m|9
 3+<|Reserved
 
 m|8
-3+<|*`RI_STS` – R/WC*
+3+<|*`RI_STS` - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 
 `1`: This bit is set when the `RIn` signal is valid.
 
 m|7
-3+<|*`BATLOW_STS` – R/WC*
+3+<|*`BATLOW_STS` - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 
@@ -517,38 +517,38 @@ If `BATLOW_EN` is valid, an interrupt will be generated when `BATLOW_STS` is set
 This bit does not generate a wake-up event.
 
 m|6
-3+<|*`GMAC1_STS` – R/WC*
+3+<|*`GMAC1_STS` - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 
 `1`: These bits are set when a wake event occurs in `GMAC1` and generate a wake event or interrupt when the `GMAC1_EN` bit is valid.
 
 m|5
-3+<|*`GMAC0_STS` – R/WC*
+3+<|*`GMAC0_STS` - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 
 `1`: These bits are set when a wake event occurs in `GMAC0` and generate a wake event or interrupt when the `GMAC0_EN` bit is valid.
 
 m|4
-3+<|*`LID_STS` – R/WC*
+3+<|*`LID_STS` - R/WC*
 
 `0`: Software writes `1` to clear this bit.
 
 `1`: When the `LID_EN` bit is valid, a wake-up event is generated.
 
 m|3
-3+<|*`CTW_STS` – R/WC*
+3+<|*`CTW_STS` - R/WC*
 
 Thermal warning is generated.
 
 m|2
-3+<|*CTA_STS – R/WC*
+3+<|*CTA_STS - R/WC*
 
 Thermal alert is generated.
 
 m|1
-3+<|*`PWRSWITCH_STS` – R/WC*
+3+<|*`PWRSWITCH_STS` - R/WC*
 
 The `PWRTYP` changes when the power supply status changes.
 This bit generates an interrupt.
@@ -580,7 +580,7 @@ m|31:16
 m|
 
 m|15:10
-4+<|*`USB[5 :0]_EN` – R/W*
+4+<|*`USB[5 :0]_EN` - R/W*
 
 `0`: Invalid.
 
@@ -592,7 +592,7 @@ m|9
 |
 
 m|8
-4+<|*`RI_EN` – R/W*
+4+<|*`RI_EN` - R/W*
 
 `0`: Invalid.
 
@@ -600,7 +600,7 @@ m|8
 m|RTC
 
 m|7
-4+<|*`BATLOW_EN` – R/W*
+4+<|*`BATLOW_EN` - R/W*
 
 `0`: Invalid.
 
@@ -608,7 +608,7 @@ m|7
 m|RTC
 
 m|6
-4+<|*`GMAC1_EN` – R/W*
+4+<|*`GMAC1_EN` - R/W*
 
 `0`: Invalid.
 
@@ -616,7 +616,7 @@ m|6
 m|RTC
 
 m|5
-4+<|*`GMAC0_EN` – R/W*
+4+<|*`GMAC0_EN` - R/W*
 
 `0`: Invalid.
 
@@ -624,7 +624,7 @@ m|5
 m|
 
 m|4
-4+<|*`LID_EN` – R/W*
+4+<|*`LID_EN` - R/W*
 
 `0`: Invalid.
 
@@ -632,25 +632,25 @@ m|4
 m|
 
 |3
-4+<|*`CTW_EN` – R/W*
+4+<|*`CTW_EN` - R/W*
 
 Enable THERMAL WARNING interrupt.	
 m|
 
 m|2
-4+<|*`CTA_EN` – R/W*
+4+<|*`CTA_EN` - R/W*
 
 Enable THERMAL ALERT interrupt.
 m|
 
 m|1
-4+<|*`PWRSWITCH_EN` – R/W*
+4+<|*`PWRSWITCH_EN` - R/W*
 
 Enable PWRSWITCH_STS interrupt.
 m|
 
 m|0
-4+<|*`LID_POL` – R/W*
+4+<|*`LID_POL` - R/W*
 
 This bit sets the polarity of the `LID`.
 m|
@@ -677,12 +677,12 @@ m|31:2
 3+<|Reserved
 
 m|1
-3+<|*`WD_EN` – R/W*
+3+<|*`WD_EN` - R/W*
 
 Watch dog function enable.
 
 m|0
-3+<|*`OS_RST` – R/W*
+3+<|*`OS_RST` - R/W*
 
 Software writes this bit to reset the system.
 |===

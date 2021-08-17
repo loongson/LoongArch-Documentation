@@ -2,7 +2,7 @@
 ==== Interrupt Types
 
 Interrupts in LoongArch take the form of line-based interrupts.
-Each processor core can record 13 line-based interrupts: one **I**nter-**P**rocessor **I**nterrupt (IPI), one **T**imer **I**nterrupt (TI), one **P**erformance **M**onitor **C**ounter **O**verflow **I**nterrupt (PMCOV), eight **H**ard**W**are **I**nterrupts (HWI0–HWI7), and two **S**oft**W**are **I**nterrupts (SWI0–SWI1).
+Each processor core can record 13 line-based interrupts: one **I**nter-**P**rocessor **I**nterrupt (IPI), one **T**imer **I**nterrupt (TI), one **P**erformance **M**onitor **C**ounter **O**verflow **I**nterrupt (PMCOV), eight **H**ard**W**are **I**nterrupts (HWI0-HWI7), and two **S**oft**W**are **I**nterrupts (SWI0-SWI1).
 All line-based interrupts are level-triggered and are high level triggered.
 
 The interrupt source for inter-processor interrupts comes from an interrupt controller outside the core, which is recorded by the processor core in the `CSR.ESTA.IS[12]` bit.

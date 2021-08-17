@@ -5,17 +5,17 @@ The bridge chip sets up registers to configure certain features of the bridge ch
 
 The bridge chip configuration registers contain the following.
 
-. Bridge chip general configuration (`0x0` – `0x47f`).
+. Bridge chip general configuration (`0x0` - `0x47f`).
 
-. PLL configuration (0x480 – 0x4cf).
+. PLL configuration (0x480 - 0x4cf).
 
-. PCIE controller and PHY configuration (`0x580` – `0x617`).
+. PCIE controller and PHY configuration (`0x580` - `0x617`).
 
-. SATA controller and PHY configuration (`0x740` – `0x76f`).
+. SATA controller and PHY configuration (`0x740` - `0x76f`).
 
-. Memory capacity configuration registers (`0x3838` – `0x383f`).
+. Memory capacity configuration registers (`0x3838` - `0x383f`).
 
-. Bridge ID (0x3ff8 – 0x3fff).
+. Bridge ID (0x3ff8 - 0x3fff).
 
 [[bridge-configuration-register-list]]
 .Bridge configuration register list

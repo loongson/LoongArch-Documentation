@@ -1,7 +1,7 @@
 [[physical-address-space]]
 === Physical Address Space
 
-The physical address space range of memory is `0`–`2^PALEN^-1`.
+The physical address space range of memory is `0`-`2^PALEN^-1`.
 
 In LA32, `PALEN` is theoretically a positive integer not exceeding `32`, and its specific value is determined by the implementation, which is usually recommended to be `32`.
 

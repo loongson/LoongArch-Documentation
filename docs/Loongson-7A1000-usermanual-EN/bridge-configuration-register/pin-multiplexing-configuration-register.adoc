@@ -81,7 +81,7 @@ operates in two-wire UART mode regardless of the value of the bit.
 |25	
 |lpc_sel	
 |R/W
-|Operating mode selection for LPC pins (LPC_AD0–3/LPC_SERIRQ/LPC_FRAMEn)
+|Operating mode selection for LPC pins (LPC_AD0-3/LPC_SERIRQ/LPC_FRAMEn)
 
 `0`: working in GPIO mode
 

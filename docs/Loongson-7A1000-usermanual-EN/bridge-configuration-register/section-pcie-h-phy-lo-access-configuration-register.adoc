@@ -2,7 +2,7 @@
 === `PCIE_H PHY LO` Access Configuration Register
 
 This group of registers is used to control the configuration access operation that generates the PCIE_H PHY LO internal control register. 
-This register controls the the lower 4 data links (lane0–3) of PCIE_H.
+This register controls the the lower 4 data links (lane0-3) of PCIE_H.
 
 Address Offset: `05D0`-`05D3h`
 

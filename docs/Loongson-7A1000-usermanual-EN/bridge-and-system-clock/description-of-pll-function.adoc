@@ -9,7 +9,7 @@ image::structure-of-pll.png[]
 
 `clock_out = refclk / div_ref * loopc / divoutN`
 
-The refclk of 7A is fixed at 100MHz, and the output of the input divider (`refclk / div_ref`) needs to be guaranteed to be in the range of 20 In addition, it is necessary to ensure that the output of the input divider (`refclk / div_ref`) is in the range of `20` – `40MHz`, and the frequency after frequency doubling module (`refclk / div_ref * loopc`) is in the range of 1.`2GHz` – `3.2GHz`.
+The refclk of 7A is fixed at 100MHz, and the output of the input divider (`refclk / div_ref`) needs to be guaranteed to be in the range of 20 In addition, it is necessary to ensure that the output of the input divider (`refclk / div_ref`) is in the range of `20` - `40MHz`, and the frequency after frequency doubling module (`refclk / div_ref * loopc`) is in the range of 1.`2GHz` - `3.2GHz`.
 
 The PLL-related configuration signals and their descriptions are shown in the follow table. The locations of these configuration signals are shown in Section 4 Bridge Configuration Registers.
 

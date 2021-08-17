@@ -1,5 +1,5 @@
 [[memory-load-store-watchpoint-n-configuration]]
-==== Memory Load/Store Watchpoint n Configuration (`MWPnCFG1`–`MWPnCFG4`)
+==== Memory Load/Store Watchpoint n Configuration (`MWPnCFG1`-`MWPnCFG4`)
 
 The information contained in the configuration `1` to `3` registers of each load/store watchpoint is used directly for the comparison judgment of the watchpoint check.
 Assuming that the address of the operation to be compared is maddr and the byte range is mbyten, the process of determining the hit of each watchpoint is as follows:
@@ -8,7 +8,7 @@ Assuming that the address of the operation to be compared is maddr and the byte 
 
 . If the current is not in debug mode but the DMOnly bit of `MWPCFG3` is equal to `1`, the judgment is terminated, otherwise turn to `3`;
 
-. If the bit corresponding to the current privilege level in `PLV0`–`PLV3` of `MWPCFG3` is equal to `0`, the judgment is terminated, otherwise turn to `4`;
+. If the bit corresponding to the current privilege level in `PLV0`-`PLV3` of `MWPCFG3` is equal to `0`, the judgment is terminated, otherwise turn to `4`;
 
 . If the operation is a load operation but the `LoadEn` bit in `MWPCFG3` is equal to `0`, or the operation is a store operation but the `StoreEn` bit in `MWPCFG3` is equal to `0`, the judgment is terminated, otherwise go to `5`;
 

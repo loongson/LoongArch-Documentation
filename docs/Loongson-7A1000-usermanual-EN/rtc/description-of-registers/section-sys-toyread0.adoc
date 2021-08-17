@@ -21,30 +21,30 @@ d|Bit Field
 |31:26
 |TOY_MONTH
 |RO
-|Month, range `1`–`12`
+|Month, range `1`-`12`
 
 |25:21
 |TOY_DAY
 |RO
-|Day, range `1`–`31`
+|Day, range `1`-`31`
 
 |20:16
 |TOY_HOUR
 |RO
-|Hour, range `0`–`23`
+|Hour, range `0`-`23`
 
 |15:10
 |TOY_MIN
 |RO
-|Minute, range `0`–`59`
+|Minute, range `0`-`59`
 
 |9:4
 |TOY_SEC
 |RO
-|Second, range `0`–`59`
+|Second, range `0`-`59`
 
 |3:0
 |TOY_MILLISEC
 |RO
-|`0.1` Second, range `0`–`9`
+|`0.1` Second, range `0`-`9`
 |===

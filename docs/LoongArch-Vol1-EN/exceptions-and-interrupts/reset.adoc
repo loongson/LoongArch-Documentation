@@ -19,7 +19,7 @@ After the reset, the contents of the registers in the determined state are:
 * `KLO` in `CSR.LLBCTL` is `0`;
 * `IsTLBR` in `CSR.TLBRERA` is `0`;
 * `IsMERR` in `CSR.MERRCTL` is `0`;
-* `PLV0`–`PLV3` in all implemented ``CSR.DMW``s are `0`;
+* `PLV0`-`PLV3` in all implemented ``CSR.DMW``s are `0`;
 * All configurable bits except `EvCode` in all implemented ``CSR.PMCFG``s are `0`;
 * All configurable bits in all implemented data breakpoint CSRs are `0`;
 * All configurable bits in all implemented instruction breakpoint CSRs are `0`;

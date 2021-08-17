@@ -35,15 +35,15 @@ If set, monitoring mode and monitoring point can be selected by `thsens_mode` an
 |0
 |Monitoring frequency:
 
-`0` - `10`–`20Hz`
+`0` - `10`-`20Hz`
 
-`1` - `325`–`650Hz`
+`1` - `325`-`650Hz`
 
 |6:4
 |Thsens_cluster
 |RW
 |0
-|Sensor monitoring point configuration: `0` is local monitoring point, `1`–`7` is remote monitoring point
+|Sensor monitoring point configuration: `0` is local monitoring point, `1`-`7` is remote monitoring point
 
 |8
 |Temp_valid

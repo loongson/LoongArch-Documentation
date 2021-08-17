@@ -25,7 +25,7 @@ Software interrupt setting is also done by these two bits, writing `1` sets the 
 |R
 |The interrupt status bit.
 `1` indicates that the corresponding interrupt is set up.
-There is 1 inter-processor interrupt (IPI), 1 timer interrupt (TI), 1 performance counter overflow interrupt (PCOV), 8 hardware interrupts (HWI0–HWI7).
+There is 1 inter-processor interrupt (IPI), 1 timer interrupt (TI), 1 performance counter overflow interrupt (PCOV), 8 hardware interrupts (HWI0-HWI7).
 
 In line-based interrupt mode, the hardware only records each interrupt source per clock cycle to these bits.
 The requirement that all interrupts must be level interrupts at this time is guaranteed by the interrupt source and is not maintained here.

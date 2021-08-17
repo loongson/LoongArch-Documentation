@@ -5,17 +5,17 @@ When the MMU of the processor core is in mapped address translation mode, direct
 There are four direct mapping configuration windows.
 The first two windows can be used for both fetch and load/store operations, and the last two windows are used for load/store operations only.
 
-The system software sets each of the four direct mapping configuration windows by configuring the <<direct-mapping-configuration-window-n,`CSR.DMW0`–`CSR.DMW3`>> configuration window registers.
+The system software sets each of the four direct mapping configuration windows by configuring the <<direct-mapping-configuration-window-n,`CSR.DMW0`-`CSR.DMW3`>> configuration window registers.
 Each window can be used to configure not only for the address range, but also for the privilege levels under which the window is available, as well as the type of memory access for virtual address within the address range.
 
 In LA64, each direct mapping configuration window can be configured with a virtual address space which length is PALEN bytes.
 When a virtual address hits a valid direct mapping configuration window, its physical address is equal to the `[PALEN-1:0]` bits of itself.
 The hit is determined as follows: the highest 8 bits of the virtual address (`[63:60]` bits) are equal to the `VSEG` field in the configuration window register, and the current privilege level is available.
 
-For example, if `PALEN` is equal to `48` and `DMWO` is set to `0x9000000000000011`, virtual address space `0x9000000000000000`–`0x9000FFFFFFFFFFFF` will be directly mapped to physical address space `0x0`–`0xFFFFFFFFFFFF` at the PLV0 privilege level, the memory access type of which is consistent and cacheable.
+For example, if `PALEN` is equal to `48` and `DMWO` is set to `0x9000000000000011`, virtual address space `0x9000000000000000`-`0x9000FFFFFFFFFFFF` will be directly mapped to physical address space `0x0`-`0xFFFFFFFFFFFF` at the PLV0 privilege level, the memory access type of which is consistent and cacheable.
 
 In LA32, each direct mapping configuration window can be configured with a virtual address space which length is `2^29^` bytes.
 When a virtual address hits a valid direct mapping configuration window, its physical address is equal to the combination of the `[28:0]` bits of itself and the high bits of the the configuration window register.
 The hit is determined as follows: the highest 4 bits of the virtual address (`[31:29]` bits) are equal to the `[31:29]` bits in the configuration window register, and the current privilege level is available.
 
-For example, if `DMW0` is set to `0x80000011`, virtual address space `0x80000000`–`0x8FFFFFFF` will be directly mapped to physical address space `0x0`–`0x1FFFFFFF` at the PLV0 privilege level, the memory access type of which is consistent and cacheable.
+For example, if `DMW0` is set to `0x80000011`, virtual address space `0x80000000`-`0x8FFFFFFF` will be directly mapped to physical address space `0x0`-`0x1FFFFFFF` at the PLV0 privilege level, the memory access type of which is consistent and cacheable.

@@ -16,7 +16,7 @@ The bridge chip's memory controller has the following characteristics.
 
 The DDR3 memory controller consists of two address spaces: the memory space for video memory controller configuration register and the memory space for the video memory.
 These two address spaces share the same address space (the video memory address space, the address space allocated to `GMEM_BAR`).
-The final access to the memory address space is determined by the parameter `disable_gmem_confspace` — bit `3` of general configuration register 0 of the bridge configuration register `addr_0x420[3]`.
+The final access to the memory address space is determined by the parameter `disable_gmem_confspace` -- bit `3` of general configuration register 0 of the bridge configuration register `addr_0x420[3]`.
 
 When the configuration parameter `disable_gmem_confspace = 0`, all accesses to the memory are configuration register accesses.
 When the configuration parameter `disable_gmem_confspace = 1`, the accesses to the memory are normal memory read and write accesses.

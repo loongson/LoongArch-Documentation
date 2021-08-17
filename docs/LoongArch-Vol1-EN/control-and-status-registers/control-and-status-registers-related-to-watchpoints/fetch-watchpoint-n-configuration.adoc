@@ -1,5 +1,5 @@
 [[fetch-watchpoint-n-configuration]]
-==== Fetch Watchpoint n Configuration (`FWPnCFG1`–`FWPnCFG3`)
+==== Fetch Watchpoint n Configuration (`FWPnCFG1`-`FWPnCFG3`)
 
 The information contained in the configuration `1` to `3` registers of each fetch instruction watchpoint is used directly for comparison judgments of watchpoint checks.
 The process of judging the hit of each watchpoint is as follows:
@@ -8,7 +8,7 @@ The process of judging the hit of each watchpoint is as follows:
 
 . If the current is not in debug mode but the `DMOnly` bit of `FWPCFG3` is equal to `1`, the judgment is terminated, otherwise turn to `3`;
 
-. If the bit corresponding to the current privilege level in `PLV0`–`PLV3` of `FWPCFG3` is equal to `0`, judge and terminate, otherwise turn to `4`;
+. If the bit corresponding to the current privilege level in `PLV0`-`PLV3` of `FWPCFG3` is equal to `0`, judge and terminate, otherwise turn to `4`;
 
 . If the `LCL` bit in `FWPCFG3` is equal to `1`, but the `CSR.ASID.ASID` is not equal to the `ASID` in `FWPCFG4`, the judgment is terminated, otherwise turn `6`;
 

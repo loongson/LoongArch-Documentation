@@ -7,24 +7,24 @@ The bridge contains 12 PCIE control ports (ports), namely port 0, port 1, port 2
 Each port corresponds to a PCIE controller, and each PCIE controller contains a TYPE1 type PCI configuration header.
 
 `PCIE_F0` includes 4 lanes and can be used as one x4 PCIE or 4 x1 PCIEs.
-Among them, port 0 controls lane0 in non x4 mode, port 0 controls lane0, and lane0–3 in x4 mode.
+Among them, port 0 controls lane0 in non x4 mode, port 0 controls lane0, and lane0-3 in x4 mode.
 In non-x4 mode, port 1 controls lane1, port In non-x4 mode, port 1 controls lane1, port 2 controls lane2, and port 3 controls lane3.
 
 `PCIE_F1` includes 4 lanes, which can be used as one x4 PCIE or 2 x1 PCIEs.
-Among them, port 0 controls lane0 in non lane0 in non-x4 mode and lane0–3 in x4 mode.
+Among them, port 0 controls lane0 in non lane0 in non-x4 mode and lane0-3 in x4 mode.
 In non-x4 mode, port 1 controls lane1, lane2 and lane3 are not available.
 
 `PCIE_H` includes 8 lanes and can be used as one x8 PCIE or 2 x4 PCIEs.
-Among them, port 0 controls lane0–3 in non port 0 controls lane0–3 in non-x8 mode and lane0–7 in x8 mode.
-In non-x8 mode, port 1 controls lane4–7.
+Among them, port 0 controls lane0-3 in non port 0 controls lane0-3 in non-x8 mode and lane0-7 in x8 mode.
+In non-x8 mode, port 1 controls lane4-7.
 
 `PCIE_G0` includes 8 lanes, which can be used as one x8 PCIE or two x4 PCIEs.
-Among them, port 0 controls lane4–7 in Port 0 controls lane0–3 in non-x8 mode and lane0–7 in x8 mode.
-In non-x8 mode, port 1 controls lane4–7.
+Among them, port 0 controls lane4-7 in Port 0 controls lane0-3 in non-x8 mode and lane0-7 in x8 mode.
+In non-x8 mode, port 1 controls lane4-7.
 
 `PCIE_G1` includes 8 lanes, which can be used as one x8 PCIE or two x4 PCIEs.
-Among them, port 0 controls lane4–7 in port 0 controls lane0–3 in non-x8 mode and lane0–7 in x8 mode.
-In non-x8 mode, port 1 controls lane4–7.
+Among them, port 0 controls lane4-7 in port 0 controls lane0-3 in non-x8 mode and lane0-7 in x8 mode.
+In non-x8 mode, port 1 controls lane4-7.
 
 The PCIE controller of the bridge chip can be used only as RC, not as EP.
 

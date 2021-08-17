@@ -71,7 +71,7 @@ The LS7A1000 implements the `DMA` access node number translation function, which
 |31:16	
 |dma_dest_ht	
 |R/W
-|`DMA` access destination node routing configuration. There are 16 nodes, each bit corresponds to a node number. `bit31–16` correspond to `DMA` accesses to nodes `15–0` respectively. 
+|`DMA` access destination node routing configuration. There are 16 nodes, each bit corresponds to a node number. `bit31-16` correspond to `DMA` accesses to nodes `15-0` respectively. 
 
 `1`: Routed to HT controller `1`
 

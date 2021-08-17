@@ -5,7 +5,7 @@ Floating-point instruction programming involves registers such as **F**loating-p
 
 ===== Floating-point Registers
 
-There are 32 FRs, denoted as `f0`–`f31`, each of which can be read and written.
+There are 32 FRs, denoted as `f0`-`f31`, each of which can be read and written.
 Only when only floating-point instructions that manipulate single-precision floating-point numbers and word integers are implemented, the length of FR is 32 bits.
 Under normal circumstances, the length of FR is 64 bits, regardless of the LA32 or LA64.
 There is an "`orthogonal`" relationship between basic floating-point instructions and floating-point registers, that is, from an architectural perspective, any floating-point register operand in these instructions can use any one of the 32 FRs.
@@ -18,7 +18,7 @@ When the floating-point register records a single-precision floating-point numbe
 
 ===== Condition Flag Register
 
-There are 8 CFRs, denoted as `fcc0`–`fcc7`, each of which can be read and written.
+There are 8 CFRs, denoted as `fcc0`-`fcc7`, each of which can be read and written.
 The length of CFR is 1 bit.
 The result of the floating-point comparison will be written into the condition flag register.
 When the comparison result is true, it is set to `1`, otherwise it is set to `0`.
@@ -26,9 +26,9 @@ The judgment condition of the floating-point branch instruction comes from the c
 
 ===== Floating-point Control and Status Register
 
-There are 4 FCSRs, denoted as `fcsr0`–`fcsr3`.
-Among them, `fcsr1`–`fcsr3` are aliases of some fields in `fcsr0`, that is, accessing `fcsrl`–`fcsr3` is actually accessing some fields of `fcsr0`.
-When the software writes `fcsr1`–`fcsr3`, the corresponding field in `fcsr0` is modified while the remaining bits remain unchanged.
+There are 4 FCSRs, denoted as `fcsr0`-`fcsr3`.
+Among them, `fcsr1`-`fcsr3` are aliases of some fields in `fcsr0`, that is, accessing `fcsrl`-`fcsr3` is actually accessing some fields of `fcsr0`.
+When the software writes `fcsr1`-`fcsr3`, the corresponding field in `fcsr0` is modified while the remaining bits remain unchanged.
 The definition of each field of `fcsr0` is shown in the table.
 
 [[definitions-of-fcsr0-register-fields]]

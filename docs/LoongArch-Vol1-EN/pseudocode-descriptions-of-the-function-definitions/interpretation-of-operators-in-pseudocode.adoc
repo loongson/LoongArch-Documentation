@@ -8,7 +8,7 @@ In addition, the common conventions for different binary representations of nume
 
 * The prefix `'b` or `+##'b+` is used for binary numbers, where the prefix `+##'b+` indicates that the length of the binary number is `+##+` bits;
 
-* The prefix `'h` or `+##'h+` indicates the hexadecimal number, where the prefix `+##'h+` indicates that the hexadecimal number is `+##+` bits wide, and the hexadecimal value of `A`–`F` uses uppercase letters.
+* The prefix `'h` or `+##'h+` indicates the hexadecimal number, where the prefix `+##'h+` indicates that the hexadecimal number is `+##+` bits wide, and the hexadecimal value of `A`-`F` uses uppercase letters.
 
 [[interpretation-of-semantic-keyword]]
 .Interpretation of semantic keyword

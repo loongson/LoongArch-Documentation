@@ -9,7 +9,7 @@ image::gr-and-pc.png[]
 
 ===== General-purpose Registers
 
-There are 32 **G**eneral purpose **R**egisters (GR), denoted as `r0`–`r31`, and the value of register `r0` is always `0`.
+There are 32 **G**eneral purpose **R**egisters (GR), denoted as `r0`-`r31`, and the value of register `r0` is always `0`.
 The length of GR is recorded as GRLEN.
 The length of GR in LA32 is 32 bits, and the length of GR in LA64 is 64 bits.
 There is an orthogonal relationship between basic integer instructions and general registers.

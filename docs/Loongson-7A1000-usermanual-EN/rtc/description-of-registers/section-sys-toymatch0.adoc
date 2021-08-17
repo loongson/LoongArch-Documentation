@@ -21,30 +21,30 @@ d|Bit Field
 |31:26
 |YEAR
 |R/W
-|Year, range `0`–`16383`
+|Year, range `0`-`16383`
 
 |25:22
 |MONTH
 |R/W
-|Month, range `1`–`12`
+|Month, range `1`-`12`
 
 |21:17
 |DAY
 |R/W
-|Day, range `1`–`31`
+|Day, range `1`-`31`
 
 |16:12
 |HOUR
 |R/W
-|Hour, range `0`–`23`
+|Hour, range `0`-`23`
 
 |11:6
 |MIN
 |R/W
-|Minute, range `0`–`59`
+|Minute, range `0`-`59`
 
 |5:0
 |SEC
 |R/W
-|Second, range `0`–`59`
+|Second, range `0`-`59`
 |===

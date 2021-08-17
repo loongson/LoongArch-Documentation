@@ -22,10 +22,10 @@ The physical address composition of the GPIO module internal registers is as fol
 ^d|Address space
 ^|Description
 
-|`0x800`–`0xC00`
+|`0x800`-`0xC00`
 |Address of byte control register
 
-|`0x0`–`0x40`
+|`0x0`-`0x40`
 |Address of bit control register
 |===
 

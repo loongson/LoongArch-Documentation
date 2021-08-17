@@ -1,7 +1,7 @@
 [[running-privilege-levels]]
 ==== Running Privilege Levels
 
-LoongArch defines 4 running **P**rivilege **L**e**V**els (PLV), namely PLV0–PLV3.
+LoongArch defines 4 running **P**rivilege **L**e**V**els (PLV), namely PLV0-PLV3.
 The specific privilege level of the application is determined by the system software at runtime, and the application cannot accurately aware this.
 In LoongArch, the application usually runs on PLV3.
 For more information about privilege levels, see <<privilege-levels,Privilege Levels>>.
