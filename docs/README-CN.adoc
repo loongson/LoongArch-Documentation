@@ -104,27 +104,14 @@ bundle exec rake book:html['book.adoc']
 bundle exec rake book:pdf['book.adoc']
 ----
 
-== 疑问
-
-[qanda]
-我需要做哪些准备工作？::
-根据 <<getting-start,开始>> 部分安装环境, 接着参考 <<references,引用>> 部分来获取更多信息。
-
-为什么不用自动生成的章节编号？::
-因为存在着许多重复的标题，自定义的章节编号（`+[[id]]+`）在被引用时会更好（`+<<id,name>>+`）。
-
-为什么不用 HTML 实体的名称？::
-Asciidoctor PDF 不支持所有的 HTML 实体名称（例如 `+&times;+`）, 所以在此处您必须使用 HTML 实体的编号（例如 `+&#215;+`）。
-
-有辅助编辑文档的工具吗？::
-https://github.com/FreeFlyingSheep/golang-asciidoc-tools[Golang AsciiDoc Tools] 仓库中有一些可能有用的工具（例如生成表格的目录的工具）。
-
 == 贡献
 
 *感谢您花时间为该项目作贡献！*
 
 您可以直接创建一个 issue 或发起一个 pull request。
 如果您提交了一个 pull request，在成功渲染后，您可以在 https://loongson.github.io/LoongArch-Documentation-Preview[这里] 看到预览版本。
+
+编写文档时请遵循 link:style-guide-CN.html[风格指南] 。
 
 HTML 版本的文档会被自动部署，而 PDF 版本的文档则由手动发布。
 如果您在 https://github.com/loongson/LoongArch-Documentation/releases[release 页面] 上的文档中发现问题，请复查它是否依然在该仓库中存在。

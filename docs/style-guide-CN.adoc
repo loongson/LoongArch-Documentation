@@ -1,0 +1,123 @@
+= 风格指南
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+:toc-title: 目录
+:scripts: cjk
+
+== 项目布局
+
+[source]
+--
+.
+|-- contributors.txt            # 贡献者
+|-- docs                        # 文档目录
+|   |-- index.adoc              # Github Pages 上的主页
+|   |-- Document1               # 小节（级别 0）目录
+|   |   |-- section1            # 小节（级别 1）目录
+|   |   |   |-- section1-1.adoc # 小节（级别 2）
+|   |   |   `-- ...
+|   |   |-- section1.adoc       # 小节（级别 1）
+|   |   `-- ...
+|   |-- Document1.adoc          # 小节（级别 0）
+|   |-- README-CN.adoc          # 中文版 README
+|   |-- README-EN.adoc          # 英文版 README
+|   `-- ...
+|-- fonts                       # 字体目录
+|-- Gemfile
+|-- images                      # 图像目录
+|   |-- Document1               # Document1 的图像目录
+|   `-- ...
+|-- LICENSE                     # 许可证
+|-- public                      # 输出目录
+|-- Rakefile
+|-- README.adoc                 # README
+|-- themes                      # 主题目录
+|   |-- docinfo-footer.html
+|   |-- html.css                # HTML 主题
+|   `-- pdf.yml                 # PDF 主题
+`-- ...
+--
+
+文件名全部使用小写字母，用 “-” 来替代空格。
+英文/中文文档以 “EN”/“CN” 结尾。
+文件命名和目录结构应该和标题级别保持一致。
+
+[source]
+--
+= 文档标题（级别 0）
+
+== 级别 1 小节标题
+
+=== 级别 2 小节标题
+
+...
+--
+
+== 小节
+
+在写小节标题时大写每个单词的首字母。
+
+自定义的 ID 必须以英文字母开头，且内容只包含小写字母、阿拉伯数字和 “-”。
+把自定义的小节 ID（`+[[id]]+`）放到小节标题上面：
+
+[source]
+--
+[[section-id]]
+== 小节标题
+
+参考 <<section-id,小节标题>> 。
+--
+
+如果有很多重复的标题，不要使用自动生成的小节 ID。
+
+== HTML 实体
+
+Asciidoctor PDF 不支持所有命名的 HTML 实体（例如 `+&times;+`），所以您必须在这里使用实体编号（例如 `+&#215;+`）。
+
+== 表格
+
+用以下格式来画表格（表格标题仅首字母大写）：
+
+[source]
+--
+[[table-id]]
+.表格标题
+[%header,cols="3*1"]
+|===
+|列 1
+|列 2
+|列 3
+
+|列 1，行 2 的单元格
+|列 2，行 2 的单元格
+|列 3，行 2 的单元格
+
+|列 1，行 3 的单元格
+|列 2，行 3 的单元格
+|列 3，行 3 的单元格
+|===
+--
+
+.表格标题
+[%header,cols="3*1"]
+|===
+|列 1
+|列 2
+|列 3
+
+|列 1，行 2 的单元格
+|列 2，行 2 的单元格
+|列 3，行 2 的单元格
+
+|列 1，行 3 的单元格
+|列 2，行 3 的单元格
+|列 3，行 3 的单元格
+|===
+
+== 目录
+
+我们推荐您使用工具而不是手动维护“表目录”和“图目录”。
+
+https://github.com/FreeFlyingSheep/golang-asciidoc-tools[Golang AsciiDoc Tools] 仓库可能有有用的工具。
