@@ -1,6 +1,6 @@
 = LoongArch ELF ABI specification
 Loongson Technology Corporation Limited
-v1.00
+v1.01 (draft)
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
