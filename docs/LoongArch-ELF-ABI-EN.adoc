@@ -119,40 +119,53 @@ You may see the names `$fv0-$fv1` in some very early LoongArch assembly code;
 they simply alias to `$fa0-$fa1`.
 Usage of the `$fv0-$fv1` names is no longer recommended.
 
-== Type Size and Alignment
+== C/C++ Type Representations
+
+`char` is signed, unlike several other recent architectures such as AArch64 or
+RISC-V.
+Portable code should not use bare `char` at all, but having `char` signed might
+help porting legacy x86 or MIPS programs.
+It is recommended to always use `signed char` or `unsigned char` explicitly.
+
+Valid values for booleans (`bool`/`_Bool`) are either `0` (`false`) or `1`
+(`true`), whether stored in memory or registers.
+
+A null pointer (for all types) has the value zero.
+
+== C/C++ Type Sizes and Alignments
 
 .LP64 ABI
 [%header,cols="3m,^1,^1"]
 |===
 |Scalar type
-|Size(Bytes)
-|Alignment(Bytes)
+|Size (Bytes)
+|Alignment (Bytes)
 
 |bool/_Bool
 |1
 |1
 
-|unsigned/signed char
+|char
 |1
 |1
 
-|unsigned/signed short
+|short
 |2
 |2
 
-|unsigned/signed int
+|int
 |4
 |4
 
-|unsigned/signed long
+|long
 |8
 |8
 
-|unsigned/signed long long
+|long long
 |8
 |8
 
-|pointer
+|void *
 |8
 |8
 
@@ -168,8 +181,6 @@ Usage of the `$fv0-$fv1` names is no longer recommended.
 |16
 |16
 |===
-
-`char` is signed.
 
 == ELF Object Files
 
