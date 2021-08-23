@@ -1,4 +1,4 @@
-= LoongArch ELF ABI specification
+= LoongArch ELF psABI specification
 Loongson Technology Corporation Limited
 v1.01 (draft)
 :docinfodir: ../themes
