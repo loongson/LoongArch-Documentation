@@ -8,6 +8,8 @@ v1.01 (draft)
 
 == Register Convention
 
+The ABI convention for integer registers is as follows.
+
 .Integer Register Convention
 [%header,cols="2m,2m,^5,^3"]
 |===
@@ -41,18 +43,13 @@ v1.01 (draft)
 |Argument registers
 |No
 
-|$r4-$r5
-|$v0-$v1
-|Return value
-|No
-
 |$r12-$r20
 |$t0-$t8
-|Temp registers
+|Temporary registers
 |No
 
 |$r21
-|--
+|n/a
 |Reserved
 |-- (Unallocatable)
 
@@ -63,9 +60,30 @@ v1.01 (draft)
 
 |$r23-$r31
 |$s0-$s8
-|Saved register
+|Saved registers
 |Yes
 |===
+
+Notes:
+
+* `$a0-$a1` are reused as return value registers.
++
+You may see the names `$v0-$v1` in some very early LoongArch assembly code;
+they simply alias to `$a0-$a1` to help transitioning from MIPS.
+Usage of the `$v0-$v1` names is no longer recommended.
+
+* Frame pointer maintenance is not mandated by the ABI, so the `$r22` could be
+used as an extra saved register if necessary, and be named `$s9` in that case.
+
+* `$r1` is the implicit link register of the `bl` instruction, but is not
+special otherwise from a software's perspective.
++
+Implementations might special-case indirect jumps to `$r1` for performance,
+though.
+
+* `$r21` is reserved for now, userland should treat it as non-existent.
+
+The ABI convention for floating-point registers is as follows.
 
 .Floating-point Register Convention
 [%header,cols="2m,2m,^5,^3"]
@@ -80,21 +98,26 @@ v1.01 (draft)
 |Argument registers
 |No
 
-|$f0-$f1
-|$fv0-$fv7
-|Return value
-|No
-
 |$f8-$f23
 |$ft0-$ft15
-|Temp registers
+|Temporary registers
 |No
 
 |$f24-$f31
 |$fs0-$fs7
-|Saved register
+|Saved registers
 |Yes
 |===
+
+Notes:
+
+* The LP64 ABI assumes hardware floating-point support.
+
+* `$fa0-$fa1` is reused as return value registers.
++
+You may see the names `$fv0-$fv1` in some very early LoongArch assembly code;
+they simply alias to `$fa0-$fa1`.
+Usage of the `$fv0-$fv1` names is no longer recommended.
 
 == Type Size and Alignment
 
