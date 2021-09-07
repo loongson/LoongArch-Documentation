@@ -58,7 +58,7 @@ These comparison conditions and judgment standards are listed in the following t
 |`compareQuietLess`
 
 |`CULT`
-|`0xE`
+|`0xA`
 |Less than or incomparable
 |`UN LT`
 |`compareQuietLessUnordered`
