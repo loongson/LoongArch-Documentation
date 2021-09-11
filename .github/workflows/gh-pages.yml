@@ -11,6 +11,8 @@ jobs:
       BUNDLE_GEMFILE: Gemfile
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
