@@ -7,7 +7,7 @@ namespace :book do
     desc 'generate contributors list'
     task :generate do |t|
         puts 'Generating contributors list...'
-        `git shortlog --summary --email HEAD | grep -v -E "users\.noreply\.github\.com" | cut -f 2- | sort > contributors.txt`
+        `git shortlog --summary --email HEAD | grep -v -E "users\.noreply\.github\.com" | cut -f 2- | LC_ALL=C sort --ignore-case > contributors.txt`
         puts ' -- contributors list generation done!'
     end
 
