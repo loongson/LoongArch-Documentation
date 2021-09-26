@@ -36,6 +36,8 @@
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[原始文档] 。
 
 * LoongArch ELF ABI：该手册介绍了 LoongArch ELF ABI。
+** link:LoongArch-ELF-ABI-CN.html[HTML 版本]。
+** link:LoongArch-ELF-ABI-CN.pdf[PDF 版本]。
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ELF-ABI-v1.00-CN.pdf[原始文档] 。
 
 [[getting-start]]
