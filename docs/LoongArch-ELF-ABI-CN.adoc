@@ -1,0 +1,523 @@
+= 龙芯架构 ELF psABI 规范
+龙芯中科技术股份有限公司
+v1.00
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+:toc-title: 目录
+:scripts: cjk
+
+== 寄存器使用约定
+
+.通用寄存器使用约定
+[%header,cols="2m,2m,^5,^3"]
+|===
+|名称
+|别名
+|用途
+|在调用中是否保留
+
+|$r0
+|$zero
+|常数 0
+|--
+
+|$r1
+|$ra
+|返回地址
+|否
+
+|$r2
+|$tp
+|线程指针
+|-- （不可分配）
+
+|$r3
+|$sp
+|栈指针
+|是
+
+|$r4-$r11
+|$a0-$a7
+|传参寄存器
+|否
+
+|$r4-$r5
+|$v0-$v1
+|返回值
+|否
+
+|$r12-$r20
+|$t0-$t8
+|临时寄存器
+|否
+
+|$r21
+|--
+|保留
+|-- （不可分配）
+
+|$r22
+|$fp/$s9
+|栈帧指针 / 跨调用保存值
+|是
+
+|$r23-$r31
+|$s0-$s8
+|跨调用保存值
+|是
+|===
+
+.浮点寄存器使用约定
+[%header,cols="2m,2m,^5,^3"]
+|===
+|名称
+|别名
+|用途
+|在调用中是否保留
+
+|$f0-$f7
+|$fa0-$fa7
+|传参寄存器
+|否
+
+|$f0-$f1
+|$fv0-$fv7
+|返回值
+|否
+
+|$f8-$f23
+|$ft0-$ft15
+|临时寄存器
+|否
+
+|$f24-$f31
+|$fs0-$fs7
+|跨调用保存值
+|是
+|===
+
+== C 语言数据类型规格
+
+.LP64 ABI
+[%header,cols="3m,^1,^1"]
+|===
+|标量类型
+|大小（字节）
+|对齐（字节）
+
+|bool/_Bool
+|1
+|1
+
+|unsigned/signed char
+|1
+|1
+
+|unsigned/signed short
+|2
+|2
+
+|unsigned/signed int
+|4
+|4
+
+|unsigned/signed long
+|8
+|8
+
+|unsigned/signed long long
+|8
+|8
+
+|指针类型
+|8
+|8
+
+|float
+|4
+|4
+
+|double
+|8
+|8
+
+|long double
+|16
+|16
+|===
+
+`char` 是有符号类型。
+
+== ELF 目标文件
+
+=== EI_CLASS: ELF 文件格式
+
+[%header,cols="2m,^1,^3"]
+|===
+|EI_CLASS
+|枚举值
+|含义
+
+|ELFCLASS32
+|1
+|32 位 ELF 格式
+
+|ELFCLASS64
+|2
+|64 位 ELF 格式
+|===
+
+=== e_machine: 体系结构 ID
+
+LoongArch (258)
+
+=== e_flags: ABI 变体标记
+
+[%header,cols="2m,^1,^3"]
+|===
+|ABIs
+|枚举值
+|含义
+
+|lp32
+|0x1
+|32 位整型 ABI，仅支持软件浮点数
+
+|（保留值）
+|0x2
+|--
+
+|lp64
+|0x3
+|64 位整型 ABI，支持双精度硬件浮点数
+
+|lp32f
+|0x4
+|32 位整型 ABI，支持单精度硬件浮点数
+
+|lp32d
+|0x5
+|32 位整型 ABI，支持双精度硬件浮点数
+
+|（保留值）
+|0x6 --
+|--
+|===
+
+=== ABI 版本
+
+[%header,cols="2m,^1,^5"]
+|===
+|ABI 版本
+|枚举值
+|描述
+
+|v0
+|0
+|支持具有栈操作语义的重定位类型（旧版兼容）
+
+|v1
+|1
+|新版重定位类型
+
+|--
+|2 --
+|保留
+|===
+
+== 重定位类型
+
+.ELF 重定位类型
+[%header,cols="^1,^2m,^5,5"]
+|===
+|枚举值
+|名称
+|描述
+|语义
+
+|0
+|R_LARCH_NONE
+|
+|
+
+|1
+|R_LARCH_32
+|动态符号地址解析
+|`+*(int32_t *) PC = RtAddr + A+`
+
+|2
+|R_LARCH_64
+|动态符号地址解析
+|`+*(int64_t *) PC = RtAddr + A+`
+
+|3
+|R_LARCH_RELATIVE
+|模块动态加载地址修正
+|`+*(void **) PC = B + A+`
+
+|4
+|R_LARCH_COPY
+|可执行映像数据动态填充
+|`+memcpy (PC, RtAddr, sizeof (sym))+`
+
+|5
+|R_LARCH_JUMP_SLOT
+|PLT 跳转支持
+|_由具体实现定义_
+
+|6
+|R_LARCH_TLS_DTPMOD32
+|TLS-GD 动态重定位支持
+|`+*(int32_t *) PC = ID of module defining sym+`
+
+|7
+|R_LARCH_TLS_DTPMOD64
+|TLS-GD 动态重定位支持
+|`+*(int64_t *) PC = ID of module defining sym+`
+
+|8
+|R_LARCH_TLS_DTPREL32
+|TLS-GD 动态重定位支持
+|`+*(int32_t *) PC = DTV-relative offset for sym+`
+
+|9
+|R_LARCH_TLS_DTPREL64
+|TLS-GD 动态重定位支持
+|`+*(int64_t *) PC = DTV-relative offset for sym+`
+
+|10
+|R_LARCH_TLS_TPREL32
+|TLS-IE 动态重定位支持
+|`+*(int32_t *) PC = T+`
+
+|11
+|R_LARCH_TLS_TPREL64
+|TLS-IE 动态重定位支持
+|`+*(int64_t *) PC = T+`
+
+|12
+|R_LARCH_IRELATIVE
+|本地间接跳转解析
+|`+*(void **) PC = (((void *)(*)()) (B + A)) ()+`
+
+4+|... 动态链接器保留项
+
+|20
+|R_LARCH_MARK_LA
+|标记 la.abs 宏指令
+|静态填充符号绝对地址
+
+|21
+|R_LARCH_MARK_PCREL
+|标记外部标签跳转
+|静态填充符号地址偏移量
+
+|22
+|R_LARCH_SOP_PUSH_PCREL
+|将符号相对地址压栈
+|`+push (S - PC + A)+`
+
+|23
+|R_LARCH_SOP_PUSH_ABSOLUTE
+|将常数或绝对地址压栈
+|`+push (S + A)+`
+
+|24
+|R_LARCH_SOP_PUSH_DUP
+|复制栈顶元素
+|`+opr1 = pop (), push (opr1), push (opr1)+`
+
+|25
+|R_LARCH_SOP_PUSH_GPREL
+|将符号的 GOT 表项偏移量压栈
+|`+push (G)+`
+
+|26
+|R_LARCH_SOP_PUSH_TLS_TPREL
+|将 TLS-LE 偏移量压栈
+|`+push (T)+`
+
+|27
+|R_LARCH_SOP_PUSH_TLS_GOT
+|将 TLS-IE 偏移量压栈
+|`+push (IE)+`
+
+|28
+|R_LARCH_SOP_PUSH_TLS_GD
+|将 TLS-GD 偏移量压栈
+|`+push (GD)+`
+
+|29
+|R_LARCH_SOP_PUSH_PLT_PCREL
+|将符号 PLT stub 的地址偏移量压栈
+|`+push (PLT - PC)+`
+
+|30
+|R_LARCH_SOP_ASSERT
+|断言栈顶元素为真
+|`+assert (pop ())+`
+
+|31
+|R_LARCH_SOP_NOT
+|栈顶运算
+|`+push (!pop ())+`
+
+|32
+|R_LARCH_SOP_SUB
+|栈顶运算
+|`+opr2 = pop (), opr1 = pop (), push (opr1 - opr2)+`
+
+|33
+|R_LARCH_SOP_SL
+|栈顶运算
+|`+opr2 = pop (), opr1 = pop (), push (opr1 << opr2)+`
+
+|34
+|R_LARCH_SOP_SR
+|栈顶运算
+|`+opr2 = pop (), opr1 = pop (), push (opr1 >> opr2)+`
+
+|35
+|R_LARCH_SOP_ADD
+|栈顶运算
+|`+opr2 = pop (), opr1 = pop (), push (opr1 + opr2)+`
+
+|36
+|R_LARCH_SOP_AND
+|栈顶运算
+|`+opr2 = pop (), opr1 = pop (), push (opr1 & opr2)+`
+
+|37
+|R_LARCH_SOP_IF_ELSE
+|栈顶运算
+|`+opr3 = pop (), opr2 = pop (), opr1 = pop (), push (opr1 ? opr2 : opr3)+`
+
+|38
+|R_LARCH_SOP_POP_32_S_10_5
+|指令立即数重定位
+|`+opr1 = pop (), (*(uint32_t *) PC) [14 ... 10] = opr1 [4 ... 0]+`
+
+带 5 位有符号数溢出检测功能
+
+|39
+|R_LARCH_SOP_POP_32_U_10_12
+|指令立即数重定位
+|`+opr1 = pop (), (*(uint32_t *) PC) [21 ... 10] = opr1 [11 ... 0]+`
+
+带 12 位无符号数溢出检测功能
+
+|40
+|R_LARCH_SOP_POP_32_S_10_12
+|指令立即数重定位
+|`+opr1 = pop (), (*(uint32_t *) PC) [21 ... 10] = opr1 [11 ... 0]+`
+
+带 12 位有符号数溢出检测功能
+
+|41
+|R_LARCH_SOP_POP_32_S_10_16
+|指令立即数重定位
+|`+opr1 = pop (), (*(uint32_t *) PC) [25 ... 10] = opr1 [15 ... 0]+`
+
+带 16 位有符号数溢出检测功能
+
+|42
+|R_LARCH_SOP_POP_32_S_10_16_S2
+|指令立即数重定位
+|`+opr1 = pop (), (*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]+`
+
+带 18 位有符号数溢出和4字节对齐检测功能
+
+|43
+|R_LARCH_SOP_POP_32_S_5_20
+|指令立即数重定位
+|`+opr1 = pop (), (*(uint32_t *) PC) [24 ... 5] = opr1 [19 ... 0]+`
+
+带 20 位有符号数溢出检测功能
+
+|44
+|R_LARCH_SOP_POP_32_S_0_5_10_16_S2
+|指令立即数重定位
+|`+opr1 = pop (), (*(uint32_t *) PC) [4 ... 0] = opr1 [22 ... 18],+`
+
+`+(*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]+`
+
+带 23 位有符号数溢出和4字节对齐检测功能
+
+|45
+|R_LARCH_SOP_POP_32_S_0_10_10_16_S2
+|指令立即数重定位
+|`+opr1 = pop (), (*(uint32_t *) PC) [9 ... 0] = opr1 [27 ... 18],+`
+
+`+(*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]+`
+
+带 28 位有符号数溢出和4字节对齐检测功能
+
+|46
+|R_LARCH_SOP_POP_32_U
+|指令修正
+|`+(*(uint32_t *) PC) = pop ()+`
+
+带 32 位无符号数溢出检测功能
+
+|47
+|R_LARCH_ADD8
+|8 位原地加法
+|`+*(int8_t *) PC += S + A+`
+
+|48
+|R_LARCH_ADD16
+|16 位原地加法
+|`+*(int16_t *) PC += S + A+`
+
+|49
+|R_LARCH_ADD24
+|24 位原地加法
+|`+*(int24_t *) PC += S + A+`
+
+|50
+|R_LARCH_ADD32
+|32 位原地加法
+|`+*(int32_t *) PC += S + A+`
+
+|51
+|R_LARCH_ADD64
+|64 位原地加法
+|`+*(int64_t *) PC += S + A+`
+
+|52
+|R_LARCH_SUB8
+|8 位原地减法
+|`+*(int8_t *) PC -= S + A+`
+
+|53
+|R_LARCH_SUB16
+|16 位原地减法
+|`+*(int16_t *) PC -= S + A+`
+
+|54
+|R_LARCH_SUB24
+|24 位原地减法
+|`+*(int24_t *) PC -= S + A+`
+
+|55
+|R_LARCH_SUB32
+|32 位原地减法
+|`+*(int32_t *) PC -= S + A+`
+
+|56
+|R_LARCH_SUB64
+|64 位原地减法
+|`+*(int64_t *) PC -= S + A+`
+
+|57
+|R_LARCH_GNU_VTINHERIT
+|GNU C++ vtable 支持
+|
+
+|58
+|R_LARCH_GNU_VTENTRY
+|GNU C++ vtable 支持
+|
+|===
