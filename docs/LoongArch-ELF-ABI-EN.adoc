@@ -48,7 +48,7 @@ v1.00
 
 |$r12-$r20
 |$t0-$t8
-|Temp registers
+|Temporary registers
 |No
 
 |$r21
@@ -58,12 +58,12 @@ v1.00
 
 |$r22
 |$fp/$s9
-|Frame pointer/Saved register
+|Frame pointer/Static register
 |Yes
 
 |$r23-$r31
 |$s0-$s8
-|Saved register
+|Static registers
 |Yes
 |===
 
@@ -87,14 +87,17 @@ v1.00
 
 |$f8-$f23
 |$ft0-$ft15
-|Temp registers
+|Temporary registers
 |No
 
 |$f24-$f31
 |$fs0-$fs7
-|Saved register
+|Static registers
 |Yes
 |===
+
+Temporary registers are also known as caller-saved registers.
+Static registers are also known as callee-saved registers.
 
 == Type Size and Alignment
 
