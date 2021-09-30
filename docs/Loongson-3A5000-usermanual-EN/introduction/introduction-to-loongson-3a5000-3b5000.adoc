@@ -5,7 +5,7 @@ The Loongson 3A5000/3B5000 is a quad-core Loongson processor with a stable opera
 
 The main technical features are as follows:
 
-* On-chip integration of four 64-bit quad-launch superscalar GS464v processor cores.
+* On-chip integration of four 64-bit quad-launch superscalar LA464 processor cores.
 
 * Peak floating-point computing power `160GFLOPS@2.5GHz`.
 
@@ -33,7 +33,7 @@ The overall architecture of the Loongson 3A5000 chip is based on multi-level int
 .Loongson 3A5000 chip structure
 image::loongson-3a5000-chip-structure.png[]
 
-The first level of interconnect uses a `5 &#215; 5` frequency division switch to connect four GS464v cores (as masters), four shared Cache modules (as slaves), and one I/O port to I/O-RING (The I/O port uses one Master and one Slave).
+The first level of interconnect uses a `5 &#215; 5` frequency division switch to connect four LA464 cores (as masters), four shared Cache modules (as slaves), and one I/O port to I/O-RING (The I/O port uses one Master and one Slave).
 
 The second level interconnect uses a `5 &#215; 3` cross-switch to connect four shared Cache modules (as masters), two DDR3/4 memory controllers, and one I/O port to the I/O-RING.
 

@@ -4,7 +4,7 @@
 * <<loongson-3-node-structure,Loongson 3 node structure>>
 * <<loongson-3a5000-chip-structure,Loongson 3A5000 chip structure>>
 * <<stable-reset-control-for-multi-chip-interconnection,Stable reset control for multi-chip interconnection>>
-* <<gs464v-structure,GS464V structure>>
+* <<la464-structure,LA464 structure>>
 * <<interrupt-routing-of-loongson-3a5000-processor,Interrupt routing of Loongson 3A5000 processor>>
 * <<general-mode-timing,General mode timing>>
 * <<reverse-mode-timing,Reverse mode timing>>

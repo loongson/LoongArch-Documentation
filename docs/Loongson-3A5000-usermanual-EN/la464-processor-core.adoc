@@ -1,10 +1,10 @@
-[[gs464v-processor-core]]
-== GS464V Processor Core
+[[la464-processor-core]]
+== LA464 Processor Core
 
-GS464V is a quad-launch 64-bit high-performance processor core.
+LA464 is a quad-launch 64-bit high-performance processor core.
 It can be used as a single core for high-end embedded and desktop applications, or as a basic processor core to form an on-chip multi-core system for server and high-performance machine applications.
-The multiple GS464V cores in the Loongson 3A5000 form a distributed multi-core architecture with a shared on-chip last-level Cache through the AXI interconnect network.
-The main features of GS464V are as follows:
+The multiple LA464 cores in the Loongson 3A5000 form a distributed multi-core architecture with a shared on-chip last-level Cache through the AXI interconnect network.
+The main features of LA464 are as follows:
 
 * Support for the Loongson autonomous instruction set (LoongArch).
 
@@ -30,12 +30,12 @@ The main features of GS464V are as follows:
 
 * Supports standard JTAG debugging interface for easy hardware and software debugging.
 
-The structure of GS464V is shown in the following figure.
+The structure of LA464 is shown in the following figure.
 
-[[gs464v-structure]]
-.GS464V structure
-image::gs464v-structure.png[]
+[[la464-structure]]
+.LA464 structure
+image::la464-structure.png[]
 
-include::gs464v-processor-core/instruction-set-features-implemented-in-3a5000.adoc[]
+include::la464-processor-core/instruction-set-features-implemented-in-3a5000.adoc[]
 
-include::gs464v-processor-core/access-to-3a5000-control-and-status-registers.adoc[]
+include::la464-processor-core/access-to-3a5000-control-and-status-registers.adoc[]

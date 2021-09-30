@@ -35,7 +35,7 @@ The clocks used in the Loongson 3A5000 chip and their control methods are shown 
 |Not supported
 |SYS PLL output
 
-Node clock, core clock, HTcore clock, GS132 clock source
+Node clock, core clock, HTcore clock, LA132 clock source
 
 Optional mem clock, stable clock source
 
@@ -88,12 +88,12 @@ Optional mem clock, stable clock source
 |Supported
 |HT1 controller clock, and software needs to be guaranteed to be below `1GHz` after frequency division
 
-|GS132 clock
+|LA132 clock
 |Main clock
 |`*1`
 |Supported
 |Supported
-|GS132 clock, and software needs to be guaranteed to be below `1GHz` after frequency division
+|LA132 clock, and software needs to be guaranteed to be below `1GHz` after frequency division
 
 |Stable clock
 |SYS_CLOCK

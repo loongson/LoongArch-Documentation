@@ -1,6 +1,6 @@
 = Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide
 Loongson Technology Corporation Limited
-v1.02
+v1.03
 :title-separator: -
 :docinfodir: ../themes
 :docinfo: shared
@@ -30,7 +30,7 @@ include::Loongson-3A5000-usermanual-EN/software-clock-system.adoc[]
 
 include::Loongson-3A5000-usermanual-EN/gpio-control.adoc[]
 
-include::Loongson-3A5000-usermanual-EN/gs464v-processor-core.adoc[]
+include::Loongson-3A5000-usermanual-EN/la464-processor-core.adoc[]
 
 include::Loongson-3A5000-usermanual-EN/shared-cache.adoc[]
 

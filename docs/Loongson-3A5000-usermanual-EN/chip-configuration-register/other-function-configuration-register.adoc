@@ -21,22 +21,22 @@ d|Reset Value
 |Completely disable the JTAG interface
 
 |1
-|disable_jtag_gs464
+|disable_jtag_LA464
 |RW
 |0x0
-|Completely disable the GS464JTAG debug interface
+|Completely disable the LA464JTAG debug interface
 
 |2
-|disable_gs132
+|disable_LA132
 |RW
 |0x0
-|Completely disable GS132
+|Completely disable LA132
 
 |3
-|disable_jtag_gs132
+|disable_jtag_LA132
 |RW
 |0x0
-|Completely disable the GS132 JTAG debug interface
+|Completely disable the LA132 JTAG debug interface
 
 |4
 |Disable_antifuse0
@@ -63,40 +63,40 @@ d|Reset Value
 |Reserved
 
 |8
-|resetn_gs132
+|resetn_LA132
 |RW
 |0x0
-|GS132 reset control
+|LA132 reset control
 
 |9
-|sleeping_gs132
+|sleeping_LA132
 |R
 |0x0
-|GS132 go to sleep
+|LA132 go to sleep
 
 |10
-|soft_int_gs132
+|soft_int_LA132
 |RW
 |0x0
-|GS132 inter-processor interrupt register
+|LA132 inter-processor interrupt register
 
 |15:12
-|core_int_en_gs132
+|core_int_en_LA132
 |RW
 |0x0
-|GS132 I/O interrupt enable for each core
+|LA132 I/O interrupt enable for each core
 
 |18:16
-|freqscale_gs132
+|freqscale_LA132
 |RW
 |0x0
-|GS132 frequency division control
+|LA132 frequency division control
 
 |19
-|clken_gs132
+|clken_LA132
 |RW
 |0x0
-|GS132 clock enable
+|LA132 clock enable
 
 |20
 |stable_sel
@@ -160,10 +160,10 @@ The actual time is the power of `2`.
 `1`: `1/(n+1)`
 
 |37
-|freqscale_mode_gs132
+|freqscale_mode_LA132
 |RW
 |0x0
-|Frequency adjustment mode selection for GS132
+|Frequency adjustment mode selection for LA132
 
 `0`: `(n+1)/8`
 
