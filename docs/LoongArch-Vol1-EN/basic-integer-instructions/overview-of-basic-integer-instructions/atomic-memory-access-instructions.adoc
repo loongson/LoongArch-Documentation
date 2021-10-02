@@ -71,7 +71,7 @@ The new value written to memory is the minimum value obtained by comparing the o
 `AM*_DB.W[U]/D[U]` instruction not only completes the above atomized operation sequence, but also implements the data barrier function at the same time.
 That is, all access operations preceding the atomic access instruction in the same processor core are completed before such atomic access instructions are allowed to be executed, and all access operations following the atomic access instruction in the same processor core are allowed to be executed only after such atomic access instructions are executed.
 
-If the `AM*` atomic memory access instruction has the same register number as `rd` and `rj`, there is no exception for the trigger instruction.
+If the `AM*` atomic memory access instruction has the same register number as `rd` and `rj`, the execution will trigger an Instruction Non-defined Exception.
 
 If the `AM*` atomic memory access instruction has the same register number as `rd` and `rk`, the execution result is uncertain.
 Please software to avoid this situation.
