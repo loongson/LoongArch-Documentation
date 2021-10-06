@@ -1,0 +1,15 @@
+[[difference-in-handling-between-extended-io-interrupts-and-legacy-ht-interrupts]]
+==== Difference in Handling Between Extended I/O Interrupts and Legacy HT Interrupts
+
+With legacy HT interrupt processing, HT interrupts are processed internally by the HT controller and mapped directly to the `256` interrupt vectors on the HT configuration registers, and then the `256` interrupt vectors are grouped to generate `4` or `8` interrupts that are routed to the various processor cores.
+Due to the legacy interrupt line connection, no cross-chip interrupts can be generated directly, so all HT I/O interrupts can only be handled directly by a single chip.
+On the other hand, the interrupts distributed by the hardware within the chip are only in units of the final `4` or `8` interrupts and cannot be handled on a bit-by-bit basis, which leads to the problem of poor hardware interrupt distribution.
+
+With the extended I/O interrupt method, HT interrupts are sent directly from the HT controller to the chip's interrupt controller for processing, and the interrupt controller can directly get `256` Instead of the previous `4` or `8` interrupts, each of these 256-bit interrupts can be routed and distributed independently, and can be distributed and rotated across slices.
+
+With Extended I/O interrupts, the software processing is slightly different than with legacy HT interrupts.
+
+With legacy HT interrupts, the kernel looks directly at the interrupt vector of the HT controller (typically `0x90000efdfb000080`) and then processes the interrupts by bit, regardless of how the routing mode is configured.
+
+After using Extended I/O interrupts, the cores go directly to the Extended I/O status register (configuration space `0x1800`) to read the interrupt status for processing.
+Each core will only read the interrupt's own interrupt status and process it, and there will be no interference between different cores.

@@ -3,27 +3,23 @@
 
 ==== HT Working Mode
 
-When chip pin HT_8x2 is configured to 0, the bridge operates in single mode, where only one processor is directly connected to the bridge via the HT bus, 
-and only one HT controller (HT lo) is operating inside the bridge, while the other HT controller (HT hi) is not available.
+When chip pin HT_8x2 is configured to 0, the bridge operates in single mode, where only one processor is directly connected to the bridge via the HT bus, and only one HT controller (HT lo) is operating inside the bridge, while the other HT controller (HT hi) is not available.
 
-The HT link can operate in either 8-bit or 16-bit mode, and the software can configure the data width used (the maximum available width also depends on the PCB hardware connection), 
-when the data link is controlled by controller lo. The data link is controlled by the controller lo.
+The HT link can operate in either 8-bit or 16-bit mode, and the software can configure the data width used (the maximum available width also depends on the PCB hardware connection), when the data link is controlled by controller lo. The data link is controlled by the controller lo.
 
-When the chip pin HT_8x2 is configured to 1, the bridge operates in dual mode, where two processors can be connected directly to the bridge via the HT bus, and the two HT controllers inside the bridge are operating simultaneously,
- controlling the low 8 bits and high 8 bits of the data link respectively. Software can control both HT controllers via the HT bus of both processors. When operating in dual mode, 
- the software needs to configure the HT DMA routing configuration (see section 4.1 HT Clock Enable and DMA Routing Configuration) to send DMA accesses to the corresponding HT controller.
+When the chip pin HT_8x2 is configured to 1, the bridge operates in dual mode, where two processors can be connected directly to the bridge via the HT bus, and the two HT controllers inside the bridge are operating simultaneously, controlling the low 8 bits and high 8 bits of the data link respectively. Software can control both HT controllers via the HT bus of both processors. When operating in dual mode, the software needs to configure the HT DMA routing configuration (see section 4.1 HT Clock Enable and DMA Routing Configuration) to send DMA accesses to the corresponding HT controller.
 
 ==== HT Address Space
 
 The address space for processor accesses is described in Section 3.
 
-The HT module has several internal address windows for configuring CPU accesses and DMA accesses. For CPU accesses, the bridge chip acts as the accessee and the corresponding configuration window is called the receive window; 
+The HT module has several internal address windows for configuring CPU accesses and DMA accesses. For CPU accesses, the bridge chip acts as the accessee and the corresponding configuration window is called the receive window;
 for DMA accesses, the bridge chip acts as the access initiator and the corresponding window is called the send window.
 
-The receive window consists of two types: the P2P access window and the normal access window. Accesses that fall within the P2P access window are forwarded directly back to the HT bus as P2P commands and are not sent to the internal devices of the bridge chip; 
+The receive window consists of two types: the P2P access window and the normal access window. Accesses that fall within the P2P access window are forwarded directly back to the HT bus as P2P commands and are not sent to the internal devices of the bridge chip;
 accesses that fall within the normal access window are sent to the internal devices of the bridge chip as accesses to the internal devices of the bridge chip. The P2P access window has a higher priority than the normal access window.
- Accesses that do not hit in either of the two types of receive windows are forwarded directly back to the HT bus as P2P commands.
+Accesses that do not hit in either of the two types of receive windows are forwarded directly back to the HT bus as P2P commands.
 
 DMA accesses are sent out through the HT's non-Post channel by default, and the Post send window is set internally in the bridge to send DMA accesses out through the HT's Post channel.
- That is, DMA accesses that hit in the Post send window are sent to the HT bus via the HT's Post channel, and DMA accesses that do not hit in the Post send window are sent to the HT bus via the HT's non-Post channel. 
- In general, the Post send window should not be enabled and all DMA accesses should be sent out through the HT's non-Post channel.
+That is, DMA accesses that hit in the Post send window are sent to the HT bus via the HT's Post channel, and DMA accesses that do not hit in the Post send window are sent to the HT bus via the HT's non-Post channel.
+In general, the Post send window should not be enabled and all DMA accesses should be sent out through the HT's non-Post channel.

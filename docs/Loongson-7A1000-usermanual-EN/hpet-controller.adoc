@@ -1,8 +1,7 @@
 [[hpet-controller]]
 == HPET Controller
 
-The HPET controller is compatible with standard specifications. Internally, it includes a 64-bit main counter and three 32-bit timers (comparators). Of the three timers, 
-timer 0 supports both periodic-capable and non-periodic interrupts, while timers 1 and 2 support only non-periodic interrupts. 
+The HPET controller is compatible with standard specifications. Internally, it includes a 64-bit main counter and three 32-bit timers (comparators). Of the three timers, timer 0 supports both periodic-capable and non-periodic interrupts, while timers 1 and 2 support only non-periodic interrupts.
 
 include::hpet-controller/access-address.adoc[]
 

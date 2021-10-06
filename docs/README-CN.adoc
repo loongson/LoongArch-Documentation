@@ -65,7 +65,9 @@ git clone https://github.com/loongson/LoongArch-Documentation
 +
 [source]
 ----
-cd LoongArch-Documentation && bundle config set --local path .bundle/gems && bundle
+cd LoongArch-Documentation
+bundle config set --local path .bundle/gems
+bundle
 ----
 
 . 现在您可以生产文档了。
@@ -147,6 +149,7 @@ Asciidoctor PDF 从 AsciiDoc 生成的 PDF 的样式见 https://github.com/ascii
 . https://docs.microsoft.com/zh-cn/windows/win32/fileio/maximum-file-path-limitation?tabs=cmd#enable-long-paths-in-windows-10-version-1607-and-later[启用] 长路径支持。
 
 . 使用最新的 https://git-scm.com/downloads[Git] 。
+用 Git Bash 执行所有命令。
 运行 `git config --global core.longpaths true` 来修改全局配置或在仓库中运行 `git config core.longpaths true` 来修改本地配置。
 
 . 使用最新的 https://www.jruby.org/download[JRuby] 来替代 Ruby。

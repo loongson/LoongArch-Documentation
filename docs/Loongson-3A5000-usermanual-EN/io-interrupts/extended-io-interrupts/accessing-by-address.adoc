@@ -152,9 +152,9 @@ d|Offset Address
 |Interrupt status of extended I/O interrupt `[255:192]` routed to processor core 3
 |===
 
-Similar to traditional I/O interrupts, the 256-bit interrupt source for Extended I/O interrupts can be software-configured to select the target processor core for the desired interrupt.
+Similar to legacy I/O interrupts, the 256-bit interrupt source for Extended I/O interrupts can be software-configured to select the target processor core for the desired interrupt.
 
-However, the interrupt sources are not individually selected to route to any of the processor core interrupts INT0 through INT3, but rather the routing of INT interrupts is done in groups. 
+However, the interrupt sources are not individually selected to route to any of the processor core interrupts INT0 through INT3, but rather the routing of INT interrupts is done in groups.
 The following are the interrupt pin routing registers configured by group.
 
 Starting with the 3A5000, the interrupt pin routing bits have been added in a coded manner and are enabled by the `CSR[0x420][49]` bit control.

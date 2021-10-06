@@ -49,7 +49,7 @@ d!Description
 !CLKSEL[7:6]
 !`2'b00` indicates that PHY clock frequency is `1.6GHz`
 
-`2'b01` indicates that PHY clock frequency is `6.4GHz` 
+`2'b01` indicates that PHY clock frequency is `6.4GHz`
 
 `2'b10` Reserved
 

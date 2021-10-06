@@ -20,8 +20,8 @@ This register contains configuration information related to pin multiplexing.
 |Read/Write
 |Description
 
-|31	
-|uart3_enable	
+|31
+|uart3_enable
 |R/W
 |`UART` operating mode selection for pin `UART_RI/DCD` (when selected as `UART` mode)
 
@@ -29,8 +29,8 @@ This register contains configuration information related to pin multiplexing.
 
 `1`: Operates in two-wire UART3 mode
 
-|30	
-|uart2_enable	
+|30
+|uart2_enable
 |R/W
 |UART operating mode selection for pin UART_DTR/DSR (when selected as UART mode)
 
@@ -38,8 +38,8 @@ This register contains configuration information related to pin multiplexing.
 
 `1`: Operates in two-wire UART2 mode
 
-|29	
-|uart1_enable	
+|29
+|uart1_enable
 |R/W
 |UART operating mode selection for pin UART_RTS/CTS (when selected as UART mode)
 
@@ -47,8 +47,8 @@ This register contains configuration information related to pin multiplexing.
 
 `1`: Operates in two-wire UART1 mode
 
-|28	
-|uart0_full_func	
+|28
+|uart0_full_func
 |R/W
 |UART operating mode selection for pin UART_TXD/RXD (when UART mode is selected)
 
@@ -60,8 +60,8 @@ When bit[31:29] is not equal to 0, regardless of the value of this bit, UART_TXD
 
 operates in two-wire UART mode regardless of the value of the bit.
 
-|27	
-|clkoutflex_sel	
+|27
+|clkoutflex_sel
 |R/W
 |Operating mode selection for pin CLKOUTFLEX
 
@@ -69,8 +69,8 @@ operates in two-wire UART mode regardless of the value of the bit.
 
 `1`: Operates in CLKOUTFLEX mode
 
-|26	
-|clkout25m_sel	
+|26
+|clkout25m_sel
 |R/W
 |Operating mode selection for pin CLKOUT25M
 
@@ -78,8 +78,8 @@ operates in two-wire UART mode regardless of the value of the bit.
 
 `1`: Operating in CLKOUT25M mode
 
-|25	
-|lpc_sel	
+|25
+|lpc_sel
 |R/W
 |Operating mode selection for LPC pins (LPC_AD0-3/LPC_SERIRQ/LPC_FRAMEn)
 
@@ -87,8 +87,8 @@ operates in two-wire UART mode regardless of the value of the bit.
 
 `1`: Working in LPC mode
 
-|24	
-|uart_dtr_dsr_sel_i2 c	
+|24
+|uart_dtr_dsr_sel_i2 c
 |R/W
 |Operating mode selection for pin UART_DTR/DSR (determined together with bit20)
 
@@ -100,8 +100,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 10b: working in I2C mode
 
-|23	
-|uart_ri_dcd_sel_i2c	
+|23
+|uart_ri_dcd_sel_i2c
 |R/W
 |Operating mode selection for pin UART_RI/DCD (determined together with bit19)
 
@@ -114,7 +114,7 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 10b: working in I2C mode
 
 |22
-|uart_txd_rxd_sel_u art	
+|uart_txd_rxd_sel_u art
 |R/W
 |Operating mode selection for pin UART_TXD/RXD
 
@@ -123,7 +123,7 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 `1`: working in UART mode (the bit[31:28] determines whether to work in full function mode)
 
 |21
-|uart_rts_cts_sel_ua rt	
+|uart_rts_cts_sel_ua rt
 |R/W
 |Operating mode selection for pin UART_RTS/CTS
 
@@ -131,8 +131,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 `1`: working in UART mode (determined by bit[31:28] whether to work in full function mode)
 
-|20	
-|uart_dtr_dsr_sel_u art	
+|20
+|uart_dtr_dsr_sel_u art
 |R/W
 |Operating mode selection for pin UART_DTR/DSR (determined together with bit24)
 
@@ -144,8 +144,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 10b: working in I2C mode
 
-|19	
-|uart_ri_dcd_sel_uar t	
+|19
+|uart_ri_dcd_sel_uar t
 |R/W
 |Operating mode selection for pin UART_RI/DCD (determined together with bit23)
 
@@ -157,8 +157,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 10b: working in I2C mode
 
-|18	
-|usb_oc2_sel	
+|18
+|usb_oc2_sel
 |R/W
 |Operating mode selection for pin `USB_OC2`
 
@@ -166,8 +166,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 `1`: Working in `USB_OC` mode
 
-|17	
-|usb_oc1_sel	
+|17
+|usb_oc1_sel
 |R/W
 |Operating mode selection for pin USB_OC1
 
@@ -175,8 +175,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 `1`: Working in `USB_OC` mode
 
-|16	
-|usb_oc0_sel	
+|16
+|usb_oc0_sel
 |R/W
 |Operating mode selection for pin USB_OC0
 
@@ -184,8 +184,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 `1`: working in `USB_OC` mode
 
-|15	
-|sata2_ledn_sel	
+|15
+|sata2_ledn_sel
 |R/W
 |Operating mode selection for pin SATA2_LEDn
 
@@ -193,8 +193,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 `1`: Operates in `SATA` mode
 
-|14	
-|sata1_ledn_sel	
+|14
+|sata1_ledn_sel
 |R/W
 |Operating mode selection for pin `SATA1_LEDn`
 
@@ -202,8 +202,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 `1`: Operates in `SATA` mode
 
-|13	
-|sata0_ledn_sel	
+|13
+|sata0_ledn_sel
 |R/W
 |Operating mode selection for pin `SATA0_LEDn`
 
@@ -211,8 +211,8 @@ x1b: working in UART mode (decided by bit[31:28] whether to work in full functio
 
 `1`: Operates in `SATA` mode
 
-|12:11	
-|hda_ac97_sel	
+|12:11
+|hda_ac97_sel
 |R/W
 |Operating mode selection for `HDA` pins. For the pins
 
@@ -226,8 +226,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `1`: `HDA` mode
 
-|10	
-|spi_sel	
+|10
+|spi_sel
 |R/W
 |Operating mode selection for pin `SPI_SCK/SDI/SDO`
 
@@ -235,8 +235,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `1`: Operates in `SPI` mode
 
-|9:8	
-|spi_csn_23_sel_spi	
+|9:8
+|spi_csn_23_sel_spi
 |R/W
 |Operating mode selection for pin `SPI_CSn2/3 00b`: operates in GPIOmode
 
@@ -244,8 +244,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `10b`: Operating in `I2C` mode
 
-|7:6	
-|spi_csn_01_sel_spi	
+|7:6
+|spi_csn_01_sel_spi
 |R/W
 |Operating mode selection for pin `SPI_CSn0/1` 00b: Operates in GPIO mode
 
@@ -253,8 +253,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `10b`: Operating in `I2C` mode
 
-|5	
-|i2c1_sel	
+|5
+|i2c1_sel
 |R/W
 |Operating mode selection for pin `I2C1_SCL/SDA`
 
@@ -262,8 +262,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `1`: Working in I2C mode
 
-|4	
-|i2c0_sel	
+|4
+|i2c0_sel
 |R/W
 |Operating mode selection for pin `I2C0_SCL/SDA`
 
@@ -271,8 +271,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `1`: Working in `I2C` mode
 
-|3	
-|pwm3_sel	
+|3
+|pwm3_sel
 |R/W
 |Operating mode selection for pin `PWM3`
 
@@ -280,8 +280,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `1`: Operates in `PWM` mode
 
-|2	
-|pwm2_sel	
+|2
+|pwm2_sel
 |R/W
 |Operating mode selection for pin `PWM2`
 
@@ -289,8 +289,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `1`: Operates in `PWM` mode
 
-|1	
-|pwm1_sel	
+|1
+|pwm1_sel
 |R/W
 |Operating Mode Selection for Pin `PWM1`
 
@@ -298,8 +298,8 @@ For pins `HDA_SDI1/HDA_SDI2`, the operating mode is determined by bit[`11`]: `0`
 
 `1`: Operates in `PWM` mode
 
-|0	
-|pwm0_sel	
+|0
+|pwm0_sel
 |R/W
 |Operating mode selection for pin `PWM0`
 

@@ -1,12 +1,12 @@
 [[uart-controller]]
 == UART Controller
 
-The integrated UART controller of the bridge chip complies with the RS232 standard and the controller is designed to be compatible with the 16550A. 
+The integrated UART controller of the bridge chip complies with the RS232 standard and the controller is designed to be compatible with the 16550A.
 The internal clock frequency of the UART controller is 50 MHz and the maximum baud rate supported by the UART bus is 460800.
 
 The bridge chip integrates four UART controllers, which are arranged in the UART module.
- In addition, UART1, UART2 and UART3 can only work in two-wire UART mode, and UART0 can work in full-function UART mode or two-wire UART mode. 
-In addition, UART can be multiplexed as GPIO function and some UART pins can be multiplexed as I2C function. 
+In addition, UART1, UART2 and UART3 can only work in two-wire UART mode, and UART0 can work in full-function UART mode or two-wire UART mode.
+In addition, UART can be multiplexed as GPIO function and some UART pins can be multiplexed as I2C function.
 The pin multiplexing configuration registers related to UART are described in Section 4.4.
 
 [[uart-function-reuse]]

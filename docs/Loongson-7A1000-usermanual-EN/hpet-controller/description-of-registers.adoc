@@ -96,7 +96,7 @@ Default value: `1312D00h` (`20ns` clock period).
 |COUNT_SIZE_CAP
 |The width of the master timer. This chip is a `64`-bit master timer. Value: `1b`.
 
-`0`: `32` bits 
+`0`: `32` bits
 
 `1`: `64` bits
 |RO
@@ -280,7 +280,7 @@ The software can directly modify the accumulator for the periodic period by writ
 
 `0`: the timer is not capable of generating periodic interrupts.
 |RO
- 
+
 |3
 |T0_TYPE_CNF
 |Timer 0 cycle interrupt configuration.
@@ -378,12 +378,13 @@ Timer 1 comparator value. Same as Timer 0.
 Address Offset: `140`-`147h`
 
 Attribute: RO, R/W
- 
+
 Default value: `00h`
 
-Size:`8`
+Size: `8`
 
-Timer 2 configuration and function registers. Same as Timer 0.
+Timer 2 configuration and function registers.
+Same as Timer 0.
 
 *Timer 2 Comparator Value Register*
 
@@ -395,4 +396,4 @@ Default value: `FFFFFFFFh`
 
 Size:`8`
 
-Timer 2 comparator value. Same as Timer 0. 
+Timer 2 comparator value. Same as Timer 0.

@@ -1,7 +1,7 @@
 [[section-pcie-g1-phy-hi-access-configuration-register]]
 === `PCIE_G1 PHY HI` Access Configuration Register
 
-This group of registers is used to control the configuration access operation that generates the PCIE_G1 PHY HI internal control register. 
+This group of registers is used to control the configuration access operation that generates the PCIE_G1 PHY HI internal control register.
 This register controls the high 4 data links (lane4-7) of PCIE_G1.
 
 Address Offset: `0618`-`061Bh`

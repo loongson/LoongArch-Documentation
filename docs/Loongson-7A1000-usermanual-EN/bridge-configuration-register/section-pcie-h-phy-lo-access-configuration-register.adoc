@@ -1,7 +1,7 @@
 [[section-pcie-h-phy-lo-access-configuration-register]]
 === `PCIE_H PHY LO` Access Configuration Register
 
-This group of registers is used to control the configuration access operation that generates the PCIE_H PHY LO internal control register. 
+This group of registers is used to control the configuration access operation that generates the PCIE_H PHY LO internal control register.
 This register controls the the lower 4 data links (lane0-3) of PCIE_H.
 
 Address Offset: `05D0`-`05D3h`
@@ -67,7 +67,7 @@ d|Read/Write
 |2
 |phy_cfg_done
 |R/W
-|The completion of one access to PHY indicates the completion of reading and writing to PHY. 
+|The completion of one access to PHY indicates the completion of reading and writing to PHY.
 Write completion indicates that the written data has been written to the PHY internal register, and read completion indicates that the read data has been returned to the phy_cfg_data register
 
 |1

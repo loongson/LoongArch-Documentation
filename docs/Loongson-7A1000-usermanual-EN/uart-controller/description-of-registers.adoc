@@ -86,7 +86,7 @@ Reset value: `0x00`
 
 `1`: Open
 |===
- 
+
 *Interrupt identification register (IIR)*
 
 Offset: `0x02`
@@ -471,8 +471,6 @@ FIFO is cleared when writing data to the FIFO.
 `0`: No overflow.
 
 `1`: There is data overflow.
- 
-
 
 |0
 |DR

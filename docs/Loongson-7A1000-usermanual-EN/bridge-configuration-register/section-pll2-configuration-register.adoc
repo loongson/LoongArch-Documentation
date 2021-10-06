@@ -3,7 +3,7 @@
 
 Please refer to Section 2.5 PLL Configuration Method for the specific usage of PLL.
 This register is used to set PLL2, where output clock 2 is used to generate the CLKOUTFLEX clock, output clock 1 is used to generate the internal bus clock, and output clock 0 is used to generate the 24MHz bitclk clock required by the HDA.
- 
+
 Output Clock 1 is used to generate the internal bus clock, and Output Clock 0 is used to generate the 24MHz bitclk clock required by the HDA.
 
 Address Offset: `04A0`-`04A3h`

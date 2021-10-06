@@ -20,7 +20,7 @@ d|Bit Field
 d|Name
 d|Read/Write
 |Description
- 
+
 |31:30
 |Reserved
 |R/W

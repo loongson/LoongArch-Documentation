@@ -1,7 +1,7 @@
 [[section-pcie-g0-phy-hi-access-configuration-register]]
 === `PCIE_G0 PHY HI` Access Configuration Register
 
-This group of registers is used to control the configuration access operation that generates the PCIE_G0 PHY HI internal control register. 
+This group of registers is used to control the configuration access operation that generates the PCIE_G0 PHY HI internal control register.
 This register controls the the high 4 data links (lane4-7) of PCIE_G0.
 
 Address Offset: `05F8`-`05FBh`
@@ -20,7 +20,7 @@ d|Bit Field
 d|Name
 d|Read/Write
 |Description
- 
+
 |31:16
 |phy_cfg_data
 |R/W

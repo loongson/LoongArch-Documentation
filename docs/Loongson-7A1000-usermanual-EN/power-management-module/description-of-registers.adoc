@@ -634,7 +634,7 @@ m|
 |3
 4+<|*`CTW_EN` - R/W*
 
-Enable THERMAL WARNING interrupt.	
+Enable THERMAL WARNING interrupt.
 m|
 
 m|2
@@ -654,7 +654,7 @@ m|0
 
 This bit sets the polarity of the `LID`.
 m|
-|===	
+|===
 
 *`RST_CNT`: Reset Control Register*
 

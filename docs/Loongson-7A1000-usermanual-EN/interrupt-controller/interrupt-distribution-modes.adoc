@@ -1,13 +1,13 @@
 [[interrupt-distribution-modes]]
 === Interrupt Distribution Modes
 
-The bridge supports dual interrupt outputs, so that different interrupt sources or multiple interrupts from the same interrupt source can be distributed between the two interrupt outputs. 
+The bridge supports dual interrupt outputs, so that different interrupt sources or multiple interrupts from the same interrupt source can be distributed between the two interrupt outputs.
 The bridge chip supports interrupt hardware load balancing, which allows interrupts to be distributed between the two outputs preset by software in four modes.:
 
-. Fixed distribution mode - Distribution is done according to the routing method configured in the interrupt routing configuration register. 
+. Fixed distribution mode - Distribution is done according to the routing method configured in the interrupt routing configuration register.
 In this mode, the routing configuration register must be one-hot encoded, meaning that an interrupt can only be routed to one interrupt output.
 
-. Rotating distribution mode - In this mode, each new interrupt generated is routed to the next valid interrupt output according to the route vector configuration in the Route_Entry register. 
+. Rotating distribution mode - In this mode, each new interrupt generated is routed to the next valid interrupt output according to the route vector configuration in the Route_Entry register.
 The route to the next valid interrupt output is configured in the Route_Entry register.
 
 . Idle distribution mode - jumps to an idle interrupt output.
@@ -15,5 +15,5 @@ In this mode, when each new interrupt is generated, it first detects if there is
 if there is already an unprocessed interrupt on the next interrupt output, it continues to detect the next processor core.
 
 . Busy distribution mode - the current interrupt output is busy then jumps to its left (0->1->2->3) candidate interrupt output.
-When each new interrupt is generated in this mode, it first detects whether there is already an unprocessed interrupt on the interrupt output of the last interrupt, and if not, continues to interrupt that interrupt output, and if there is an unprocessed interrupt, it is routed to the next interrupt output as configured in the Entry register. 
+When each new interrupt is generated in this mode, it first detects whether there is already an unprocessed interrupt on the interrupt output of the last interrupt, and if not, continues to interrupt that interrupt output, and if there is an unprocessed interrupt, it is routed to the next interrupt output as configured in the Entry register.
 It should be noted that once AUTO_CTRL0/1 has been configured, it should not be modified in the middle of the run. It is recommended that the software use fixed distribution mode.

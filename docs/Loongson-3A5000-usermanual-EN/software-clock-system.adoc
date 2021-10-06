@@ -2,7 +2,7 @@
 == Software Clock System
 
 Several different levels of usage are defined in the Loongson 3A5000 processor for the clocks used by the system software.
-Inside the processor core are the traditional counter/compare registers, the stable counter registers, and the chip-level node counter registers.
+Inside the processor core are the legacy counter/compare registers, the stable counter registers, and the chip-level node counter registers.
 
 The following is introductions to stable counter and node counter.
 

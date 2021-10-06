@@ -421,11 +421,11 @@ Size: `32` bits
 
 *HT interrupt message packet enable register*
 
-Address Offset: `040`-`043h` 
+Address Offset: `040`-`043h`
 
 Default value: `00000000h`
 
-Attribute: R/W 
+Attribute: R/W
 
 Size: `32` bits
 
@@ -614,11 +614,11 @@ Size: `32` bits
 
 *INT_AUTO_CTRL1 register*
 
-Address Offset: `0E0`-`0E3h` 
+Address Offset: `0E0`-`0E3h`
 
 Default value: `00000000h`
 
-Attribute: R/W 
+Attribute: R/W
 
 Size: `32` bits
 
@@ -734,7 +734,7 @@ Size: `32` bits
 |i2c_int_route
 |R/W
 |`I2C` Interrupt Routing Configuration Register
- 
+
 |1:0
 |uart_int_route
 |R/W
@@ -1607,7 +1607,7 @@ Size: `32` bits
 |Name
 |Read/Write
 |Description
- 
+
 |31:24
 |acpi_int_route
 |R/W
@@ -2018,6 +2018,6 @@ Size: `32` bits
 |31:0
 |int_polarity
 |R/W
-|High `32` bits of the interrupt level trigger 
+|High `32` bits of the interrupt level trigger
 polarity register (bit`[63:32]`)
 |===

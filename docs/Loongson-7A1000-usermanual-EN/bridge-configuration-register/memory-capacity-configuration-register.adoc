@@ -1,7 +1,7 @@
 [[memory-capacity-configuration-register]]
 === Memory Capacity Configuration Register
 
-This set of registers is used to configure the capacity of the video memory. This register represents the mask of the memory BAR register, 0 means the corresponding bit of the memory BAR register is writable, 1 means not writable. 
+This set of registers is used to configure the capacity of the video memory. This register represents the mask of the memory BAR register, 0 means the corresponding bit of the memory BAR register is writable, 1 means not writable.
 The number of 1's represents the memory capacity. The default memory capacity is 256MB.
 
 Address Offset: `3838`-`383Bh`

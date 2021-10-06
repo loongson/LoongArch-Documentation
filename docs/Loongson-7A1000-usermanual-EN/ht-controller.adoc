@@ -1,7 +1,7 @@
 [[ht-controller]]
 == HT Controller
 
-The bridge HT interface supports a maximum bi-directional 16-bit data width and an operating frequency of 2.0 GHz. 
+The bridge HT interface supports a maximum bi-directional 16-bit data width and an operating frequency of 2.0 GHz.
 After the connection is established by automatic system initialization, the user can change the width and operating frequency and re-initialize by modifying the corresponding configuration registers in the protocol.
 
 The main features of the bridge HT interface are as follows:

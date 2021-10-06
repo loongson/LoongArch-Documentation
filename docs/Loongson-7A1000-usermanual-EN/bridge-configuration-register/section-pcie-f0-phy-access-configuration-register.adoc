@@ -76,7 +76,7 @@ d|Read/Write
 |0 - Read and write to this set of registers will trigger PHY configuration access operation
 
 1 - Read or write to this set of registers does not trigger PHY configuration access operation, only a simple register read or write
- 
+
 |0
 |phy_cfg_R/W
 |R/W

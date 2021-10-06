@@ -1,7 +1,7 @@
 [[guide-to-the-use-of-spi-dual-quad-mode]]
 ==== Guide to the Use of SPI Dual/Quad Mode
 
-In addition to the traditional single-wire mode, the SPI controller also supports two operating modes, dual mode and quad mode, for booting from the SPI FLASH.
+In addition to the legacy single-wire mode, the SPI controller also supports two operating modes, dual mode and quad mode, for booting from the SPI FLASH.
 The SPI controller can be put into dual mode by setting the `dual_io` register, and quad mode by setting the `quad_io` register.
 The configuration code for these two registers can be added to the first few instructions of the BIOS code, and then the controller will be pointed to the corresponding operating mode after the configuration is completed, which can improve the boot-up speed.
 

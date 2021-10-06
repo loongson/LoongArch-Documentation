@@ -33,7 +33,7 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 ** link:LoongArch-Vol3-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol3-v1.00-CN.pdf[Original document].
 
-* Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
+* Loongson 3A5000/3B5000 Processor Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
 ** link:Loongson-3A5000-usermanual-EN.html[HTML version].
 ** link:Loongson-3A5000-usermanual-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.02-CN.pdf[Original document].
@@ -78,7 +78,9 @@ git clone https://github.com/loongson/LoongArch-Documentation
 +
 [source]
 ----
-cd LoongArch-Documentation && bundle config set --local path .bundle/gems && bundle
+cd LoongArch-Documentation
+bundle config set --local path .bundle/gems
+bundle
 ----
 
 . Now you can generate the documents.
@@ -158,6 +160,7 @@ If you are using an earlier version, or if you don`'t want to do some extra oper
 . https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation#enable-long-paths-in-windows-10-version-1607-and-later[Enable] long paths.
 
 . Use the latest https://git-scm.com/downloads[Git].
+Execute all commands with Git Bash.
 Run `git config --global core.longpaths true` to modify the global configuration or run `git config core.longpaths true` in the repo to modify the local configuration.
 
 . Use the latest https://www.jruby.org/download[JRuby] instead of Ruby.
