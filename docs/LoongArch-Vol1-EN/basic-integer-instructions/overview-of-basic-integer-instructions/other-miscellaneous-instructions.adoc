@@ -97,12 +97,12 @@ The undefined field in the defined configuration word can be read back to any va
 ^|Annotation
 ^|Implication
 
-^m|0
+^m|0x0
 ^m|31:0
 ^m|PRID
 |Processor Identity
 
-.12+^m|1
+.12+^m|0x1
 ^m|1:0
 ^m|ARCH
 |`2'b00` indicates the implementation of simplified LA32;
@@ -159,7 +159,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|MSG_INT
 |`1` indicates that the external interrupt uses the message interrupt mode, otherwise it is the level interrupt line mode
 
-.17+^m|2
+.17+^m|0x2
 ^m|0
 ^m|FP
 |`1` indicates support for basic floating-point instructions
@@ -231,7 +231,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|LAM
 |`1` indicates support `AM*` atomic memory access instruction
 
-.12+^m|3
+.12+^m|0x3
 ^m|0
 ^m|CCDMA
 |`1` indicates support for hardware Cache coherent DMA
@@ -280,12 +280,12 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|RVAMAX-1
 |The maximum configurable virtual address is shortened by `-1`
 
-^m|4
+^m|0x4
 ^m|31:0
 ^m|CC_FREQ
 |Constant frequency timer and the crystal frequency corresponding to the clock used by the timer
 
-.2+^m|5
+.2+^m|0x5
 ^m|15:0
 ^m|CC_MUL
 |Constant frequency timer and the corresponding multiplication factor of the clock used by the timer
@@ -294,7 +294,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|CC_DIV
 |Constant frequency timer and the division coefficient corresponding to the clock used by the timer
 
-.5+^m|6
+.5+^m|0x6
 ^m|0
 ^m|PMP
 |`1` indicates support for the performance counter
@@ -315,7 +315,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|UPM
 |`1` indicates support for reading performance counter in user mode
 
-.17+^m|10
+.17+^m|0x10
 ^m|0
 ^m|L1 IU_Present
 |`1` indicates that there is a first-level instruction Cache or a first-level unified Cache
@@ -384,7 +384,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|L3 D Inclusive
 |`1` indicates that the three-level data Cache has an inclusive relationship to the lower levels (L1 and 12)
 
-.3+^m|11
+.3+^m|0x11
 ^m|15:0
 ^m|Way-1
 |Number of channels minus `1` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
@@ -397,7 +397,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|Linesize-log2
 |`log2(Cache line bytes)` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
 
-.3+^m|12
+.3+^m|0x12
 ^m|15:0
 ^m|Way-1
 |Number of channels minus `1` (Cache corresponding to `L1 D Present` in configuration word `10`)
@@ -410,7 +410,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|Linesize-log2
 |`log2(Cache row bytes)` (Cache corresponding to `L1 D Present` in configuration word `10`)
 
-.3+^m|13
+.3+^m|0x13
 ^m|15:0
 ^m|Way-1
 |Number of channels minus `1` (Cache corresponding to `L2 IU Present` in configuration word `10`)
@@ -423,7 +423,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|Linesize-log2
 |`log2(Cache row bytes)` (Cache corresponding to `L2 IU Present` in configuration word `10`)
 
-.3+^m|14
+.3+^m|0x14
 ^m|15:0
 ^m|Way-1
 |Number of channels minus `1` (Cache corresponding to `L3 IU Present` in configuration word `10`)
