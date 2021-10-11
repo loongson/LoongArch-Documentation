@@ -183,7 +183,6 @@ Size:8
 |Timer `1` interrupt status. Same function as `T0_INT_STS`.
 |R/WC
 
-
 |0
 |T0_INT_STS
 |Timer `0` interrupt state.

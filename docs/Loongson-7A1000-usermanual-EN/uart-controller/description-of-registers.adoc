@@ -308,7 +308,6 @@ Reset value: `0x03`
 
 `1`: `1.5` stop bits at `5-bit` character length, `2` stop bits at other lengths.
 
-
 |1:0
 |bec
 |2
@@ -550,7 +549,6 @@ Reset value: `0x00`
 |DCTS indication bit
 |===
 
-
 *Frequency divider latch*
 
 Offset: `0x00`
@@ -573,7 +571,6 @@ Reset value: `0x00`
 |R/W
 |Store the lower `8` bits of the divider latch
 |===
-
 
 Offset:0x01
 

@@ -11,7 +11,6 @@ Default value: `0006_0000h`
 
 Size: `32` bits
 
-
 [[pcie-f1-phy-configuration-register-1]]
 .PCIE_F1 PHY Configuration Register 1
 [%header,cols="^1m,^2m,^1,3"]

@@ -14,7 +14,6 @@ The main features of the bridge HT interface are as follows:
 
 * Support dual processors with bridge chip direct connection (each link can only work in 8-bit mode)
 
-
 include::ht-controller/ht-user-guide.adoc[]
 
 include::ht-controller/ht-configuration-register.adoc[]

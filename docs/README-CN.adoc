@@ -9,7 +9,7 @@
 
 == 简介
 
-这是龙芯架构官方文档。
+这是龙芯架构文档。
 
 * 您可以在 https://loongson.github.io/LoongArch-Documentation[这里] 找到在线文档。
 

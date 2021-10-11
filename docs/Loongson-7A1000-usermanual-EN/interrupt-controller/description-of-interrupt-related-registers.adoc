@@ -448,7 +448,6 @@ Address Offset: `044`-`047h`
 
 Default value: `00000000h`
 
-
 Attribute: R/W
 
 Size: `32` bits
@@ -1029,7 +1028,6 @@ Size: `32` bits
 |R/W
 |`PCIE_G0` Controller `0` Interrupt Routing Configuration Register
 |===
-
 
 Address Offset: `12C`-`12Fh`
 

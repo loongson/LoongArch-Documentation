@@ -381,8 +381,6 @@ Attribute: R/W, RO
 
 Default value: `0011h` or `0000h`
 
-
-
 [[lkwdsc0-link-data-width-status-and-control-register]]
 .LKWDSC0-Link data width status and control register
 [%header,cols="1m,^2m,^1,4"]
@@ -411,7 +409,6 @@ The value after a cold reset is the maximum width of the current connection, and
 |Reserved
 |RO
 |Reserved
-
 
 |10:8
 |Link RX Width
@@ -496,7 +493,6 @@ Size: `32` bits
 |RO
 |Protocol error, referring to an unrecognized command received on the HT bus
 
-
 |11:8
 |Link Frequency Control
 |R/W
@@ -513,8 +509,6 @@ Address Offset: `4E`-`4Fh`
 Attribute: `RO`
 
 Default value: `0000h`
-
-
 
 [[lkfreqcfg0-link-frequency-configuration-register-2]]
 .LKFREQCFG0-Link frequency configuration register 2

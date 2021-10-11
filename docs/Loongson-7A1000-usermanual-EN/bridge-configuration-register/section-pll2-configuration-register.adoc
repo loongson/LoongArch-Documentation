@@ -14,7 +14,6 @@ Default value: `0000_0000h`
 
 Size: `32` bits
 
-
 [[pll2-configuration-register-1]]
 .Pll2 configuration register 1
 [%header,cols="^1m,^2m,^1,3"]
@@ -57,7 +56,6 @@ Attribute: R/W
 Default value: `0000_0000h`
 
 Size: `32` bits
-
 
 [[pll2-configuration-register-2]]
 .Pll2 configuration register 2

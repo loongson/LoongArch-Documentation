@@ -7,7 +7,7 @@ Loongson Technology Corporation Limited
 
 == Introduction
 
-The official documentation for LoongArch.
+The documentation for LoongArch.
 
 * You can find documents online https://loongson.github.io/LoongArch-Documentation[here].
 

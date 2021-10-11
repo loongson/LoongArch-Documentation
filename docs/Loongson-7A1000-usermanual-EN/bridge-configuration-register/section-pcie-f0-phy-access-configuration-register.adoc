@@ -12,7 +12,6 @@ Default value: `0000_0000h`
 
 Size: `32` bits
 
-
 [[pcie-f0-phy-access-configuration-register-1]]
 .PCIE_F0 PHY Access Configuration Register 1
 [%header,cols="^1m,^2m,^1,3"]
