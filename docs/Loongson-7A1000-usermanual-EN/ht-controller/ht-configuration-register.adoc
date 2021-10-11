@@ -210,7 +210,7 @@ Attribute: R/W, RO
 
 Default value: `0000h`
 
-Size: `16` bit
+Size: `16` bits
 
 [[bctrl-ht-bridge-control-register]]
 .BCTRL-HT bridge control register
@@ -249,7 +249,7 @@ Attribute: R/W, RO
 
 Default value: `0000h`
 
-Size: `16` bit
+Size: `16` bits
 
 [[didcmd-device-id-command-register]]
 .DIDCMD-device ID command register
@@ -286,10 +286,10 @@ Size: `16` bit
 Address Offset: `44`-`45h`
 
 Attribute: R/W, RO
- 
+
 Default value: `2000h`
 
-Size: `16` bit
+Size: `16` bits
 
 [[lksc0-link-status-control-register-0]]
 .LKSC0-Link status control register 0
@@ -381,8 +381,6 @@ Attribute: R/W, RO
 
 Default value: `0011h` or `0000h`
 
-
-
 [[lkwdsc0-link-data-width-status-and-control-register]]
 .LKWDSC0-Link data width status and control register
 [%header,cols="1m,^2m,^1,4"]
@@ -411,7 +409,6 @@ The value after a cold reset is the maximum width of the current connection, and
 |Reserved
 |RO
 |Reserved
-
 
 |10:8
 |Link RX Width
@@ -471,7 +468,7 @@ Attribute: R/W, RO
 Default value: `0060h`
 
 Size: `32` bits
- 
+
 [[lkfreqcfg0-link-frequency-configuration-register-1]]
 .LKFREQCFG0-Link frequency configuration register 1
 [%header,cols="1m,^2m,^1,4"]
@@ -496,7 +493,6 @@ Size: `32` bits
 |RO
 |Protocol error, referring to an unrecognized command received on the HT bus
 
-
 |11:8
 |Link Frequency Control
 |R/W
@@ -513,8 +509,6 @@ Address Offset: `4E`-`4Fh`
 Attribute: `RO`
 
 Default value: `0000h`
-
-
 
 [[lkfreqcfg0-link-frequency-configuration-register-2]]
 .LKFREQCFG0-Link frequency configuration register 2
@@ -953,7 +947,7 @@ Accesses hit by the P2P receive window are sent directly back to the HT bus as P
 When the window is enabled, the address window hit condition is: ( ADDR & WIN_MASK ) == ( WIN_BASE & WIN_MASK ). Note: ADDR here refers to the high 16 bits of the address (bit[39:24], the address sent to the HT bus is only 40 bits).
 
 For example, 1111111100000000b,1100000000000000b are legal configurations, while 1011111100000000b,11010000000000b are not.
-The number of zeros in MASK indicates the size of the address window. 
+The number of zeros in MASK indicates the size of the address window.
 
 *RXP2PWIN0-P2P receive window 0*
 

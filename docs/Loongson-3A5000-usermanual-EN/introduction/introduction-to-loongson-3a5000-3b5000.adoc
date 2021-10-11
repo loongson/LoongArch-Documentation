@@ -21,7 +21,6 @@ The main technical features are as follows:
 
 * `2` `I2C`, `1` UART, `1` SPI, `16` GPIO interfaces on-chip
 
-
 The architecture of the Loongson 3A5000/3B5000 is designed to increase the shared Cache capacity based on the 3A4000 and supports 16-way interconnect.
 
 The Loongson 3B5000 supports consistent interconnects on the `HT0` interface compared to the 3A5000, with special filtering based on server scenario requirements.

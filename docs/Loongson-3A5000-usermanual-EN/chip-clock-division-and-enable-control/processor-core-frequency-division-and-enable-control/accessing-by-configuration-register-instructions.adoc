@@ -1,7 +1,7 @@
 [[accessing-by-configuration-register-instructions-1]]
 ==== Accessing by Configuration Register Instructions
 
-In addition to the traditional per-address access mode, the 3A5000 also supports access to private frequency division configuration registers using the configuration register instruction.
+In addition to the legacy per-address access mode, the 3A5000 also supports access to private frequency division configuration registers using the configuration register instruction.
 
 Note that the private frequency division configuration register control is mutually exclusive with the original processor core software frequency division setup register control, and only one of the two can be used.
 The choice is made by using the corresponding bit on the other function configuration register.

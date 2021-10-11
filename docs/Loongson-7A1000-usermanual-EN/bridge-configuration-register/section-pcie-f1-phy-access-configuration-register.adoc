@@ -1,7 +1,7 @@
 [[section-pcie-f1-phy-access-configuration-register]]
 === `PCIE_F1 PHY` Access Configuration Register
 
-This group of registers is used to control the configuration access operation that generates the PCIE_F1 PHY internal control register. 
+This group of registers is used to control the configuration access operation that generates the PCIE_F1 PHY internal control register.
 This register controls the 4 data links of PCIE_F1.
 
 Address Offset: `05B0`-`05B3h`

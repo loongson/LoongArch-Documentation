@@ -78,7 +78,7 @@ d|Reset Value
 |Flat Mode
 |R
 |1'b0
-|Traditional compatibility mode
+|Legacy compatibility mode
 
 |11
 |Guest Mode

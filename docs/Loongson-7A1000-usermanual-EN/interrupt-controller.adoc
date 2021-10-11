@@ -1,7 +1,7 @@
 [[interrupt-controller]]
 == Interrupt Controller
 
-The bridge chip has an integrated advanced programmable interrupt controller. 
+The bridge chip has an integrated advanced programmable interrupt controller.
 The internal interrupt controller supports up to `64` interrupt sources and two interrupt outputs.
 
 The bridge supports interrupt transmission via both interrupt lines and HT messages.
@@ -12,16 +12,16 @@ In the HT message method, no additional interrupt pin connection is required, an
 
 The bridge chip supports the use of only one of these two interrupt methods and is valid for all `64` interrupt sources simultaneously.
 
-The bridge supports outputting dual interrupts, meaning that interrupt information can be routed to both processors. 
+The bridge supports outputting dual interrupts, meaning that interrupt information can be routed to both processors.
 The correspondence between interrupt sources and interrupt outputs is configurable, and this configuration is valid for both interrupt line and HT message packet interrupt modes.
 
-In interrupt line interrupt mode, the interrupt lines of all interrupt-capable devices inside the bridge chip are sent directly to the bridge chip's interrupt controller, and external PCIE devices send interrupts to the bridge chip's internal PCIE controller via legacy interrupts. 
+In interrupt line interrupt mode, the interrupt lines of all interrupt-capable devices inside the bridge chip are sent directly to the bridge chip's interrupt controller, and external PCIE devices send interrupts to the bridge chip's internal PCIE controller via legacy interrupts.
 The bridge's interrupt controller finally interrupts the processor via the bridge's interrupt pin signal.
 
 In HT message interrupt mode, all devices inside the bridge except the PCIE send interrupt information to the interrupt controller of the bridge via the interrupt line, and the interrupt controller converts the interrupt information into HT message packets and sends them to the processor via the HT bus.
 
-For PCIE devices, there are two interrupt modes, one is that the device still uses legacy interrupt and sends the interrupt information to the interrupt controller of the bridge through the interrupt line of the PCIE controller of the bridge, and the interrupt controller is responsible for converting the interrupt information into HT message packets; 
-the other is to enable the `MSI` interrupt function of the PCIE device, and the `MSI` interrupt message of the device passes through the PCIE controller of the bridge. 
+For PCIE devices, there are two interrupt modes, one is that the device still uses legacy interrupt and sends the interrupt information to the interrupt controller of the bridge through the interrupt line of the PCIE controller of the bridge, and the interrupt controller is responsible for converting the interrupt information into HT message packets;
+the other is to enable the `MSI` interrupt function of the PCIE device, and the `MSI` interrupt message of the device passes through the PCIE controller of the bridge.
 The other is to enable the `MSI` interrupt function of the PCIE device, and the device's `MSI` interrupt messages are converted into HT packets by the conversion module inside the bridge's PCIE controller.
 
 Note that in the latter mode, the interrupt packets of the PCIE device do not support interrupt routing and can only be sent to the HT lo controller of the bridge.
@@ -34,7 +34,7 @@ The figure above illustrates the hardware modules and processes involved in inte
 
 The figure shows the process of the two interrupt methods, the upper part shows the interrupt through the interrupt line INTn0, and the lower part shows the interrupt through the HT message packet.
 
-The interrupt intX from the device (except for PCIE devices operating in `MSI` mode) is sent to the 7A internal interrupt controller, where it is routed to the bridge pin or converted into an HT packet and sent to the 3A's HT controller, which receives the interrupt through the external interrupt pin or HT controller interrupt, 
+The interrupt intX from the device (except for PCIE devices operating in `MSI` mode) is sent to the 7A internal interrupt controller, where it is routed to the bridge pin or converted into an HT packet and sent to the 3A's HT controller, which receives the interrupt through the external interrupt pin or HT controller interrupt,
 and is routed through the interrupt to The interrupt controller of 3A receives the interrupt through external interrupt pin or HT controller interrupt and interrupts a processor core through interrupt route.
 
 The address space of the bridge interrupt controller is 4KB, and the starting address (internal space of the bridge) is configured by the BIOS.

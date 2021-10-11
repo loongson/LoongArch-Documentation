@@ -1,8 +1,8 @@
 [[address-space-division]]
 === Address Space Division
 
-The PCIE controller in the bridge has a standard PCIE configuration header, so the internal registers of the PCIE controller and the address space of its downstream devices are managed by the information in its configuration header. 
-The address-related registers in the configuration header are determined during the PCI device scan. 
+The PCIE controller in the bridge has a standard PCIE configuration header, so the internal registers of the PCIE controller and the address space of its downstream devices are managed by the information in its configuration header.
+The address-related registers in the configuration header are determined during the PCI device scan.
 
 Because the bridge's PCIE controller can only operate in RC mode, its configuration header is of type TYPE1.
 

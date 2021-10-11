@@ -29,8 +29,8 @@ d|Read/Write
 
 `1`: The operating mode is determined by the software configuration (bit26)
 
-|26	
-|cfg_x4_mode	
+|26
+|cfg_x4_mode
 |R/W
 |Software configuration of `PCIE_H` operating modes
 

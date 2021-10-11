@@ -2,8 +2,7 @@
 === Detailed Description of Interrupt Handling Process
 
 In the interrupt line interrupt mode, the interrupt controller of the bridge chip receives the device interrupt and sets the corresponding interrupt output pin low according to the interrupt routing configuration.
-The processor receives the interrupt through the interrupt input pin, 
-and the processor obtains the current interrupt source routed to itself by reading the corresponding ISR (interrupt in service register) register within the bridge chip interrupt controller.
+The processor receives the interrupt through the interrupt input pin, and the processor obtains the current interrupt source routed to itself by reading the corresponding ISR (interrupt in service register) register within the bridge chip interrupt controller.
 The interrupt processing process is:
 
 . The interrupt controller of the bridge receives the device interrupt; (hardware)

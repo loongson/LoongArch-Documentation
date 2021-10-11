@@ -12,7 +12,6 @@ Default value: `0000_0000h`
 
 Size: `32` bits
 
-
 [[pcie-f0-phy-access-configuration-register-1]]
 .PCIE_F0 PHY Access Configuration Register 1
 [%header,cols="^1m,^2m,^1,3"]
@@ -76,7 +75,7 @@ d|Read/Write
 |0 - Read and write to this set of registers will trigger PHY configuration access operation
 
 1 - Read or write to this set of registers does not trigger PHY configuration access operation, only a simple register read or write
- 
+
 |0
 |phy_cfg_R/W
 |R/W

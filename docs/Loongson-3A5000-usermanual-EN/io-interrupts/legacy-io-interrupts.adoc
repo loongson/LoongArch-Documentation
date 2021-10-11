@@ -1,5 +1,5 @@
-[[traditional-io-interrupts]]
-=== Traditional I/O Interrupts
+[[legacy-io-interrupts]]
+=== Legacy I/O Interrupts
 
 The legacy interrupts on the Loongson 3A5000 chip support `32` interrupt sources managed in a unified manner as shown in the figure below.
 Any of the I/O interrupt sources can be configured to enable or disable, how it is triggered, and the target processor core interrupt pin to be routed.
@@ -161,6 +161,6 @@ m|31:24
 
 Similar to inter-processor interrupts, the base address of I/O interrupts can also be accessed using `0x1fe00000`, or through the processor core's dedicated register configuration instructions.
 
-include::traditional-io-interrupts/accessing-by-address.adoc[]
+include::legacy-io-interrupts/accessing-by-address.adoc[]
 
-include::traditional-io-interrupts/accessing-by-configuration-register-instructions.adoc[]
+include::legacy-io-interrupts/accessing-by-configuration-register-instructions.adoc[]

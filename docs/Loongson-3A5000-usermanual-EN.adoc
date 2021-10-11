@@ -1,4 +1,4 @@
-= Loongson 3A5000/3B5000 Registers Technical Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide
+= Loongson 3A5000/3B5000 Processor Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide
 Loongson Technology Corporation Limited
 v1.03
 :title-separator: -

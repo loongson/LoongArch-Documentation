@@ -10,7 +10,7 @@ The 4 UART controllers are distinguished by bit `[9:8]`, and the internal physic
 [%header,cols="3*^1m"]
 |===
 |Address bit
-|Composition 
+|Composition
 |Remarks
 
 |[15:10]

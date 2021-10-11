@@ -23,8 +23,8 @@ Size: `32` bits
 |R/W
 |Reserved
 
-|1	
-|ht_hi_clken	
+|1
+|ht_hi_clken
 |R/W
 |`HT` Controller `1` Clock Enable
 
@@ -32,8 +32,8 @@ Size: `32` bits
 
 `1`: Turn on the clock
 
-|0	
-|ht_lo_clken	
+|0
+|ht_lo_clken
 |R/W
 |HT Controller `0` Clock Enable
 
@@ -50,10 +50,10 @@ Default value: `000a_a800h`
 
 Size: `32` bits
 
-This register is used to configure the routing information for the device's DMA accesses (i.e., the destination processor for the `DMA` access and the HT controller through which it passes). 
-Since the HT bus only supports `40`-bit addresses and the processor space (and the DMA access space) supports `64`-bit addresses, the addresses need to be transformed before and after passing through the HT bus in order to preserve the address routing information. This feature requires two supports: 
+This register is used to configure the routing information for the device's DMA accesses (i.e., the destination processor for the `DMA` access and the HT controller through which it passes).
+Since the HT bus only supports `40`-bit addresses and the processor space (and the DMA access space) supports `64`-bit addresses, the addresses need to be transformed before and after passing through the HT bus in order to preserve the address routing information. This feature requires two supports:
 
-. the bridge chip stores the node number information in a certain number of bits of the HT bus address; 
+. the bridge chip stores the node number information in a certain number of bits of the HT bus address;
 
 . on the processor side, the node information is remapped to the processor's node bit field using the address translation function of the HT receive window.
 
@@ -68,17 +68,17 @@ The LS7A1000 implements the `DMA` access node number translation function, which
 |Read/Write
 |Description
 
-|31:16	
-|dma_dest_ht	
+|31:16
+|dma_dest_ht
 |R/W
-|`DMA` access destination node routing configuration. There are 16 nodes, each bit corresponds to a node number. `bit31-16` correspond to `DMA` accesses to nodes `15-0` respectively. 
+|`DMA` access destination node routing configuration. There are 16 nodes, each bit corresponds to a node number. `bit31-16` correspond to `DMA` accesses to nodes `15-0` respectively.
 
 `1`: Routed to HT controller `1`
 
 `0`: Routed to HT controller `0`
 
-|15:13	
-|dma_node_id_offset_ma pped	
+|15:13
+|dma_node_id_offset_ma pped
 |R/W
 |Address Offset of the mapped `DMA` access node number in the HT address space (relative to bit32).
 
@@ -102,8 +102,8 @@ This register determines the maximum address range for `DMA` accesses to a singl
 |R/W
 |Reserved
 
-|3:0	
-|dma_node_id_mask	
+|3:0
+|dma_node_id_mask
 |R/W
 |Node number mask for `DMA` accesses. This register determines the number of nodes that can be accessed by device `DMA` access.
 

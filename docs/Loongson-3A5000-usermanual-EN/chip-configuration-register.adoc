@@ -7,7 +7,6 @@ The base address of each chip configuration register in this chapter is 0x1fe000
 
 CSR[A][B] in this document indicates bit B in the IOCSR register with offset address A, where B can be a range.
 
-
 include::chip-configuration-register/version-register.adoc[]
 
 include::chip-configuration-register/chip-characteristics-register.adoc[]

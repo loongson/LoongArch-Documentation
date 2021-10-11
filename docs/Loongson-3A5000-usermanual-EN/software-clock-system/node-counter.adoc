@@ -5,6 +5,5 @@ The behavior of the Node counter in the Loongson 3A5000 is the same as that of t
 
 It should be noted that the counting frequency of Node counter is exactly the same as Node clock. If you want to use Node counter as the basis for clock calculation, you should avoid inverting Node clock.
 
-
 include::node-counter/accessing-by-address.adoc[]
 
