@@ -1,4 +1,10 @@
 [[ddr4-sdram-parameter-configuration-format]]
 === DDR4 SDRAM Parameter Configuration Format
 
+////
+Fix the warning that could not locate the character.
+Simply add a manual page break here for avoiding generating character '\u2063'.
+////
+<<<
+
 include::ddr4-sdram-parameter-configuration-format/parameter-list-of-the-memory-controller.adoc[]
