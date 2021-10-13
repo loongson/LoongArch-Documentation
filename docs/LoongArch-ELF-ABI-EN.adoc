@@ -99,6 +99,7 @@ v1.00
 Temporary registers are also known as caller-saved registers.
 Static registers are also known as callee-saved registers.
 
+
 == Type Size and Alignment
 
 .LP64 ABI
@@ -151,11 +152,15 @@ Static registers are also known as callee-saved registers.
 
 `char` is signed.
 
+
 == ELF Object Files
 
-=== EI_CLASS: File class
+All common ELF definitions referenced in this section
+can be found in http://sco.com/developers/gabi/latest/contents.html[the latest SysV gABI specification].
 
-[%header,cols="2m,^1,^3"]
+=== `EI_CLASS`: File class
+
+[%header,cols="2m,^1m,^3"]
 |===
 |EI_CLASS
 |Value
@@ -170,63 +175,96 @@ Static registers are also known as callee-saved registers.
 |64-bit objects
 |===
 
-=== e_machine: Identifies the machine
+=== `e_machine`: Identifies the machine
 
-LoongArch (258)
+`LoongArch (258)`
 
-=== e_flags: Identifies the ABIs of this ELF file
+=== `e_flags`: Identifies ABI type and version
 
+[%header,cols="1,1,1,1"]
+|====
+| Bit 0 - 1 | Bit 2 - 5 | Bit 16 - 17 | Bit 6 - 15, 18 - 31
+
+| integer ABI | floating-point/extended ABI | ABI version | (reserved)
+|====
+
+The ABI type of an ELF object is described by `e_flags[5:0]` in its header,
+where `e_flags[1:0]` encodes the integer ABI type while `e_flags[5:2]` encodes
+the floating-point/extended ABI type.
+
+.Integer ABI types
 [%header,cols="2m,^1,^3"]
 |===
-|ABIs
-|Value
+|Name
+|`e_flags[1:0]`
 |Description
-
-|lp32
-|0x1
-|soft float
-
-|Reserved
-|0x2
-|--
 
 |lp64
-|0x3
-|64bit default ABI
+|`0x3`
+|64-bit GPRs and the stack are used for parameter passing.
 
-|lp32f
-|0x4
-|single float
+|ilp32
+|`0x1`
+|32-bit GPRs and the stack are used for parameter passing.
 
-|lp32d
-|0x5
-|double float
-
-|Reserved
-|0x6 --
+|(reserved)
+|`0x2` `0x0`
 |--
 |===
 
-=== ABI Version
-
-[%header,cols="2m,^1,^5"]
+.Floating-point / extended ABI types
+[%header,cols="2m,^1,^3"]
 |===
-|ABI Version:
-|Value
+|Name
+|`e_flags[5:2]`
 |Description
 
-|v0
-|0
-|Stack operands base relocation type.
+|double
+|`0x0`
+|64-bit FPRs are used for parameter passing.
 
-|v1
-|1
-|Another relocation type IF needed.
+|soft
+|`0x3`
+|No FPR is used for parameter passing.
 
+|single
+|`0x2`
+|32-bit FPRs are used for parameter passing.
+
+|(reserved)
+|`0x1` `0x4 - 0xf`
 |--
-|2 --
-|Reserved.
 |===
+
+[[abi-versioning]]
+`e_flags[17:16]` marks the ABI version of an ELF object,
+it also corresponds to the version suffix of standard
+program interpreters (`ld-*.so`).
+
+.ABI Version
+[%header,cols="2,^1,^5,^1"]
+|===
+|ABI version
+|Value
+|Description
+|Program interpreter version suffix
+
+|`v0`
+|`0x0`
+|Stack operands base relocation type.
+|`.1`
+
+|`v1`
+|`0x1`
+|Another relocation type IF needed.
+|`.2`
+
+|`--`
+|`0x2` `0x3`
+|Reserved.
+|`.3` `.4`
+|===
+
 
 == Relocations
 
@@ -522,3 +560,34 @@ with check 32-bit unsigned overflow
 |GNU C++ vtable member usage
 |
 |===
+
+
+== Program Interpreter Path
+
+.Program interpreter paths of different ABI types：
+[%header,cols="^1m,^3m"]
+|===
+|ABI Type
+|Glibc dynamic linker path
+
+|lp64/double
+|/lib64/ld-linux-loongarch-lp64-df.so.<abiversion>
+
+|lp64/single
+|/lib64/ld-linux-loongarch-lp64-sf.so.<abiversion>
+
+|lp64/soft
+|/lib64/ld-linux-loongarch-lp64-nf.so.<abiversion>
+
+|ilp32/double
+|/lib32/ld-linux-loongarch-ilp32-df.so.<abiversion>
+
+|ilp32/single
+|/lib32/ld-linux-loongarch-ilp32-sf.so.<abiversion>
+
+|ilp32/soft
+|/lib32/ld-linux-loongarch-ilp32-nf.so.<abiversion>
+|===
+
+Note: Each ABI version listed in <<abi-versioning, ABI versions>> corresponds
+to a unique `<abiversion>`.
