@@ -174,38 +174,61 @@ v1.00
 
 === e_machine: 体系结构 ID
 
-LoongArch (258)
+`LoongArch (258)`
 
-=== e_flags: ABI 变体标记
+=== e_flags: ABI 类型标记
 
+[%header,cols="1,1,1"]
+|=========================================
+|`[1:0]` 位 | `[5:2]` 位  | `[31:6]` 位
+
+| 整型 ABI  | 浮点 / 扩展 ABI | （保留）
+|=========================================
+
+`e_flags[5:0]` 标记了 ELF 目标文件使用的 ABI 类型。
+其中， `e_flags[1:0]` 标记整型 ABI， `e_flags[5:2]` 标记浮点 / 扩展 ABI。
+
+.整型 ABI 标记
 [%header,cols="2m,^1,^3"]
 |===
-|ABIs
+|整型 ABI 名称
 |枚举值
 |含义
 
-|lp32
-|0x1
-|32 位整型 ABI，仅支持软件浮点数
-
-|（保留值）
-|0x2
-|--
-
 |lp64
-|0x3
-|64 位整型 ABI，支持双精度硬件浮点数
+|`0b11`
+|使用 64 位通用寄存器和栈传参
 
-|lp32f
-|0x4
-|32 位整型 ABI，支持单精度硬件浮点数
-
-|lp32d
-|0x5
-|32 位整型 ABI，支持双精度硬件浮点数
+|ilp32
+|`0b01`
+|使用 32 位通用寄存器和栈传参
 
 |（保留值）
-|0x6 --
+|`0b10` `0b00`
+|--
+|===
+
+.浮点 / 扩展 ABI 标记
+[%header,cols="2m,^1,^3"]
+|===
+|浮点 / 扩展 ABI 名称
+|枚举值
+|含义
+
+|double
+|`0b0000`
+|使用 64 位浮点寄存器传参
+
+|soft
+|`0b0011`
+|不使用浮点寄存器传参
+
+|single
+|`0b0010`
+|使用 32 位浮点寄存器传参
+
+|（保留值）
+|`0b0001` `0b0100 - 0b1111`
 |--
 |===
 
@@ -227,7 +250,7 @@ LoongArch (258)
 
 |--
 |2 --
-|保留
+|（保留值）
 |===
 
 == 重定位类型
@@ -524,3 +547,107 @@ LoongArch (258)
 |GNU C++ vtable 支持
 |
 |===
+
+== 编译器选项和路径惯例
+
+=== 编译器选项
+
+以下编译器选项的最终效应包括：
+
+1. 配置使用的 ABI 类型
+
+2. 配置使用的 ISA 扩展
+
+3. 配置处理器型号相关的调优参数
+
+.编译器选项列表：
+[%header,cols="^1m,^2,^7"]
+|===
+|选项
+|可用值
+|描述
+
+|-march=
+|`native` `loongarch64` `la464`
+|选择目标 CPU (隐含默认 ABI 类型、ISA 扩展和调优参数)
+
+|-mtune=
+|`native` `loongarch64` `la464`
+|选择目标 CPU 的性能调优参数
+
+|-mabi=
+|`lp64` `ilp32`
+|选择整型 ABI 类型
+
+|-mfloat-abi=
+|`double` `single` `soft`
+|选择浮点 / 扩展 ABI 类型
+
+|-mfpu=
+|`double` `single` `none`
+|选择编译器可用的浮点 / 扩展指令集
+
+|-msoft-float
+|`--`
+|`-mfloat-abi=soft -mfpu=none` 的简写
+
+|-msingle-float
+|`--`
+|`-mfloat-abi=single -mfpu=single` 的简写
+
+|-mdouble-float
+|`--`
+|`-mfloat-abi=double -mfpu=double` 的简写
+|===
+
+=== GNU/Linux 文件系统路径惯例
+
+.各 ABI 类型对应的文件系统路径惯例：
+[%header,cols="^1m,^3m,^3m,^3m"]
+|===
+|ABI 类型
+|标准库路径
+|multiarch库路径
+|标准动态链接器路径
+
+|lp64/double
+|/lib64
+|/lib/loongarch64-linux-gnu
+|/lib64/ld-linux-loongarch-lp64-df.so
+
+|lp64/single
+|/lib64/single
+|/lib/loongarch64-linux-gnu/single
+|/lib64/ld-linux-loongarch-lp64-sf.so
+
+|lp64/soft
+|/lib64/soft
+|/lib/loongarch64-linux-gnu/soft
+|/lib64/ld-linux-loongarch-lp64-nf.so
+
+|ilp32/double
+|/lib32
+|/lib/loongarch32-linux-gnu
+|/lib32/ld-linux-loongarch-ilp32-df.so
+
+|ilp32/single
+|/lib32/single
+|/lib/loongarch32-linux-gnu/single
+|/lib32/ld-linux-loongarch-ilp32-sf.so
+
+|ilp32/soft
+|/lib32/soft
+|/lib/loongarch32-linux-gnu/soft
+|/lib32/ld-linux-loongarch-ilp32-nf.so
+|===
+
+其他路径惯例规则：
+
+. 在 GNU/Linux 发行版上， `/lib` 或 `/usr/lib` 路径应当为软链接，
+  指向该发行版二进制程序主要使用的整型 ABI 类型所对应的库搜索路径
+  （ `lib32` 或 `lib64` ）。
+
+. 在 GNU/Linux multiarch 路径惯例下，共定义两个规范的目标三元组名称：
+  `loongarch64-linux-gnu` 和 `loongarch32-linux-gnu` 。
+  在龙芯架构发行版上， `/lib/loongarch64-linux-gnu` / `/lib/loongarch32-linux-gnu`
+  应创建为指向 `/lib64` / `/lib32` 目录的软链接。

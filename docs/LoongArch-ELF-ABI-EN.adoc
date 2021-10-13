@@ -172,38 +172,62 @@ Static registers are also known as callee-saved registers.
 
 === e_machine: Identifies the machine
 
-LoongArch (258)
+`LoongArch (258)`
 
 === e_flags: Identifies the ABIs of this ELF file
 
+[%header,cols="1,1,1"]
+|========================================================
+| Bit 0 - 1 | Bit 2 - 5 | Bit 6 - 31
+
+| integer ABI | floating-point/extended ABI | (reserved)
+|========================================================
+
+The ABI type of an ELF object is described by `e_flags[5:0]` in its header,
+where `e_flags[1:0]` encodes its integer ABI type while `e_flags[5:2]` encodes
+the floating-point/extended ABI type.
+
+.Integer ABI types
 [%header,cols="2m,^1,^3"]
 |===
-|ABIs
-|Value
+|Name
+|`e_flags[1:0]`
 |Description
 
-|lp32
-|0x1
-|soft float
-
-|Reserved
-|0x2
-|--
-
 |lp64
-|0x3
-|64bit default ABI
+|`0b11`
+|64-bit GPRs and the stack are used for parameter passing.
 
-|lp32f
-|0x4
-|single float
+|ilp32
+|`0b01`
+|32-bit GPRs and the stack are used for parameter passing.
 
-|lp32d
-|0x5
-|double float
+|(reserved)
+|`0b10` `0b00`
+|--
+|===
 
-|Reserved
-|0x6 --
+.Floating-point / extended ABI types
+[%header,cols="2m,^1,^3"]
+|===
+|Name
+|`e_flags[5:2]`
+|Description
+
+|double
+|`0b0000`
+|64-bit FPRs are used for parameter passing.
+
+|soft
+|`0b0011`
+|No FPR is used for parameter passing.
+
+|single
+|`0b0010`
+|32-bit FPRs are used for parameter passing.
+
+|(reserved)
+|`0b0001` `0b0100 - 0b1111`
 |--
 |===
 
@@ -522,3 +546,108 @@ with check 32-bit unsigned overflow
 |GNU C++ vtable member usage
 |
 |===
+
+== Compiler Options and Library Path Conventions
+
+=== Compiler Options
+
+The command-line options listed below should denote a change
+in the following compiler settings:
+
+1. ABI type of compiled subroutines
+
+2. Available ISA extensions
+
+3. Processor-model-specific tuning parameters
+
+.Compiler Options:
+[%header,cols="^1m,^2,^7"]
+|===
+|Option
+|Values
+|Description
+
+|-march=
+|`native` `loongarch64` `la464`
+|Target CPU model (implies default ABI type, ISA extension and tuning parameters)
+
+|-mtune=
+|`native` `loongarch64` `la464`
+|Target CPU model (tuning parameters)
+
+|-mabi=
+|`lp64` `ilp32`
+|Integer ABI type
+
+|-mfloat-abi=
+|`double` `single` `soft`
+|Floating-point / extended ABI type
+
+|-mfpu=
+|`double` `single` `none`
+|Floating-point ISA / SIMD extensions
+
+|-msoft-float
+|`--`
+|alias for `-mfloat-abi=soft -mfpu=none`
+
+|-msingle-float
+|`--`
+|alias for `-mfloat-abi=single -mfpu=single`
+
+|-mdouble-float
+|`--`
+|alias for `-mfloat-abi=double -mfpu=double`
+|===
+
+=== GNU/Linux Library Path Conventions
+
+.Library Path Conventions of ABI types
+[%header,cols="^1m,^3m,^3m,^3m"]
+|===
+|ABI Type
+|Standard Library Search Path
+|Multiarch Library Path
+|Program Interpreter Path
+
+|lp64/double
+|/lib64
+|/lib/loongarch64-linux-gnu
+|/lib64/ld-linux-loongarch-lp64-df.so
+
+|lp64/single
+|/lib64/single
+|/lib/loongarch64-linux-gnu/single
+|/lib64/ld-linux-loongarch-lp64-sf.so
+
+|lp64/soft
+|/lib64/soft
+|/lib/loongarch64-linux-gnu/soft
+|/lib64/ld-linux-loongarch-lp64-nf.so
+
+|ilp32/double
+|/lib32
+|/lib/loongarch32-linux-gnu
+|/lib32/ld-linux-loongarch-ilp32-df.so
+
+|ilp32/single
+|/lib32/single
+|/lib/loongarch32-linux-gnu/single
+|/lib32/ld-linux-loongarch-ilp32-sf.so
+
+|ilp32/soft
+|/lib32/soft
+|/lib/loongarch32-linux-gnu/soft
+|/lib32/ld-linux-loongarch-ilp32-nf.so
+|===
+
+Other path conventions:
+
+. On a GNU/Linux distribution, either `/lib` or `/usr/lib` should be symlinked
+  to the standard library path of the primary integer ABI type of the
+  binary executables supplied by the distribution.
+
+. For multiarch-style filesystem layouts, two canonical target triplets are defined:
+  `loongarch64-linux-gnu` and `loongarch32-linux-gnu`.
+  On a LoongArch distribution with multiarch layout, `/lib/loongarch64-linux-gnu` /
+  `/lib/loongarch32-linux-gnu` should be symlinked to `/lib64` / `/lib32`.
