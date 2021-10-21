@@ -1,0 +1,161 @@
+= 龙芯架构编译器约定
+龙芯中科技术股份有限公司
+v1.00
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+:toc-title: 目录
+:scripts: cjk
+
+== 编译器命令行选项界面
+
+以下编译器选项的最终效应包括：
+
+1. 配置使用的 ABI 类型
+
+2. 配置使用的 ISA 扩展
+
+3. 配置处理器型号相关的调优参数
+
+.编译器选项列表：
+[%header,cols="^1m,^2,^7"]
+|===
+|选项
+|可用值
+|描述
+
+|-march=
+|`native` `loongarch64` `la464`
+|选择目标 CPU (隐含默认 ABI 类型、ISA 扩展和调优参数)
+
+|-mtune=
+|`native` `loongarch64` `la464`
+|选择目标 CPU 的性能调优参数
+
+|-mabi=
+|`lp64` `ilp32`
+|选择整型 ABI 类型
+
+|-mfloat-abi=
+|`double` `single` `soft`
+|选择浮点 / 扩展 ABI 类型
+
+|-mfpu=
+|`double` `single` `none`
+|选择编译器可用的浮点 / 扩展指令集
+
+|-msoft-float
+|`--`
+|`-mfloat-abi=soft -mfpu=none` 的简写
+
+|-msingle-float
+|`--`
+|`-mfloat-abi=single -mfpu=single` 的简写
+
+|-mdouble-float
+|`--`
+|`-mfloat-abi=double -mfpu=double` 的简写
+|===
+
+
+== GNU 目标三元组和 Multiarch 架构标识符
+
+GNU 目标三元组是 GNU 构建系统用于描述目标平台的字符串，
+一般包含三个字段：处理器类型 (`machine`) ，系统厂商 (`vendor`)，操作系统 (`os`)。
+
+.龙芯架构 `machine` 字符串列表：
+[%header,cols="^1,^2"]
+|===
+|`machine` 字符串
+|含义
+
+|`loongarch64`
+|默认使用 la64 指令集，双精度浮点单元，ABI 类型 `lp64/double`
+
+|`loongarch64nf`
+|默认使用 la64 指令集，无硬件浮点单元，ABI 类型 `lp64/soft`
+
+|`loongarch64sf`
+|默认使用 la64 指令集，单精度浮点单元，ABI 类型 `lp64/single`
+|===
+
+Multiarch 架构标识符是用于 multiarch 库安装路径的目录名称，
+可以看作规范的 GNU 目标三元组，参见 https://wiki.debian.org/Multiarch/Tuples[Debian 文档] 。
+
+.龙芯架构 Mulitarch 架构标识符列表：
+[%header,cols="^1,^2"]
+|===
+|Multiarch 架构标识符
+|含义
+
+|`<machine>-linux-gnu`
+|GNU/Linux 系统，使用 GNU C Library (glibc) 作为标准 C 库，系统内核为 Linux
+|===
+
+
+== C/C++ 预处理器内建宏定义
+
+.龙芯架构相关 C/C++ 预处理器内建宏列表：
+[%header,cols="^1,^3,^3"]
+|===
+|名称
+|值
+|描述
+
+|`\\__loongarch__`
+|（无）
+|目标为龙芯架构
+
+|`__loongarch_gpr`
+|`64`
+|通用寄存器位宽
+
+|`__loongarch_fpr`
+|`0` `32` `64`
+|浮点寄存器位宽（无 fpu 则为 `0` ）
+
+|`_LOONGARCH_ARCH`
+|`loongarch64` `la464`
+|相当于 `--with-arch` / `-march` 指定的处理器型号
+
+|`_LOONGARCH_TUNE`
+|`loongarch64` `la464`
+|相当于 `-mtune` 指定的处理器型号
+
+|`__loongarch_lp64`
+|（无）
+|整型 ABI 类型为 `lp64`
+
+|`__loongarch_hard_float`
+|（无）
+|浮点/扩展 ABI 类型为 `single` 或 `double`
+
+|`__loongarch_soft_float`
+|（无）
+|浮点/扩展 ABI 类型为 `soft`
+
+|`__loongarch_single_float`
+|（无）
+|浮点/扩展 ABI 类型为 `single`
+
+|`__loongarch_double_float`
+|（无）
+|浮点/扩展 ABI 类型为 `double`
+
+|`_LOONGARCH_SZINT`
+|（略）
+|C/C++ `int` 类型位宽
+
+|`_LOONGARCH_SZINT`
+|（略）
+|C/C++ `int` 类型位宽
+
+|`_LOONGARCH_SZLONG`
+|（略）
+|C/C++ `long int` 类型位宽
+
+|`_LOONGARCH_SZPTR`
+|（略）
+|C/C++ 指针类型位宽
+|===

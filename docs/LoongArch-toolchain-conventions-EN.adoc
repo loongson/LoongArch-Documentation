@@ -1,0 +1,160 @@
+= LoongArch ELF ABI specification
+Loongson Technology Corporation Limited
+v1.00
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+
+== Compiler Options
+
+The command-line options listed below should denote a change
+in the following compiler settings:
+
+1. ABI type of compiled subroutines
+
+2. Available ISA extensions
+
+3. Processor-model-specific tuning parameters
+
+.Compiler Options:
+[%header,cols="^1m,^2,^7"]
+|===
+|Option
+|Possible Values
+|Description
+
+|-march=
+|`native` `loongarch64` `la464`
+|Target CPU model (implies default ABI type, ISA extension and tuning parameters)
+
+|-mtune=
+|`native` `loongarch64` `la464`
+|Target CPU model (tuning parameters)
+
+|-mabi=
+|`lp64` `ilp32`
+|Integer ABI type
+
+|-mfloat-abi=
+|`double` `single` `soft`
+|Floating-point / extended ABI type
+
+|-mfpu=
+|`double` `single` `none`
+|Floating-point ISA / SIMD extensions
+
+|-msoft-float
+|`--`
+|alias for `-mfloat-abi=soft -mfpu=none`
+
+|-msingle-float
+|`--`
+|alias for `-mfloat-abi=single -mfpu=single`
+
+|-mdouble-float
+|`--`
+|alias for `-mfloat-abi=double -mfpu=double`
+|===
+
+
+== GNU Target Triplets and Multiarch Specifiers
+
+Target triplet is a core concept in the GNU build system.
+It describes a platform on which the code runs, primarily with three fields:
+the CPU family/model (`machine`), the vendor (`vendor`), and the operating 
+system name (`os`)。
+
+.List of LoongArch `machine` strings：
+[%header,cols="^1,^2"]
+|===
+|`machine`
+|Description
+
+|`loongarch64`
+|Processors that support la64 ISA and 64-bit FPU. (ABI: `lp64/double`)
+
+|`loongarch64nf`
+|Processors that support la64 ISA without FPU. (ABI: `lp64/soft`)
+
+|`loongarch64sf`
+|Processors that support la64 ISA and 32-bit FPU. (ABI: `lp64/single`)
+|===
+
+Multiarch Architecture Specifiers are essentially standard directory names
+where libraries are installed on a multiarch-flavored filesystem.
+These strings are normalized GNU target triplets. See
+https://wiki.debian.org/Multiarch/Tuples[debian documentation] for details.
+
+.LoongArch Mulitarch Architecture Specifiers：
+[%header,cols="^1,^2"]
+|===
+|Multiarch Specifier
+|Description
+
+|`<machine>-linux-gnu`
+|GNU/Linux on LoongArch (with Glibc as standard C library and Linux as OS kernel)
+|===
+
+
+== C/C++ Preprocessor Definitions
+
+.LoongArch-specific C/C++ Built-in Macros：
+[%header,cols="^1,^3,^3"]
+|===
+|Name
+|Possible Values
+|Description
+
+|`\\__loongarch__`
+|(none)
+|Defined if the target is LoongArch.
+
+|`__loongarch_gpr`
+|`64`
+|Bit-width of general purpose registers.
+
+|`__loongarch_fpr`
+|`0` `32` `64`
+|Bit-width of floating-point registers (`0` if there is no FPU).
+
+|`_LOONGARCH_ARCH`
+|`loongarch64` `la464`
+|Processor model as specified by `--with-arch` / `-march`.
+
+|`_LOONGARCH_TUNE`
+|`loongarch64` `la464`
+|Processor model as specified by `-mtune`.
+
+|`__loongarch_lp64`
+|(none)
+|Defined if integer ABI type is `lp64`.
+
+|`__loongarch_hard_float`
+|(none)
+|Defined if floating-point/extended ABI type is `single` or `double`.
+
+|`__loongarch_soft_float`
+|(none)
+|Defined if floating-point/extended ABI type is `soft`.
+
+|`__loongarch_single_float`
+|(none)
+|Defined if floating-point/extended ABI type is `single`.
+
+|`__loongarch_double_float`
+|(none)
+|Defined if floating-point/extended ABI type is `double`.
+
+|`_LOONGARCH_SZINT`
+|(omitted)
+|Bit-width of C/C++ `int` type.
+
+|`_LOONGARCH_SZLONG`
+|(omitted)
+|Bit-width of C/C++ `long int` type.
+
+|`_LOONGARCH_SZPTR`
+|(omitted)
+|Bit-width of C/C++ pointer types.
+|===
