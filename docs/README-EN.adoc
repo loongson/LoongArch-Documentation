@@ -43,9 +43,13 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 ** link:Loongson-7A1000-usermanual-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[Original document].
 
-* LoongArch ELF ABI: This manual describes the LoongArch ELF ABI.
+* LoongArch ELF psABI: This manual describes the LoongArch ELF psABI.
 ** link:LoongArch-ELF-ABI-EN.html[HTML version].
 ** link:LoongArch-ELF-ABI-EN.pdf[PDF version].
+
+* LoongArch toolchain conventions: This document describes the command-line interface and relevant OS conventions of LoongArch toolchains.
+** link:LoongArch-toolchain-conventions-EN.html[HTML version].
+** link:LoongArch-toolchain-conventions-EN.pdf[PDF version].
 
 == Translator`'s Note
 

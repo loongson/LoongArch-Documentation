@@ -1,0 +1,383 @@
+= 龙芯架构工具链约定
+龙芯中科技术股份有限公司
+v1.00
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+:toc-title: 目录
+:scripts: cjk
+
+__注：在本文档中，"架构"、"指令集架构"、"ISA" 均表示某一指令集和可操作的寄存器集合。__
+
+
+== 编译器命令行选项
+
+=== 概述
+
+与龙芯架构相关的编译器选项含义包括以下三方面：
+
+1. *配置目标架构*：允许使用的指令集和寄存器范围；
+
+2. *配置目标 ABI*：标准数据类型的表示方法，函数调用传参、返回的实现方式；
+
+3. *配置优化参数*：用于指导编译器优化的微架构特性。
+
+为此，编译器应实现以下两类命令行选项：
+
+1. *基础选项*：选择编译目标的基本配置，包括 `-march` `-mabi` `-mtune`；
+
+2. *扩展选项*：对基础选项或基础选项默认值的配置进行增量调整。
+
+.基础选项
+[%header,cols="^1m,^2,^7"]
+|===
+|选项
+|可用值
+|描述
+
+|-march=
+|`native` `loongarch64` `la464`
+|选择目标架构：设定默认可用的指令集和寄存器范围
+（即默认使用的 <<isa-modules,指令集模块>> 集合）
+
+|-mabi=
+|`lp64d` `lp64f` `lp64s` `ilp32d` `ilp32f` `ilp32s`
+|选择基础 ABI 类型
+
+|-mtune=
+|`native` `loongarch64` `la464`
+|选择目标微架构：设定微架构相关的性能调优参数；
+取值范围是 `-march` 选项的超集，默认值与 `-march` 值相同
+|===
+
+.扩展选项
+[%header,cols="^1m,^2,^7"]
+|===
+|选项
+|可用值
+|描述
+
+|-mfpu=
+|`64` `32` `none` (等同于 `0`)
+|选择可用的基础浮点数指令和寄存器范围
+
+|-msoft-float
+|
+|`-mfpu=none` 的别名
+
+|-msingle-float
+|
+|`-mfpu=32` 的别名
+
+|-mdouble-float
+|
+|`-mfpu=64` 的别名
+|===
+
+=== 目标指令集架构 (ISA) 的构成
+
+龙芯架构采用 *基础部分* 加 *扩展部分* 的组织形式，
+在后续更新过程中，基础部分或扩展部分中的各功能子集都可以独立地演进，
+并保证高版本总是二进制兼容低版本。
+
+[[isa-modules]]
+针对这一特点，编译器应当对目标 ISA 进行模块化抽象。
+约定 ISA 模块分为两类： *基础架构* 和 *ISA 扩展特性* 。
+
+其中，*基础架构* 为目标 ISA 的核心部分，包含基础整数指令、基础浮点数指令等功能，
+由 `-march` 选项的取值唯一确定。*ISA 扩展特性* 可能对应一种单独的指令集扩展，
+也可能对应基础架构或指令集扩展的增量/演进部分，由扩展选项控制是否开启。
+
+在确定目标 ISA 配置时，应以 *基础架构* 隐含的 ISA 模块为基础，
+再根据选用 / 关闭 ISA 扩展的命令行选项进行调整，得出结果。
+
+image::compiler-isa-config-model-CN.svg[]
+
+在以下列举的所有的 ISA 模块中，编译器必须至少实现一种基础架构。
+
+.基础架构
+[%header,cols="^1,^3,^2"]
+|===
+|名称
+|选择该基础架构的 `-march` 值
+|描述
+
+|LA64 基础架构 v1.00 (`la64v100`)
+|`loongarch64` `la464`
+|由 https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-CN.html[《龙芯架构参考手册 - 卷1 - 基础架构》]
+v1.00 定义的指令集架构
+|===
+
+下表列举了由编译器抽象的全体 ISA 扩展特性，以及选用/关闭这些特性的命令行选项。
+
+.ISA 扩展特性
+[%header,cols="^1,^3,^2"]
+|===
+|名称
+|编译器选项
+|描述
+
+|基础浮点运算单元 (`fpu*`)
+|`-mfpu=\*` (`*` 可能取值为 `none` `32` `64`)
+|选择编译器可用的基础浮点数指令和浮点寄存器，属于基础架构的一部分，
+默认值由基础架构决定。
+|===
+
+下表列举了所有可同时作为 `-march` 和 `-mtune` 选项参数的目标 CPU 类型
+及其相关属性。
+
+.目标 CPU
+[%header,cols="^1,^3,^2"]
+|===
+|名称 / 选项值
+|默认选择的 ISA 模块
+|性能调优目标
+
+|`native`
+|由 `cpucfg` 指令自动检测（仅适用于本地编译器）
+|由 `cpucfg` 自动检测的处理器类型
+
+|`loongarch64`
+|`la64v100` [`fpu64`]
+|通用 64 位龙芯架构 (LA64) 处理器
+
+|`la464`
+|`la64v100` [`fpu64`]
+|LA464 处理器核
+|===
+
+[[abi-types]]
+=== 应用二进制接口 (ABI) 的构成
+
+对于龙芯架构编译器，完整的 ABI 配置应包含两个部分：
+*基础 ABI* 和 *ABI 扩展特性* 。前者描述了 ABI 中整型和浮点数据的表示、
+传参和返回方式，后者则代表对基础 ABI 进行的总体调整，可能需要特定 ISA 扩展支持。
+
+需要注意的是，不同 ABI 扩展特性之间是 *互斥* 的，不能相互叠加；
+具有不同扩展特性的 ABI 配置之间也 *互不兼容* 。
+
+原则上本文档不会增加新的 ABI 扩展特性，除非它能提供
+其他编译器优化技术不能单独实现的功能或性能优势。
+
+基础 ABI 共有六种，编译器可根据实现的目标架构范围，选择实现其中的一种或多种，
+其标准名称和对应的 `-mabi` 选项值一致。
+
+.基础 ABI 类型
+[%header,cols="^1,^1,^1"]
+|===
+|标准名称  |数据模型   |可用于传参、返回的通用/浮点寄存器宽度
+|`lp64d`   |lp64       |64 / 64
+|`lp64f`   |lp64       |64 / 32
+|`lp64s`   |lp64       |64 / （无）
+|`ilp32d`  |ilp32      |32 / 64
+|`ilp32f`  |ilp32      |32 / 32
+|`ilp32s`  |ilp32      |32 / （无）
+|===
+
+下表列举了全体 ABI 扩展特性类型及其相关命令行选项，除 `default` 必须实现之外，
+编译器可选择实现或不实现其中任何一种。
+
+.ABI 扩展特性类型
+[%header,cols="^1,^1,^1"]
+|===
+|名称
+|编译器选项
+|含义
+
+|`default`
+|（无）
+|符合 https://loongson.github.io/LoongArch-Documentation/LoongArch-ELF-ABI-CN.html[龙芯架构 ELF psABI 规范]
+|===
+
+[[default-arch-abi]]
+编译器的默认 ABI 应在构建时确定。此时若未明确配置 ABI 扩展类型，
+则默认采用 `default` 。
+
+若运行编译器时未给出 `-mabi` 或 ABI 扩展类型相关选项，
+则应当使用构建时确定的基础 ABI 类型或 ABI 扩展类型。
+
+原则上，实际配置的目标架构不应该对目标 ABI 的确定造成影响，
+除非构建时配置或命令行选项对 ABI 的约束导致实现它所需的指令集特性
+超出了编译选项对 ISA 配置的约束范围。此时编译器应报错退出。
+
+当编译选项不能唯一确定目标架构时，
+在选择默认值之前，编译器应根据下表，从命令行显式给出的 ABI 配置
+推断 *基础架构* 和 *ISA 扩展特性* 的默认配置，
+但不违反已给出编译选项对目标架构的明确约束。
+
+.目标架构和默认 ABI 类型对应关系
+[%header,cols="^1,^1,^1"]
+|===
+|目标架构包含的 ISA 模块
+|基础 ABI
+|ABI 扩展特性
+
+|`la64v100` [`fpu64`]
+|`lp64d`
+|`default`
+
+|`la64v100` `fpu32`
+|`lp64f`
+|`default`
+
+|`la64v100` `fpunone`
+|`lp64s`
+|`default`
+|===
+
+
+== GNU 目标三元组和 Multiarch 架构标识符
+
+*GNU 目标三元组* (target triplet) 是 GNU 构建系统用于描述目标平台的字符串，
+一般包含三个字段：处理器类型 (`machine`) ，系统厂商 (`vendor`)，操作系统 (`os`)。
+
+*Multiarch 架构标识符* 是用于 multiarch 库安装路径的目录名称，
+可以看作规范的 GNU 目标三元组，参见 https://wiki.debian.org/Multiarch/Tuples[Debian 文档] 。
+
+对于龙芯架构的合法 GNU 目标三元组，约定 `machine` 字段的取值范围及其含义如下：
+
+[[machine-strings]]
+.龙芯架构 `machine` 字符串
+[%header,cols="^1,^2"]
+|===
+|`machine` 字符串
+|含义
+
+|`loongarch64`
+|LA64 基础架构，基础 ABI 为 `lp64*`
+
+|`loongarch32`
+|LA32 基础架构，基础 ABI 为 `ilp32*`
+|===
+
+作为标准的库路径名称，龙芯架构的标准 multiarch 架构标识符至少应该反映
+发行到对应目录的二进制库 <<abi-types, ABI 类型>>。
+
+原则上，在编译以二进制形式发行的库时，应当采用
+<<default-arch-abi,所选 ABI 对应的默认目标指令集架构>>，
+因此 multiarch 架构标识符应与目标 ABI 配置一一对应。
+其中，关于整型 ABI 的部分由 `machine` 字段隐含，
+基础 ABI 的浮点部分和 ABI 扩展特性则分别由连续附加在 multiarch 标识符
+`os` 字段后的两个字符串后缀 (`<fabi_suffix><abiext_suffix>`) 标记。
+
+.龙芯架构 Mulitarch 架构标识符
+[%header,cols="^1,^2"]
+|===
+|Multiarch 架构标识符
+|含义
+
+|`<machine>-linux-gnu<fabi_suffix><abiext_suffix>`
+|GNU/Linux 系统，使用 GNU C Library (glibc) 作为标准 C 库，系统内核为 Linux
+|===
+
+.Multiarch `os` 字段，`<fabi_suffix>` 后缀标记及其含义
+[%header,cols="^1,^2"]
+|===
+|`<fabi_suffix>` 字符串    |含义
+|`f64`                     |基础 ABI 使用 64 位浮点寄存器传参 (`lp64d` `ilp32d`)
+|`f32`                     |基础 ABI 使用 32 位浮点寄存器传参 (`lp64f` `ilp32f`)
+|`sfp`                     |基础 ABI 不使用浮点寄存器传参 (`lp64s` `ilp32s`)
+|===
+
+.Multiarch `os` 字段，`<abiext_suffix>` 后缀标记及其对应的 ABI 扩展特性
+[%header,cols="^1,^2"]
+|===
+|`<abiext_suffix>` 字符串    |ABI 扩展特性
+|（空）                      |`default`
+|===
+
+.全体 Mulitarch 标识符列表
+[%header,cols="^1,^1,^1"]
+|===
+|ABI 类型（基础 ABI / ABI 扩展特性）
+|操作系统类型
+|Multiarch 架构标识符
+
+|`lp64d` / `default`
+|GNU/Linux
+|`loongarch64-linux-gnuf64`
+
+|`lp64f` / `default`
+|GNU/Linux
+|`loongarch64-linux-gnuf32`
+
+|`lp64s` / `default`
+|GNU/Linux
+|`loongarch64-linux-gnusfp`
+
+|`ilp32d` / `default`
+|GNU/Linux
+|`loongarch32-linux-gnuf64`
+
+|`ilp32f` / `default`
+|GNU/Linux
+|`loongarch32-linux-gnuf32`
+
+|`ilp32s` / `default`
+|GNU/Linux
+|`loongarch32-linux-gnusfp`
+|===
+
+
+== C/C++ 预处理器内建宏定义
+
+.龙芯架构相关 C/C++ 预处理器内建宏
+[%header,cols="^1,^3,^3"]
+|===
+|名称
+|值
+|描述
+
+|`\\__loongarch__`
+|（无）
+|目标为龙芯架构
+
+|`__loongarch_grlen`
+|`64` `32`
+|通用寄存器位宽
+
+|`__loongarch_frlen`
+|`0` `32` `64`
+|浮点寄存器位宽（无 fpu 则为 `0` ）
+
+|`_LOONGARCH_ARCH`
+|`"loongarch64"` `"la464"`
+|相当于 `--with-arch` / `-march` 指定的目标 CPU 名称
+
+|`_LOONGARCH_TUNE`
+|`"loongarch64"` `"la464"`
+|相当于 `-mtune` 指定的目标 CPU 名称
+
+|`__loongarch_lp64`
+|（无）
+|ABI 使用 64 位通用寄存器传参，采用 `lp64` 数据模型
+
+|`__loongarch_hard_float`
+|（无）
+|ABI 使用浮点寄存器传参
+
+|`__loongarch_soft_float`
+|（无）
+|ABI 不使用浮点寄存器传参
+
+|`__loongarch_single_float`
+|（无）
+|ABI 仅使用 32 位浮点寄存器传参
+
+|`__loongarch_double_float`
+|（无）
+|ABI 使用 64 位浮点寄存器传参
+
+|`_LOONGARCH_SZINT`
+|（略）
+|C/C++ `int` 类型位宽
+
+|`_LOONGARCH_SZLONG`
+|（略）
+|C/C++ `long int` 类型位宽
+
+|`_LOONGARCH_SZPTR`
+|（略）
+|C/C++ 指针类型位宽
+|===
