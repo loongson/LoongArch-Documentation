@@ -11,89 +11,89 @@ v1.00
 == 寄存器使用约定
 
 .通用寄存器使用约定
-[%header,cols="2m,2m,^5,^3"]
+[%header,cols="2,2,^5,^3"]
 |===
 |名称
 |别名
 |用途
 |在调用中是否保留
 
-|$r0
-|$zero
-|常数 0
-|--
+|`$r0`
+|`$zero`
+|常数 `0`
+|（常数）
 
-|$r1
-|$ra
+|`$r1`
+|`$ra`
 |返回地址
 |否
 
-|$r2
-|$tp
+|`$r2`
+|`$tp`
 |线程指针
-|-- （不可分配）
+|（不可分配）
 
-|$r3
-|$sp
+|`$r3`
+|`$sp`
 |栈指针
 |是
 
-|$r4-$r11
-|$a0-$a7
+|`$r4` - `$r11`
+|`$a0` - `$a7`
 |传参寄存器
 |否
 
-|$r4-$r5
-|$v0-$v1
+|`$r4` - `$r5`
+|`$v0` - `$v1`
 |返回值
 |否
 
-|$r12-$r20
-|$t0-$t8
+|`$r12` - `$r20`
+|`$t0` - `$t8`
 |临时寄存器
 |否
 
-|$r21
-|--
+|`$r21`
+|
 |保留
-|-- （不可分配）
+|（不可分配）
 
-|$r22
-|$fp/$s9
+|`$r22`
+|`$fp` / `$s9`
 |栈帧指针 / 静态寄存器
 |是
 
-|$r23-$r31
-|$s0-$s8
+|`$r23` - `$r31`
+|`$s0` - `$s8`
 |静态寄存器
 |是
 |===
 
 .浮点寄存器使用约定
-[%header,cols="2m,2m,^5,^3"]
+[%header,cols="2,2,^5,^3"]
 |===
 |名称
 |别名
 |用途
 |在调用中是否保留
 
-|$f0-$f7
-|$fa0-$fa7
+|`$f0` - `$f7`
+|`$fa0` - `$fa7`
 |传参寄存器
 |否
 
-|$f0-$f1
-|$fv0-$fv7
+|`$f0` - `$f1`
+|`$fv0` - `$fv1`
 |返回值
 |否
 
-|$f8-$f23
-|$ft0-$ft15
+|`$f8` - `$f23`
+|`$ft0` - `$ft15`
 |临时寄存器
 |否
 
-|$f24-$f31
-|$fs0-$fs7
+|`$f24` - `$f31`
+|`$fs0` - `$fs7`
 |静态寄存器
 |是
 |===
@@ -103,61 +103,89 @@ v1.00
 
 == C 语言数据类型规格
 
-.LP64 ABI
-[%header,cols="3m,^1,^1"]
+.lp64 数据模型 （对应基础 ABI 类型：`lp64d` `lp64f` `lp64s`）
+[%header,cols="3,^1,^1"]
 |===
 |标量类型
 |大小（字节）
 |对齐（字节）
 
-|bool/_Bool
+|`bool` / `_Bool`
 |1
 |1
 
-|unsigned/signed char
+|`unsigned char` / `char`
 |1
 |1
 
-|unsigned/signed short
+|`unsigned short` / `short`
 |2
 |2
 
-|unsigned/signed int
+|`unsigned int` / `int`
 |4
 |4
 
-|unsigned/signed long
+|`unsigned long` / `long`
 |8
 |8
 
-|unsigned/signed long long
+|`unsigned long long` / `long long`
 |8
 |8
 
 |指针类型
 |8
 |8
-
-|float
-|4
-|4
-
-|double
-|8
-|8
-
-|long double
-|16
-|16
 |===
 
-`char` 是有符号类型。
+.ilp32 数据模型 （对应基础 ABI 类型：`ilp32d` `ilp32f` `ilp32s`）
+[%header,cols="3,^1,^1"]
+|===
+|标量类型
+|大小（字节）
+|对齐（字节）
+
+|`bool` / `_Bool`
+|1
+|1
+
+|`unsigned char` / `char`
+|1
+|1
+
+|`unsigned short` / `short`
+|2
+|2
+
+|`unsigned int` / `int`
+|4
+|4
+
+|`unsigned long` / `long`
+|4
+|4
+
+|`unsigned long long` / `long long`
+|8
+|8
+
+|指针类型
+|4
+|4
+|===
+
+对于任何<<base-abi-type-marks, 基础 ABI 类型>>，`char` 默认是有符号类型。
+
 
 == ELF 目标文件
 
-=== EI_CLASS: ELF 文件格式
+本节内容中关于 ELF 目标文件的通用格式定义
+均参考 http://sco.com/developers/gabi/latest/contents.html[最新版本的 SysV gABI]。
 
-[%header,cols="2m,^1,^3"]
+=== `EI_CLASS`: ELF 文件格式
+
+[%header,cols="2m,^1m,^3"]
 |===
 |EI_CLASS
 |枚举值
@@ -172,63 +200,108 @@ v1.00
 |64 位 ELF 格式
 |===
 
-=== e_machine: 体系结构 ID
+=== `e_machine`: 体系结构 ID
 
-LoongArch (258)
+`LoongArch (258)`
 
-=== e_flags: ABI 变体标记
+=== `e_flags`: ABI 类型和版本标记
 
+[%header,cols="1,1,1,1"]
+|===
+|`[31:8]` 位 | `[7:6]` 位 | `[5:3]` 位   | `[2:0]` 位
+
+|（保留）     | ABI 版本  | ABI 扩展特性 | 基础 ABI 类型
+|===
+
+`e_flags[7:0]` 完整标记了 ELF 目标文件使用的 ABI 类型。
+
+[[base-abi-type-marks]]
+.基础 ABI 类型标记
 [%header,cols="2m,^1,^3"]
 |===
-|ABIs
-|枚举值
+|基础 ABI 名称
+|枚举值 (`e_flags[2:0]`)
 |含义
 
-|lp32
-|0x1
-|32 位整型 ABI，仅支持软件浮点数
+|lp64d
+|`0x3`
+|使用 64 位通用寄存器，64位浮点寄存器和栈传参，
+数据模型为 "lp64"（`long` 和指针类型宽度为64位，`int` 为32位）
 
-|（保留值）
-|0x2
-|--
+|lp64f
+|`0x2`
+|使用 64 位通用寄存器，32位浮点寄存器和栈传参，
+数据模型为 "lp64"（`long` 和指针类型宽度为64位，`int` 为32位）
 
-|lp64
-|0x3
-|64 位整型 ABI，支持双精度硬件浮点数
+|lp64s
+|`0x1`
+|使用 64 位通用寄存器和栈传参，
+数据模型为 "lp64"（`long` 和指针类型宽度为64位，`int` 为32位）
 
-|lp32f
-|0x4
-|32 位整型 ABI，支持单精度硬件浮点数
+|ilp32d
+|`0x7`
+|使用 32 位通用寄存器，64位浮点寄存器和栈传参，
+数据模型为 "ilp32"（`int`，`long` 和指针类型宽度为32位）
 
-|lp32d
-|0x5
-|32 位整型 ABI，支持双精度硬件浮点数
+|ilp32f
+|`0x6`
+|使用 32 位通用寄存器，32位浮点寄存器和栈传参，
+数据模型为 "ilp32"（`int`，`long` 和指针类型宽度为32位）
 
-|（保留值）
-|0x6 --
-|--
+|ilp32s
+|`0x5`
+|使用 32 位通用寄存器和栈传参，
+数据模型为 "ilp32"（`int`，`long` 和指针类型宽度为32位）
+
+|
+|`0x4` `0x0`
+|保留值
 |===
 
-=== ABI 版本
+.ABI 扩展特性标记
+[%header,cols="2m,^1,^3"]
+|===
+|ABI 扩展特性名称
+|枚举值 (`e_flags[5:3]`)
+|含义
 
-[%header,cols="2m,^1,^5"]
+|default
+|`0x0`
+|默认，无扩展特性
+
+|
+|`0x1` - `0x7`
+|保留值
+|===
+
+[[abi-versioning]]
+`e_flags[7:6]` 标记了 ELF 目标文件使用的 ABI 版本，
+它和动态链接器标准文件名 (`ld-*.so`) 的版本后缀一一对应。
+
+.ABI 版本标记
+[%header,cols="2,^1,^5,^1"]
 |===
 |ABI 版本
 |枚举值
 |描述
+|动态链接器版本后缀
 
-|v0
-|0
-|支持具有栈操作语义的重定位类型（旧版兼容）
+|`v0`
+|`0x0`
+|支持具有栈操作语义的重定位类型
+|`.0`
 
-|v1
-|1
-|新版重定位类型
+|`v1`
+|`0x1`
+|按需保留
+|`.1`
 
-|--
-|2 --
-|保留
+|
+|`0x2` `0x3`
+|保留值
+|`.2` `.3`
 |===
+
 
 == 重定位类型
 
@@ -524,3 +597,41 @@ LoongArch (258)
 |GNU C++ vtable 支持
 |
 |===
+
+
+== 动态链接器路径
+
+.标准动态链接器路径列表：
+[%header,cols="^1m,^1m,^2,^3m"]
+|===
+|基础 ABI 类型        |ABI 扩展特性
+|操作系统 / C 库
+|Glibc 动态链接器路径
+
+|lp64d                |default
+|Linux, Glibc
+|/lib64/ld-linux-loongarch-lp64d.so.<abiversion>
+
+|lp64f                |default
+|Linux, Glibc
+|/lib64/ld-linux-loongarch-lp64f.so.<abiversion>
+
+|lp64s                |default
+|Linux, Glibc
+|/lib64/ld-linux-loongarch-lp64s.so.<abiversion>
+
+|ilp32d               |default
+|Linux, Glibc
+|/lib32/ld-linux-loongarch-ilp32d.so.<abiversion>
+
+|ilp32f               |default
+|Linux, Glibc
+|/lib32/ld-linux-loongarch-ilp32f.so.<abiversion>
+
+|ilp32s               |default
+|Linux, Glibc
+|/lib32/ld-linux-loongarch-ilp32s.so.<abiversion>
+|===
+
+表中 `<abiversion>` 与 ELF文件编码的 `e_flags[7:6]` 一一对应，
+参见 <<abi-versioning, ABI 版本>> 。

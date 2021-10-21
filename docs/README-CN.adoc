@@ -35,9 +35,13 @@
 * 龙芯 7A1000 桥片用户手册：该手册介绍了桥片总体架构、时钟结构、地址空间、配置寄存器以及各个功能接口，主要供 BIOS 和内核开发人员使用。
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[原始文档] 。
 
-* LoongArch ELF ABI：该手册介绍了 LoongArch ELF ABI。
+* 龙芯架构 ELF psABI：该手册介绍了龙芯架构 ELF psABI。
 ** link:LoongArch-ELF-ABI-CN.html[HTML 版本]。
 ** link:LoongArch-ELF-ABI-CN.pdf[PDF 版本]。
+
+* 龙芯架构工具链约定：该手册介绍了龙芯架构工具链的命令行界面和操作系统相关惯例。
+** link:LoongArch-toolchain-conventions-CN.html[HTML 版本]。
+** link:LoongArch-toolchain-conventions-CN.pdf[PDF 版本]。
 
 [[getting-start]]
 == 开始
