@@ -116,7 +116,7 @@ Multiarch 架构标识符是用于 multiarch 库安装路径的目录名称，
 |浮点寄存器位宽（无 fpu 则为 `0` ）
 
 |`_LOONGARCH_ARCH`
-|`loongarch64` `la464`
+|`"loongarch64"` `"la464"`
 |相当于 `--with-arch` / `-march` 指定的处理器型号
 
 |`_LOONGARCH_TUNE`
