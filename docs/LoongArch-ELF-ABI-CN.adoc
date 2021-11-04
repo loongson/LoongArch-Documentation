@@ -103,7 +103,7 @@ v1.00
 
 == C 语言数据类型规格
 
-.lp64 数据模型 （对应基础 ABI 类型：`lp64d` `lp64f` `lp64s`）
+.LP64 数据模型 （对应基础 ABI 类型：`lp64d` `lp64f` `lp64s`）
 [%header,cols="3,^1,^1"]
 |===
 |标量类型
@@ -139,7 +139,7 @@ v1.00
 |8
 |===
 
-.ilp32 数据模型 （对应基础 ABI 类型：`ilp32d` `ilp32f` `ilp32s`）
+.ILP32 数据模型 （对应基础 ABI 类型：`ilp32d` `ilp32f` `ilp32s`）
 [%header,cols="3,^1,^1"]
 |===
 |标量类型
@@ -223,39 +223,43 @@ v1.00
 |枚举值 (`e_flags[2:0]`)
 |含义
 
-|lp64d
-|`0x3`
-|使用 64 位通用寄存器，64位浮点寄存器和栈传参，
-数据模型为 "lp64"（`long` 和指针类型宽度为64位，`int` 为32位）
-
-|lp64f
-|`0x2`
-|使用 64 位通用寄存器，32位浮点寄存器和栈传参，
-数据模型为 "lp64"（`long` 和指针类型宽度为64位，`int` 为32位）
+|
+|`0x0`
+|保留值
 
 |lp64s
 |`0x1`
 |使用 64 位通用寄存器和栈传参，
-数据模型为 "lp64"（`long` 和指针类型宽度为64位，`int` 为32位）
+数据模型为 LP64（`long` 和指针类型宽度为64位，`int` 为32位）
 
-|ilp32d
-|`0x7`
-|使用 32 位通用寄存器，64位浮点寄存器和栈传参，
-数据模型为 "ilp32"（`int`，`long` 和指针类型宽度为32位）
+|lp64f
+|`0x2`
+|使用 64 位通用寄存器，32位浮点寄存器和栈传参，
+数据模型为 LP64（`long` 和指针类型宽度为64位，`int` 为32位）
 
-|ilp32f
-|`0x6`
-|使用 32 位通用寄存器，32位浮点寄存器和栈传参，
-数据模型为 "ilp32"（`int`，`long` 和指针类型宽度为32位）
+|lp64d
+|`0x3`
+|使用 64 位通用寄存器，64位浮点寄存器和栈传参，
+数据模型为 LP64（`long` 和指针类型宽度为64位，`int` 为32位）
+
+|
+|`0x4`
+|保留值
 
 |ilp32s
 |`0x5`
 |使用 32 位通用寄存器和栈传参，
-数据模型为 "ilp32"（`int`，`long` 和指针类型宽度为32位）
+数据模型为 ILP32（`int`，`long` 和指针类型宽度为32位）
 
-|
-|`0x4` `0x0`
-|保留值
+|ilp32f
+|`0x6`
+|使用 32 位通用寄存器，32位浮点寄存器和栈传参，
+数据模型为 ILP32（`int`，`long` 和指针类型宽度为32位）
+
+|ilp32d
+|`0x7`
+|使用 32 位通用寄存器，64位浮点寄存器和栈传参，
+数据模型为 ILP32（`int`，`long` 和指针类型宽度为32位）
 |===
 
 .ABI 扩展特性标记
@@ -265,7 +269,7 @@ v1.00
 |枚举值 (`e_flags[5:3]`)
 |含义
 
-|default
+|base
 |`0x0`
 |默认，无扩展特性
 
@@ -275,31 +279,26 @@ v1.00
 |===
 
 [[abi-versioning]]
-`e_flags[7:6]` 标记了 ELF 目标文件使用的 ABI 版本，
-它和动态链接器标准文件名 (`ld-*.so`) 的版本后缀一一对应。
+`e_flags[7:6]` 标记了 ELF 目标文件使用的 ABI 版本。
 
 .ABI 版本标记
-[%header,cols="2,^1,^5,^1"]
+[%header,cols="2,^1,^5"]
 |===
 |ABI 版本
 |枚举值
 |描述
-|动态链接器版本后缀
 
 |`v0`
 |`0x0`
 |支持具有栈操作语义的重定位类型
-|`.0`
 
 |`v1`
 |`0x1`
 |按需保留
-|`.1`
 
 |
 |`0x2` `0x3`
 |保留值
-|`.2` `.3`
 |===
 
 
@@ -608,30 +607,27 @@ v1.00
 |操作系统 / C 库
 |Glibc 动态链接器路径
 
-|lp64d                |default
+|lp64d                |base
 |Linux, Glibc
-|/lib64/ld-linux-loongarch-lp64d.so.<abiversion>
+|/lib64/ld-linux-loongarch-lp64d.so.1
 
-|lp64f                |default
+|lp64f                |base
 |Linux, Glibc
-|/lib64/ld-linux-loongarch-lp64f.so.<abiversion>
+|/lib64/ld-linux-loongarch-lp64f.so.1
 
-|lp64s                |default
+|lp64s                |base
 |Linux, Glibc
-|/lib64/ld-linux-loongarch-lp64s.so.<abiversion>
+|/lib64/ld-linux-loongarch-lp64s.so.1
 
-|ilp32d               |default
+|ilp32d               |base
 |Linux, Glibc
-|/lib32/ld-linux-loongarch-ilp32d.so.<abiversion>
+|/lib32/ld-linux-loongarch-ilp32d.so.1
 
-|ilp32f               |default
+|ilp32f               |base
 |Linux, Glibc
-|/lib32/ld-linux-loongarch-ilp32f.so.<abiversion>
+|/lib32/ld-linux-loongarch-ilp32f.so.1
 
-|ilp32s               |default
+|ilp32s               |base
 |Linux, Glibc
-|/lib32/ld-linux-loongarch-ilp32s.so.<abiversion>
+|/lib32/ld-linux-loongarch-ilp32s.so.1
 |===
-
-表中 `<abiversion>` 与 ELF文件编码的 `e_flags[7:6]` 一一对应，
-参见 <<abi-versioning, ABI 版本>> 。
