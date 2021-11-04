@@ -8,7 +8,7 @@ v1.00
 
 == Register Convention
 
-.Integer Register Convention
+.General-purpose Register Convention
 [%header,cols="2,2,^5,^3"]
 |===
 |Name
@@ -136,7 +136,20 @@ Static registers are also known as callee-saved registers.
 |pointer types
 |8
 |8
+
+|`float`
+|4
+|4
+
+|`double`
+|8
+|8
+
+|`long double`
+|16
+|16
 |===
+
 
 .ILP32 Data Model (base ABI types: `ilp32d` `ilp32f` `ilp32s`)
 [%header,cols="3,^1,^1"]
@@ -624,3 +637,141 @@ with check 32-bit unsigned overflow
 |Linux, Glibc
 |/lib32/ld-linux-loongarch-ilp32s.so.1
 |===
+
+== Procedure Calling Convention
+
+The LoongArch procedure calling convention passes arguments in registers as much as possible (i.e. Floating-point arguments are passed in floating-point registers and non floating-point arguments are passed in general-purpose registers as much as possible)，and then considers passing arguments on the stack. This is a basic principle of LoongArch procedure calling convention.
+
+The argument registers that passes arguments are,
+
+. Eight floating-point registers `fa0-fa7`, and `fa0-fa1` are also used to return values. They are all used to pass floating-point arguments.
+
+. Eight general-purpose registers `a0-a7`, and `a0-a1` are also used to return values. Generally, they are used to pass fixed-point arguments and floating-point arguments when the floating-point register is not available . And some other uses will be described below. 
+Argument bit fields are stored in little endian mode. In addition, the subroutine should ensure that the values of general-purpose registers `s0-s8` and floating-point registers `fs0-fs7` are preserved across procedure calls. 
+
+==== Note
+
+In this document, *GRLEN* is the bit width of general-purpose register, *FRLEN* is the bit width of float-point register and *WOA* is the bit width of the argument. General-purpose argument register is denoted as *GAR*, float-point argument register is denoted as *FAR*, and argument register is *AR*(*GAR* or *FAR*). 
+
+=== ABI LP64D:
+
+that is, *GRLEN* = 64, *FRLEN* = 64
+
+=== C Datatypes and Alignment
+The C datatypes and Alignment of *LP64D* refer to LP64 Data Model in the table 3.
+
+The C types `*unsigned char*` is 8-bit unsigned integers and zero-extended when stored in a LoongArch general-purpose register. `*unsigned short*` is a 16-bit unsigned integer and is zero-extended when stored in a LoongArch general-purpose register. `*char*` and `*signed char*` are an 8-bit signed integer and sign-extended when stored in a LoongArch general-purpose register. `*short*` is a 16-bit signed integer and is sign-extended when stored in a register.
+
+In LoongArch *LP64D*, 32-bit types, such as `*int*`, are stored in general-purpose registers as proper sign extensions of their 32-bit values. This restriction holds even for unsigned 32-bit types
+
+=== Argument passing
+
+Generally speaking, FARs are only used to pass floating-point arguments, GARs pass non floating-point arguments and floating-point arguments when the floating-point register is not available(long double is also passed in a pair of GARs) and the reference, arguments are passed on the stack if no AR is available.
+Arguments passed by reference may be modified by the callee.
+
+==== Scalar (that is, integer, floating-point or pointer types)
+
+There are three cases :
+
+. 0 < WOA ≤ GRLEN
+
+.. Argument is passed in a single AR, or on the stack by value if none is available.
+
+... If the argument is float-point type, the argument is passed in FAR. if no FAR is available, it’s passed in GAR. If no GAR is available, it’s passed on the stack. When passed in registers or on the stack, floating-point types narrower than GRLEN bits are widened to GRLEN bits, with the upper bits undefined
+... If the argument is integer or pointer type, the argument is passed in GAR. If no GAR is available, it’s passed on the stack.When passed in registers or on the stack, integer scalars narrower than GRLEN bits are sign-extended to GRLEN bits.
+
+. GRLEN < WOA ≤ 2 × GRLEN
+
+.. The argument is passed in a pair of GAR, with the low-order GRLEN bits in the lower-numbered register and the high-order GRLEN bits in the higher-numbered register.If exactly one register is available, the low-order GRLEN bits are passed in the register and the high-order GRLEN bits are passed on the stack. If no GAR is available, it’s passed on the stack.
+
+. WOA > 2 × GRLEN
+
+.. Scalars are passed by reference and are replaced in the argument list with the address.
+
+==== Structure
+
+Empty structures are ignored by C compilers which support them as a non-standard extension(same as union arguments and return values). Bits unused due to padding, and bits past the end of a structure whose size in bits is not divisible by GRLEN, are undefined. And the layout of the structure on the stack is consistent with that in memory.
+
+. 0 < WOA ≤ GRLEN
+.. The structure has only fixed-point members. If there is an available GAR, the structure is passed through the GAR by value passing; If no GAR is available, it’s passed on the stack.
+
+.. The structure has only float-point members:
+
+... One double member. The argument is passed in a FAR; If no FAR is available, the value is passed in a GAR; If there is no available GAR, the value is passed on the stack.
+... Two float members. The argument is passed in a pair of available FAR, with the low-order float member bits in the lower-numbered FAR and the high-order float member bits in the higher-numbered FAR. If the number of available FAR is less than 1, it’s passed in a GAR, and passed on the stack if there is no available GAR.
+
+.. The structure has both fixed-point and floating-point members, i.e. the structure has one float member and:
+... Multiple fixed-point members. If there are available GAR, the structure is passed in a GAR, and passed on the stack if there is no available GAR.
+... Only one fixed-point member. If one FAR and one GAR are available, the floating-point member of the structure is passed in the FAR, and the integer member of the structure is passed in the GAR; If no floating-point register but one GAR is available, it’s passed in GAR; If no GAR is available, it’s passed on the stack;
+
+. GRLEN < WOA ≤ 2 × GRLEN
+.. Only fixed-point members.
+The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR. If the number of available GAR is 1, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if there is no available GAR.
+
+.. Only float-point members.
+i.e. The structure has one long double member or one double member and two adjacent float members or 3-4 float members. 
+The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR. If the number of available GAR is 1, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if there is no available GAR.
+
+.. Both fixed-point and floating-point members.
+... The structure has one double member, and
+.... Only one fixed-point member
+If one FAR and one GAR are available, the floating-point member of the structure is passed in the FAR, and the integer member of the structure is passed in the GAR; If no floating-point registers but two GARs are available, it’s passed in the two GARs; If the number of available GAR is 1, the low-order bits are in the GAR and the high-order bits are on the stack; And it’s passed on the stack if no available GAR ;
+.... Multiple fixed-point members
+The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR. If the number of available GAR is 1, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if there is no available GAR.
+... The structure has float and fixed-point member
+The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR. If the number of available GAR is 1, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if there is no available GAR.
+
+. WOA > 2 × GRLEN
+
+.. It’s passed by reference and are replaced in the argument list with the address.If there is an available GAR, the reference is passed in the GAR, and passed on the stack if no GAR is available.
+
+Structure and scalars passed on the stack are aligned to the greater of the type alignment and GRLEN bits, but never more than the stack alignment.
+
+==== Union
+Union is passed in GAR or stack;
+
+. 0 < WOA ≤ GRLEN
+
+.. The argument is passed in a GAR, or on the stack by value if no GAR is available.
+
+. GRLEN < WOA ≤ 2 × GRLEN
+
+.. The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR. If the number of available GAR is 1, the low-order bits are in the GAR and the high-order bits are on the stack. and passed on the stack if there is no available GAR.
+
+. WOA > 2 × GRLEN
+
+.. It’s passed by reference and are replaced in the argument list with the address.If there is an available GAR, the reference is passed in the GAR, and passed on the stack if no GAR is available.
+
+==== Complex
+A complex floating-point number, or a structure containing just one complex floating-point number, is passed as though it were a structure containing two floating-point reals.
+
+==== Variadic arguments
+Variadic arguments are passed in GAR. And after a variadic argument has been passed on the stack, all future arguments will also be passed on the stack, i.e., the last argument register may be left unused due to the aligned register pair rule.
+
+. 0 < WOA ≤ GRLEN
+
+.. The variadic arguments are passed in a GAR, or on the stack by value if no GAR is available.
+
+. GRLEN < WOA ≤ 2 × GRLEN
+
+.. The variadic arguments are passed in an aligned GAR pair (i.e., the first register in the pair is even-numbered), or on the stack by value if none is available.
+
+. WOA > 2 × GRLEN
+
+.. It’s passed by reference and are replaced in the argument list with the address.If there is an available GAR, the reference is passed in the GAR, and passed on the stack if no GAR is available
+
+=== Return values
+. Generally speaking, `a0` and `a1` are used to return non floating-point values, and `fa0` and `fa1` are used to return floating-point values.
+. Values are returned in the same manner as a first named argument of the same type would be passed. If such an argument would have been passed by reference, the caller allocates memory for the return value, and passes the address as an implicit first argument.
+. The reference of the return value is returned that is stored in GAR `a0` if the size of the return value is larger than 2×GRLEN bits .
+
+=== Stack
+. In general, the stack frame for a subroutine may contain space to contain the following:
+.. Space to store arguments passed to subroutines that this subroutine calls.
+.. A place to store the subroutine’s return address.
+.. A place to store the values of saved registers.
+.. A place for local data storage.
+
+. The stack grows downwards (towards lower addresses) and the stack pointer shall be aligned to a 128-bit boundary upon procedure entry. The first argument passed on the stack is located at offset zero of the stack pointer on function entry; following arguments are stored at correspondingly higher addresses.
+
+. Procedures must not rely upon the persistence of stack-allocated data whose addresses lie below the stack pointer.
