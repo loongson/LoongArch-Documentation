@@ -4,6 +4,7 @@ v1.00
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
+:imagesdir: ../images
 :toc: left
 
 __Note: In this document, the terms "architecture", "instruction set architecture" and "ISA"
@@ -18,21 +19,21 @@ they can operate upon.__
 Compiler options that are specific to LoongArch should denote a change
 in the following compiler settings:
 
-1. *Target architecture*: the allowed set of instructions and registers
+- *Target architecture*: the allowed set of instructions and registers
 to be used by the compiler.
 
-2. *Target ABI type*: the data model and calling conventions.
+- *Target ABI type*: the data model and calling conventions.
 
-3. *Target microarchitecture*: microarchitectural features that guides
+- *Target microarchitecture*: microarchitectural features that guides
 compiler optimizations.
 
 For this model, two categories of LoongArch-specific compiler options
 should be implemented：
 
-1. *Basic options*: select the base configuration of the compilation target.
+- *Basic options*: select the base configuration of the compilation target.
 (include only `-march` `-mabi` and `-mtune`)
 
-2. *Extended options*: make incremental changes to the target configuration.
+- *Extended options*: make incremental changes to the target configuration.
 
 .Basic Options
 [%header,cols="^1m,^3,^6"]
@@ -55,6 +56,12 @@ the basic set of <<isa-modules,ISA modules>> to be enabled.
 |Selects the type of target microarchitecture, defaults to the value of `-march`.
 The set of possible values should be a superset of `-march` values.
 |===
+
+- Valid parameter values of `-march` and `-mtune` options should correspond to
+actual LoongArch processor implementations / families.
+
+- In principle, different `-march` values should not imply the same set
+of ISA modules.
 
 .Extended Options
 [%header,cols="^1m,^3,^6"]
@@ -86,6 +93,7 @@ The LoongArch ISA is organized in a "base-extension" manner.
 For future updates, each component in the __base__ or __extened__ part of the ISA
 may evolve independently while keeping compatibility with previous versions of itself.
 
+[[isa-modules]]
 For this purpose, the compiler should make a modular abstraction about the target ISA.
 The ISA modules are divided into two categories： *base architectures* and *ISA extensions*.
 A *base architecture* is the core component of the target ISA, which defines the __base__
@@ -186,17 +194,20 @@ implemented target ISA variants.
 |===
 |Standard name  |Data model
 |Bit-width of argument / return value GPRs / FPRs
-|`lp64d`        |lp64       |64 / 64
-|`lp64f`        |lp64       |64 / 32
-|`lp64s`        |lp64       |64 / (none)
-|`ilp32d`       |ilp32      |32 / 64
-|`ilp32f`       |ilp32      |32 / 32
-|`ilp32s`       |ilp32      |32 / (none)
+|`lp64d`        |LP64       |64 / 64
+|`lp64f`        |LP64       |64 / 32
+|`lp64s`        |LP64       |64 / (none)
+|`ilp32d`       |ILP32      |32 / 64
+|`ilp32f`       |ILP32      |32 / 32
+|`ilp32s`       |ILP32      |32 / (none)
 |===
 
 The following table lists all ABI extension types and
 related compiler options. A compiler may choose to implement
-any subset of these extensions that contains `default`.
+any subset of these extensions that contains `base`.
+
+The default ABI extension type is `base` when referring to
+an ABI type with only the "base" component.
 
 .ABI Extension Types
 [%header,cols="^1,^1,^1"]
@@ -205,7 +216,7 @@ any subset of these extensions that contains `default`.
 |Compiler options
 |Description
 
-|`default`
+|`base`
 |(none)
 |conforms to the https://loongson.github.io/LoongArch-Documentation/LoongArch-ELF-ABI-EN.html[LoongArch ELF psABI]
 |===
@@ -213,42 +224,55 @@ any subset of these extensions that contains `default`.
 [[default-arch-abi]]
 The compiler should know the default ABI to use during its build time.
 If the ABI extension type is not explicitly configured,
-`default` should be used.
+`base` should be used.
 
-If none of `-mabi` or other ABI-extension-related options is given on
-the command line. The build-time default ABI should be selected.
+In principle, the target ISA configuration should not affect the decision
+of the target ABI. When certain ISA feature required by explicit
+(i.e. from the compiler's command-line arguments) ABI configuration
+cannot be met due constraints imposed by ISA options, the compiler should
+abort with an error message to complain about the conflict.
 
-In principle, the configured target ISA should not affect the decision
-of the target ABI. When certain ISA feature requirement that comes from
-the ABI breaks the explicit (i.e. from the compiler options)
-constraints on the target ISA, the compiler should abort with an error
-message to complain about the conflict.
+When the ABI is not fully constrained by the compiler options, the default
+configuration of either the base ABI or the ABI extension, whichever is missing
+from the command line, should be attempted. If this default ABI setting
+cannot be implemented by the explicitly configured target ISA, the expected
+behavior is *undefined* since the user is encouraged to specify which
+ABI to use when choosing a smaller instruction set than the default.
+
+In this case, it is suggested that the compiler should abort with
+an error message, however, for user-friendliness, it may also choose
+to ignore the default base ABI or ABI extension and select a viable,
+"downgraded" ABI for the currently enabled ISA modules with caution.
+It is also recommended that the compiler should notify the user about the
+ABI change, optionally with a compiler warning.
+For example, passing `-mfpu=none` as the only command-line argument
+may cause a compiler configured with `lp64d` / `base` default ABI
+to automatically select `lp64s` / `base` instead.
 
 When the target ISA configuration cannot be uniquely decided from the given
-compiler options, the compiler should first try inferring the
-*base architecture* and *ISA extensions* from the explicit ABI configuration
-(if any) before resorting to the build-time default values.
-The result of this inference should not break any explicit constraints
-on the target ISA imposed by other command-line options.
+compiler options, the build-time default should be consulted first.
+If the default ISA setting is insufficient for implementing the ABI configuration,
+the compiler should try enabling the missing ISA modules according to the following
+table, as long as they are not explicitly disabled or excluded from usage.
 
-.Default correspondence between target ISA and ABI types
+.Minimal architecture requirements for implementing each ABI type.
 [%header,cols="^1,^1,^1"]
 |===
-|Enabled ISA modules
 |Base ABI type
-|ABI Extension type
+|ABI extension type
+|Minimal required ISA modules
 
-|`la64v100` [`fpu64`]
 |`lp64d`
-|`default`
+|`base`
+|`la64v100` [`fpu64`]
 
-|`la64v100` `fpu32`
 |`lp64f`
-|`default`
+|`base`
+|`la64v100` `fpu32`
 
-|`la64v100` `fpunone`
 |`lp64s`
-|`default`
+|`base`
+|`la64v100` `fpunone`
 |===
 
 == GNU Target Triplets and Multiarch Specifiers
@@ -295,14 +319,14 @@ specifier, respectively.
 |`<fabi-suffix>` |Description
 |`f64`           |The base ABI uses 64-bit FPRs for parameter passing. (`lp64d` `ilp32d`)
 |`f32`           |The base ABI uses 32-bit FPRs for parameter passing. (`lp64f` `ilp32f`)
-|`sfp`           |The base ABI uses no FPR for parameter passing. (`lp64s` `ilp32s`)
+|`sf`            |The base ABI uses no FPR for parameter passing. (`lp64s` `ilp32s`)
 |===
 
 .List of possible `<abiext-suffix>`
 [%header,cols="^1,^2"]
 |===
 |`<abiext-suffix>`    |ABI extension type
-|(empty string)       |`default`
+|(empty string)       |`base`
 |===
 
 __(Note: Since in principle, <<default-arch-abi,The default ISA configuration of the ABI>>
@@ -316,29 +340,29 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 |OS type
 |Multiarch specifier
 
-|`lp64d` / `default`
+|`lp64d` / `base`
 |GNU/Linux
 |`loongarch64-linux-gnuf64`
 
-|`lp64f` / `default`
+|`lp64f` / `base`
 |GNU/Linux
 |`loongarch64-linux-gnuf32`
 
-|`lp64s` / `default`
+|`lp64s` / `base`
 |GNU/Linux
-|`loongarch64-linux-gnusfp`
+|`loongarch64-linux-gnusf`
 
-|`ilp32d` / `default`
+|`ilp32d` / `base`
 |GNU/Linux
 |`loongarch32-linux-gnuf64`
 
-|`ilp32f` / `default`
+|`ilp32f` / `base`
 |GNU/Linux
 |`loongarch32-linux-gnuf32`
 
-|`ilp32s` / `default`
+|`ilp32s` / `base`
 |GNU/Linux
-|`loongarch32-linux-gnusfp`
+|`loongarch32-linux-gnusf`
 |===
 
 == C/C++ Preprocessor Definitions
@@ -351,7 +375,7 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 |Description
 
 |`\\__loongarch__`
-|(none)
+|`1`
 |Defined if the target is LoongArch.
 
 |`__loongarch_grlen`
@@ -364,15 +388,17 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 
 |`_LOONGARCH_ARCH`
 |`"loongarch64"` `"la464"`
-|Processor model as specified by `--with-arch` / `-march`.
+|Processor model as specified by `-march`.
+If `-march` is not present, the build-time default should be used.
 
 |`_LOONGARCH_TUNE`
 |`"loongarch64"` `"la464"`
 |Processor model as specified by `-mtune`.
+If `-mtune` is not present, the build-time default should be used.
 
 |`__loongarch_lp64`
 |(none)
-|Defined if integer ABI type is `lp64`.
+|Defined if ABI uses the LP64 data model and 64-bit GPRs for parameter passing.
 
 |`__loongarch_hard_float`
 |(none)
