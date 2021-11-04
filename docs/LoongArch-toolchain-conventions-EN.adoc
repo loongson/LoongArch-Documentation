@@ -4,6 +4,7 @@ v1.00
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
+:imagesdir: ../images
 :toc: left
 
 __Note: In this document, the terms "architecture", "instruction set architecture" and "ISA"
@@ -186,12 +187,12 @@ implemented target ISA variants.
 |===
 |Standard name  |Data model
 |Bit-width of argument / return value GPRs / FPRs
-|`lp64d`        |lp64       |64 / 64
-|`lp64f`        |lp64       |64 / 32
-|`lp64s`        |lp64       |64 / (none)
-|`ilp32d`       |ilp32      |32 / 64
-|`ilp32f`       |ilp32      |32 / 32
-|`ilp32s`       |ilp32      |32 / (none)
+|`lp64d`        |LP64       |64 / 64
+|`lp64f`        |LP64       |64 / 32
+|`lp64s`        |LP64       |64 / (none)
+|`ilp32d`       |ILP32      |32 / 64
+|`ilp32f`       |ILP32      |32 / 32
+|`ilp32s`       |ILP32      |32 / (none)
 |===
 
 The following table lists all ABI extension types and
@@ -221,8 +222,8 @@ the command line. The build-time default ABI should be selected.
 In principle, the configured target ISA should not affect the decision
 of the target ABI. When certain ISA feature requirement that comes from
 the ABI breaks the explicit (i.e. from the compiler options)
-constraints on the target ISA, the compiler should abort with an error
-message to complain about the conflict.
+constraints on the target ISA, the compiler can choose to abort with
+an error message to complain about the conflict.
 
 When the target ISA configuration cannot be uniquely decided from the given
 compiler options, the compiler should first try inferring the
@@ -295,7 +296,7 @@ specifier, respectively.
 |`<fabi-suffix>` |Description
 |`f64`           |The base ABI uses 64-bit FPRs for parameter passing. (`lp64d` `ilp32d`)
 |`f32`           |The base ABI uses 32-bit FPRs for parameter passing. (`lp64f` `ilp32f`)
-|`sfp`           |The base ABI uses no FPR for parameter passing. (`lp64s` `ilp32s`)
+|`sf`            |The base ABI uses no FPR for parameter passing. (`lp64s` `ilp32s`)
 |===
 
 .List of possible `<abiext-suffix>`
@@ -326,7 +327,7 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 
 |`lp64s` / `default`
 |GNU/Linux
-|`loongarch64-linux-gnusfp`
+|`loongarch64-linux-gnusf`
 
 |`ilp32d` / `default`
 |GNU/Linux
@@ -338,7 +339,7 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 
 |`ilp32s` / `default`
 |GNU/Linux
-|`loongarch32-linux-gnusfp`
+|`loongarch32-linux-gnusf`
 |===
 
 == C/C++ Preprocessor Definitions
@@ -372,7 +373,7 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 
 |`__loongarch_lp64`
 |(none)
-|Defined if integer ABI type is `lp64`.
+|Defined if ABI uses the LP64 data model and 64-bit GPRs for parameter passing.
 
 |`__loongarch_hard_float`
 |(none)

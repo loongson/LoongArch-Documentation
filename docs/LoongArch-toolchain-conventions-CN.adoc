@@ -4,6 +4,7 @@ v1.00
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
+:imagesdir: ../images
 :toc: left
 :toc-title: 目录
 :scripts: cjk
@@ -167,12 +168,12 @@ v1.00 定义的指令集架构
 [%header,cols="^1,^1,^1"]
 |===
 |标准名称  |数据模型   |可用于传参、返回的通用/浮点寄存器宽度
-|`lp64d`   |lp64       |64 / 64
-|`lp64f`   |lp64       |64 / 32
-|`lp64s`   |lp64       |64 / （无）
-|`ilp32d`  |ilp32      |32 / 64
-|`ilp32f`  |ilp32      |32 / 32
-|`ilp32s`  |ilp32      |32 / （无）
+|`lp64d`   |LP64       |64 / 64
+|`lp64f`   |LP64       |64 / 32
+|`lp64s`   |LP64       |64 / （无）
+|`ilp32d`  |ILP32      |32 / 64
+|`ilp32f`  |ILP32      |32 / 32
+|`ilp32s`  |ILP32      |32 / （无）
 |===
 
 下表列举了全体 ABI 扩展特性类型及其相关命令行选项，除 `default` 必须实现之外，
@@ -199,7 +200,7 @@ v1.00 定义的指令集架构
 
 原则上，实际配置的目标架构不应该对目标 ABI 的确定造成影响，
 除非构建时配置或命令行选项对 ABI 的约束导致实现它所需的指令集特性
-超出了编译选项对 ISA 配置的约束范围。此时编译器应报错退出。
+超出了编译选项对 ISA 配置的约束范围。此时编译器可选择报错退出。
 
 当编译选项不能唯一确定目标架构时，
 在选择默认值之前，编译器应根据下表，从命令行显式给出的 ABI 配置
@@ -277,7 +278,7 @@ v1.00 定义的指令集架构
 |`<fabi_suffix>` 字符串    |含义
 |`f64`                     |基础 ABI 使用 64 位浮点寄存器传参 (`lp64d` `ilp32d`)
 |`f32`                     |基础 ABI 使用 32 位浮点寄存器传参 (`lp64f` `ilp32f`)
-|`sfp`                     |基础 ABI 不使用浮点寄存器传参 (`lp64s` `ilp32s`)
+|`sf`                      |基础 ABI 不使用浮点寄存器传参 (`lp64s` `ilp32s`)
 |===
 
 .Multiarch `os` 字段，`<abiext_suffix>` 后缀标记及其对应的 ABI 扩展特性
@@ -304,7 +305,7 @@ v1.00 定义的指令集架构
 
 |`lp64s` / `default`
 |GNU/Linux
-|`loongarch64-linux-gnusfp`
+|`loongarch64-linux-gnusf`
 
 |`ilp32d` / `default`
 |GNU/Linux
@@ -316,7 +317,7 @@ v1.00 定义的指令集架构
 
 |`ilp32s` / `default`
 |GNU/Linux
-|`loongarch32-linux-gnusfp`
+|`loongarch32-linux-gnusf`
 |===
 
 
@@ -351,7 +352,7 @@ v1.00 定义的指令集架构
 
 |`__loongarch_lp64`
 |（无）
-|ABI 使用 64 位通用寄存器传参，采用 `lp64` 数据模型
+|ABI 使用 64 位通用寄存器传参，采用 LP64 数据模型
 
 |`__loongarch_hard_float`
 |（无）

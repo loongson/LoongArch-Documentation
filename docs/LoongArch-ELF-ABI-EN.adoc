@@ -102,7 +102,7 @@ Static registers are also known as callee-saved registers.
 
 == Type Size and Alignment
 
-.lp64 Data Model (base ABI types: `lp64d` `lp64f` `lp64s`)
+.LP64 Data Model (base ABI types: `lp64d` `lp64f` `lp64s`)
 [%header,cols="3,^1,^1"]
 |===
 |Scalar type
@@ -138,7 +138,7 @@ Static registers are also known as callee-saved registers.
 |8
 |===
 
-.ilp32 Data Model (base ABI types: `ilp32d` `ilp32f` `ilp32s`)
+.ILP32 Data Model (base ABI types: `ilp32d` `ilp32f` `ilp32s`)
 [%header,cols="3,^1,^1"]
 |===
 |Scalar type
@@ -223,32 +223,32 @@ The ABI type of an ELF object is uniquely identified by `e_flags[7:0]` in its he
 |lp64d
 |`0x3`
 |Uses 64-bit GPRs, 64-bit FPRs and the stack for parameter passing.
-Data model is "lp64", where `long` and pointers are 64-bit while `int` is 32-bit.
+Data model is LP64, where `long` and pointers are 64-bit while `int` is 32-bit.
 
 |lp64f
 |`0x2`
 |Uses 64-bit GPRs, 32-bit FPRs and the stack for parameter passing.
-Data model is "lp64", where `long` and pointers are 64-bit while `int` is 32-bit.
+Data model is LP64, where `long` and pointers are 64-bit while `int` is 32-bit.
 
 |lp64s
 |`0x1`
 |Uses 64-bit GPRs and the stack for parameter passing.
-Data model is "lp64", where `long` and pointers are 64-bit while `int` is 32-bit.
+Data model is LP64, where `long` and pointers are 64-bit while `int` is 32-bit.
 
 |ilp32d
 |`0x7`
 |Uses 32-bit GPRs, 64-bit FPRs and the stack for parameter passing.
-Data model is "ilp32", where `int`, `long` and pointers are 32-bit.
+Data model is ILP32, where `int`, `long` and pointers are 32-bit.
 
 |ilp32f
 |`0x6`
 |Uses 32-bit GPRs, 32-bit FPRs and the stack for parameter passing.
-Data model is "ilp32", where `int`, `long` and pointers are 32-bit.
+Data model is ILP32, where `int`, `long` and pointers are 32-bit.
 
 |ilp32s
 |`0x5`
 |Uses 32-bit GPRs and the stack for parameter passing.
-Data model is "ilp32", where `int`, `long` and pointers are 32-bit.
+Data model is ILP32, where `int`, `long` and pointers are 32-bit.
 
 |
 |`0x4` `0x0`
@@ -272,32 +272,26 @@ Data model is "ilp32", where `int`, `long` and pointers are 32-bit.
 |===
 
 [[abi-versioning]]
-`e_flags[7:6]` marks the ABI version of an ELF object,
-it also corresponds to the version suffix of standard
-program interpreters (`ld-*.so`).
+`e_flags[7:6]` marks the ABI version of an ELF object.
 
 .ABI Version
-[%header,cols="2,^1,^5,^1"]
+[%header,cols="2,^1,^5"]
 |===
 |ABI version
 |Value
 |Description
-|Suffix of program interpreter filenames
 
 |`v0`
 |`0x0`
 |Stack operands base relocation type.
-|`.0`
 
 |`v1`
 |`0x1`
 |Another relocation type IF needed.
-|`.1`
 
 |
 |`0x2` `0x3`
 |Reserved.
-|`.2` `.3`
 |===
 
 
@@ -608,28 +602,25 @@ with check 32-bit unsigned overflow
 
 |lp64d                     |default
 |Linux, Glibc
-|/lib64/ld-linux-loongarch-lp64d.so.<abiversion>
+|/lib64/ld-linux-loongarch-lp64d.so.1
 
 |lp64f                     |default
 |Linux, Glibc
-|/lib64/ld-linux-loongarch-lp64f.so.<abiversion>
+|/lib64/ld-linux-loongarch-lp64f.so.1
 
 |lp64s                     |default
 |Linux, Glibc
-|/lib64/ld-linux-loongarch-lp64s.so.<abiversion>
+|/lib64/ld-linux-loongarch-lp64s.so.1
 
 |ilp64d                    |default
 |Linux, Glibc
-|/lib32/ld-linux-loongarch-ilp32d.so.<abiversion>
+|/lib32/ld-linux-loongarch-ilp32d.so.1
 
 |ilp64f                    |default
 |Linux, Glibc
-|/lib32/ld-linux-loongarch-ilp32f.so.<abiversion>
+|/lib32/ld-linux-loongarch-ilp32f.so.1
 
 |ilp64s                    |default
 |Linux, Glibc
-|/lib32/ld-linux-loongarch-ilp32s.so.<abiversion>
+|/lib32/ld-linux-loongarch-ilp32s.so.1
 |===
-
-Note: Each ABI version listed in <<abi-versioning, ABI versions>> corresponds
-to a unique `<abiversion>`.
