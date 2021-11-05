@@ -36,14 +36,14 @@ v1.00
 |Stack pointer
 |Yes
 
-|`$r4` - `$r11`
-|`$a0` - `$a7`
-|Argument registers
+|`$r4` - `$r5`
+|`$a0` - `$a1`
+|Argument registers / return value registers
 |No
 
-|`$r4` - `$r5`
-|`$v0` - `$v1`
-|Return value
+|`$r6` - `$r11`
+|`$a2` - `$a7`
+|Argument registers
 |No
 
 |`$r12` - `$r20`
@@ -75,14 +75,14 @@ v1.00
 |Meaning
 |Preserved across calls
 
-|`$f0` - `$f7`
-|`$fa0` - `$fa7`
-|Argument registers
+|`$f0` - `$f1`
+|`$fa0` - `$fa1`
+|Argument registers / return value registers
 |No
 
-|`$f0` - `$f1`
-|`$fv0` - `$fv1`
-|Return value
+|`$f2` - `$f7`
+|`$fa2` - `$fa7`
+|Argument registers
 |No
 
 |`$f8` - `$f23`
@@ -99,6 +99,17 @@ v1.00
 Temporary registers are also known as caller-saved registers.
 Static registers are also known as callee-saved registers.
 
+You may see the names `$v0` `$v1` `$fv0` `$fv1` in some very early LoongArch
+assembly code; they simply alias to `$a0` `$a1` `$fa0` `$fa1` respectively.
+The aliases are initially meant to match MIPS convention with separate
+argument / return value registers. However, because LoongArch actually has no
+dedicated return value registers, such usage may lead to confusion.
+Hence, it is not recommended to use these aliases.
+
+Due to implementation details, it may not be easy to give a register multiple
+ABI names for a given downstream project. It is not required for programs
+processing LoongArch assembly to support these aliases.
+Portable LoongArch assembly should avoid these aliases.
 
 == Type Size and Alignment
 
