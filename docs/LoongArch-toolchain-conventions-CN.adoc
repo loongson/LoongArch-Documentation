@@ -365,7 +365,86 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 
 == C/C++ 预处理器内建宏定义
 
-.龙芯架构相关 C/C++ 预处理器内建宏
+下表列举的预处理器内建宏定义并非 LoongArch 独有。
+通过使用它们，用户可以尽量减少为 LoongArch 特殊编写的代码量，
+而往往足以取得架构适配的预期结果。
+
+.非特定于 LoongArch 的 C/C++ 预处理器内建宏
+[%header,cols="^1,^3,^3"]
+|===
+|名称
+|值
+|描述
+
+|`\\__BYTE_ORDER__`
+|（略）
+|字节序
+
+|`\\__FLOAT_WORD_ORDER__`
+|（略）
+|浮点数据的字节序
+
+|`\\__LP64__` `_LP64`
+|（略）
+|ABI 是否使用 64 位通用寄存器传参，采用 `LP64` 数据模型
+
+|`\\__SIZEOF_SHORT__`
+|（略）
+|C/C++ `short` 类型位宽，单位为字节
+
+|`\\__SIZEOF_INT__`
+|（略）
+|C/C++ `int` 类型位宽，单位为字节
+
+|`\\__SIZEOF_LONG__`
+|（略）
+|C/C++ `long` 类型位宽，单位为字节
+
+|`\\__SIZEOF_LONG_LONG__`
+|（略）
+|C/C++ `long long` 类型位宽，单位为字节
+
+|`\\__SIZEOF_INT128__`
+|（略）
+|C/C++ `__int128` 类型位宽，单位为字节
+
+|`\\__SIZEOF_POINTER__`
+|（略）
+|C/C++ 指针类型位宽，单位为字节
+
+|`\\__SIZEOF_PTRDIFF_T__`
+|（略）
+|C/C++ `ptrdiff_t` 类型位宽，单位为字节
+
+|`\\__SIZEOF_SIZE_T__`
+|（略）
+|C/C++ `size_t` 类型位宽，单位为字节
+
+|`\\__SIZEOF_WINT_T__`
+|（略）
+|C/C++ `wint_t` 类型位宽，单位为字节
+
+|`\\__SIZEOF_WCHAR_T__`
+|（略）
+|C/C++ `wchar_t` 类型位宽，单位为字节
+
+|`\\__SIZEOF_FLOAT__`
+|（略）
+|C/C++ `float` 类型位宽，单位为字节
+
+|`\\__SIZEOF_DOUBLE__`
+|（略）
+|C/C++ `double` 类型位宽，单位为字节
+
+|`\\__SIZEOF_LONG_DOUBLE__`
+|（略）
+|C/C++ `long double` 类型位宽，单位为字节
+|===
+
+在上述通用的定义之外，为了沟通那些与架构强相关的信息，仍然需要提供一些
+LoongArch 平台特有的预处理器内建宏。下表列举了这些架构相关的宏定义。
+
+.LoongArch 架构相关 C/C++ 预处理器内建宏
 [%header,cols="^1,^3,^3"]
 |===
 |名称
@@ -384,45 +463,72 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 |`0` `32` `64`
 |浮点寄存器位宽（无 FPU 则为 `0` ）
 
-|`_LOONGARCH_ARCH`
+|`__loongarch_arch`
 |`"loongarch64"` `"la464"`
 |`-march` 指定的目标 CPU 名称，
 若未指定则为编译器构建时指定的默认值
 
-|`_LOONGARCH_TUNE`
+|`__loongarch_tune`
 |`"loongarch64"` `"la464"`
 |`-mtune` 指定的目标 CPU 名称，
 若未指定则为编译器构建时指定的默认值
 
 |`__loongarch_lp64`
-|（无）
+|未定义或 `1`
 |ABI 使用 64 位通用寄存器传参，采用 LP64 数据模型
 
 |`__loongarch_hard_float`
-|（无）
+|未定义或 `1`
 |ABI 使用浮点寄存器传参
 
 |`__loongarch_soft_float`
-|（无）
+|未定义或 `1`
 |ABI 不使用浮点寄存器传参
 
 |`__loongarch_single_float`
-|（无）
+|未定义或 `1`
 |ABI 仅使用 32 位浮点寄存器传参
 
 |`__loongarch_double_float`
-|（无）
+|未定义或 `1`
 |ABI 使用 64 位浮点寄存器传参
+|===
+
+由于历史原因，最早期的 LoongArch C/C++ 编译器提供了一批类似 MIPS 的预处理器内建宏。
+因为用到这些宏的旧代码可能仍在被使用，符合本规范的编译器实现可以选择提供下表所述的预处理器内建宏。
+
+由于这些宏的命名风格、使用姿势多多少少都与上表中的宏不一致，
+且使用它们并不会有额外好处，还造成额外的学习成本，因此不建议新的编译器实现这些宏。
+可移植的代码不应当假定这些宏存在，也不应当使用它们。
+
+.用于兼容早期移植代码的 C/C++ 预处理器内建宏
+[%header,cols="^1,^3,^3"]
+|===
+|名称
+|等价于
+|备注
+
+|`_LOONGARCH_ARCH`
+|`__loongarch_arch`
+|（无）
+
+|`_LOONGARCH_TUNE`
+|`__loongarch_tune`
+|（无）
+
+|`_LOONGARCH_SIM`
+|（无）
+|行为类似于 MIPS 架构上的 `_MIPS_SIM` ；其取值形如 `_ABILP64` （对应数据模型为 LP64 的情况）、 `_ABILP32` （对应数据模型为 ILP32 的情况；注意取值中少了个 `I` ）。
 
 |`_LOONGARCH_SZINT`
-|（略）
-|C/C++ `int` 类型位宽
+|`\\__SIZEOF_INT__` 乘以 8
+|（无）
 
 |`_LOONGARCH_SZLONG`
-|（略）
-|C/C++ `long int` 类型位宽
+|`\\__SIZEOF_LONG__` 乘以 8
+|（无）
 
 |`_LOONGARCH_SZPTR`
-|（略）
-|C/C++ 指针类型位宽
+|`\\__SIZEOF_POINTER__` 乘以 8
+|（无）
 |===
