@@ -407,7 +407,85 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 |`loongarch32-linux-muslsf`
 |===
 
-== C/C++ Preprocessor Definitions
+== C/C++ Preprocessor Built-in Macro Definitions
+
+The definitions listed below is not specific to LoongArch.
+Amount of LoongArch-specific code can be minimized by utilizing them,
+while achieving expected portability in most of cases.
+
+.Non-LoongArch-specific C/C++ Built-in Macros：
+[%header,cols="^1,^3,^3"]
+|===
+|Name
+|Possible Values
+|Description
+
+|`\\__BYTE_ORDER__`
+|(omitted)
+|Byte order
+
+|`\\__FLOAT_WORD_ORDER__`
+|(omitted)
+|Byte order for floating-point data
+
+|`\\__LP64__` `_LP64`
+|(omitted)
+|Whether the ABI passes arguments in 64-bit GPRs and uses the `LP64` data model
+
+|`\\__SIZEOF_SHORT__`
+|(omitted)
+|Width of C/C++ `short` type, in bytes
+
+|`\\__SIZEOF_INT__`
+|(omitted)
+|Width of C/C++ `int` type, in bytes
+
+|`\\__SIZEOF_LONG__`
+|(omitted)
+|Width of C/C++ `long` type, in bytes
+
+|`\\__SIZEOF_LONG_LONG__`
+|(omitted)
+|Width of C/C++ `long long` type, in bytes
+
+|`\\__SIZEOF_INT128__`
+|(omitted)
+|Width of C/C++ `__int128` type, in bytes
+
+|`\\__SIZEOF_POINTER__`
+|(omitted)
+|Width of C/C++ pointer types, in bytes
+
+|`\\__SIZEOF_PTRDIFF_T__`
+|(omitted)
+|Width of C/C++ `ptrdiff_t` type, in bytes
+
+|`\\__SIZEOF_SIZE_T__`
+|(omitted)
+|Width of C/C++ `size_t` type, in bytes
+
+|`\\__SIZEOF_WINT_T__`
+|(omitted)
+|Width of C/C++ `wint_t` type, in bytes
+
+|`\\__SIZEOF_WCHAR_T__`
+|(omitted)
+|Width of C/C++ `wchar_t` type, in bytes
+
+|`\\__SIZEOF_FLOAT__`
+|(omitted)
+|Width of C/C++ `float` type, in bytes
+
+|`\\__SIZEOF_DOUBLE__`
+|(omitted)
+|Width of C/C++ `double` type, in bytes
+
+|`\\__SIZEOF_LONG_DOUBLE__`
+|(omitted)
+|Width of C/C++ `long double` type, in bytes
+|===
+
+Apart from the generic definitions described above, some architecture-specific macros are still needed to convey those information strongly tied to the architecture; these macros are listed below.
 
 .LoongArch-specific C/C++ Built-in Macros：
 [%header,cols="^1,^3,^3"]
@@ -428,45 +506,72 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 |`0` `32` `64`
 |Bit-width of floating-point registers (`0` if there is no FPU).
 
-|`_LOONGARCH_ARCH`
+|`__loongarch_arch`
 |`"loongarch64"` `"la464"`
 |Processor model as specified by `-march`.
 If `-march` is not present, the build-time default should be used.
 
-|`_LOONGARCH_TUNE`
+|`__loongarch_tune`
 |`"loongarch64"` `"la464"`
 |Processor model as specified by `-mtune`.
 If `-mtune` is not present, the build-time default should be used.
 
 |`__loongarch_lp64`
-|(none)
+|undefined or `1`
 |Defined if ABI uses the LP64 data model and 64-bit GPRs for parameter passing.
 
 |`__loongarch_hard_float`
-|(none)
+|undefined or `1`
 |Defined if floating-point/extended ABI type is `single` or `double`.
 
 |`__loongarch_soft_float`
-|(none)
+|undefined or `1`
 |Defined if floating-point/extended ABI type is `soft`.
 
 |`__loongarch_single_float`
-|(none)
+|undefined or `1`
 |Defined if floating-point/extended ABI type is `single`.
 
 |`__loongarch_double_float`
-|(none)
+|undefined or `1`
 |Defined if floating-point/extended ABI type is `double`.
+|===
+
+For historical reasons, the earliest LoongArch C/C++ compilers provided some MIPS-style built-in macros.
+Because legacy code dependent on those macros is possibly still in use, compilers conformant to this specification may provide the macros as listed below.
+
+Because the naming style and usage of these macros are more-or-less inconsistent with the other macros described above, there is learning cost involved in using these macros.
+As they bring no advantage over the other macros, it is not recommended for newer compilers to implement them;
+portable code should not assume existence of these macros, nor use them.
+
+.C/C++ Built-in Macros Provided for Compatibility with Historical Code
+[%header,cols="^1,^3,^3"]
+|===
+|Name
+|Equivalent to
+|Description
+
+|`_LOONGARCH_ARCH`
+|`__loongarch_arch`
+|n/a
+
+|`_LOONGARCH_TUNE`
+|`__loongarch_tune`
+|n/a
+
+|`_LOONGARCH_SIM`
+|n/a
+|Similar to `_MIPS_SIM` on MIPS; possible values are `_ABILP64` (in case data model is LP64) and `_ABILP32` (in case data model is ILP32; notice the omission of letter `I`).
 
 |`_LOONGARCH_SZINT`
-|(omitted)
-|Bit-width of C/C++ `int` type.
+|`\\__SIZEOF_INT__` multiplied by 8
+|n/a
 
 |`_LOONGARCH_SZLONG`
-|(omitted)
-|Bit-width of C/C++ `long int` type.
+|`\\__SIZEOF_LONG__` multiplied by 8
+|n/a
 
 |`_LOONGARCH_SZPTR`
-|(omitted)
-|Bit-width of C/C++ pointer types.
+|`\\__SIZEOF_POINTER__` multiplied by 8
+|n/a
 |===
