@@ -99,6 +99,8 @@ v1.00
 Temporary registers are also known as caller-saved registers.
 Static registers are also known as callee-saved registers.
 
+=== Aliases for return value registers
+
 You may see the names `$v0` `$v1` `$fv0` `$fv1` in some very early LoongArch
 assembly code; they simply alias to `$a0` `$a1` `$fa0` `$fa1` respectively.
 The aliases are initially meant to match MIPS convention with separate
@@ -107,9 +109,25 @@ dedicated return value registers, such usage may lead to confusion.
 Hence, it is not recommended to use these aliases.
 
 Due to implementation details, it may not be easy to give a register multiple
-ABI names for a given downstream project. It is not required for programs
-processing LoongArch assembly to support these aliases.
+ABI names for a given downstream project.
+New programs processing LoongArch assembly should not support these aliases.
 Portable LoongArch assembly should avoid these aliases.
+
+[NOTE]
+====
+For toolchain components provided by the Loongson Corporation, the migration procedure is:
+
+Let the version of the component at this spec's effect date be N,
+
+. keep support in the version N and its stable branch,
+. warn on such usage in the version N+1,
+. remove support in the version N+2.
+
+For the respective upstream projects of the components, the procedure above shall be followed if support for such usage is already upstream;
+"version N" shall be interpreted as the first release version containing LoongArch support in that case.
+For the components not yet upstream, and not interacting with other components that may expect such usage, support for such usage will never be implemented.
+
+====
 
 == Type Size and Alignment
 
