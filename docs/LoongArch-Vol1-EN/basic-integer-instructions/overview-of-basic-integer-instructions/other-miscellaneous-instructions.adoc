@@ -49,7 +49,7 @@ Instruction formats:
 ----
 rdtimel.w       rd, rj
 rdtimeh.w       rd, rj
-rdtime.w        rd, rj
+rdtime.d        rd, rj
 ----
 
 The LoongArch instruction system defines-a constant frequency timer, whose main body is-a 64-bit counter called StableCounter.

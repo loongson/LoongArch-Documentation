@@ -47,4 +47,3 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 * LoongArch ELF ABI: This manual describes the LoongArch ELF ABI.
 ** https://loongson.github.io/LoongArch-Documentation/LoongArch-ELF-ABI-EN.html[HTML version].
 ** https://loongson.github.io/LoongArch-Documentation/LoongArch-ELF-ABI-EN.pdf[PDF version].
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-ELF-ABI-v1.00-CN.pdf[Original document].
