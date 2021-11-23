@@ -27,7 +27,7 @@ Instruction formats:
 
 [source]
 ----
-ldpte   rj, req
+ldpte   rj, seq
 ----
 
 The `LDPTE` instruction is used for page table entry accesses during software page table walking.
