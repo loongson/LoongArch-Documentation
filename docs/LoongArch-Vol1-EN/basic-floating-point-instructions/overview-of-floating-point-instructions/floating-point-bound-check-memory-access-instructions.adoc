@@ -14,7 +14,7 @@ fldle.d     fd, rj, rk
 fstgt.s     fd, rj, rk
 fstgt.d     fd, rj, rk
 fstle.s     fd, rj, rk
-fstle.s     fd, rj, rk
+fstle.d     fd, rj, rk
 ----
 
 `FLD{GT/LE}.{S/D}` determines if the valid address is out of bounds and writes the value from memory to the floating-point register.
