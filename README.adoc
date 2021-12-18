@@ -24,15 +24,15 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 ** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.pdf[PDF version].
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[Original document].
 
-* LoongArch Reference Manual - Volume 2: Vector Extensions: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture.
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol2-EN.html[HTML version].
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol2-EN.pdf[PDF version].
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol2-v1.00-CN.pdf[Original document].
+* LoongArch Reference Manual - Volume 2: Vector Extensions: This manual describes the vector extensions (SIMD and Advanced SIMD Extensions) of the LoongArch architecture. (*TBD*)
+** HTML version.
+** PDF version.
+** Original document.
 
-* LoongArch Reference Manual - Volume 3: Virtualization and Binary Translation Extensions: This manual describes the virtualization and binary translation extensions of the LoongArch architecture.
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol3-EN.html[HTML version].
-** https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol3-EN.pdf[PDF version].
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol3-v1.00-CN.pdf[Original document].
+* LoongArch Reference Manual - Volume 3: Virtualization and Binary Translation Extensions: This manual describes the virtualization and binary translation extensions of the LoongArch architecture. (*TBD*)
+** HTML version.
+** PDF version.
+** Original document.
 
 * Loongson 3A5000/3B5000 Processor Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
 ** https://loongson.github.io/LoongArch-Documentation/Loongson-3A5000-usermanual-EN.html[HTML version].

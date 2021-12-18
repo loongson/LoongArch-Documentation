@@ -23,11 +23,11 @@
 * 龙芯架构参考手册 - 卷一：基础架构： 该手册介绍了龙芯架构中基础架构部分的内容。
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[原始文档] 。
 
-* 龙芯架构参考手册 - 卷二：向量指令扩展： 该手册介绍了龙芯架构中向量指令扩展（SIMD 和 高级 SIMD 扩展）部分的内容。
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol2-v1.00-CN.pdf[原始文档] 。
+* 龙芯架构参考手册 - 卷二：向量指令扩展： 该手册介绍了龙芯架构中向量指令扩展（SIMD 和 高级 SIMD 扩展）部分的内容。（*待定*）
+** 原始文档 。
 
-* 龙芯架构参考手册 - 卷三：虚拟化及二进制翻译扩展：该手册介绍了龙芯架构中虚拟化及二进制翻译扩展部分的内容。
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol3-v1.00-CN.pdf[原始文档] 。
+* 龙芯架构参考手册 - 卷三：虚拟化及二进制翻译扩展：该手册介绍了龙芯架构中虚拟化及二进制翻译扩展部分的内容。（*待定*）
+** 原始文档 。
 
 * 龙芯 3A5000/3B5000 处理器寄存器使用手册 - 多核处理架构、寄存器描述与系统软件编程指南：该手册介绍了龙芯 3A5000/3B5000 多核处理器架构与寄存器描述。
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.02-CN.pdf[原始文档] 。
