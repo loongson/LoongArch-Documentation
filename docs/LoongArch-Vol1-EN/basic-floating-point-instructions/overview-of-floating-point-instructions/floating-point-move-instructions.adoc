@@ -184,7 +184,7 @@ MOVGR2CF:
     CFR[cd] = GR[rj][0]
 ----
 
-`MOVCF2GR` writes the value of the condition flag register `cj` into the lowest bit of the general register `rd`.
+`MOVCF2GR` writes the value of the condition flag register `cj` into the lowest bit of the general register `rd` and clears the other bits.
 
 [source]
 ----
