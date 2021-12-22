@@ -660,12 +660,14 @@ with check 32-bit unsigned overflow
 
 == Procedure Calling Convention
 
-The basic principle of the LoongArch procedure calling convention is to pass arguments in registers as much as possible (i.e. floating-point arguments are passed in floating-point registers and non floating-point arguments are passed in general-purpose registers, as much as possible); arguments are passed on the stack only when no appropriate register is available.
-
-==== Abbreviations
+=== Abbreviations
 
 In this document, *GRLEN* is the bit width of general-purpose register, *FRLEN* is the bit width of floating-point register and *WOA* is the bit width of the argument.
-The argument registers are collectively denoted as *AR* (*GAR* or *FAR*), where the general-purpose argument register is denoted as *GAR* and the floating-point argument register is denoted as *FAR*.
+The general-purpose argument register is denoted as *GAR* and the floating-point argument register is denoted as *FAR*.
+
+=== Argument Registers
+
+The basic principle of the LoongArch procedure calling convention is to pass arguments in registers as much as possible (i.e. floating-point arguments are passed in floating-point registers and non floating-point arguments are passed in general-purpose registers, as much as possible); arguments are passed on the stack only when no appropriate register is available.
 
 The argument registers are:
 
@@ -690,7 +692,7 @@ However, in the *LP64D* ABI, unsigned 32-bit types, such as `*unsigned int*`, ar
 
 === Argument passing
 
-Generally speaking, FARs are only used to pass floating-point arguments, GARs are used to pass non floating-point arguments and floating-point arguments when no FAR is available(long double type is also passed in a pair of GARs) and the reference.
+Generally speaking, FARs are only used to pass floating-point arguments, GARs are used to pass non floating-point arguments and floating-point arguments when no FAR is available(`long double` type is also passed in a pair of GARs) and the reference.
 
 Arguments passed by reference may be modified by the callee.
 
@@ -700,7 +702,7 @@ There are three cases:
 
 . 0 < WOA ≤ GRLEN
 
-.. Argument is passed in a single AR, or on the stack by value if none is available.
+.. Argument is passed in a single argument register, or on the stack by value if none is available.
 
 ... If the argument is floating-point type, the argument is passed in FAR.
 if no FAR is available, it’s passed in GAR. If no GAR is available, it’s passed on the stack.
@@ -737,10 +739,10 @@ If there is an available GAR, the structure is passed through the GAR by value p
 The argument is passed in a FAR; If no FAR is available, the value is passed in a GAR; if no GAR is available, the value is passed on the stack.
 
 ... Two floating-point members.
-The argument is passed in a pair of available FAR, with the low-order float member bits in the lower-numbered FAR and the high-order float member bits in the higher-numbered FAR.
+The argument is passed in a pair of available FAR, with the low-order `float` member bits in the lower-numbered FAR and the high-order `float` member bits in the higher-numbered FAR.
 If the number of available FAR is less than 2, it’s passed in a GAR, and passed on the stack if no GAR is available.
 
-.. The structure has both fixed-point and floating-point members, i.e. the structure has one float member and
+.. The structure has both fixed-point and floating-point members, i.e. the structure has one `float` member and...
 
 ... Multiple fixed-point members.
 If there are available GAR, the structure is passed in a GAR, and passed on the stack if no GAR is available.
@@ -757,14 +759,14 @@ If only one register is available, the low-order bits are in the GAR and the hig
 
 .. Only floating-point members.
 
-... i.e. The structure has one long double member or one double member and two adjacent float members or 3-4 float members.
+... i.e. The structure has one `long double` member or one `double` member and two adjacent `float` members or 3-4 `float` members.
 The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
 If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
-However, a structure with two double members is passed in a pair of available FARs.
+However, a structure with two `double` members is passed in a pair of available FARs.
 
 .. Both fixed-point and floating-point members.
 
-... The structure has one double member and only one fixed-point member.
+... The structure has one `double` member and only one fixed-point member.
 
 .... If one FAR and one GAR are available, the floating-point member of the structure is passed in the FAR, and the integer member of the structure is passed in the GAR; If no floating-point registers but two GARs are available, it’s passed in the two GARs; If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack; And it’s passed on the stack if no GAR is available.
 
@@ -792,7 +794,7 @@ Union is passed in GAR or stack.
 
 .. The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
 If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack.
-The arguments are passed on the stack when there is no available GAR.
+The arguments are passed on the stack when no GAR is available.
 
 . WOA > 2 × GRLEN
 
@@ -844,4 +846,4 @@ If such an argument would have been passed by reference, the caller allocates me
 . The stack grows downwards (towards lower addresses) and the stack pointer shall be aligned to a 128-bit boundary upon procedure entry.
 The first argument passed on the stack is located at offset zero of the stack pointer on function entry; following arguments are stored at correspondingly higher addresses.
 
-. Procedures must not rely upon the persistence of stack-allocated data whose addresses lie below the stack pointer.
+. Procedures must not rely upon the persistence of stack-allocated data whose addresses lies below the stack pointer.
