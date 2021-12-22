@@ -664,7 +664,7 @@ The basic principle of the LoongArch procedure calling convention is to pass arg
 
 ==== Abbreviations
 
-In this document, *GRLEN* is the bit width of general-purpose register, *FRLEN* is the bit width of float-point register and *WOA* is the bit width of the argument.
+In this document, *GRLEN* is the bit width of general-purpose register, *FRLEN* is the bit width of floating-point register and *WOA* is the bit width of the argument.
 The argument registers are collectively denoted as *AR* (*GAR* or *FAR*), where the general-purpose argument register is denoted as *GAR* and the floating-point argument register is denoted as *FAR*.
 
 The argument registers are:
@@ -702,7 +702,7 @@ There are three cases:
 
 .. Argument is passed in a single AR, or on the stack by value if none is available.
 
-... If the argument is float-point type, the argument is passed in FAR.
+... If the argument is floating-point type, the argument is passed in FAR.
 if no FAR is available, it’s passed in GAR. If no GAR is available, it’s passed on the stack.
 When passed in registers or on the stack, floating-point types narrower than GRLEN bits are widened to GRLEN bits, with the upper bits undefined.
 
@@ -731,12 +731,12 @@ And the layout of the structure on the stack is consistent with that in memory.
 .. The structure has only fixed-point members.
 If there is an available GAR, the structure is passed through the GAR by value passing; If no GAR is available, it’s passed on the stack.
 
-.. The structure has only float-point members:
+.. The structure has only floating-point members:
 
-... One double member.
+... One floating-point member.
 The argument is passed in a FAR; If no FAR is available, the value is passed in a GAR; if no GAR is available, the value is passed on the stack.
 
-... Two float members.
+... Two floating-point members.
 The argument is passed in a pair of available FAR, with the low-order float member bits in the lower-numbered FAR and the high-order float member bits in the higher-numbered FAR.
 If the number of available FAR is less than 2, it’s passed in a GAR, and passed on the stack if no GAR is available.
 
@@ -755,7 +755,7 @@ If one FAR and one GAR are available, the floating-point member of the structure
 ... The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
 If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
 
-.. Only float-point members.
+.. Only floating-point members.
 
 ... i.e. The structure has one long double member or one double member and two adjacent float members or 3-4 float members.
 The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
@@ -768,12 +768,7 @@ However, a structure with two double members is passed in a pair of available FA
 
 .... If one FAR and one GAR are available, the floating-point member of the structure is passed in the FAR, and the integer member of the structure is passed in the GAR; If no floating-point registers but two GARs are available, it’s passed in the two GARs; If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack; And it’s passed on the stack if no GAR is available.
 
-... The structure has one double member and multiple fixed-point members. 
-
-.... The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
-If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
-
-... The structure has float and fixed-point member.
+... Others 
 
 .... The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
 If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
