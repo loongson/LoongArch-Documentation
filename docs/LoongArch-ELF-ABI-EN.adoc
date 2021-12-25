@@ -698,7 +698,7 @@ Arguments passed by reference may be modified by the callee.
 
 ==== Scalar
 
-There are three cases:
+There are two cases:
 
 . 0 < WOA ≤ GRLEN
 
@@ -717,10 +717,6 @@ When passed in registers or on the stack, the unsigned integer scalars narrower 
 .. The argument is passed in a pair of GAR, with the low-order GRLEN bits in the lower-numbered register and the high-order GRLEN bits in the higher-numbered register.
 If exactly one register is available, the low-order GRLEN bits are passed in the register and the high-order GRLEN bits are passed on the stack.
 If no GAR is available, it’s passed on the stack.
-
-. WOA > 2 × GRLEN
-
-.. Scalars are passed by reference and are replaced in the argument list with the address.
 
 ==== Structure
 
@@ -755,25 +751,25 @@ If one FAR and one GAR are available, the floating-point member of the structure
 .. Only fixed-point members.
 
 ... The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
-If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
+If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
 
 .. Only floating-point members.
 
-... i.e. The structure has one `long double` member or one `double` member and two adjacent `float` members or 3-4 `float` members.
+... The structure has one `long double` member or one `double` member and two adjacent `float` members or 3-4 `float` members.
 The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
-If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
-However, a structure with two `double` members is passed in a pair of available FARs.
+If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
+... The structure with two `double` members is passed in a pair of available FARs. If no a pair of available FARs, it's passed in GARs. A structure with one `double` member and one `float` member is same.
 
 .. Both fixed-point and floating-point members.
 
 ... The structure has one `double` member and only one fixed-point member.
 
-.... If one FAR and one GAR are available, the floating-point member of the structure is passed in the FAR, and the integer member of the structure is passed in the GAR; If no floating-point registers but two GARs are available, it’s passed in the two GARs; If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack; And it’s passed on the stack if no GAR is available.
+.... If one FAR and one GAR are available, the floating-point member of the structure is passed in the FAR, and the integer member of the structure is passed in the GAR; If no floating-point registers but two GARs are available, it’s passed in the two GARs; If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack; And it’s passed on the stack if no GAR is available.
 
 ... Others 
 
 .... The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
-If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
+If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.
 
 . WOA > 2 × GRLEN
 
@@ -793,7 +789,7 @@ Union is passed in GAR or stack.
 . GRLEN < WOA ≤ 2 × GRLEN
 
 .. The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
-If only one register is available, the low-order bits are in the GAR and the high-order bits are on the stack.
+If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack.
 The arguments are passed on the stack when no GAR is available.
 
 . WOA > 2 × GRLEN
@@ -807,7 +803,7 @@ A complex floating-point number, or a structure containing just one complex floa
 
 ==== Variadic arguments
 
-Variadic arguments are passed in GAR. And after a variadic argument has been passed on the stack, all future arguments will also be passed on the stack, i.e., the last argument register may be left unused due to the aligned register pair rule.
+Variadic arguments are passed in GARs in the same manner as named arguments. And after a variadic argument has been passed on the stack, all future arguments will also be passed on the stack, i.e., the last argument register may be left unused due to the aligned register pair rule.
 
 . 0 < WOA ≤ GRLEN
 
@@ -815,7 +811,7 @@ Variadic arguments are passed in GAR. And after a variadic argument has been pas
 
 . GRLEN < WOA ≤ 2 × GRLEN
 
-.. The variadic arguments are passed in an aligned GAR pair (i.e., the first register in the pair is even-numbered), or on the stack by value if none is available.
+.. The variadic arguments are passed in a pair of GARs. If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available. or on the stack by value if none is available. It should be noted that `long double` data tpye is passed in an aligned GAR pair(the first register in the pair is even-numbered).
 
 . WOA > 2 × GRLEN
 
