@@ -51,6 +51,9 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 ** link:LoongArch-toolchain-conventions-EN.html[HTML version].
 ** link:LoongArch-toolchain-conventions-EN.pdf[PDF version].
 
+* LoongArch Processor SMBIOS Spec: This document introduces additional information about LoongArch in SMBIOS.
+** link:LoongArch-Processor-SMBIOS-Spec-EN.html[HTML version].
+
 == Translator`'s Note
 
 Due to the limited knowledge of the translators, there are some inevitable errors and omissions existing in this document, please feel free to correct.
