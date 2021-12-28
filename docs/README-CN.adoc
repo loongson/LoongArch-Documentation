@@ -43,6 +43,10 @@
 ** link:LoongArch-toolchain-conventions-CN.html[HTML 版本]。
 ** link:LoongArch-toolchain-conventions-CN.pdf[PDF 版本]。
 
+* 龙芯架构 SMBIOS 规范：该文档定义了龙芯架构处理器附加信息，是 SMBIOS 结构 type 44 的补充。本文档仅提供 *英文版*。
+** link:LoongArch-Processor-SMBIOS-Spec-EN.html[HTML 版本]。
+
+
 [[getting-start]]
 == 开始
 

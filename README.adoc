@@ -47,3 +47,6 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 * LoongArch ELF ABI: This manual describes the LoongArch ELF ABI.
 ** https://loongson.github.io/LoongArch-Documentation/LoongArch-ELF-ABI-EN.html[HTML version].
 ** https://loongson.github.io/LoongArch-Documentation/LoongArch-ELF-ABI-EN.pdf[PDF version].
+
+* LoongArch Processor SMBIOS Spec: This document introduces additional information about LoongArch in SMBIOS.
+** https://loongson.github.io/LoongArch-Documentation/LoongArch-Processor-SMBIOS-Spec-EN.html[HTML version].
