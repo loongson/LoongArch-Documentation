@@ -277,16 +277,6 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 基础 ABI 的浮点部分和 ABI 扩展特性则分别由连续附加在 multiarch 标识符
 `os` 字段后的两个字符串后缀 (`<fabi_suffix><abiext_suffix>`) 标记。
 
-.龙芯架构 Mulitarch 架构标识符
-[%header,cols="^1,^2"]
-|===
-|Multiarch 架构标识符
-|含义
-
-|`<machine>-linux-gnu<fabi_suffix><abiext_suffix>`
-|GNU/Linux 系统，使用 GNU C Library (glibc) 作为标准 C 库，系统内核为 Linux
-|===
-
 .Multiarch `os` 字段，`<fabi_suffix>` 后缀标记及其含义
 [%header,cols="^1,^2"]
 |===
@@ -304,35 +294,59 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 |===
 
 .全体 Mulitarch 标识符列表
-[%header,cols="^1,^1,^1"]
+[%header,cols="^1,^1,^1,^1"]
 |===
 |ABI 类型（基础 ABI / ABI 扩展特性）
-|操作系统类型
+|C 库 | 内核
 |Multiarch 架构标识符
 
 |`lp64d` / `base`
-|GNU/Linux
+| glibc | Linux
 |`loongarch64-linux-gnuf64`
 
 |`lp64f` / `base`
-|GNU/Linux
+| glibc | Linux
 |`loongarch64-linux-gnuf32`
 
 |`lp64s` / `base`
-|GNU/Linux
+| glibc | Linux
 |`loongarch64-linux-gnusf`
 
 |`ilp32d` / `base`
-|GNU/Linux
+| glibc | Linux
 |`loongarch32-linux-gnuf64`
 
 |`ilp32f` / `base`
-|GNU/Linux
+| glibc | Linux
 |`loongarch32-linux-gnuf32`
 
 |`ilp32s` / `base`
-|GNU/Linux
+| glibc | Linux
 |`loongarch32-linux-gnusf`
+
+|`lp64d` / `base`
+| musl libc | Linux
+|`loongarch64-linux-muslf64`
+
+|`lp64f` / `base`
+| musl libc | Linux
+|`loongarch64-linux-muslf32`
+
+|`lp64s` / `base`
+| musl libc | Linux
+|`loongarch64-linux-muslsf`
+
+|`ilp32d` / `base`
+| musl libc | Linux
+|`loongarch32-linux-muslf64`
+
+|`ilp32f` / `base`
+| musl libc | Linux
+|`loongarch32-linux-muslf32`
+
+|`ilp32s` / `base`
+| musl libc | Linux
+|`loongarch32-linux-muslsf`
 |===
 
 
