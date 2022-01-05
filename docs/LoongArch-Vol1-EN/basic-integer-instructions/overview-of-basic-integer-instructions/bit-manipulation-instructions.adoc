@@ -255,7 +255,7 @@ BITREV.8B:
     GR[rd][ 7: 0] = BITREV(GR[rj][ 7: 0])
 ----
 
-===== `BITREV,{W/D}`
+===== `BITREV.{W/D}`
 
 Instruction formats:
 
