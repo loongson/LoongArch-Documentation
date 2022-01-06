@@ -7,7 +7,7 @@ Instruction formats:
 
 [source]
 ----
-ext.wb      rd, rj
+ext.w.b     rd, rj
 ext.w.h     rd, rj
 ----
 
