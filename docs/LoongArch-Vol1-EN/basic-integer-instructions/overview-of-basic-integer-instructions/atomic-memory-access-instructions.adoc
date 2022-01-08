@@ -91,7 +91,7 @@ sc.d        rd, rj, si14
 The two pairs of instructions, `LL.W` and `SC.W`, `LL.D` and `SC.D`, are used to implement an atomic "`read, modify, and write`" sequence of memory access operations.
 The `LL.{W/D}` instruction retrieves a word/double-word data from the specified address of the memory and writes it to the general register rd after sign extension, and the paired `SC`.
 `{W/D}` instruction operates on the same length of data and has the same access Memory address.
-The atomic maintenance mechanism for the sequence of memory access operations is that when `LL.{W/D}` is executed, the access address is recorded and the previous flag is set (`Lbit` is set to `1`), and the LLbit is checked when the `SC.{W/D}` instruction is executed.
+The atomic maintenance mechanism for the sequence of memory access operations is that when `LL.{W/D}` is executed, the access address is recorded and the previous flag is set (`LLbit` is set to `1`), and the `LLbit` is checked when the `SC.{W/D}` instruction is executed.
 Only when the `LLbit` is `1`, the write action will actually occur, otherwise it will not be written.
 When the software needs to successfully complete an atomic "`read-modify-write`" memory access operation sequence, it needs to construct a loop to repeatedly execute the `LLSC` instruction pair until the `SC` is successfully completed.
 In order to construct this loop, the `SC.[W/D]` instruction will write the flag of its execution success (or simply the `LLbit` value seen when the `SC` instruction is executed) into the general register `rd` and return.

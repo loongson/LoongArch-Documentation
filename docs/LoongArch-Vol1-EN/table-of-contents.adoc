@@ -43,7 +43,7 @@
 * <<definition-of-privileged-resource-configuration-2-register,Definition of privileged resource configuration 2 register>>
 * <<definition-of-privileged-resource-configuration-3-register,Definition of privileged resource configuration 3 register>>
 * <<definition-of-data-save-register,Definition of data save register>>
-* <<definition-of-llbit-controller-register,Definition of llbit controller register>>
+* <<definition-of-llbit-controller-register,Definition of `LLBit` controller register>>
 * <<definition-of-tlb-index-register,Definition of TLB index register>>
 * <<definition-of-tlb-entry-high-order-bits-register-in-la64,Definition of TLB entry high order bits register in LA64>>
 * <<definition-of-tlb-entry-high-order-bits-register-in-la32,Definition of TLB entry high order bits register in LA32>>

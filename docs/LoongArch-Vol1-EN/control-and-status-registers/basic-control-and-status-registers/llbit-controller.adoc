@@ -1,10 +1,10 @@
 [[llbit-controller]]
-==== LLBit Controller (`LLBCTL`)
+==== `LLBit` Controller (`LLBCTL`)
 
 This register is used for the access control operations performed on the `LLBit`.
 
 [[definition-of-llbit-controller-register]]
-.Definition of llbit controller register
+.Definition of `LLBit` controller register
 [%header,cols="2*^1m,^1,5"]
 |===
 d|Bits
