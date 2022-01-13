@@ -19,12 +19,11 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0
+          ruby-version: '3.0'
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
       - name: Build
-        run: |
-          bundle exec rake book:all
+        run: bundle exec rake book:all
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
