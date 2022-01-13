@@ -8,17 +8,17 @@ v1.00
 
 This document defines LoongArch processor-specific data block to supplement the upstream definition of SMBIOS structure Type 44 (Processor Additional Information, section 7.45 in SMBIOS specification V3.5.0 or later).
 
-=== Symbols
+== Symbols
 
 * *DQWORD* +
 128-bits (In the SMBIOS specification, WORD is 16-bits, DWORD is 32-bits, and QWORD is 64-bits).
 
 
-=== Vendor Name register and CPU Name register
+== Vendor Name register and CPU Name register
 
 The LoongArch CPUs designed by Loongson have two registers representing Machine Vendor Name and CPU Name, both of which are DQWORD-format NUL-terminated ASCII string values, located at offsets 0x10 and 0x20 of the IOCSR space respectively.
 
-=== LoongArch Processor-specific Block Structure
+== LoongArch Processor-specific Block Structure
 [%header,cols="^1,^1,^1,^1,3"]
 |===
 |Offset
