@@ -164,7 +164,7 @@ The `LU52I.D` instruction performs the operation that splice the `[51:0]` bit da
 [source]
 ----
 LU52I.D:
-    GR[rd] = {si12, GR[rd][51:0]}
+    GR[rd] = {si12, GR[rj][51:0]}
 ----
 
 When the above instructions are executed, no special handling will be done on overflow.
