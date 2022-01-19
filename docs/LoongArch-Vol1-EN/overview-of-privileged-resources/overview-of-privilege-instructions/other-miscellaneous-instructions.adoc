@@ -19,11 +19,10 @@ If the exception being processed is something other than a debug exception, upda
 If the exception processed is an error-related exception, the `PPLV`, `PIE` and `PWE` information corresponding to the exception is from `CSR.MERRCTL`, and the `ERA` corresponding to the exception is from `CSR.MERRERA`.
 In addition, the `PDA`, `PPG`, `PDCAF` and `PDCAM` information in `CSR.MERRCTL` should be updated to `CSR.CRMD`.
 
-If the exception being processed is a TLB refill exception, the `PPLV`, `PIE`, and `PWE` information corresponding to the exception is from CSR.
-`TLBRSAVE`, and the `ERA` corresponding to the exception is from `CSR.TLBRERA`.
+If the exception being processed is a TLB refill exception, the `PPLV`, `PIE`, and `PWE` information corresponding to the exception is from `CSR.TLBRPRMD`, and the `ERA` corresponding to the exception is from `CSR.TLBRERA`.
 In addition, it is necessary to clear `DA` field `0` and `PG` field `1` in `CSR.CRMD`.
 
-If the exception being handled is not a debug exception, an error-related exception, or a TLB refill exception, then the `pplv.pie` and `PWE` information corresponding to the exception is from `CSR.PRMD`, and the `ERA` corresponding to the exception is from `CSR.ERA`.
+If the exception being handled is not a debug exception, an error-related exception, or a TLB refill exception, then the `PPLV`, `PIE` and `PWE` information corresponding to the exception is from `CSR.PRMD`, and the `ERA` corresponding to the exception is from `CSR.ERA`.
 
 When executing the `ERTN` instruction, if the `KL0` bit in `CSR.LLBCTL` is not equal to `1`, then the `LLbit` is set to `0`, otherwise the `LLbit` is not modified.
 
