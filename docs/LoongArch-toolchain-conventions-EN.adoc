@@ -70,22 +70,39 @@ of ISA modules.
 |Possible values
 |Description
 
-|-mfpu=
-|`64` `32` `none` (equivalent to `0`)
-|Selects the allowed set of basic floating-point instructions and registers.
-
 |-msoft-float
 |
-|Alias to `-mfpu=none`
+|Prevent the compiler from generating hardware floating-point instructions,
+and adjust the selected base ABI type to use soft-float calling convention.
+(The adjusted base ABI identifier should have suffix `s`.)
 
 |-msingle-float
 |
-|Alias to `-mfpu=32`
+|Allow generating 32-bit floating-point instructions,
+and adjust the selected base ABI type to use 32-bit FP calling convention.
+(The adjusted base ABI identifier should have suffix `f`.)
 
 |-mdouble-float
 |
-|Alias to `-mfpu=64`
+|Allow generating 32- and 64-bit floating-point instructions.
+and adjust the selected base ABI type to use 64-bit FP calling convention.
+(The adjusted base ABI identifier should have suffix `d`.)
+
+|-mfpu=
+|`64` `32` `0` `none` (equivalent to `0`)
+|Selects the allowed set of basic floating-point instructions and registers.
+This option should not change the FP calling convention unless it's <<abi-fallback,necessary>>.
+(The implementation of this option is not mandatory. It is recommended to use
+`-m*-float` options in software projects and scripts.)
 |===
+
+As a general rule, the effect of all LoongArch-specific compiler options
+that are given for one compiler invocation should be as if they are
+processed in the order they appear on the command line.
+The only exception to this rule is `-m*-float`: their configuration of
+floating-point instruction set and calling convention will not be changed
+by subsequent options other than `-m*-float`.
+
 
 === Configuring Target ISA
 
@@ -239,10 +256,11 @@ cannot be implemented by the explicitly configured target ISA, the expected
 behavior is *undefined* since the user is encouraged to specify which
 ABI to use when choosing a smaller instruction set than the default.
 
+[[abi-fallback]]
 In this case, it is suggested that the compiler should abort with
 an error message, however, for user-friendliness, it may also choose
-to ignore the default base ABI or ABI extension and select a viable,
-"downgraded" ABI for the currently enabled ISA modules with caution.
+to ignore the default base ABI or ABI extension and select a viable
+fallback ABI for the currently enabled ISA modules with caution.
 It is also recommended that the compiler should notify the user about the
 ABI change, optionally with a compiler warning.
 For example, passing `-mfpu=none` as the only command-line argument
