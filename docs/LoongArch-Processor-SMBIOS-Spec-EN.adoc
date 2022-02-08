@@ -8,17 +8,61 @@ v1.00
 
 This document defines LoongArch processor-specific data block to supplement the upstream definition of SMBIOS structure Type 44 (Processor Additional Information, section 7.45 in SMBIOS specification V3.5.0 or later).
 
-== Symbols
-
+== 1. Symbols
 * *DQWORD* +
 128-bits (In the SMBIOS specification, WORD is 16-bits, DWORD is 32-bits, and QWORD is 64-bits).
 
-
-== Vendor Name register and CPU Name register
-
+== 2. Vendor Name register and CPU Name register
 The LoongArch CPUs designed by Loongson have two registers representing Machine Vendor Name and CPU Name, both of which are DQWORD-format NUL-terminated ASCII string values, located at offsets 0x10 and 0x20 of the IOCSR space respectively.
 
-== LoongArch Processor-specific Block Structure
+== 3. LoongArch Type 44 Processor Additional Information
+The information in this structure defines the processor additional information in case SMBIOS type 4 is not sufficient to describe processor characteristics. The SMBIOS type 44 structure has a reference handle field to link back to the related SMBIOS type 4 structure. There may be multiple SMBIOS type 44 structures linked to the same SMBIOS type 4 structure. For example, when cores are not identical in a processor, SMBIOS type 44 structures describe different core-specific information. +
+
+SMBIOS type 44 defines the standard header for the processor-specific block (see 7.45.1), while the contents of processor-specific data are maintained by processor architecture workgroups or vendors in separate documents (see 7.45.2).
+
+=== 3.1 Standard Processor Additonal Information (Type 44) structure
+The following is the standard header of SMBIOS type 44 defined in SMBIOS specification section 7.45.
+[%header,cols="^1,^1,^1,^1,3"]
+|===
+|Offset
+|Name
+|Length
+|Value
+^|Description
+
+|00h
+|Type
+|BYTE
+|44
+|Processor Additional Information
+
+|01h
+|Length
+|BYTE
+|6 + Y
+|Length of the structure. Y is the length of _Processor-specific Block_ specified at offset 06h.
+
+|02h
+|Handle
+|WORD
+|Varies
+|Handle, or instance number, associated with the structure
+
+|04h
+|Referenced Handle
+|WORD
+|Varies
+|Handle, or instance number, associated with the Processor structure (SMBIOS type 4) which the _Processor Additional Information_ structure describes.
+
+|06h
+|Processor-Specific Block
+|Varies (Y)
+|Varies
+|Processor-specific block (See section 3.2)
+|===
+
+=== 3.2 Standard Processor-specific Block
+Processor-specific block is the standard header of processor-specific data as defined in SMBIOS section 7.45.1.
 [%header,cols="^1,^1,^1,^1,3"]
 |===
 |Offset
@@ -37,18 +81,41 @@ The LoongArch CPUs designed by Loongson have two registers representing Machine 
 |Processor Type
 |BYTE
 |Varies
-|The processor architecture delineated by this Processor-specific Block (See SMBIOS Table 131). 0x9 means LoongArch32 and 0x10 means LoongArch64.
+|The processor architecture delineated by this Processor-specific Block. (See SMBIOS Table 131)
 
 |02h
 |Processor-Specific Data
 |N BYTEs
 |Varies
-|Processor-specific data.
+|Processor-specific data. (See section 3.3)
+|===
+
+=== 3.3 LoongArch Processor-specific Block Structure
+[%header,cols="^1,^1,^1,^1,3"]
+|===
+|Offset
+|Name
+|Length
+|Value
+^|Description
+
+|00h
+|Revision
+|WORD
+|0100h (v1.00)
+|Revision of LoongArch Processor-specific Block structure. +
+Bits [15:8] Major revision, bits [7:0] Minor revision.
+
+|02h
+|Block Length
+|BYTE
+|28h (40d)
+|Length of Processor-specific Data
 
 |03h
 |Reserved
 |BYTE
-|Varies
+|0
 |Reserved.
 
 |04h
