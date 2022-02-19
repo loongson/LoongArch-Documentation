@@ -30,7 +30,7 @@
 ** 原始文档 。
 
 * 龙芯 3A5000/3B5000 处理器寄存器使用手册 - 多核处理架构、寄存器描述与系统软件编程指南：该手册介绍了龙芯 3A5000/3B5000 多核处理器架构与寄存器描述。
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.02-CN.pdf[原始文档] 。
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.03-CN.pdf[原始文档] 。
 
 * 龙芯 7A1000 桥片用户手册：该手册介绍了桥片总体架构、时钟结构、地址空间、配置寄存器以及各个功能接口，主要供 BIOS 和内核开发人员使用。
 ** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf[原始文档] 。

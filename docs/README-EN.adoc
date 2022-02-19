@@ -36,7 +36,7 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 * Loongson 3A5000/3B5000 Processor Reference Manual - Multicore Processor Architecture, Register Descriptions and System Software Programming Guide: This manual introduces the Loongson 3A5000/3B5000 multicore processor architecture and register descriptions.
 ** link:Loongson-3A5000-usermanual-EN.html[HTML version].
 ** link:Loongson-3A5000-usermanual-EN.pdf[PDF version].
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.02-CN.pdf[Original document].
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.03-CN.pdf[Original document].
 
 * Loongson 7A1000 Bridge User Manual: This manual describes the overall bridge architecture, clock structure, address space, configuration registers, and individual functional interfaces, primarily for BIOS and kernel developers.
 ** link:Loongson-7A1000-usermanual-EN.html[HTML version].
