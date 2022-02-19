@@ -5983,7 +5983,7 @@
 5+|fd
 
 |AMSWAP.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6006,7 +6006,7 @@
 5+|rd
 
 |AMSWAP.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6029,7 +6029,7 @@
 5+|rd
 
 |AMADD.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6052,7 +6052,7 @@
 5+|rd
 
 |AMADD.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6075,7 +6075,7 @@
 5+|rd
 
 |AMAND.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6098,7 +6098,7 @@
 5+|rd
 
 |AMAND.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6121,7 +6121,7 @@
 5+|rd
 
 |AMOR.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6144,7 +6144,7 @@
 5+|rd
 
 |AMOR.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6167,7 +6167,7 @@
 5+|rd
 
 |AMXOR.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6190,7 +6190,7 @@
 5+|rd
 
 |AMXOR.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6213,7 +6213,7 @@
 5+|rd
 
 |AMMAX.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6236,7 +6236,7 @@
 5+|rd
 
 |AMMAX.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6259,7 +6259,7 @@
 5+|rd
 
 |AMMIN.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6282,7 +6282,7 @@
 5+|rd
 
 |AMMIN.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6305,7 +6305,7 @@
 5+|rd
 
 |AMMAX.WU
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6328,7 +6328,7 @@
 5+|rd
 
 |AMMAX.DU
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6351,7 +6351,7 @@
 5+|rd
 
 |AMMIN.WU
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6374,7 +6374,7 @@
 5+|rd
 
 |AMMIN.DU
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6397,7 +6397,7 @@
 5+|rd
 
 |AMSWAP_DB.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6420,7 +6420,7 @@
 5+|rd
 
 |AMSWAP_DB.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6443,7 +6443,7 @@
 5+|rd
 
 |AMADD_DB.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6466,7 +6466,7 @@
 5+|rd
 
 |AMADD_DB.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6489,7 +6489,7 @@
 5+|rd
 
 |AMAND_DB.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6512,7 +6512,7 @@
 5+|rd
 
 |AMAND_DB.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6535,7 +6535,7 @@
 5+|rd
 
 |AMOR_DB.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6558,7 +6558,7 @@
 5+|rd
 
 |AMOR_DB.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6581,7 +6581,7 @@
 5+|rd
 
 |AMXOR_DB.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6604,7 +6604,7 @@
 5+|rd
 
 |AMXOR_DB.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6627,7 +6627,7 @@
 5+|rd
 
 |AMMAX_DB.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6650,7 +6650,7 @@
 5+|rd
 
 |AMMAX_DB.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6673,7 +6673,7 @@
 5+|rd
 
 |AMMIN_DB.W
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6696,7 +6696,7 @@
 5+|rd
 
 |AMMIN_DB.D
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6719,7 +6719,7 @@
 5+|rd
 
 |AMMAX_DB.WU
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6742,7 +6742,7 @@
 5+|rd
 
 |AMMAX_DB.DU
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6765,7 +6765,7 @@
 5+|rd
 
 |AMMIN_DB.WU
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
@@ -6788,7 +6788,7 @@
 5+|rd
 
 |AMMIN_DB.DU
-|rd, rj, rk
+|rd, rk, rj
 |0
 |0
 |1
