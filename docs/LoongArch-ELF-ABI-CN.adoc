@@ -165,6 +165,18 @@ v1.00
 |指针类型
 |8
 |8
+
+|`float`
+|4
+|4
+
+|`double`
+|8
+|8
+
+|`long double`
+|16
+|16
 |===
 
 .ILP32 数据模型 （对应基础 ABI 类型：`ilp32d` `ilp32f` `ilp32s`）
@@ -201,6 +213,18 @@ v1.00
 |指针类型
 |4
 |4
+
+|`float`
+|4
+|4
+
+|`double`
+|8
+|8
+
+|`long double`
+|16
+|16
 |===
 
 对于任何<<base-abi-type-marks, 基础 ABI 类型>>，`char` 默认是有符号类型。
