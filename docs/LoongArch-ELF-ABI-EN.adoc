@@ -165,6 +165,18 @@ For the components not yet upstream, and not interacting with other components t
 |pointer types
 |8
 |8
+
+|`float`
+|4
+|4
+
+|`double`
+|8
+|8
+
+|`long double`
+|16
+|16
 |===
 
 .ILP32 Data Model (base ABI types: `ilp32d` `ilp32f` `ilp32s`)
@@ -201,6 +213,18 @@ For the components not yet upstream, and not interacting with other components t
 |pointer types
 |4
 |4
+
+|`float`
+|4
+|4
+
+|`double`
+|8
+|8
+
+|`long double`
+|16
+|16
 |===
 
 For all base ABI types of LoongArch, the `char` datatype is signed by default.
