@@ -800,6 +800,20 @@ If only one GAR is available, the low-order bits are in the GAR and the high-ord
 .. It’s passed by reference and are replaced in the argument list with the address.
 If there is an available GAR, the reference is passed in the GAR, and passed on the stack if no GAR is available.
 
+. Special Cases
+
+.. If WOA ≤ 2 × GRLEN, and the structure contains zero-length array (as a GNU extension) members or zero-width bit-field members:
+
+... Let `f(T)` be the predicate to denote if there is any zero-length array member of which the element type is `T`, or an array, structure, or union containing (directly or indirectly) `T`.
+
+... If the structure only contains one `float` member besides those zero-length array or zero-width bit-field members, and both `f(double)` and `f(long double)` are not true, the structure is passed in one FAR.
+
+... If the structure only contains one `double` member besides those zero-length array or zero-width bit-field members, and `f(long double)` is not true, the structure is passed in one FAR.
+
+... Otherwise, the structure is passed via GAR and/or stack.  No FAR shall be used.
+
+.. If a structure contains (directly or indirectly) an union, and the union occupies non-zero bits of space in the memory layout of this structure, this structure is passed via GAR and/or stack as if the structure itself is an union.  No FAR shall be used.
+
 Structure and scalars passed on the stack are aligned to the greater of the type alignment and GRLEN bits, but never more than the stack alignment.
 
 ==== Union
