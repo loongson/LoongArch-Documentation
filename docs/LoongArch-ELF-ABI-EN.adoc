@@ -129,8 +129,10 @@ For the components not yet upstream, and not interacting with other components t
 
 ====
 
+[[c-lang-data-model]]
 == Type Size and Alignment
 
+[[dm-lp64]]
 .LP64 Data Model (base ABI types: `lp64d` `lp64f` `lp64s`)
 [%header,cols="3,^1,^1"]
 |===
@@ -179,6 +181,7 @@ For the components not yet upstream, and not interacting with other components t
 |16
 |===
 
+[[dm-ilp32]]
 .ILP32 Data Model (base ABI types: `ilp32d` `ilp32f` `ilp32s`)
 [%header,cols="3,^1,^1"]
 |===
@@ -227,7 +230,8 @@ For the components not yet upstream, and not interacting with other components t
 |16
 |===
 
-For all base ABI types of LoongArch, the `char` datatype is signed by default.
+For all <<base-abi-type-marks, base ABI types>> of LoongArch,
+the `char` datatype is signed by default.
 
 
 == ELF Object Files
@@ -235,7 +239,7 @@ For all base ABI types of LoongArch, the `char` datatype is signed by default.
 All common ELF definitions referenced in this section
 can be found in http://sco.com/developers/gabi/latest/contents.html[the latest SysV gABI specification].
 
-=== `EI_CLASS`: File class
+=== EI_CLASS: File class
 
 [%header,cols="2m,^1m,^3"]
 |===
@@ -252,71 +256,66 @@ can be found in http://sco.com/developers/gabi/latest/contents.html[the latest S
 |ELF64 object file
 |===
 
-=== `e_machine`: Identifies the machine
+=== e_machine: Identifies the machine
 
 `LoongArch (258)`
 
-=== `e_flags`: Identifies ABI type and version
+=== e_flags: Identifies ABI type and version
 
 [%header,cols="1,1,1,1"]
 |====
 | Bit 31 - 8 | Bit 7 - 6   | Bit 5 - 3      | Bit 2 - 0
-| (reserved) | ABI version | ABI extension  | Base ABI
+| (reserved) | ABI version | ABI extension  | Base ABI (partial)
 |====
 
-The ABI type of an ELF object is uniquely identified by `e_flags[7:0]` in its header.
+The ABI type of an ELF object is uniquely identified by `e_flags[7:0]` and `EI_CLASS` in its header.
+Within this combination, `e_flags[2:0]` and `EI_CLASS` correspond to the **base ABI** type,
+where the expression of C integral and pointer types (<<c-lang-data-model, data model>>)
+is uniquely determined by `EI_CLASS` value.  As a result, programs in `lp64*` / `ilp32*` ABI
+should only be encoded with ELF64 / ELF32 object files, respectively.
 
+`0x0` `0x4` `0x5` `0x6` `0x7` are reserved values for `e_flags[2:0]`.
+
+[[base-abi-type-marks]]
 .Base ABI Types
-[%header,cols="2m,^1,^3"]
+[%header,cols="2m,^1m,^1m,^3"]
 |===
 |Name
-|Value of `e_flags[2:0]`
+|e_flags[2:0] | EI_CLASS
 |Description
 
-|
-|`0x0`
-|(reserved)
-
-|lp64s
-|`0x1`
+|lp64s | 0x1 | ELFCLASS64
 |Uses 64-bit GPRs and the stack for parameter passing.
-Data model is LP64, where `long` and pointers are 64-bit while `int` is 32-bit.
+Data model is <<dm-lp64, LP64>>, where `long` and pointers are 64-bit while `int` is 32-bit.
 
-|lp64f
-|`0x2`
+|lp64f | 0x2 | ELFCLASS64
 |Uses 64-bit GPRs, 32-bit FPRs and the stack for parameter passing.
-Data model is LP64, where `long` and pointers are 64-bit while `int` is 32-bit.
+Data model is <<dm-lp64, LP64>>, where `long` and pointers are 64-bit while `int` is 32-bit.
 
-|lp64d
-|`0x3`
+|lp64d | 0x3 | ELFCLASS64
 |Uses 64-bit GPRs, 64-bit FPRs and the stack for parameter passing.
-Data model is LP64, where `long` and pointers are 64-bit while `int` is 32-bit.
+Data model is <<dm-lp64, LP64>>, where `long` and pointers are 64-bit while `int` is 32-bit.
 
-|
-|`0x4`
-|(reserved)
-
-|ilp32s
-|`0x5`
+|ilp32s | 0x1 | ELFCLASS32
 |Uses 32-bit GPRs and the stack for parameter passing.
-Data model is ILP32, where `int`, `long` and pointers are 32-bit.
+Data model is <<dm-ilp32, ILP32>>, where `int`, `long` and pointers are 32-bit.
 
-|ilp32f
-|`0x6`
+|ilp32f | 0x2 | ELFCLASS32
 |Uses 32-bit GPRs, 32-bit FPRs and the stack for parameter passing.
-Data model is ILP32, where `int`, `long` and pointers are 32-bit.
+Data model is <<dm-ilp32, ILP32>>, where `int`, `long` and pointers are 32-bit.
 
-|ilp32d
-|`0x7`
+|ilp32d | 0x3 | ELFCLASS32
 |Uses 32-bit GPRs, 64-bit FPRs and the stack for parameter passing.
-Data model is ILP32, where `int`, `long` and pointers are 32-bit.
+Data model is <<dm-ilp32, ILP32>>, where `int`, `long` and pointers are 32-bit.
 |===
+
+`e_flags[5:3]` correspond to the ABI extension type.
 
 .ABI Extension types
 [%header,cols="2m,^1,^3"]
 |===
 |Name
-|Value of `e_flags[5:3]`
+|e_flags[5:3]
 |Description
 
 |base

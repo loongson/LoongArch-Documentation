@@ -129,8 +129,10 @@ v1.00
 
 ====
 
+[[c-lang-data-model]]
 == C 语言数据类型规格
 
+[[dm-lp64]]
 .LP64 数据模型 （对应基础 ABI 类型：`lp64d` `lp64f` `lp64s`）
 [%header,cols="3,^1,^1"]
 |===
@@ -179,6 +181,7 @@ v1.00
 |16
 |===
 
+[[dm-ilp32]]
 .ILP32 数据模型 （对应基础 ABI 类型：`ilp32d` `ilp32f` `ilp32s`）
 [%header,cols="3,^1,^1"]
 |===
@@ -235,7 +238,7 @@ v1.00
 本节内容中关于 ELF 目标文件的通用格式定义
 均参考 http://sco.com/developers/gabi/latest/contents.html[最新版本的 SysV gABI]。
 
-=== `EI_CLASS`: ELF 文件格式
+=== EI_CLASS: ELF 文件格式
 
 [%header,cols="2m,^1m,^3"]
 |===
@@ -245,80 +248,73 @@ v1.00
 
 |ELFCLASS32
 |1
-|32 位 ELF 格式
+|32 位 ELF 格式 (ELF32)
 
 |ELFCLASS64
 |2
-|64 位 ELF 格式
+|64 位 ELF 格式 (ELF64)
 |===
 
-=== `e_machine`: 体系结构 ID
+=== e_machine: 体系结构 ID
 
 `LoongArch (258)`
 
-=== `e_flags`: ABI 类型和版本标记
+=== e_flags: ABI 类型和版本标记
 
 [%header,cols="1,1,1,1"]
 |===
 |`[31:8]` 位 | `[7:6]` 位 | `[5:3]` 位   | `[2:0]` 位
 
-|（保留）     | ABI 版本  | ABI 扩展特性 | 基础 ABI 类型
+|（保留）     | ABI 版本  | ABI 扩展特性 | 基础 ABI 类型 (部分)
 |===
 
-`e_flags[7:0]` 完整标记了 ELF 目标文件使用的 ABI 类型。
+`e_flags[7:0]` 和 `EI_CLASS` 完整确定了 ELF 目标文件使用的 ABI 类型。
+其中，**基础 ABI 类型**由 `e_flags[2:0]` 和 `EI_CLASS` 共同标记，
+后者唯一确定了 C 语言整数和指针类型的表示（<<c-lang-data-model, 数据模型>>）和传参方式。
+因此，龙芯架构的 ELF64 / ELF32 目标文件分别仅用于编码 `lp64*` / `ilp32*` ABI 的程序。
+
+`0x0` `0x4` `0x5` `0x6` `0x7` 为 `e_flags[2:0]` 的保留值。
 
 [[base-abi-type-marks]]
 .基础 ABI 类型标记
-[%header,cols="2m,^1,^3"]
+[%header,cols="2m,^1m,^1m,^3"]
 |===
 |基础 ABI 名称
-|枚举值 (`e_flags[2:0]`)
+|e_flags[2:0] | EI_CLASS
 |含义
 
-|
-|`0x0`
-|保留值
-
-|lp64s
-|`0x1`
+|lp64s | 0x1 | ELFCLASS64
 |使用 64 位通用寄存器和栈传参，
-数据模型为 LP64（`long` 和指针类型宽度为64位，`int` 为32位）
+数据模型为 <<dm-lp64, `LP64`>>（`long` 和指针类型宽度为 64 位，`int` 为 32 位）
 
-|lp64f
-|`0x2`
-|使用 64 位通用寄存器，32位浮点寄存器和栈传参，
-数据模型为 LP64（`long` 和指针类型宽度为64位，`int` 为32位）
+|lp64f | 0x2 | ELFCLASS64
+|使用 64 位通用寄存器，32 位浮点寄存器和栈传参，
+数据模型为 <<dm-lp64, `LP64`>>（`long` 和指针类型宽度为 64 位，`int` 为 32 位）
 
-|lp64d
-|`0x3`
-|使用 64 位通用寄存器，64位浮点寄存器和栈传参，
-数据模型为 LP64（`long` 和指针类型宽度为64位，`int` 为32位）
+|lp64d | 0x3 | ELFCLASS64
+|使用 64 位通用寄存器，64 位浮点寄存器和栈传参，
+数据模型为 <<dm-lp64, `LP64`>>（`long` 和指针类型宽度为 64 位，`int` 为 32 位）
 
-|
-|`0x4`
-|保留值
-
-|ilp32s
-|`0x5`
+|ilp32s | 0x1 | ELFCLASS32
 |使用 32 位通用寄存器和栈传参，
-数据模型为 ILP32（`int`，`long` 和指针类型宽度为32位）
+数据模型为 <<dm-ilp32, `ILP32`>>（`int`，`long` 和指针类型宽度为 32 位）
 
-|ilp32f
-|`0x6`
-|使用 32 位通用寄存器，32位浮点寄存器和栈传参，
-数据模型为 ILP32（`int`，`long` 和指针类型宽度为32位）
+|ilp32f | 0x2 | ELFCLASS32
+|使用 32 位通用寄存器，32 位浮点寄存器和栈传参，
+数据模型为 <<dm-ilp32, `ILP32`>>（`int`，`long` 和指针类型宽度为 32 位）
 
-|ilp32d
-|`0x7`
-|使用 32 位通用寄存器，64位浮点寄存器和栈传参，
-数据模型为 ILP32（`int`，`long` 和指针类型宽度为32位）
+|ilp32d | 0x3 | ELFCLASS32
+|使用 32 位通用寄存器，64 位浮点寄存器和栈传参，
+数据模型为 <<dm-ilp32, `ILP32`>>（`int`，`long` 和指针类型宽度为 32 位）
 |===
+
+`e_flags[5:3]` 标记了 ABI 扩展特性。
 
 .ABI 扩展特性标记
 [%header,cols="2m,^1,^3"]
 |===
 |ABI 扩展特性名称
-|枚举值 (`e_flags[5:3]`)
+|e_flags[5:3]
 |含义
 
 |base
