@@ -1,6 +1,6 @@
 = LoongArch ELF ABI specification
 Loongson Technology Corporation Limited
-v1.00
+v2.00
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
@@ -344,7 +344,7 @@ Data model is ILP32, where `int`, `long` and pointers are 32-bit.
 
 |`v1`
 |`0x1`
-|Another relocation type IF needed.
+|Instruction filed base relocation type.
 
 |
 |`0x2` `0x3`
@@ -645,6 +645,182 @@ with check 32-bit unsigned overflow
 |R_LARCH_GNU_VTENTRY
 |GNU C++ vtable member usage
 |
+
+4+|... Reserved
+
+|64
+|R_LARCH_ABS_L_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A)[11:0]+`
+
+Lowr 20-bit of 64-bit absolute symbol, with check 20-bit signed overflow
+
+|65
+|R_LARCH_ABS_L_LO12
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A)[51:32]+`
+
+Lowest 12-bit of 64-bit absolute symbol, with check 12-bit unsigned overflow
+
+|66
+|R_LARCH_ABS_H_LO20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A)[51:32]+`
+
+Hier 20-bit of 64-bit absolute symbol, with check 20-bit signed overflow
+
+|67
+|R_LARCH_ABS_H_HI12
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A)[63:52]+`
+
+Hiest 12-bit of 64-bit absolute symbol, with check 12-bit signed overflow
+
+|68
+|R_LARCH_PCREL32_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A-PC)[31:12]+`
+
+Hi 20-bit of 32-bit PC relative symbol, with check 20-bit signed overflow
+
+|69
+|R_LARCH_PCREL38_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A-PC)[37:18]+`
+
+Hi 20-bit of 38-bit PC relative symbol, with check 20-bit signed overflow
+
+|70
+|R_LARCH_PCREL64_L_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A-PC)[31:12]+`
+
+Lower 20-bit of 64-bit PC relative symbol, with check 20-bit signed overflow
+
+|71
+|R_LARCH_PCREL_LO12U
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A-PC)[11:0]+`
+
+Lowest 12-bit of 64-bit PC relative symbol, with check 12-bit unsigned overflow
+
+|72
+|R_LARCH_PCREL_LO12S
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A-PC)[11:0]+`
+
+Lowest 12-bit of 32-bit PC relative symbol, with check 12-bit signed overflow
+
+|73
+|R_LARCH_PCREL_H_LO20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A-PC)[51:32]+`
+
+Hier 20-bit of 64-bit PC relative symbol, with check 20-bit signed overflow
+
+|74
+|R_LARCH_PCREL_H_HI12
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A-PC)[63:52]+`
+
+Hiest 12-bit of 64-bit PC relative symbol, with check 12-bit signed overflow
+
+|75
+|R_LARCH_GOT32_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+G-PC)[31:12]+`
+
+Hi 20-bit of 32-bit PC relative GOT access, with check 20-bit signed overflow
+
+|76
+|R_LARCH_GOT64_L_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+G-PC)[31:12]+`
+
+Lower 20-bit of 64-bit PC relative GOT access, with check 20-bit signed overflow
+
+|77
+|R_LARCH_TLSIE32_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+IE-PC)[31:12]+`
+
+Hi 20-bit of 32-bit PC relative TLS.IE GOT access, with check 20-bit signed overflow
+
+|78
+|R_LARCH_TLSIE64_L_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+IE-PC)[31:12]+`
+
+Lower 20-bit of 64-bit PC relative TLS.IE GOT access, with check 20-bit signed overflow
+
+|79
+|R_LARCH_TLSLE64_L_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (S-$tp)[31:12]+`
+
+Lower 20-bit of 64-bit tp relative symbol, with check 20-bit signed overflow
+
+|80
+|R_LARCH_TLSLE64_L_LO12
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [21 ... 10] = (S-$tp)[11:0]+`
+
+Lowest 12-bit of 64-bit tp relative symbol, with check 12-bit unsigned overflow
+
+|81
+|R_LARCH_TLSLE64_H_LO20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (S-$tp)[51:32]+`
+
+Hier 20-bit of 64-bit tp relative symbol, with check 20-bit signed overflow
+
+|82
+|R_LARCH_TLSLE64_H_HI12
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [21 ... 10] = (S-$tp)[63:52]+`
+
+Hiest 12-bit of 64-bit tp relative symbol, with check 12-bit signed overflow
+
+|83
+|R_LARCH_TLSGD32_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+GD-PC)[31:12]+`
+
+Hi 20-bit of 32-bit PC relative TLS.GD GOT access, with check 20-bit signed overflow
+
+|84
+|R_LARCH_TLSGD64_L_HI20
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+GD-PC)[31:12]+`
+
+Lower 20-bit of 64-bit PC relative TLS.GD GOT access, with check 20-bit signed overflow
+
+|85
+|R_LARCH_B16
+|Instruction imm-field relocation
+|`+S-PC+`
+
+|86
+|R_LARCH_B21
+|Instruction imm-field relocation
+|`+S-PC+`
+
+|87
+|R_LARCH_B26
+|Instruction imm-field relocation
+|`+S-PC+`
+
+|88
+|R_LARCH_BL26
+|Instruction imm-field relocation
+|`+S-PC+`
+
+|89
+|R_LARCH_JIRL
+|Instruction imm-field relocation
+|`+(*(uint32_t *) PC) [25 ... 10] = (S+A-PC)[17:2]+`
+
+Bit[17:2] of 38-bit PC relative symbol, with check 16-bit signed overflow
 |===
 
 
