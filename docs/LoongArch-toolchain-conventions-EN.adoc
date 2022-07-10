@@ -551,6 +551,10 @@ portable code should not assume existence of these macros, nor use them.
 |Equivalent to
 |Description
 
+|`__loongarch64`
+|`__loongarch_grlen == 64`
+|Similar to `__mips64`; defined iff `__loongarch_grlen == 64`.
+
 |`_LOONGARCH_ARCH`
 |`__loongarch_arch`
 |n/a
