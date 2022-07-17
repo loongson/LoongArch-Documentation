@@ -1,6 +1,6 @@
 = LoongArch ELF ABI specification
 Loongson Technology Corporation Limited
-v1.00
+v2.00
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
@@ -644,6 +644,205 @@ with check 32-bit unsigned overflow
 |58
 |R_LARCH_GNU_VTENTRY
 |GNU C++ vtable member usage
+|
+
+4+|... Reserved
+
+|64
+|R_LARCH_B16
+|18-bit PC-relative jump
+|`+(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]+`
+
+with check 18-bit signed overflow and 4-bit aligned
+
+|65
+|R_LARCH_B21
+|23-bit PC-relative jump
+|`+(*(uint32_t *) PC) [4 ... 0] = (S+A-PC) [22 ... 18],+`
+
+`+(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]+`
+
+with check 23-bit signed overflow and 4-bit aligned
+
+|66
+|R_LARCH_B26
+|28-bit PC-relative jump
+|`+(*(uint32_t *) PC) [9 ... 0] = (S+A-PC) [27 ... 18],+`
+
+`+(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]+`
+
+with check 28-bit signed overflow and 4-bit aligned
+
+|67
+|R_LARCH_ABS_HI20
+| [31 ... 12] bits of 32/64-bit absolute address
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A) [31 ... 12]+`
+
+|68
+|R_LARCH_ABS_LO12
+|[11 ... 0] bits of 32/64-bit absolute address
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A) [11 ... 0]+`
+
+|69
+|R_LARCH_ABS64_LO20
+|[51 ... 32] bits of 64-bit absolute address
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A) [51 ... 32]+`
+
+|70
+|R_LARCH_ABS64_HI12
+|[63 ... 52] bits of 64-bit absolute address
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A) [63 ... 52]+`
+
+|71
+|R_LARCH_PCALA_HI20
+|[31 ... 12] bits of 32/64-bit PC-relative offset
+|`+(*(uint32_t *) PC) [24 ... 5] = (((S+A) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+
+`+Note: The lower 12 bits are not included when calculating the PC-relative offset.+`
+
+|72
+|R_LARCH_PCALA_LO12
+|[11 ... 0] bits of 32/64-bit address
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A) [11 ... 0]+`
+
+|73
+|R_LARCH_PCALA64_LO20
+|[51 ... 32] bits of 64-bit PC-relative offset
+|`+(*(uint32_t *) PC) [24 ... 5] = (S+A - (PC & ~0xffffffff)) [51 ... 32]+`
+
+|74
+|R_LARCH_PCALA64_HI12
+|[63 ... 52] bits of 64-bit PC-relative offset
+|`+(*(uint32_t *) PC) [21 ... 10] = (S+A - (PC & ~0xffffffff)) [63 ... 52]+`
+
+|75
+|R_LARCH_GOT_PC_HI20
+|[31 ... 12] bits of 32/64-bit PC-relative offset to GOT entry
+|`+(*(uint32_t *) PC) [24 ... 5] = (((GP+G) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+
+|76
+|R_LARCH_GOT_PC_LO12
+|[11 ... 0] bits of 32/64-bit GOT entry address
+|`+(*(uint32_t *) PC) [21 ... 10] = (GP+G) [11 ... 0]+`
+
+|77
+|R_LARCH_GOT64_PC_LO20
+|[51 ... 32] bits of 64-bit PC-relative offset to GOT entry
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+G - (PC & ~0xffffffff)) [51 ... 32]+`
+
+|78
+|R_LARCH_GOT64_PC_HI12
+|[63 ... 52] bits of 64-bit PC-relative offset to GOT entry
+|`+(*(uint32_t *) PC) [21 ... 10] = (GP+G - (PC & ~0xffffffff)) [63 ... 52]+`
+
+|79
+|R_LARCH_GOT_HI20
+|[31 ... 12] bits of 32/64-bit GOT entry absolute address
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+G) [31 ... 12]+`
+
+|80
+|R_LARCH_GOT_LO12
+|[11 ... 0] bits of 32/64-bit GOT entry absolute address 
+|`+(*(uint32_t *) PC) [21 ... 10] = (GP+G) [11 ... 0]+`
+
+|81
+|R_LARCH_GOT64_LO20
+|[51 ... 32] bits of 64-bit GOT entry absolute address
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+G) [51 ... 32]+`
+
+|82
+|R_LARCH_GOT64_HI12
+|[63 ... 52] bits of 64-bit GOT entry absolute address
+|`+(*(uint32_t *) PC) [21 ... 10] = (GP+G) [63 ... 52]+`
+
+|83
+|R_LARCH_TLS_LE_HI20
+|[31 ... 12] bits of TLS LE 32/64-bit offset from TP register
+|`+(*(uint32_t *) PC) [24 ... 5] = T [31 ... 12]+`
+
+|84
+|R_LARCH_TLS_LE_LO12
+|[11 ... 0] bits of TLS LE 32/64-bit offset from TP register
+|`+(*(uint32_t *) PC) [21 ... 10] = T [11 ... 0]+`
+
+|85
+|R_LARCH_TLS_LE64_LO20
+|[51 ... 32] bits of TLS LE 64-bit offset from TP register
+|`+(*(uint32_t *) PC) [24 ... 5] = T [51 ... 32]+`
+
+|86
+|R_LARCH_TLS_LE64_HI12
+|[63 ... 52] bits of TLS LE 64-bit offset from TP register
+|`+(*(uint32_t *) PC) [21 ... 10] = T [63 ... 52]+`
+
+|87
+|R_LARCH_TLS_IE_PC_HI20
+|[31 ... 12] bits of 32/64-bit PC-relative offset to TLS IE GOT entry
+|`+(*(uint32_t *) PC) [24 ... 5] = (((GP+IE) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+
+|88
+|R_LARCH_TLS_IE_PC_LO12
+|[11 ... 0] bits of 32/64-bit TLS IE GOT entry address
+|`+(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [11 ... 0]+`
+
+|89
+|R_LARCH_TLS_IE64_PC_LO20
+|[51 ... 32] bits of 64-bit PC-relative offset to TLS IE GOT entry
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+IE - (PC & ~0xffffffff)) [51 ... 32]+`
+
+|90
+|R_LARCH_TLS_IE64_PC_HI12
+|[63 ... 52] bits of 64-bit PC-relative offset to TLS IE GOT entry
+|`+(*(uint32_t *) PC) [21 ... 10] = (GP+IE - (PC & ~0xffffffff)) [63 ... 52]+`
+
+|91
+|R_LARCH_TLS_IE_HI20
+|[31 ... 12] bits of 32/64-bit TLS IE GOT entry absolute address
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]+`
+
+|92
+|R_LARCH_TLS_IE_LO12
+|[11 ... 0] bits of 32/64-bit TLS IE GOT entry absolute address
+|`+(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [11 ... 0]+`
+
+|93
+|R_LARCH_TLS_IE64_LO20
+|[51 ... 32] bits of 64-bit TLS IE GOT entry absolute address
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [51 ... 32]+`
+
+|94
+|R_LARCH_TLS_IE64_HI12
+|[63 ... 52] bits of 64-bit TLS IE GOT entry absolute address
+|`+(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [63 ... 52]+`
+
+|95
+|R_LARCH_TLS_LD_PC_HI20
+|[31 ... 12] bits of 32/64-bit PC-relative offset to TLS LD GOT entry
+|`+(*(uint32_t *) PC) [24 ... 5] = (((GP+GD) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+
+|96
+|R_LARCH_TLS_LD_HI20
+|[31 ... 12] bits of 32/64-bit TLS LD GOT entry absolute address
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]+`
+
+|97
+|R_LARCH_TLS_GD_PC_HI20
+|[31 ... 12] bits of 32/64-bit PC-relative offset to TLS GD GOT entry
+|`+(*(uint32_t *) PC) [24 ... 5] = (((GP+GD) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+
+|98
+|R_LARCH_TLS_GD_HI20
+|[31 ... 12] bits of 32/64-bit TLS GD GOT entry absolute address
+|`+(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]+`
+
+|99
+|R_LARCH_32_PCREL
+|32-bit PC relative
+|`+(*(uint32_t *) PC) = (S+A-PC) [31 ... 0]+`
+
+|100
+|R_LARCH_RELAX
+|Instruction can be relaxed, paired with a normal relocation at the same address
 |
 |===
 
