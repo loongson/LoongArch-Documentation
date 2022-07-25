@@ -265,14 +265,19 @@ can be found in http://sco.com/developers/gabi/latest/contents.html[the latest S
 [%header,cols="1,1,1,1"]
 |====
 | Bit 31 - 8 | Bit 7 - 6   | Bit 5 - 3      | Bit 2 - 0
-| (reserved) | ABI version | ABI extension  | Base ABI (partial)
+| (reserved) | ABI version | ABI extension  | Base ABI Modifier
 |====
 
-The ABI type of an ELF object is uniquely identified by `e_flags[7:0]` and `EI_CLASS` in its header.
-Within this combination, `e_flags[2:0]` and `EI_CLASS` correspond to the **base ABI** type,
+The ABI type of an ELF object is uniquely identified by `EI_CLASS` and `e_flags[7:0]` in its header.
+
+Within this combination, `EI_CLASS` and `e_flags[2:0]` correspond to the **base ABI** type,
 where the expression of C integral and pointer types (<<c-lang-data-model, data model>>)
-is uniquely determined by `EI_CLASS` value.  As a result, programs in `lp64*` / `ilp32*` ABI
-should only be encoded with ELF64 / ELF32 object files, respectively.
+is uniquely determined by `EI_CLASS` value, and `e_flags[2:0]` represents additional properties
+of the base ABI type, including the FP calling convention.  We refer to `e_flags[2:0]` as
+the **base ABI modifier*.
+
+As a result, programs in `lp64*` / `ilp32*` ABI should only be encoded with ELF64 / ELF32
+object files, respectively.
 
 `0x0` `0x4` `0x5` `0x6` `0x7` are reserved values for `e_flags[2:0]`.
 
@@ -281,30 +286,30 @@ should only be encoded with ELF64 / ELF32 object files, respectively.
 [%header,cols="2m,^1m,^1m,^3"]
 |===
 |Name
-|e_flags[2:0] | EI_CLASS
+|EI_CLASS | Base ABI Modifier (`e_flags[2:0]`)
 |Description
 
-|lp64s | 0x1 | ELFCLASS64
+|lp64s | ELFCLASS64 | 0x1
 |Uses 64-bit GPRs and the stack for parameter passing.
 Data model is <<dm-lp64, LP64>>, where `long` and pointers are 64-bit while `int` is 32-bit.
 
-|lp64f | 0x2 | ELFCLASS64
+|lp64f | ELFCLASS64 | 0x2
 |Uses 64-bit GPRs, 32-bit FPRs and the stack for parameter passing.
 Data model is <<dm-lp64, LP64>>, where `long` and pointers are 64-bit while `int` is 32-bit.
 
-|lp64d | 0x3 | ELFCLASS64
+|lp64d | ELFCLASS64 | 0x3
 |Uses 64-bit GPRs, 64-bit FPRs and the stack for parameter passing.
 Data model is <<dm-lp64, LP64>>, where `long` and pointers are 64-bit while `int` is 32-bit.
 
-|ilp32s | 0x1 | ELFCLASS32
+|ilp32s | ELFCLASS32 | 0x1
 |Uses 32-bit GPRs and the stack for parameter passing.
 Data model is <<dm-ilp32, ILP32>>, where `int`, `long` and pointers are 32-bit.
 
-|ilp32f | 0x2 | ELFCLASS32
+|ilp32f | ELFCLASS32 | 0x2
 |Uses 32-bit GPRs, 32-bit FPRs and the stack for parameter passing.
 Data model is <<dm-ilp32, ILP32>>, where `int`, `long` and pointers are 32-bit.
 
-|ilp32d | 0x3 | ELFCLASS32
+|ilp32d | ELFCLASS32 | 0x3
 |Uses 32-bit GPRs, 64-bit FPRs and the stack for parameter passing.
 Data model is <<dm-ilp32, ILP32>>, where `int`, `long` and pointers are 32-bit.
 |===

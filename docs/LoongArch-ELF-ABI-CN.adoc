@@ -265,12 +265,15 @@ v2.00
 |===
 |`[31:8]` 位 | `[7:6]` 位 | `[5:3]` 位   | `[2:0]` 位
 
-|（保留）     | ABI 版本  | ABI 扩展特性 | 基础 ABI 类型 (部分)
+|（保留）     | ABI 版本  | ABI 扩展特性 | 基础 ABI 修饰符
 |===
 
-`e_flags[7:0]` 和 `EI_CLASS` 完整确定了 ELF 目标文件使用的 ABI 类型。
-其中，**基础 ABI 类型**由 `e_flags[2:0]` 和 `EI_CLASS` 共同标记，
-后者唯一确定了 C 语言整数和指针类型的表示（<<c-lang-data-model, 数据模型>>）和传参方式。
+`EI_CLASS` 和 `e_flags[7:0]` 完整确定了 ELF 目标文件使用的 ABI 类型。
+
+其中，**基础 ABI 类型**由 `EI_CLASS` 和 `e_flags[2:0]` 共同标记，
+前者唯一确定了 C 语言整数和指针类型的表示（<<c-lang-data-model, 数据模型>>）和传参方式，
+后者则在此基础上表示其他基础 ABI 性质，如浮点类型传参方式，称为 **基础 ABI 修饰符**。
+
 因此，龙芯架构的 ELF64 / ELF32 目标文件分别仅用于编码 `lp64*` / `ilp32*` ABI 的程序。
 
 `0x0` `0x4` `0x5` `0x6` `0x7` 为 `e_flags[2:0]` 的保留值。
@@ -280,30 +283,30 @@ v2.00
 [%header,cols="2m,^1m,^1m,^3"]
 |===
 |基础 ABI 名称
-|e_flags[2:0] | EI_CLASS
+|EI_CLASS | 基础 ABI 修饰符 (`e_flags[2:0]`)
 |含义
 
-|lp64s | 0x1 | ELFCLASS64
+|lp64s | ELFCLASS64 | 0x1
 |使用 64 位通用寄存器和栈传参，
 数据模型为 <<dm-lp64, `LP64`>>（`long` 和指针类型宽度为 64 位，`int` 为 32 位）
 
-|lp64f | 0x2 | ELFCLASS64
+|lp64f | ELFCLASS64 | 0x2
 |使用 64 位通用寄存器，32 位浮点寄存器和栈传参，
 数据模型为 <<dm-lp64, `LP64`>>（`long` 和指针类型宽度为 64 位，`int` 为 32 位）
 
-|lp64d | 0x3 | ELFCLASS64
+|lp64d | ELFCLASS64 | 0x3
 |使用 64 位通用寄存器，64 位浮点寄存器和栈传参，
 数据模型为 <<dm-lp64, `LP64`>>（`long` 和指针类型宽度为 64 位，`int` 为 32 位）
 
-|ilp32s | 0x1 | ELFCLASS32
+|ilp32s | ELFCLASS32 | 0x1
 |使用 32 位通用寄存器和栈传参，
 数据模型为 <<dm-ilp32, `ILP32`>>（`int`，`long` 和指针类型宽度为 32 位）
 
-|ilp32f | 0x2 | ELFCLASS32
+|ilp32f | ELFCLASS32 | 0x2
 |使用 32 位通用寄存器，32 位浮点寄存器和栈传参，
 数据模型为 <<dm-ilp32, `ILP32`>>（`int`，`long` 和指针类型宽度为 32 位）
 
-|ilp32d | 0x3 | ELFCLASS32
+|ilp32d | ELFCLASS32 | 0x3
 |使用 32 位通用寄存器，64 位浮点寄存器和栈传参，
 数据模型为 <<dm-ilp32, `ILP32`>>（`int`，`long` 和指针类型宽度为 32 位）
 |===
