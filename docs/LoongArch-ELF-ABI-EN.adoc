@@ -258,13 +258,13 @@ can be found in http://sco.com/developers/gabi/latest/contents.html[the latest S
 
 === `e_flags`: Identifies ABI type and version
 
-[%header,cols="1,1,1,1"]
+[%header,cols="5*^1"]
 |====
-| Bit 31 - 8 | Bit 7 - 6   | Bit 5 - 3      | Bit 2 - 0
-| (reserved) | ABI version | ABI extension  | Base ABI
+| Bit 31 - 12 | Bit 11 - 8   | Bit 7 - 6   | Bit 5 - 3      | Bit 2 - 0
+| (reserved)  | OS features  | ABI version | ABI extension  | Base ABI
 |====
 
-The ABI type of an ELF object is uniquely identified by `e_flags[7:0]` in its header.
+- The subroutine ABI of an ELF object is uniquely identified by `e_flags[7:0]` in its header.
 
 .Base ABI Types
 [%header,cols="2m,^1,^3"]
@@ -329,8 +329,6 @@ Data model is ILP32, where `int`, `long` and pointers are 32-bit.
 |===
 
 [[abi-versioning]]
-`e_flags[7:6]` marks the ABI version of an ELF object.
-
 .ABI Version
 [%header,cols="2,^1,^5"]
 |===
@@ -349,6 +347,21 @@ Data model is ILP32, where `int`, `long` and pointers are 32-bit.
 |
 |`0x2` `0x3`
 |Reserved.
+|===
+
+- `e_flags[11:8]` describes the assumed OS features (e.g. kernel ABI, dynamic linking behavior)
+of this ELF object. These bits are intended to supplement the meaning of `e_ident[EI_OSABI]`,
+which decides how they are interpreted. By default, all bits of `e_flags[11:8]` should be
+cleared unless specified otherwise by the following table.
+
+.Interpretation of `e_flags[11:8]`
+[%header,cols="5*^1"]
+|===
+| `e_ident[EI_OSABI]` | Bit 11 | Bit 10 | Bit 9 | Bit 8
+
+| `ELFOSABI_NONE`
+| Set when compatible with upstream Linux kernel ABI.
+3*^| (reserved)
 |===
 
 
