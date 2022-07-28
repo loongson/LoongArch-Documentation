@@ -34,7 +34,7 @@ REVB.2H, BITREV.4B, BITREV.W, BSTRINS.W, BSTRPICK.W, MASKEQZ, MASKNEZ
 |LD.B, LD.H, LD.W, LD.BU, LD.HU, ST.B, ST.H, STW, PRELD
 
 |Atomic memory access instructions
-|LIL.W, SC.W
+|LL.W, SC.W
 
 |Barrier instructions
 |DBAR, IBAR
