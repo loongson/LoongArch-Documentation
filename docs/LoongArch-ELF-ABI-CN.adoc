@@ -698,7 +698,8 @@ v2.00
 |71
 |R_LARCH_PCALA_HI20
 |相对 PC 偏移 32/64 位的 [31 ... 12] 位
-|`+(*(uint32_t *) PC) [24 ... 5] = (((S+A) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+|`+(*(uint32_t *) PC) [24 ... 5] = ((hi20(S+A) - (PC & ~0xfff)) [31 ... 12]+` footnote:foot_hi20[`hi20(x)` 定义为 `(x + 0x800) & ~0xfff`。`+ 0x800`
+使得结果能够和视为 12 位带符号数的 `x & 0xfff` 相加。]
 
 `+注意：所有相对 PC 偏移计算都不包含低12位。+`
 
@@ -710,17 +711,18 @@ v2.00
 |73
 |R_LARCH_PCALA64_LO20
 |相对 PC 偏移 64 位的 [51 ... 32] 位
-|`+(*(uint32_t *) PC) [24 ... 5] = (S+A - (PC & ~0xffffffff)) [51 ... 32]+`
+|`+(*(uint32_t *) PC) [24 ... 5] = (hi32(S+A) - (PC & ~0xffffffff)) [51 ... 32]+` footnote:foot_hi32[`hi32(x)` 定义为 `x - ((x & 0x800) << 21)`。`-((x & 0x800) << 21)` 使得结果能够和 `x & 0xfff` 视为 12 位带符号数并扩展到 32
+位的结果，以及 `hi20(x)` 相加。]
 
 |74
 |R_LARCH_PCALA64_HI12
 |相对 PC 偏移 64 位的 [63 ... 52] 位
-|`+(*(uint32_t *) PC) [21 ... 10] = (S+A - (PC & ~0xffffffff)) [63 ... 52]+`
+|`+(*(uint32_t *) PC) [21 ... 10] = (hi32(S+A) - (PC & ~0xffffffff)) [63 ... 52]+` footnote:foot_hi32[]
 
 |75
 |R_LARCH_GOT_PC_HI20
 |GOT 表项相对 PC 偏移 32/64 位的 [31 ... 12] 位
-|`+(*(uint32_t *) PC) [24 ... 5] = (((GP+G) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+|`+(*(uint32_t *) PC) [24 ... 5] = (hi20(GP+G) - (PC & ~0xfff)) [31 ... 12]+` footnote:foot_hi20[]
 
 |76
 |R_LARCH_GOT_PC_LO12
@@ -730,12 +732,12 @@ v2.00
 |77
 |R_LARCH_GOT64_PC_LO20
 |GOT 表项相对 PC 偏移 64 位的 [51 ... 32] 位
-|`+(*(uint32_t *) PC) [24 ... 5] = (GP+G - (PC & ~0xffffffff)) [51 ... 32]+`
+|`+(*(uint32_t *) PC) [24 ... 5] = (hi32(GP+G) - (PC & ~0xffffffff)) [51 ... 32]+` footnote:foot_hi32[]
 
 |78
 |R_LARCH_GOT64_PC_HI12
 |GOT 表项相对 PC 偏移 64 位的 [63 ... 52] 位
-|`+(*(uint32_t *) PC) [21 ... 10] = (GP+G - (PC & ~0xffffffff)) [63 ... 52]+`
+|`+(*(uint32_t *) PC) [21 ... 10] = (hi32(GP+G) - (PC & ~0xffffffff)) [63 ... 52]+` footnote:foot_hi32[]
 
 |79
 |R_LARCH_GOT_HI20
@@ -780,7 +782,7 @@ v2.00
 |87
 |R_LARCH_TLS_IE_PC_HI20
 |TLS IE 符号 GOT 表项相对 PC 偏移 32/64 位的 [31 ... 12] 位
-|`+(*(uint32_t *) PC) [24 ... 5] = (((GP+IE) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+|`+(*(uint32_t *) PC) [24 ... 5] = (hi20(GP+IE) - (PC & ~0xfff)) [31 ... 12]+` footnote:foot_hi20[]
 
 |88
 |R_LARCH_TLS_IE_PC_LO12
@@ -790,12 +792,12 @@ v2.00
 |89
 |R_LARCH_TLS_IE64_PC_LO20
 |TLS IE 符号 GOT 表项相对 PC 偏移 64 位的 [51 ... 32] 位
-|`+(*(uint32_t *) PC) [24 ... 5] = (GP+IE - (PC & ~0xffffffff)) [51 ... 32]+`
+|`+(*(uint32_t *) PC) [24 ... 5] = (hi32(GP+IE) - (PC & ~0xffffffff)) [51 ... 32]+` footnote:foot_hi32[]
 
 |90
 |R_LARCH_TLS_IE64_PC_HI12
 |TLS IE 符号 GOT 表项相对 PC 偏移 64 位的 [63 ... 52] 位
-|`+(*(uint32_t *) PC) [21 ... 10] = (GP+IE - (PC & ~0xffffffff)) [63 ... 52]+`
+|`+(*(uint32_t *) PC) [21 ... 10] = (hi32(GP+IE) - (PC & ~0xffffffff)) [63 ... 52]+` footnote:foot_hi32[]
 
 |91
 |R_LARCH_TLS_IE_HI20
@@ -820,7 +822,7 @@ v2.00
 |95
 |R_LARCH_TLS_LD_PC_HI20
 |TLS LD 符号 GOT 表项相对 PC 偏移 32/64 位的 [31 ... 12] 位
-|`+(*(uint32_t *) PC) [24 ... 5] = (((GP+GD) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+|`+(*(uint32_t *) PC) [24 ... 5] = (hi20(GP+GD) - (PC & ~0xfff)) [31 ... 12]+` footnote:foot_hi20[]
 
 |96
 |R_LARCH_TLS_LD_HI20
@@ -830,7 +832,7 @@ v2.00
 |97
 |R_LARCH_TLS_GD_PC_HI20
 |TLS GD 符号 GOT 表项相对 PC 偏移 32/64 位的 [31 ... 12] 位
-|`+(*(uint32_t *) PC) [24 ... 5] = (((GP+GD) & ~0xfff) - (PC & ~0xfff)) [31 ... 12]+`
+|`+(*(uint32_t *) PC) [24 ... 5] = (hi20(GP+GD) - (PC & ~0xfff)) [31 ... 12]+` footnote:foot_hi20[]
 
 |98
 |R_LARCH_TLS_GD_HI20
