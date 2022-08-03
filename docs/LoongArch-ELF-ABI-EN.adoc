@@ -344,7 +344,7 @@ Data model is ILP32, where `int`, `long` and pointers are 32-bit.
 
 |`v1`
 |`0x1`
-|Another relocation type IF needed.
+|Supporting relocation types directly writing to immediate slots. Can be implemented separately without compatibility with v0.
 
 |
 |`0x2` `0x3`
