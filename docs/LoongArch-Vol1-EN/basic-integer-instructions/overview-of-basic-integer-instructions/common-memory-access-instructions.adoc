@@ -269,6 +269,11 @@ STPTR.D:
 
 The memory access address calculation method of the above instruction is to logical left shift the 14-bit immediate data `si14` by 2 bits, sign extension, and then sum the value in the general register `rj`.
 
+[TIP]
+====
+When writing assembly, you need to fill in the immediate field with the *real offset value* in bytes, i.e. `(si14<<2)`.
+====
+
 For `LDPTR.{W/D}` and `STPTR.{W/D}` instructions, no matter what kind of hardware implementation and environmental configuration, as long as the memory access address is naturally aligned, the non-aligned exception will not be triggered; when the memory address is not naturally aligned, if the hardware implementation supports unaligned memory access and the current computing environment is configured to allow unaligned memory access, then the unaligned exception will not be triggered, otherwise it will trigger the unaligned exception.
 
 `LDPTR.{W/D}`, `STPTR.{W/D}` instructions are used in conjunction with `ADDU16I.D` instructions to accelerate GOT table-based access in position-independent codes.
