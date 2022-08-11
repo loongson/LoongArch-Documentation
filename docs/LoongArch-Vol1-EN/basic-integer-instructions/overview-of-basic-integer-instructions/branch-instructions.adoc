@@ -75,6 +75,11 @@ BGEU:
 
 The calculation method of the jump target address of the above-mentioned six branch instructions is to logically shift the 16-bit immediate `offs16` in the instruction code by 2 bits and then sign expand, and the resulting offset value is added to the PC of the branch instruction.
 
+[TIP]
+====
+When writing assembly, you need to fill in the immediate field with the *real offset value* in bytes, i.e. `(offs16<<2)`.
+====
+
 ===== `BEQZ`, `BNEZ`
 
 Instruction formats:
@@ -105,6 +110,11 @@ BNEZ:
 
 The jump target address of the above two branch instructions is to logical left shift the 21-bit immediate `offs21` in the instruction code by 2 bits and then sign extension, and the resulting offset value is added to the `PC` of the branch instruction.
 
+[TIP]
+====
+When writing assembly, you need to fill in the immediate field with the *real offset value* in bytes, i.e. `(offs21<<2)`.
+====
+
 ===== `B`
 
 Instruction formats:
@@ -122,6 +132,11 @@ The jump target address is to logical left shift the 26-bit immediate `offs26` i
 B:
     PC = PC + SignExtend({offs26, 2' b0}, GRLEN)
 ----
+
+[TIP]
+====
+When writing assembly, you need to fill in the immediate field with the *real offset value* in bytes, i.e. `(offs26<<2)`.
+====
 
 ===== `BL`
 
@@ -146,6 +161,11 @@ BL:
 
 In LA ABI, the No.1 general register `r1` serves as the return address register `ra`.
 
+[TIP]
+====
+When writing assembly, you need to fill in the immediate field with the *real offset value* in bytes, i.e. `(offs26<<2)`.
+====
+
 ===== `JIRL`
 
 Instruction formats:
@@ -169,3 +189,8 @@ JIRL:
 When `rd` is equal to `0`, the function of `JIRL` is a common non-call indirect jump instruction.
 
 `JIRL` with rd equal to `0`, `rj` equal to `1` and `offs16` equal to `0` is often used as an indirect jump from call return.
+
+[TIP]
+====
+When writing assembly, you need to fill in the immediate field with the *real offset value* in bytes, i.e. `(offs16<<2)`.
+====

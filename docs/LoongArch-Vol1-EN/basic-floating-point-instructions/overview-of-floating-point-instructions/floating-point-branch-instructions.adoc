@@ -25,3 +25,8 @@ BCNEZ:
     if CFR[cj] != 0:
         PC = PC + SignExtend({offs21, 2'b0}, GRLEN)
 ----
+
+[TIP]
+====
+When writing assembly, you need to fill in the immediate field with the *real offset value* in bytes, i.e. `(offs21<<2)`.
+====

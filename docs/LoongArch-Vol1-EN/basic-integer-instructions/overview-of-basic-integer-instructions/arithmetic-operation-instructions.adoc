@@ -132,6 +132,11 @@ ALSL.D:
 
 When the above instructions are executed, no special handling will be done on overflow.
 
+[TIP]
+====
+When writing assembly, you need to fill in the immediate field with the *real shift value*, i.e. `(sa2+1)`, not the value in the immediate field of the instruction code.
+====
+
 ===== `LU12I.W`, `LU32I.D`, `LU52I.D`
 
 Instruction formats:
