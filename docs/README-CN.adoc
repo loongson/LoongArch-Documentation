@@ -21,7 +21,7 @@
 == 文档
 
 * 龙芯架构参考手册 - 卷一：基础架构： 该手册介绍了龙芯架构中基础架构部分的内容。
-** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.00-CN.pdf[原始文档] 。
+** https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.02-CN.pdf[原始文档] 。
 
 * 龙芯架构参考手册 - 卷二：向量指令扩展： 该手册介绍了龙芯架构中向量指令扩展（SIMD 和 高级 SIMD 扩展）部分的内容。（*待定*）
 ** 原始文档 。

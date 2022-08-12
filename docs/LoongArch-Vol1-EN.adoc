@@ -1,6 +1,6 @@
 = LoongArch Reference Manual - Volume 1: Basic Architecture
 Loongson Technology Corporation Limited
-v1.00
+v1.02
 :title-separator: -
 :docinfodir: ../themes
 :docinfo: shared
