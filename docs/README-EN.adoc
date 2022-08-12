@@ -172,7 +172,7 @@ Run `git config --global core.longpaths true` to modify the global configuration
 
 . Use the latest https://www.jruby.org/download[JRuby] instead of Ruby.
 
-The rest is the same as in <<Getting Start>>, but JRuby runs much slower and may have cmd popups when running commands.
+The rest is the same as in <<Getting Started>>, but JRuby runs much slower and may have cmd popups when running commands.
 
 === Developing on Docker
 
