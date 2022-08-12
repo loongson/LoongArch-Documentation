@@ -32,6 +32,7 @@ jobs:
           external_repository: loongson/LoongArch-Documentation-Preview
           publish_branch: gh-pages
           publish_dir: ./public
+          destination_dir: ${{ github.event.pull_request.number }}
 
       - name: Update status
         uses: Sibz/github-status-action@v1
@@ -40,5 +41,5 @@ jobs:
           context: 'LoongArch Documentation Preview / Deploy (update)'
           description: 'Deployed, click "Details" to view ->'
           state: 'success'
-          target_url: https://loongson.github.io/LoongArch-Documentation-Preview
+          target_url: https://loongson.github.io/LoongArch-Documentation-Preview/${{ github.event.pull_request.number }}
           sha: ${{ github.event.pull_request.head.sha || github.sha }}

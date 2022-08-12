@@ -1,0 +1,26 @@
+name: Clean
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          repository: 'loongson/LoongArch-Documentation-Preview'
+          ref: 'gh-pages'
+
+      - name: Remove
+        run: rm -rvf ${{ github.event.pull_request.number }}
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          external_repository: loongson/LoongArch-Documentation-Preview
+          publish_branch: gh-pages
+          publish_dir: .
