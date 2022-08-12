@@ -18,11 +18,11 @@ font:
   - DroidSansFallback
 base:
   font_family: Roboto
-literal:
+codespan:
   font_family: Roboto Mono
-key:
-  font_family: $literal_font_family
+kbd:
+  font_family: $codespan_font_family
 code:
-  font_family: $literal_font_family
+  font_family: $codespan_font_family
 conum:
-  font_family: $literal_font_family
+  font_family: $codespan_font_family
