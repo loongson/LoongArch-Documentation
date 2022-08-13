@@ -25,7 +25,7 @@ FMOV.D:
 
 The above instruction operations are non-arithmetic and will not cause IEEE 754 exceptions, nor will they modify the Cause and Flags fields of the floating-point control and status register.
 
-===== `FSEl`
+===== `FSEL`
 
 Instruction formats:
 
