@@ -1,0 +1,2113 @@
+= LoongArch instruction format conventions
+LoongArch community developers
+v1.00
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+
+== Background
+
+As cornerstones of LoongArch's ecosystem, many projects, including compilers
+and VM runtimes for example, have to handle LoongArch machine code.
+As a result, these projects need to be aware of LoongArch's instruction
+encodings.
+However, the "9 basic instruction formats" as defined in the
+*LoongArch Reference Manual v1.00* (referred to as **manual format names** or
+**MFNs** hereinafter) cannot satisfy projects' requirements:
+
+- Some instructions do not belong to any of the 9 formats, for example `lu12i.w`, `asrt{le,gt}.d` and `bstrpick.[wd]`.
++
+This includes even some of the most ubiquitous instructions like `lu12i.w`.
+Projects have to improvise names for these non-standard formats, leading to
+naming inconsistencies.
+Knowledge sharing between projects is also stifled as a result.
+
+- Most **MFNs** start with a number (e.g. `1RI21`), precluding their direct
+  use as identifiers in most programming languages.
++
+Projects still have to improvise names, or add prefixes such as `FMT` in
+otherwise unnecessary occasions.
+
+- **MFNs** are vague and do not reflect exact encoding details, which is
+  unhelpful for developers having to deal with such details.
++
+For example, the `1RI21` and the so-called "`1RI20`" (the actual format for `lu12i.w`)
+are entirely different encodings, despite both having one register operand and
+one immediate operand.
+The detail is not reflected in the format naming, so even experienced developers
+have to spend mental energy processing it.
+And, projects again have to improvise names to distinguish and encode such details.
+
+We argue that, even if familiarity with reference manuals can be taken for
+granted for compiler/VM developers, lessening costs for understanding and communication
+and developer UX improvements in the right occasions are still worth pursuing
+for LoongArch, an ISA purported to be the novel, developer-friendly architecture.
+
+This document supplements the LoongArch reference manual providing a detailed
+convention for the LoongArch instruction formats.
+We hope to standardize the naming and description of the formats, facilitate
+programmatic access of these, to eventually lower maintenance burden and
+encourage Knowledge sharing across projects.
+
+== Conventions
+
+=== Approach
+
+What constitutes a good instruction format nomenclature?
+
+* Instruction format names should be valid identifiers in most programming languages.
++
+This is to enable direct use in downstream projects.
+If names cannot be directly used as identifiers, projects would have to invent
+names, leading to different names used in different projects and steep learning
+curve for infrastructure developers.
+
+* It is preferred that instruction format names are case-insensitive.
++
+This is for easy adoption among projects or programming languages with
+differing coding style requirements.
+For example, some projects or languages mandate ALL CAPS for constants and
+enum variants.
+Or it could be like the Go programming language, in which semantic could change
+depending on whether the identifier's first letter is capitalized.
+If some instruction format names differ only by case, such projects could be
+forced into the same situation as in the previous scenarios.
+
+* Instruction format names should provide as much detail as possible.
++
+Different projects have different requirements regarding the categorization of
+instructions into formats, but it is generally much easier to discard information
+from precise names than to add back information to vague names.
+Specifically:
++
+** Instructions with same number but different kinds of operands should belong to different formats.
+** Instructions with same number and kind of operands, but differently sized or laid out, should belong to different formats.
+
+* Instruction format nomenclature should be forward-compatible if possible.
++
+Addition of new instructions and/or instruction formats should be seen as a
+common occurrence for an ISA under rapid iteration.
+As a consequence, downstream maintainers prefer not to make substantial changes
+to support new instructions,
+and specification writers do not want to extensively update related specs each
+time a new ISA revision is announced.
+Readers and users of said ISA specs would also like to memorize as little as
+possible on each update, and being able to leverage existing knowledge is a
+plus.
+
+Instruction format names conforming to this convention are referred to as
+**convention format names** or **CFNs** hereinafter.
+
+[NOTE]
+====
+The specific meanings overlaid upon **MFNs** and **CFNs** by this document are
+solely for convenience of expression inside the document.
+
+We expect the **MFNs** to gradually fall out of use after this document gets
+promoted to official status.
+When that happens, for readers of LoongArch specs, the undecorated terms
+"instruction format" or "instruction format name" alone would suffice, and
+they will be equivalent to **CFN** in this document.
+====
+
+[NOTE]
+====
+This convention only covers the format description of LoongArch machine code,
+i.e. instruction words, but not the LoongArch assembly language.
+
+There are known inconsistencies in the current LoongArch assembly syntax,
+including different writing order such as the `bstrins/bstrpick` cases discussed below,
+and special cases needing memorization, like some instructions' processed immediate operands,
+with different content in the bitfield than in assembly text that undergoes transformations like `+1` or `<<2`.
+
+This convention purposely does not perceive nor handle these special cases;
+such cases are left for other documents.
+====
+
+=== Formal description
+
+**CFNs** conform to the following ABNF description:
+
+```
+insn-format  =  "EMPTY"
+insn-format  =/ reg-slots
+insn-format  =/ imm-slots
+insn-format  =/ reg-slots imm-slots
+
+reg-slots    = 1*reg
+reg          = int-reg / fp-reg / fcc-reg
+int-reg      = "D" / "J" / "K" / "A"
+fp-reg       = "F" index
+fcc-reg      = "C" index
+
+index-length = index length
+index        = "d" / "j" / "k" / "a" / "m"
+length       = 1*DIGIT
+
+imm-slots    = 1*imm
+imm          = signedness 1*index-length
+signedness   = "S" / "U"
+```
+
+=== Natural language description
+
+Every LoongArch instruction is 32 bits long, and **CFNs** describe the slots
+dug inside the instruction word for operands.
+All bits not belonging to any of the slots are part of the fixed opcode bits
+that is recognized by the hardware decoder unit.
+In this convention, bit indexes start from 0, which is the LSB.
+
+Some instructions have no operand slots; all their operands are implied by the
+respective semantic.
+The **CFN** of these instructions are arbitrarily denoted as `EMPTY` to avoid
+inconveniences associated with empty strings.
+
+Broadly speaking, there are two kinds of operands: register operands and
+immediate operands.
+Depending on the exact instruction format, a register operand is an index into
+one of the register classes;
+while immediate operands can represent either signed or unsigned quantities
+as well.
+
+For consistency and ease of processing, the order of operand slots in a **CFN**
+is specified to be:
+
+* register slots first, followed by immediate slots;
+* from LSB to MSB inside each group.
+
+To shorten the length of **CFNs** for common instructions, all GPR slots are
+assigned one-letter names that coincide with their respective placeholder
+names in assembly i.e. `rd rj rk ra`.
+Register operands of other register classes are specified in the form of
+`Bank Index`, e.g. `Fj` means the FPR occupying the position of `j` (whose
+meaning is to be explained shortly after).
+
+.Register operand slots
+[%header,cols="^1,2,^1,2"]
+|===
+|Slot name
+|Starting bit index
+|Bit-field width
+|Register class
+
+|`D`
+|0
+|5
+|GPR
+
+|`J`
+|5
+|5
+|GPR
+
+|`K`
+|10
+|5
+|GPR
+
+|`A`
+|15
+|5
+|GPR
+
+|`C`
+|Denoted by index specifier
+|3
+|FP condition register
+
+|`F`
+|Denoted by index specifier
+|5
+|FPR
+|===
+
+To conserve capital letters for future use, FCSRs are not treated as another
+register class in this convention, but rather as *immediates* used to address
+the FCSR space.
+This directly resembles how CSR manipulation instructions operate: their
+immediate operands are seen as addresses into the CSR space.
+
+[NOTE]
+====
+According to the ISA manual, the FCSR is considered to belong to its own class.
+However, as it is currently named, the FCSR is more similar to CSR both in terms of understanding and usage:
+while there are four distinct names that are FCSR0 ~ FCSR3,
+it does not imply that there are four real hardware registers.
+Indeed, FCSR1 through FCSR3 are just "views" into specific bitfields of FCSR0.
+What's more, the FCSR does not participate in register allocation, unlike
+GPR, FPR or FCC, so it does not make much sense to artificially treat it the
+same as the other register classes.
+
+In addition to all this, for historical reasons projects like binutils and LLVM
+implemented the FCSR operands as *GPR* (only in the assembler syntax; e.g.
+it is not `$zero` that gets accessed even if `$r0` is at the FCSR position,
+in fact it is still FCSR0). This is blatantly wrong.
+In contrast to a "register class" that *cannot* be used as such,
+it is more proper and convenient to just treat the FCSR as an immediate.
+====
+
+One needs to specify the starting bit index for non-GPR register operands and
+immediate operands.
+For easy memorization, the representing letter is shared in case the bit index
+coincides with one of the GPR operands.
+The lowercase form of the GPR letter is used for the corresponding bit index.
+
+[NOTE]
+====
+Because of the prefix construction of **CFNs**, no ambiguity results from the
+re-using of such letters.
+It stays unambiguous even if the entire **CFN** gets upper-cased or lower-cased.
+
+The reason behind **CFNs**' use of both letter cases is readability:
+except for EMPTY, the number of operands is the same as the count of upper-case
+letters in the name.
+====
+
+There are immediate operands starting from the 16th bit, where no register
+operand start from.
+For easy memorization we assign `m` (middle) to this position.
+
+.Index specifier
+[%header,cols="^1,1"]
+|===
+|Index specifier
+|Bit index represented
+
+|`d`
+|0
+
+|`j`
+|5
+
+|`k`
+|10
+
+|`a`
+|15
+
+|`m`
+|16
+|===
+
+Some instructions treat their immediate operands as signed numbers,
+while others see them as unsigned.
+The syntax for immediate operands is like `Sign 1-or-more-slots`,
+with `S` for signed immediates and `U` for unsigned ones.
+Each slot is represented like `Index-specifier width` with the width being
+just a decimal number.
+
+The value of numbers comprising of multiple slots is found out by concatenating
+the contents of each slot, in the order as laid out in the operand's description.
+For example, the immediate operand `Sd5k16` has two slots, `d5` and `k16`, and
+the number represented is `(d5 << 16) | k16`.
+
+[NOTE]
+====
+Readers from a RISC-V background, beware: LoongArch keeps the tradition of
+unsigned immediates for logic operation instructions, unlike RISC-V.
+(Otherwise one letter such as `I` is sufficient for representing all immediates.)
+====
+
+=== Examples and discussion
+
+In actual engineering, components such as compilers and (dis)assemblers often
+need to distinguish between register classes.
+**MFNs** do not feature such distinction while **CFNs** do.
+
+.Examples of instructions with "the same format" but referring to different register classes
+[%header,cols="^1,^1,^1"]
+|===
+|Instruction
+|**MFN**
+|**CFN**
+
+|`rdtime`
+|2R
+|DJ
+
+|`movgr2fr.w`
+|2R
+|FdJ
+
+|`movfr2gr.s`
+|2R
+|DFj
+
+|`add.d`
+|3R
+|DJK
+
+|`fadd.d`
+|3R
+|FdFjFk
+
+|`ld.w`
+|2RI12
+|DJSk12
+
+|`fld.s`
+|2RI12
+|FdJSk12
+|===
+
+It is obvious that the instruction format should differ if operands' positions
+and/or shapes differ, when it comes to handling machine code;
+while assembler syntax could be similar for some instructions, the encodings
+could vary significantly.
+**MFNs** do not take encoding details into consideration, while **CFNs** do.
+
+.Examples of instructions with "the same format" but differently encoded
+[%header,cols="^1,^1,^1"]
+|===
+|Instruction
+|**MFN**
+|**CFN**
+
+|`clo.w`
+|2R
+|DJ
+
+|`asrtgt.d`
+|n/a (2R or variant of 3R?)
+|JK
+
+|`movgr2cf`
+|2R
+|CdJ
+
+|`movcf2gr`
+|2R
+|DCj
+
+|`lu12i.w`
+|n/a ("1RI20" or variant of 1RI21?)
+|DSj20
+
+|`beqz`
+|1RI21
+|JSd5k16
+|===
+
+It can be seen that formats of instructions like `asrtle/asrtgt` or `lu12i.w`
+are actually very special, with no connection to other instructions whatsoever,
+even if the "other" instructions have similar **MFNs** like "2R" or "1RI21".
+
+When implementing assemblers or JITs, it is often necessary to check immediates
+for ensuring they do not overflow the respective bitfields before emitting
+machine code.
+In this case, the checks need to be aware of the signedness of those immediates.
+The signedness information is also needed during disassembly to correctly
+recover the immediates of each instruction.
+**MFNs** do not contain this information while **CFNs** do.
+
+.Examples of instructions with "the same format" but differently signed immediates
+[%header,cols="^1,^1,^1"]
+|===
+|Instruction
+|**MFN**
+|**CFN**
+
+|`addi.w`
+|2RI12
+|DJSk12
+
+|`ori`
+|2RI12
+|DJUk12
+|===
+
+Lastly, because **CFNs** strictly adhere to the principle of LSB-to-MSB description,
+it is sometimes possible for one to appreciate the deeper design considerations
+of LoongArch, obscured by the asymmetry and inconsistencies of the manual syntax.
+
+.Design considerations obscured by the manual syntax: integer comparison
+[%header,cols="^1,^1,^2,^1"]
+|===
+|Instruction
+|**CFN**
+|Manual syntax
+|"MCFN"
+
+|`blt`
+|DJSk16
+|`blt rj, rd, offs16`
+|*JDSk16
+
+|`bge`
+|DJSk16
+|`bge rj, rd, offs16`
+|*JDSk16
+
+|`asrtgt.d`
+|JK
+|`asrtgt.d rj, rk`
+|JK
+
+|`asrtle.d`
+|JK
+|`asrtle.d rj, rk`
+|JK
+
+|`ldgt.d`
+|DJK
+|`ldgt.d rd, rj, rk`
+|DJK
+
+|`ldle.d`
+|DJK
+|`ldle.d rd, rj, rk`
+|DJK
+|===
+
+"MCFNs" (short for "Manual CFNs") are potentially invalid "CFNs" that are
+direct transcriptions of the manual syntax into **CFN** form.
+An asterisk prefix means the respective "CFN" is not valid.
+
+We can thus discover that in fact LoongArch integer comparisons are uniformly
+divided into "greater than" and "less than or equal" operations, and that
+conditional branches `b{lt/ge}[u]` are actually `b{gt/le}[u]` with their
+input operands swapped.
+After swapping their operands, orthogonality is restored for all instructions
+in terms of integer comparison.
+
+.Design considerations obscured by the manual syntax: meaning of immediates in bit-field manipulation instructions
+[%header,cols="^1,^1,^2,^1"]
+|===
+|指令名
+|**规范格式名**
+|手册语法
+|“手册规范格式名”
+
+|`bstrins.w`
+|DJUk5Um5
+|`bstrins.w rd, rj, msbw, lsbw`
+|*DJUm5Uk5
+
+|`bstrpick.w`
+|DJUk5Um5
+|`bstrpick.w rd, rj, msbw, lsbw`
+|*DJUm5Uk5
+|===
+
+The `bstrins/bstrpick` family of instructions have two immediate operands,
+but different from others, the operand that comes first is actually the one closer to MSB.
+The two immediates make up the closed interval denoting the bitfield being operated upon;
+the order is significant, with the behavior being unpredictable if the two bit
+indexes are reversed.
+So which of the two is the LSB?
+
+The answer is simple, actually:
+the higher immediate (i.e. closer to MSB) is the index of the bitfield's MSB (inclusive),
+while the lower immediate is the index of the bitfield's LSB (inclusive too).
+Again, the manual syntax deliberately reversed the two immediates, possibly
+in an attempt to make the assembly language resemble natural language more,
+like `rd = rj[msbw:lsbw]`.
+But in doing this they actually introduced an extra special case to memorize,
+which is arguably not necessary.
+
+== Appendix 1: Mapping between **MFNs** and **CFNs**
+
+The mapping between **MFNs** and corresponding **CFNs** are listed here for
+convenience.
+
+.Mapping between **MFNs** and **CFNs**
+[%header,cols="^1,^2,4"]
+|===
+|**MFN**
+|**CFN**
+|Notes
+
+|2R
+|DJ, FdFj, etc.
+|**MFNs** do not distinguish between register classes
+
+|3R
+|DJK, FdFjFk, etc.
+|ditto
+
+|4R
+|FdFjFkFa, FdFjFkCa
+|ditto
+
+|2RI8
+|DJUk8
+|Only `lddir` (`ldpte` is JUk8, with one less register operand)
+
+|2RI12
+|DJSk12, DJUk12, FdJSk12, etc.
+|Most instructions with a single immediate operand
+
+|2RI14
+|DJSk14, DJUk14
+|Only `ldptr` `stptr` family and `csrxchg`
+
+|2RI16
+|DJSk16
+|Conditional branches and `jirl`
+
+|1RI21
+|JSd5k16、CjSd5k16
+|`beqz/bnez` and `bceqz/bcnez`, saving a register operand compared to other conditional branches
+
+|I26
+|Sd10k16
+|`b` (no need for register) and `bl` (`$ra` is implicitly addressed)
+|===
+
+== Appendix 2: Instruction format descriptions adopted by major open-source projects (as of July 2022)
+
+在本文档发布前，已经有不同的龙芯团队在许多开源项目添加了 LoongArch 支持。
+由于“背景”一节中提到的那些原因，这些项目中对 LoongArch 指令格式的描述五花八门，不利于未来的软件维护者、下游开发者理解，这也是本文作者撰写本约定的缘由。
+
+此表忠实反映了本约定生效前各主要开源项目的 LoongArch 指令格式描述现状，是为本约定背后的数据支撑。
+
+[NOTE]
+====
+binutils 是正常建设一个架构生态所需要适配的第一个项目，因为支持一个架构的第一步便是移植汇编器。
+但从下表可以看出，binutils 是唯一一个没有给指令格式命名的项目——
+其采用的描述方式，除了将“实现”与“展示”二者耦合了之外，基本就是**规范格式名**的冗长版了。
+“实现”与“展示”间的耦合，一般被认为是软件工程中的反模式（anti-pattern）。
+这可能可以解释为何**手册格式名**表达力不足：
+LoongArch 设计者们可能从一开始就没有刻意设计指令格式的想法，也并未在工作中受到其束缚。
+====
+
+[NOTE]
+====
+1. 对应 fcmp 系列指令。
++
+QEMU 将判断条件当作一个立即数，因此多了个操作数。
+
+2. 实际是相同格式，仅为与手册汇编语法保持一致而区分。
+3. 涉及对 csrrd/csrwr 指令编码与 csrxchg 重叠这一事实的不同认知（详细说明见下）。
+4. 不区分寄存器类别。
+5. 本约定将 FCSR 视作类似于 CSR，因而使用立即数表示 FCSR。
+6. 实现错误：由于复用了格式，FCC 也占了 5 位宽，实际应占 3 位。
+7. 不区分有无符号。
+8. 同时表示了编码与汇编语法。
+9. 目前的实现较为混乱：Go 汇编指令与机器码不是 1:1 对应，而根据指令性质区分了 50 多种情况。
++
+此处只列举那些有明确对应的辅助函数（而非直接写死）的情形。
+
+10. 实现错误：用 GPR 表示了 FCSR。
+====
+
+[NOTE]
+====
+关于 csrrd/csrwr/csrxchg“指令编码重叠”的展开说明：
+
+csrxchg 的 rj 操作数意为“掩码”。
+使用时，rj 中需要放置一个对应当前操作的 CSR 位域的立即数。
+
+然而，几乎所有 LoongArch 程序都会遵循 ABI 规范；
+而按照 ABI 规范，有些寄存器永远存放特定含义的其他数值，因而这些寄存器便不可能在 csrxchg 的 rj 位置出现。
+这样一来，可以人为规定 csrxchg 的 rj 取这些寄存器时，指令行为不同，进而节约一些操作码。
+
+这种节约编码空间的思路不限于 csrxchg 指令。
+实际上，该思路也不限于 LoongArch 架构。
+例如，许多人熟悉的 AArch64 即对 xzr 寄存器编码做类似处理：
+对一些实际场景中几乎不可能访问 sp 的指令，xzr 意为 zero；
+反之，对实际场景中几乎不可能访问 zero 的指令，xzr 则意为 sp。
+于是节约了一个寄存器号。
+
+回到 csrxchg 的情况。
+当 rj 为 zero 时，csrxchg 的行为与 csrrd 完全相同。
+而 1 号寄存器在 LoongArch ABI 中永远代表过程调用返回地址，所以符合 ABI 的程序将不可能用它提供 CSR 操作的掩码
+（否则就意味着在一小段时间、空间内，1 号寄存器不存放返回地址了）。
+因此，LoongArch 设计者特殊规定 csrxchg 在 rj 为 1 时执行 csrwr 的语义。
+
+本约定采取“行为特例”的理解方式：
+将 csrrd/csrwr 视作 csrxchg 行为上的特例。
+这样，程序不需要在**机器语言**层面考虑编码重叠的情况，而在**语义分析**层面进行区分。
+而手册则认为在**机器语言**层面它们就是三条不同的指令，以换取在**语义分析**层面不需要进一步处理。
+我们认为，仅为一组共 3 条存在该现象的指令而破坏“指令编码互不重叠”这一有用特性的做法是不值得的：
+程序要处理的复杂度不会减少，但在更低抽象的层级要做的事情大大复杂化了。
+====
+
+.各开源项目采用的指令格式名称及其与**规范格式名**的对应关系
+[%header,cols="1,1,1,1,1,1,1"]
+|===
+|**规范格式名**
+|**手册格式名**
+|binutils *8
+|LLVM
+|QEMU
+|Linux
+|Go *9
+
+|CdFj
+|2R
+|`c0:3,f5:5`
+|`FPFmtMOV` *6
+|`@cf`
+|
+|
+
+|CdFjFk
+|
+|`c0:3,f5:5,f10:5`
+|`FPFmtFCMP` *1
+|`@cff_fcond` *1
+|
+|
+
+|CdJ
+|2R
+|`c0:3,r5:5`
+|`FPFmtMOV` *6
+|`@cr`
+|
+|
+
+|CjSd5k16
+|1RI21
+|`c5:3,sb0:5\|10:16<<2`
+|`FPFmtBR`
+|`@c_offs21`
+|
+|`OP_16IR_5I`
+
+|DCj
+|2R
+|`r0:5,c5:3`
+|`FPFmtMOV` *6
+|`@rc`
+|
+|
+
+|DFj
+|2R
+|`r0:5,f5:5`
+|`FPFmtMOV` *4
+|`@rf`
+|
+|`OP_TEN`
+
+|DJ
+|2R
+|`r0:5,r5:5`
+|`Fmt2R`
+|`@rr`
+|
+|`OP_RR`
+
+|DJK
+|3R
+|`r0:5,r5:5,r10:5`
+|`Fmt3R`
+|`@rrr`
+|
+|`OP_RRR`
+
+|DJKUa2
+|
+|`r0:5,r5:5,r10:5,u15:2+1`
+|`Fmt3RI2`
+|`@rrr_sa2`, `@rrr_sa2p1` *2
+|
+|
+
+|DJKUa3
+|
+|`r0:5,r5:5,r10:5,u15:3`
+|`Fmt3RI3`
+|`@rrr_sa3`
+|
+|
+
+|DJSk12
+|2RI12
+|`r0:5,r5:5,s10:12`
+|`Fmt2RI12` *7
+|`@rr_i12`
+|`reg2i12_format`
+|`OP_12IRR`
+
+|DJSk14
+|2RI14
+|`r0:5,r5:5,s10:14<<2`
+|`Fmt2RI14`
+|`@rr_i14s2`
+|
+|
+
+|DJSk16
+|2RI16
+|`r0:5,r5:5,s10:16<<2`
+|`Fmt2RI16`
+|`@rr_i16`, `@rr_offs16` *2
+|`reg2i16_format`
+|`OP_16IRR`
+
+|DJUk12
+|2RI12
+|`r0:5,r5:5,u10:12`
+|`Fmt2RI12` *7
+|`@rr_ui12`
+|
+|`OP_12IRR`
+
+|DJUk14
+|2RI14
+|`r0:5,r5:5,u10:14`
+|`FmtCSR`, `FmtCSRXCHG` *3
+|`@r_csr`, `@rr_csr` *3
+|
+|
+
+|DJUk5
+|
+|`r0:5,r5:5,u10:5`
+|`Fmt2RI5`
+|`@rr_ui5`
+|
+|
+
+|DJUk5Um5
+|
+|`r0:5,r5:5,u16:5,u10:5`
+|`FmtBSTR_W`
+|`@rr_2bw`
+|
+|
+
+|DJUk6
+|
+|`r0:5,r5:5,u10:6`
+|`Fmt2RI6`
+|`@rr_ui6`
+|
+|
+
+|DJUk6Um6
+|
+|`r0:5,r5:5,u16:6,u10:6`
+|`FmtBSTR_D`
+|`@rr_2bd`
+|
+|
+
+|DJUk8
+|2RI8
+|`r0:5,r5:5,u10:8`
+|`Fmt2RI8`
+|`@rr_ui8`
+|
+|
+
+|DSj20
+|
+|`r0:5,s5:20`
+|`Fmt1RI20`
+|`@r_i20`
+|`reg1i20_format`
+|`OP_IR`
+
+|DUj5
+|
+|`r0:5,r5:5` *10
+|`FPFmtMOV` *5
+|`@r_fcsrs`
+|
+|
+
+|EMPTY
+|
+|empty string
+|`FmtIMM32`
+|`@empty`
+|
+|
+
+|FdCj
+|2R
+|`f0:5,c5:3`
+|`FPFmtMOV` *6
+|`@fc`
+|
+|
+
+|FdFj
+|2R
+|`f0:5,f5:5`
+|`FPFmt2R`
+|`@ff`
+|
+|`OP_RR`
+
+|FdFjFk
+|3R
+|`f0:5,f5:5,f10:5`
+|`FPFmt3R`
+|`@fff`
+|
+|`OP_RRR`
+
+|FdFjFkCa
+|4R
+|`f0:5,f5:5,f10:5,c15:3`
+|`FPFmtFSEL`
+|`@fffc`
+|
+|
+
+|FdFjFkFa
+|4R
+|`f0:5,f5:5,f10:5,f15:5`
+|`FPFmt4R`
+|`@ffff`
+|
+|
+
+|FdJ
+|2R
+|`f0:5,r5:5`
+|`FPFmtMOV` *4
+|`@fr`
+|
+|`OP_TEN`
+
+|FdJK
+|3R
+|`f0:5,r5:5,r10:5`
+|`FPFmtMEM`
+|`@frr`
+|
+|
+
+|FdJSk12
+|2RI12
+|`f0:5,r5:5,s10:12`
+|`FPFmt2RI12`
+|`@fr_i12`
+|
+|`OP_12IRR`
+
+|JK
+|
+|`r5:5,r10:5`
+|`FmtASRT`
+|`@rr_jk`
+|
+|
+
+|JKUd5
+|
+|`u0:5,r5:5,r10:5`
+|`FmtPRELDX`, `FmtINVTLB`
+|`@i_rr`
+|
+|
+
+|JSd5k16
+|1RI21
+|`r5:5,sb10:16<<2`
+|`Fmt1RI21`
+|`@r_offs21`
+|`reg1i21_format`
+|
+
+|JUd5
+|
+|`r0:5,r5:5` *10
+|`FPFmtMOV` *5
+|`@fcsrd_r`
+|
+|
+
+|JUd5Sk12
+|
+|`u0:5,r5:5,s10:12`
+|`FmtPRELD`, `FmtCACOP`
+|`@hint_r_i12`, `@cop_r_i` *2
+|
+|
+
+|JUk8
+|
+|`r5:5,u10:8`
+|`FmtLDPTE`
+|`@j_i`
+|
+|
+
+|Sd10k16
+|I26
+|`sb0:10\|10:16<<2`
+|`FmtI26`
+|`@offs26`
+|`reg0i26_format`
+|`OP_B_BL`
+
+|Ud15
+|
+|`u0:15`
+|`FmtI15`
+|`@i15`
+|
+|
+|===
+
+== Appendix 3: **CFNs** for LoongArch base instructions
+
+为方便查阅，以下将 LoongArch 基础指令集所有指令的**规范格式名**整理为表格。
+
+请注意有一些常见指令，虽然在反汇编输出可见，甚至在手册中有提及，实则为伪指令，或称宏指令、语法糖。
+这些指令应被理解为与其展开形式严格等价，因此不为其单独定义指令格式。
+这些指令包括：
+
+.Commonly encountered LoongArch pseudo-instructions and their desugared forms
+[%header,cols="1,1"]
+|===
+|Instruction
+|Desugared form
+
+|`nop`
+|`andi $zero, $zero, 0`
+
+|`move rd, rj`
+|`or rd, rj, $zero`
+
+|`jr rj`
+|`jirl $zero, rj, 0`
+
+|`ret`
+|`jirl $zero, $ra, 0`
+|===
+
+
+[NOTE]
+====
+* FCSR 操作指令的 FCSR 操作数按立即数处理。
+* 不将浮点比较指令的条件码视作操作数，而按分立指令处理，因为该“操作数”位于指令名称中间。这也与 binutils 处理方式一致。
+* `b{lt/ge}[u]` 按操作数顺序反过来的 `b{gt/le}[u]` 处理。
+====
+
+.LoongArch 基础指令集各指令的**规范格式名**
+[%header,cols="1,1,1,1,1,1,1,1"]
+|===
+|Instruction
+|**CFN**
+|Instruction
+|**CFN**
+|Instruction
+|**CFN**
+|Instruction
+|**CFN**
+
+|`clo.w`
+|DJ
+
+|`clz.w`
+|DJ
+
+|`cto.w`
+|DJ
+
+|`ctz.w`
+|DJ
+
+|`clo.d`
+|DJ
+
+|`clz.d`
+|DJ
+
+|`cto.d`
+|DJ
+
+|`ctz.d`
+|DJ
+
+|`revb.2h`
+|DJ
+
+|`revb.4h`
+|DJ
+
+|`revb.2w`
+|DJ
+
+|`revb.d`
+|DJ
+
+|`revh.2w`
+|DJ
+
+|`revh.d`
+|DJ
+
+|`bitrev.4b`
+|DJ
+
+|`bitrev.8b`
+|DJ
+
+|`bitrev.w`
+|DJ
+
+|`bitrev.d`
+|DJ
+
+|`ext.w.h`
+|DJ
+
+|`ext.w.b`
+|DJ
+
+|`rdtimel.w`
+|DJ
+
+|`rdtimeh.w`
+|DJ
+
+|`rdtime.d`
+|DJ
+
+|`cpucfg`
+|DJ
+
+|`asrtle.d`
+|JK
+
+|`asrtgt.d`
+|JK
+
+|`alsl.w`
+|DJKUa2
+
+|`alsl.wu`
+|DJKUa2
+
+|`bytepick.w`
+|DJKUa2
+
+|`bytepick.d`
+|DJKUa3
+
+|`add.w`
+|DJK
+
+|`add.d`
+|DJK
+
+|`sub.w`
+|DJK
+
+|`sub.d`
+|DJK
+
+|`slt`
+|DJK
+
+|`sltu`
+|DJK
+
+|`maskeqz`
+|DJK
+
+|`masknez`
+|DJK
+
+|`nor`
+|DJK
+
+|`and`
+|DJK
+
+|`or`
+|DJK
+
+|`xor`
+|DJK
+
+|`orn`
+|DJK
+
+|`andn`
+|DJK
+
+|`sll.w`
+|DJK
+
+|`srl.w`
+|DJK
+
+|`sra.w`
+|DJK
+
+|`sll.d`
+|DJK
+
+|`srl.d`
+|DJK
+
+|`sra.d`
+|DJK
+
+|`rotr.w`
+|DJK
+
+|`rotr.d`
+|DJK
+
+|`mul.w`
+|DJK
+
+|`mulh.w`
+|DJK
+
+|`mulh.wu`
+|DJK
+
+|`mul.d`
+|DJK
+
+|`mulh.d`
+|DJK
+
+|`mulh.du`
+|DJK
+
+|`mulw.d.w`
+|DJK
+
+|`mulw.d.wu`
+|DJK
+
+|`div.w`
+|DJK
+
+|`mod.w`
+|DJK
+
+|`div.wu`
+|DJK
+
+|`mod.wu`
+|DJK
+
+|`div.d`
+|DJK
+
+|`mod.d`
+|DJK
+
+|`div.du`
+|DJK
+
+|`mod.du`
+|DJK
+
+|`crc.w.b.w`
+|DJK
+
+|`crc.w.h.w`
+|DJK
+
+|`crc.w.w.w`
+|DJK
+
+|`crc.w.d.w`
+|DJK
+
+|`crcc.w.b.w`
+|DJK
+
+|`crcc.w.h.w`
+|DJK
+
+|`crcc.w.w.w`
+|DJK
+
+|`crcc.w.d.w`
+|DJK
+
+|`break`
+|Ud15
+
+|`dbcl`
+|Ud15
+
+|`syscall`
+|Ud15
+
+|`alsl.d`
+|DJKUa2
+
+|`slli.w`
+|DJUk5
+
+|`slli.d`
+|DJUk6
+
+|`srli.w`
+|DJUk5
+
+|`srli.d`
+|DJUk6
+
+|`srai.w`
+|DJUk5
+
+|`srai.d`
+|DJUk6
+
+|`rotri.w`
+|DJUk5
+
+|`rotri.d`
+|DJUk6
+
+|`bstrins.w`
+|DJUk5Um5
+
+|`bstrpick.w`
+|DJUk5Um5
+
+|`bstrins.d`
+|DJUk6Um6
+
+|`bstrpick.d`
+|DJUk6Um6
+
+|`fadd.s`
+|FdFjFk
+
+|`fadd.d`
+|FdFjFk
+
+|`fsub.s`
+|FdFjFk
+
+|`fsub.d`
+|FdFjFk
+
+|`fmul.s`
+|FdFjFk
+
+|`fmul.d`
+|FdFjFk
+
+|`fdiv.s`
+|FdFjFk
+
+|`fdiv.d`
+|FdFjFk
+
+|`fmax.s`
+|FdFjFk
+
+|`fmax.d`
+|FdFjFk
+
+|`fmin.s`
+|FdFjFk
+
+|`fmin.d`
+|FdFjFk
+
+|`fmaxa.s`
+|FdFjFk
+
+|`fmaxa.d`
+|FdFjFk
+
+|`fmina.s`
+|FdFjFk
+
+|`fmina.d`
+|FdFjFk
+
+|`fscaleb.s`
+|FdFjFk
+
+|`fscaleb.d`
+|FdFjFk
+
+|`fcopysign.s`
+|FdFjFk
+
+|`fcopysign.d`
+|FdFjFk
+
+|`fabs.s`
+|FdFj
+
+|`fabs.d`
+|FdFj
+
+|`fneg.s`
+|FdFj
+
+|`fneg.d`
+|FdFj
+
+|`flogb.s`
+|FdFj
+
+|`flogb.d`
+|FdFj
+
+|`fclass.s`
+|FdFj
+
+|`fclass.d`
+|FdFj
+
+|`fsqrt.s`
+|FdFj
+
+|`fsqrt.d`
+|FdFj
+
+|`frecip.s`
+|FdFj
+
+|`frecip.d`
+|FdFj
+
+|`frsqrt.s`
+|FdFj
+
+|`frsqrt.d`
+|FdFj
+
+|`fmov.s`
+|FdFj
+
+|`fmov.d`
+|FdFj
+
+|`movgr2fr.w`
+|FdJ
+
+|`movgr2fr.d`
+|FdJ
+
+|`movgr2frh.w`
+|FdJ
+
+|`movfr2gr.s`
+|DFj
+
+|`movfr2gr.d`
+|DFj
+
+|`movfrh2gr.s`
+|DFj
+
+|`movgr2fcsr`
+|JUd5
+
+|`movfcsr2gr`
+|DUj5
+
+|`movfr2cf`
+|CdFj
+
+|`movcf2fr`
+|FdCj
+
+|`movgr2cf`
+|CdJ
+
+|`movcf2gr`
+|DCj
+
+|`fcvt.s.d`
+|FdFj
+
+|`fcvt.d.s`
+|FdFj
+
+|`ftintrm.w.s`
+|FdFj
+
+|`ftintrm.w.d`
+|FdFj
+
+|`ftintrm.l.s`
+|FdFj
+
+|`ftintrm.l.d`
+|FdFj
+
+|`ftintrp.w.s`
+|FdFj
+
+|`ftintrp.w.d`
+|FdFj
+
+|`ftintrp.l.s`
+|FdFj
+
+|`ftintrp.l.d`
+|FdFj
+
+|`ftintrz.w.s`
+|FdFj
+
+|`ftintrz.w.d`
+|FdFj
+
+|`ftintrz.l.s`
+|FdFj
+
+|`ftintrz.l.d`
+|FdFj
+
+|`ftintrne.w.s`
+|FdFj
+
+|`ftintrne.w.d`
+|FdFj
+
+|`ftintrne.l.s`
+|FdFj
+
+|`ftintrne.l.d`
+|FdFj
+
+|`ftint.w.s`
+|FdFj
+
+|`ftint.w.d`
+|FdFj
+
+|`ftint.l.s`
+|FdFj
+
+|`ftint.l.d`
+|FdFj
+
+|`ffint.s.w`
+|FdFj
+
+|`ffint.s.l`
+|FdFj
+
+|`ffint.d.w`
+|FdFj
+
+|`ffint.d.l`
+|FdFj
+
+|`frint.s`
+|FdFj
+
+|`frint.d`
+|FdFj
+
+|`slti`
+|DJSk12
+
+|`sltui`
+|DJSk12
+
+|`addi.w`
+|DJSk12
+
+|`addi.d`
+|DJSk12
+
+|`lu52i.d`
+|DJSk12
+
+|`andi`
+|DJUk12
+
+|`ori`
+|DJUk12
+
+|`xori`
+|DJUk12
+
+|`csrxchg`
+|DJUk14
+
+|`cacop`
+|JUd5Sk12
+
+|`lddir`
+|DJUk8
+
+|`ldpte`
+|JUk8
+
+|`iocsrrd.b`
+|DJ
+
+|`iocsrrd.h`
+|DJ
+
+|`iocsrrd.w`
+|DJ
+
+|`iocsrrd.d`
+|DJ
+
+|`iocsrwr.b`
+|DJ
+
+|`iocsrwr.h`
+|DJ
+
+|`iocsrwr.w`
+|DJ
+
+|`iocsrwr.d`
+|DJ
+
+|`tlbclr`
+|EMPTY
+
+|`tlbflush`
+|EMPTY
+
+|`tlbsrch`
+|EMPTY
+
+|`tlbrd`
+|EMPTY
+
+|`tlbwr`
+|EMPTY
+
+|`tlbfill`
+|EMPTY
+
+|`ertn`
+|EMPTY
+
+|`idle`
+|Ud15
+
+|`invtlb`
+|JKUd5
+
+|`fmadd.s`
+|FdFjFkFa
+
+|`fmadd.d`
+|FdFjFkFa
+
+|`fmsub.s`
+|FdFjFkFa
+
+|`fmsub.d`
+|FdFjFkFa
+
+|`fnmadd.s`
+|FdFjFkFa
+
+|`fnmadd.d`
+|FdFjFkFa
+
+|`fnmsub.s`
+|FdFjFkFa
+
+|`fnmsub.d`
+|FdFjFkFa
+
+|`fcmp.caf.s`
+|CdFjFk
+
+|`fcmp.saf.s`
+|CdFjFk
+
+|`fcmp.clt.s`
+|CdFjFk
+
+|`fcmp.slt.s`
+|CdFjFk
+
+|`fcmp.ceq.s`
+|CdFjFk
+
+|`fcmp.seq.s`
+|CdFjFk
+
+|`fcmp.cle.s`
+|CdFjFk
+
+|`fcmp.sle.s`
+|CdFjFk
+
+|`fcmp.cun.s`
+|CdFjFk
+
+|`fcmp.sun.s`
+|CdFjFk
+
+|`fcmp.cult.s`
+|CdFjFk
+
+|`fcmp.sult.s`
+|CdFjFk
+
+|`fcmp.cueq.s`
+|CdFjFk
+
+|`fcmp.sueq.s`
+|CdFjFk
+
+|`fcmp.cule.s`
+|CdFjFk
+
+|`fcmp.sule.s`
+|CdFjFk
+
+|`fcmp.cne.s`
+|CdFjFk
+
+|`fcmp.sne.s`
+|CdFjFk
+
+|`fcmp.cor.s`
+|CdFjFk
+
+|`fcmp.sor.s`
+|CdFjFk
+
+|`fcmp.cune.s`
+|CdFjFk
+
+|`fcmp.sune.s`
+|CdFjFk
+
+|`fcmp.caf.d`
+|CdFjFk
+
+|`fcmp.saf.d`
+|CdFjFk
+
+|`fcmp.clt.d`
+|CdFjFk
+
+|`fcmp.slt.d`
+|CdFjFk
+
+|`fcmp.ceq.d`
+|CdFjFk
+
+|`fcmp.seq.d`
+|CdFjFk
+
+|`fcmp.cle.d`
+|CdFjFk
+
+|`fcmp.sle.d`
+|CdFjFk
+
+|`fcmp.cun.d`
+|CdFjFk
+
+|`fcmp.sun.d`
+|CdFjFk
+
+|`fcmp.cult.d`
+|CdFjFk
+
+|`fcmp.sult.d`
+|CdFjFk
+
+|`fcmp.cueq.d`
+|CdFjFk
+
+|`fcmp.sueq.d`
+|CdFjFk
+
+|`fcmp.cule.d`
+|CdFjFk
+
+|`fcmp.sule.d`
+|CdFjFk
+
+|`fcmp.cne.d`
+|CdFjFk
+
+|`fcmp.sne.d`
+|CdFjFk
+
+|`fcmp.cor.d`
+|CdFjFk
+
+|`fcmp.sor.d`
+|CdFjFk
+
+|`fcmp.cune.d`
+|CdFjFk
+
+|`fcmp.sune.d`
+|CdFjFk
+
+|`fsel`
+|FdFjFkCa
+
+|`addu16i.d`
+|DJSk16
+
+|`lu12i.w`
+|DSj20
+
+|`lu32i.d`
+|DSj20
+
+|`pcaddi`
+|DSj20
+
+|`pcalau12i`
+|DSj20
+
+|`pcaddu12i`
+|DSj20
+
+|`pcaddu18i`
+|DSj20
+
+|`ll.w`
+|DJSk14
+
+|`sc.w`
+|DJSk14
+
+|`ll.d`
+|DJSk14
+
+|`sc.d`
+|DJSk14
+
+|`ldptr.w`
+|DJSk14
+
+|`stptr.w`
+|DJSk14
+
+|`ldptr.d`
+|DJSk14
+
+|`stptr.d`
+|DJSk14
+
+|`ld.b`
+|DJSk12
+
+|`ld.h`
+|DJSk12
+
+|`ld.w`
+|DJSk12
+
+|`ld.d`
+|DJSk12
+
+|`st.b`
+|DJSk12
+
+|`st.h`
+|DJSk12
+
+|`st.w`
+|DJSk12
+
+|`st.d`
+|DJSk12
+
+|`ld.bu`
+|DJSk12
+
+|`ld.hu`
+|DJSk12
+
+|`ld.wu`
+|DJSk12
+
+|`preld`
+|JUd5Sk12
+
+|`fld.s`
+|FdJSk12
+
+|`fst.s`
+|FdJSk12
+
+|`fld.d`
+|FdJSk12
+
+|`fst.d`
+|FdJSk12
+
+|`ldx.b`
+|DJK
+
+|`ldx.h`
+|DJK
+
+|`ldx.w`
+|DJK
+
+|`ldx.d`
+|DJK
+
+|`stx.b`
+|DJK
+
+|`stx.h`
+|DJK
+
+|`stx.w`
+|DJK
+
+|`stx.d`
+|DJK
+
+|`ldx.bu`
+|DJK
+
+|`ldx.hu`
+|DJK
+
+|`ldx.wu`
+|DJK
+
+|`preldx`
+|JKUd5
+
+|`fldx.s`
+|FdJK
+
+|`fldx.d`
+|FdJK
+
+|`fstx.s`
+|FdJK
+
+|`fstx.d`
+|FdJK
+
+|`amswap.w`
+|DJK
+
+|`amswap.d`
+|DJK
+
+|`amadd.w`
+|DJK
+
+|`amadd.d`
+|DJK
+
+|`amand.w`
+|DJK
+
+|`amand.d`
+|DJK
+
+|`amor.w`
+|DJK
+
+|`amor.d`
+|DJK
+
+|`amxor.w`
+|DJK
+
+|`amxor.d`
+|DJK
+
+|`ammax.w`
+|DJK
+
+|`ammax.d`
+|DJK
+
+|`ammin.w`
+|DJK
+
+|`ammin.d`
+|DJK
+
+|`ammax.wu`
+|DJK
+
+|`ammax.du`
+|DJK
+
+|`ammin.wu`
+|DJK
+
+|`ammin.du`
+|DJK
+
+|`amswap_db.w`
+|DJK
+
+|`amswap_db.d`
+|DJK
+
+|`amadd_db.w`
+|DJK
+
+|`amadd_db.d`
+|DJK
+
+|`amand_db.w`
+|DJK
+
+|`amand_db.d`
+|DJK
+
+|`amor_db.w`
+|DJK
+
+|`amor_db.d`
+|DJK
+
+|`amxor_db.w`
+|DJK
+
+|`amxor_db.d`
+|DJK
+
+|`ammax_db.w`
+|DJK
+
+|`ammax_db.d`
+|DJK
+
+|`ammin_db.w`
+|DJK
+
+|`ammin_db.d`
+|DJK
+
+|`ammax_db.wu`
+|DJK
+
+|`ammax_db.du`
+|DJK
+
+|`ammin_db.wu`
+|DJK
+
+|`ammin_db.du`
+|DJK
+
+|`dbar`
+|Ud15
+
+|`ibar`
+|Ud15
+
+|`fldgt.s`
+|FdJK
+
+|`fldgt.d`
+|FdJK
+
+|`fldle.s`
+|FdJK
+
+|`fldle.d`
+|FdJK
+
+|`fstgt.s`
+|FdJK
+
+|`fstgt.d`
+|FdJK
+
+|`fstle.s`
+|FdJK
+
+|`fstle.d`
+|FdJK
+
+|`ldgt.b`
+|DJK
+
+|`ldgt.h`
+|DJK
+
+|`ldgt.w`
+|DJK
+
+|`ldgt.d`
+|DJK
+
+|`ldle.b`
+|DJK
+
+|`ldle.h`
+|DJK
+
+|`ldle.w`
+|DJK
+
+|`ldle.d`
+|DJK
+
+|`stgt.b`
+|DJK
+
+|`stgt.h`
+|DJK
+
+|`stgt.w`
+|DJK
+
+|`stgt.d`
+|DJK
+
+|`stle.b`
+|DJK
+
+|`stle.h`
+|DJK
+
+|`stle.w`
+|DJK
+
+|`stle.d`
+|DJK
+
+|`beqz`
+|JSd5k16
+
+|`bnez`
+|JSd5k16
+
+|`bceqz`
+|CjSd5k16
+
+|`bcnez`
+|CjSd5k16
+
+|`jirl`
+|DJSk16
+
+|`b`
+|Sd10k16
+
+|`bl`
+|Sd10k16
+
+|`beq`
+|DJSk16
+
+|`bne`
+|DJSk16
+
+|`bgt`
+|DJSk16
+
+|`ble`
+|DJSk16
+
+|`bgtu`
+|DJSk16
+
+|`bleu`
+|DJSk16
+|===

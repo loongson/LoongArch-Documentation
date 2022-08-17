@@ -51,6 +51,10 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 ** link:LoongArch-toolchain-conventions-EN.html[HTML version].
 ** link:LoongArch-toolchain-conventions-EN.pdf[PDF version].
 
+* LoongArch instruction format conventions: This document introduces the unified naming convention for LoongArch instruction formats and operand slots, for projects and developers that need to handle LoongArch machine code.
+** link:LoongArch-instruction-format-conventions-EN.html[HTML version].
+** link:LoongArch-instruction-format-conventions-EN.pdf[PDF version].
+
 * LoongArch Processor SMBIOS Spec: This document introduces additional information about LoongArch in SMBIOS.
 ** link:LoongArch-Processor-SMBIOS-Spec-EN.html[HTML version].
 
