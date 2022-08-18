@@ -1,6 +1,6 @@
 = LoongArch ELF ABI specification
 Loongson Technology Corporation Limited
-v2.00
+v2.01
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
@@ -241,6 +241,7 @@ can be found in http://sco.com/developers/gabi/latest/contents.html[the latest S
 
 === EI_CLASS: File class
 
+.ELF file classes
 [%header,cols="2m,^1m,^3"]
 |===
 |EI_CLASS
@@ -262,6 +263,7 @@ can be found in http://sco.com/developers/gabi/latest/contents.html[the latest S
 
 === e_flags: Identifies ABI type and version
 
+.ABI-related bits in `e_flags`
 [%header,cols="1,1,1,1"]
 |====
 | Bit 31 - 8 | Bit 7 - 6   | Bit 5 - 3      | Bit 2 - 0
@@ -274,7 +276,7 @@ Within this combination, `EI_CLASS` and `e_flags[2:0]` correspond to the **base 
 where the expression of C integral and pointer types (<<c-lang-data-model, data model>>)
 is uniquely determined by `EI_CLASS` value, and `e_flags[2:0]` represents additional properties
 of the base ABI type, including the FP calling convention.  We refer to `e_flags[2:0]` as
-the **base ABI modifier*.
+the **base ABI modifier**.
 
 As a result, programs in `lp64*` / `ilp32*` ABI should only be encoded with ELF64 / ELF32
 object files, respectively.
