@@ -1,6 +1,6 @@
 = 龙芯架构 ELF psABI 规范
 龙芯中科技术股份有限公司
-v2.00
+v2.01
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
@@ -240,6 +240,7 @@ v2.00
 
 === EI_CLASS: ELF 文件格式
 
+.ELF 文件格式
 [%header,cols="2m,^1m,^3"]
 |===
 |EI_CLASS
@@ -259,8 +260,9 @@ v2.00
 
 `LoongArch (258)`
 
-=== e_flags: ABI 类型和版本标记
+=== e_flags: ABI 类型和版本 ID
 
+.`e_flags` 中的 ABI 相关位
 [%header,cols="1,1,1,1"]
 |===
 |`[31:8]` 位 | `[7:6]` 位 | `[5:3]` 位   | `[2:0]` 位
@@ -279,7 +281,7 @@ v2.00
 `0x0` `0x4` `0x5` `0x6` `0x7` 为 `e_flags[2:0]` 的保留值。
 
 [[base-abi-type-marks]]
-.基础 ABI 类型标记
+.基础 ABI 类型
 [%header,cols="2m,^1m,^1m,^3"]
 |===
 |基础 ABI 名称
@@ -313,7 +315,7 @@ v2.00
 
 `e_flags[5:3]` 标记了 ABI 扩展特性。
 
-.ABI 扩展特性标记
+.ABI 扩展特性类型
 [%header,cols="2m,^1,^3"]
 |===
 |ABI 扩展特性名称
@@ -332,7 +334,7 @@ v2.00
 [[abi-versioning]]
 `e_flags[7:6]` 标记了 ELF 目标文件使用的 ABI 版本。
 
-.ABI 版本标记
+.ABI 版本
 [%header,cols="2,^1,^5"]
 |===
 |ABI 版本
