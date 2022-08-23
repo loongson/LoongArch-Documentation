@@ -1072,3 +1072,23 @@ If such an argument would have been passed by reference, the caller allocates me
 The first argument passed on the stack is located at offset zero of the stack pointer on function entry; following arguments are stored at correspondingly higher addresses.
 
 . Procedures must not rely upon the persistence of stack-allocated data whose addresses lies below the stack pointer.
+
+== Appendix: Revision History
+
+- **v1.00**
+
+    * Add register usage convention, data type conventions and the list of  ELF relocation types.
+
+- **v2.00**
+
+    * Add description of ILP32 data model.
+    * Add description of return value register aliases.
+    * Add relocation types with direct immediate-filling semantics.
+    * Add ABI version porting guidelines for toolchain implementations.
+    * Add link to SysV gABI documentation.
+    * Adjust asciidoc code style.
+
+- **v2.01**
+
+    * Adjust description of ABI type encoding scheme.
+    * Add header for all tables.
