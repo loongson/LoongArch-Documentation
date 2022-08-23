@@ -857,7 +857,7 @@ v2.01
 |===
 |基础 ABI 类型        |ABI 扩展特性
 |操作系统 / C 库
-|Glibc 动态链接器路径
+|ELF interpreter 路径
 
 |lp64d                |base
 |Linux, Glibc
