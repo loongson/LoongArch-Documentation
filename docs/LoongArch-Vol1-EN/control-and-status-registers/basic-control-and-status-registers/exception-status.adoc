@@ -67,56 +67,56 @@ d|Exception Code
 |0x0
 |
 |INT
-|Only when `CSR.ECFG.VS=0`, it means it is an **INT**errupt.
+|**INT**errupt only when `CSR.ECFG.VS=0`.
 
 |0x1
 |
 |PIL
-|**P**age **I**nvalid exception for **L**oad operation
+|**P**age **I**nvalid for **L**oad
 
 |0x2
 |
 |PIS
-|**P**age **I**nvalid exception for **S**tore operation
+|**P**age **I**nvalid for **S**tore
 
 |0x3
 |
 |PIF
-|**P**age **I**nvalid exception for **F**etch operation
+|**P**age **I**nvalid for instruction **F**etch
 
 |0x4
 |
 |PME
-|**P**age **M**odification **E**xception
+|**P**age **M**odified **E**xception
 
 |0x5
 |
 |PNR
-|**P**age **N**on-**R**eadable exception
+|**P**age **N**on-**R**eadable
 
 |0x6
 |
 |PNX
-|**P**age **N**on-e**X**ecutable exception
+|**P**age **N**on-e**X**ecutable
 
 |0x7
 |
 |PPI
-|**P**age **P**rivilege level **I**llegal exception
+|**P**age **P**rivilege level **I**llegal
 
 .2+|0x8
 |0
 |ADEF
-|**AD**dress error **E**xception for **F**etching instructions
+|**AD**dress **E**rror for instruction **F**etch
 
 |1
 |ADEM
-<d|**AD**dress error **E**xception for **M**emory access instructions
+<d|**AD**dress **E**rror for **M**emory access
 
 |0x9
 |
 |ALE
-|**A**ddress a**L**ignment fault **E**xception
+|Address **AL**ignment **E**rror
 
 |0xA
 |
@@ -126,46 +126,46 @@ d|Exception Code
 |0xB
 |
 |SYS
-|**SYS**tem call exception
+|**SYS**tem call
 
 |0xC
 |
 |BRK
-|**BR**ea**K**point exception
+|**BR**ea**K**point
 
 |0xD
 |
 |INE
-|**I**nstruction **N**on-defined **E**xception
+|**I**nstruction **N**on-**E**xistent
 
 |0xE
 |
 |IPE
-|**I**nstruction **P**rivilege error **E**xception
+|**I**nstruction **P**rivilege **E**rror
 
 |0xF
 |
 |FPD
-|**F**loating-**P**oint instruction **D**isable exception
+|**FP**U **D**isabled
 
 |0x10
 |
 |SXD
-|128-bit vector (**S**IMD instructions) e**X**pansion instruction **D**isable exception
+|L**SX** unit **D**isabled
 
 |0x11
 |
 |ASXD
-|256-bit vector (**A**dvanced **S**IMD instructions) e**X**pansion instruction **D**isable exception
+|L**ASX** unit **D**isabled
 
 .2+|0x12
 |0
 |FPE
-|**F**loating-**P**oint error **E**xception
+|**FP**U **E**xception
 
 |1
 |VFPE
-<d|**V**ecctor **F**loating-**P**oint error **E**xception
+<d|**V**ector **FP**U **E**xception
 
 .2+|0x13
 |0
@@ -179,12 +179,12 @@ d|Exception Code
 |0x14
 |
 |BTD
-|**B**inary **T**ranslation expansion instruction **D**isable exception
+|L**BT** unit **D**isabled
 
 |0x15
 |
 |BTE
-|**B**inary **T**ranslation related exceptions
+|L**BT** unit **E**xception
 
 |0x16
 |
@@ -194,19 +194,19 @@ d|Exception Code
 |0x17
 |
 |HVC
-|**H**yper**V**isor **C**all exception
+|**H**yper**V**isor **C**all
 
 .2+|0x18
 |0
 |GCSC
-|**G**uest **C**SR **S**oftware **C**hange exception
+|**G**uest **C**SR modified, **S**oftware **C**aused
 
 |1
 |GCHC
-<d|**G**uest **C**SR **H**ardware **C**hange exception
+<d|**G**uest **C**SR modified, **H**ardware **C**aused
 
 |0x1A-0x3E
 |
 |
-|Reserved Codes
+|Reserved
 |===
