@@ -116,12 +116,12 @@ d|Exception Code
 |0x9
 |
 |ALE
-|**AL**ignment **E**rror
+|**AL**ignment **E**xception
 
 |0xA
 |
 |BCE
-|**B**ound **C**heck **E**xception
+|**B**ound **C**heck **E**rror
 
 |0xB
 |
