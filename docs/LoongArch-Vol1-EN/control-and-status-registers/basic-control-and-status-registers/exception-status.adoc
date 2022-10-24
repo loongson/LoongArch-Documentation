@@ -116,7 +116,7 @@ d|Exception Code
 |0x9
 |
 |ALE
-|Address **AL**ignment **E**rror
+|**AL**ignment **E**rror
 
 |0xA
 |
