@@ -107,11 +107,11 @@ d|Exception Code
 .2+|0x8
 |0
 |ADEF
-|**AD**dress **E**rror for instruction **F**etch
+|**AD**dress **E**rror on instruction **F**etch
 
 |1
 |ADEM
-<d|**AD**dress **E**rror for **M**emory access
+<d|**AD**dress **E**rror on **M**emory access
 
 |0x9
 |
@@ -170,11 +170,11 @@ d|Exception Code
 .2+|0x13
 |0
 |WPEF
-|**W**atch**P**oint **E**xception for **F**etch watchpoint
+|**W**atch**P**oint **E**xception on instruction **F**etch
 
 |1
 |WPEM
-<d|**W**atch**P**oint **E**xception for **M**emory load/store watchpoint
+<d|**W**atch**P**oint **E**xception on **M**emory access
 
 |0x14
 |
