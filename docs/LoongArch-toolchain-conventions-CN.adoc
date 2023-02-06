@@ -313,8 +313,9 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 |C 库 | 内核
 |Multiarch 架构标识符
 
-|`lp64d` / `base`
-| glibc | Linux
+.2+^.^|`lp64d` / `base`
+.2+^.^| glibc .2+^.^| Linux
+|`loongarch64-linux-gnu` (等价于 `loongarch64-linux-gnuf64` )
 |`loongarch64-linux-gnuf64`
 
 |`lp64f` / `base`
@@ -361,7 +362,7 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 | musl libc | Linux
 |`loongarch32-linux-muslsf`
 |===
-
+需要注意的是，基础 ABI 是 lp64d 时，Debian 发行版 Multiarch 架构标识符使用 loongarch64-linux-gnu。
 
 == C/C++ 预处理器内建宏定义
 
