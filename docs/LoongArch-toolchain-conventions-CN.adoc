@@ -294,9 +294,9 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 [%header,cols="^1,^2"]
 |===
 |`<fabi_suffix>` 字符串    |含义
-|`f64`                     |基础 ABI 使用 64 位浮点寄存器传参 (`lp64d` `ilp32d`)
-|`f32`                     |基础 ABI 使用 32 位浮点寄存器传参 (`lp64f` `ilp32f`)
-|`sf`                      |基础 ABI 不使用浮点寄存器传参 (`lp64s` `ilp32s`)
+|（空）                    |基础 ABI 使用 64 位浮点寄存器传参 (`lp64d`)
+|`f32`                     |基础 ABI 使用 32 位浮点寄存器传参 (`lp64f`)
+|`sf`                      |基础 ABI 不使用浮点寄存器传参 (`lp64s`)
 |===
 
 .Multiarch `os` 字段，`<abiext_suffix>` 后缀标记及其对应的 ABI 扩展特性
@@ -315,7 +315,7 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 
 |`lp64d` / `base`
 | glibc | Linux
-|`loongarch64-linux-gnuf64`
+|`loongarch64-linux-gnu`
 
 |`lp64f` / `base`
 | glibc | Linux
@@ -325,21 +325,9 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 | glibc | Linux
 |`loongarch64-linux-gnusf`
 
-|`ilp32d` / `base`
-| glibc | Linux
-|`loongarch32-linux-gnuf64`
-
-|`ilp32f` / `base`
-| glibc | Linux
-|`loongarch32-linux-gnuf32`
-
-|`ilp32s` / `base`
-| glibc | Linux
-|`loongarch32-linux-gnusf`
-
 |`lp64d` / `base`
 | musl libc | Linux
-|`loongarch64-linux-muslf64`
+|`loongarch64-linux-musl`
 
 |`lp64f` / `base`
 | musl libc | Linux
@@ -348,18 +336,6 @@ ABI 配置的需要。若不能，则应根据下表，在默认可用指令集�
 |`lp64s` / `base`
 | musl libc | Linux
 |`loongarch64-linux-muslsf`
-
-|`ilp32d` / `base`
-| musl libc | Linux
-|`loongarch32-linux-muslf64`
-
-|`ilp32f` / `base`
-| musl libc | Linux
-|`loongarch32-linux-muslf32`
-
-|`ilp32s` / `base`
-| musl libc | Linux
-|`loongarch32-linux-muslsf`
 |===
 
 
