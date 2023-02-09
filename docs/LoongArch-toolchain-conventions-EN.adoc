@@ -335,9 +335,9 @@ specifier, respectively.
 [%header,cols="^1,^2"]
 |===
 |`<fabi-suffix>` |Description
-|`f64`           |The base ABI uses 64-bit FPRs for parameter passing. (`lp64d` `ilp32d`)
-|`f32`           |The base ABI uses 32-bit FPRs for parameter passing. (`lp64f` `ilp32f`)
-|`sf`            |The base ABI uses no FPR for parameter passing. (`lp64s` `ilp32s`)
+|(empty string)  |The base ABI uses 64-bit FPRs for parameter passing. (`lp64d`)
+|`f32`           |The base ABI uses 32-bit FPRs for parameter passing. (`lp64f`)
+|`sf`            |The base ABI uses no FPR for parameter passing. (`lp64s`)
 |===
 
 .List of possible `<abiext-suffix>`
@@ -360,7 +360,7 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 
 |`lp64d` / `base`
 | glibc | Linux
-|`loongarch64-linux-gnuf64`
+|`loongarch64-linux-gnu`
 
 |`lp64f` / `base`
 | glibc | Linux
@@ -370,21 +370,9 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 | glibc | Linux
 |`loongarch64-linux-gnusf`
 
-|`ilp32d` / `base`
-| glibc | Linux
-|`loongarch32-linux-gnuf64`
-
-|`ilp32f` / `base`
-| glibc | Linux
-|`loongarch32-linux-gnuf32`
-
-|`ilp32s` / `base`
-| glibc | Linux
-|`loongarch32-linux-gnusf`
-
 |`lp64d` / `base`
 | musl libc | Linux
-|`loongarch64-linux-muslf64`
+|`loongarch64-linux-musl`
 
 |`lp64f` / `base`
 | musl libc | Linux
@@ -393,18 +381,6 @@ multiple multiarch specifiers for one OS / ABI combination.)__
 |`lp64s` / `base`
 | musl libc | Linux
 |`loongarch64-linux-muslsf`
-
-|`ilp32d` / `base`
-| musl libc | Linux
-|`loongarch32-linux-muslf64`
-
-|`ilp32f` / `base`
-| musl libc | Linux
-|`loongarch32-linux-muslf32`
-
-|`ilp32s` / `base`
-| musl libc | Linux
-|`loongarch32-linux-muslsf`
 |===
 
 == C/C++ Preprocessor Built-in Macro Definitions
