@@ -1,6 +1,6 @@
 = LoongArch Toolchain Conventions
 Loongson Technology Corporation Limited
-v1.00
+v2.00
 :docinfodir: ../themes
 :docinfo: shared
 :doctype: book
@@ -331,6 +331,20 @@ the floating-point base ABI and the ABI extension type are encoded
 with two string suffices (`<fabi-suffix><abiext-suffix>`) to the `os` field of the
 specifier, respectively.
 
+Version 1.00 of this document mandated that a `<fabi-suffix>` of `f64` shall
+be used for cases where the base ABI used 64-bit FPRs for parameter passing
+(meaning multiarch architecture specifier values resembling `loongarch64-linux-gnuf64`).
+For backwards compatibility, the target tuple environment value `gnuf64` shall
+be treated as (canonicalized into) `gnu` if doing so would be feasible and not
+bringing any external side effects that goes beyond the local domain-specific
+logic (aka "business logic").
+(For example: if one must symlink and/or copy files to maintain compatibility
+with `gnuf64`, incurring side effects at filesystem / directory layout level,
+then the compatibility would be too costly to be "feasible".
+A concrete case would be Python whose native extensions' file names contain
+exactly one multiarch architecture specifier. In this case it would be
+impossible to accommodate v1.00 of this document.)
+
 .List of possible `<fabi-suffix>`
 [%header,cols="^1,^2"]
 |===
@@ -555,3 +569,15 @@ portable code should not assume existence of these macros, nor use them.
 |`\\__SIZEOF_POINTER__` multiplied by 8
 |n/a
 |===
+
+== Appendix: Revision History
+
+- **v1.00**
+
+    * Initial version of the specification.
+
+- **v2.00**
+
+    * Incompatibly revise the multiarch architecture specifiers:
+    ** Remove multiarch architecture specifiers reserved for the ILP32 ABIs.
+    ** Change the floating-point ABI suffix `f64` into the empty string.
