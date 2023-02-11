@@ -334,6 +334,9 @@ specifier, respectively.
 Version 1.00 of this document mandated that a `<fabi-suffix>` of `f64` shall
 be used for cases where the base ABI used 64-bit FPRs for parameter passing
 (meaning multiarch architecture specifier values resembling `loongarch64-linux-gnuf64`).
+From version 2.00 onwards it was changed into the empty string;
+the incompatible textual change is justified by the rationale that shorter
+names are preferred for the more ubiquitous combinations.
 For maintaining best-effort backwards compatibility, the target tuple environment
 value `gnuf64` shall be treated as (canonicalized into) `gnu` if doing so
 would be feasible by not bringing any external side effects that goes beyond
