@@ -325,7 +325,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 |`1` indicates that the Cache shown by `L1 IU_Present` is the unified Cache
 
 ^m|2
-^m|L1 D Prwsent
+^m|L1 D Present
 |`1` indicates there is a first-level data Cache
 
 ^m|3
@@ -377,7 +377,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 |`1` indicates there is a three-level data Cache
 
 ^m|15
-^m|L3 F Inclusive
+^m|L3 D Private
 |`1` indicates that the three-level data Cache is private to each core
 
 ^m|16

@@ -252,7 +252,7 @@ m|L1 IU Unify
 m|1'b0
 
 ^m|2
-m|L1 D Prwsent
+m|L1 D Present
 |`1` indicates there is a first-level data Cache
 m|1'b1
 
@@ -317,7 +317,7 @@ m|L3 D Present
 m|1'b0
 
 ^m|15
-m|L3 F Inclusive
+m|L3 D Private
 |`1` indicates that the three-level data Cache is private to each core
 m|1'b0
 
