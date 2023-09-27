@@ -18,7 +18,7 @@ crcc.w.d.w      rd, rj, rk
 ----
 
 `CRC[C]W.{B/H/W/D}.W` is used to calculate the CRC-32 checksum, which stores the 32-bit cumulative CRC checksum stored in the general register `rk` in the general register `rj` `[7:0]`/`[15:0]`/`[31:0]`/`[63:0]` bit message, get a new 32-bit CRC checksum according to the CRC-32 checksum generation algorithm, and write it after sign extension into the general register `rd`.
-The difference is that `CRC.W.{B/H/W/D}.W` uses IEEE802.3 polynomial (polynomial value is `0xEDB88320`), `CRC.W.{B/H/W/D}.W` uses Castagnoli polynomial (polynomial value is `0x82F63B78`).
+The difference is that `CRC.W.{B/H/W/D}.W` uses IEEE802.3 polynomial (polynomial value is `0xEDB88320`), `CRCC.W.{B/H/W/D}.W` uses Castagnoli polynomial (polynomial value is `0x82F63B78`).
 The CRC instructions defined in this manual only support the "`LSB first`" (little endian) standard, which means that the lowest bit of data (little endian) is transmitted first, and the lowest bit of the data is mapped to the coefficient of the most significant term of the message polynomial.
 
 [source]
