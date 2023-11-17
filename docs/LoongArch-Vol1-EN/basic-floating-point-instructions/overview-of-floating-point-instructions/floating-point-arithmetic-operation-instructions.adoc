@@ -400,3 +400,39 @@ FCLASS.D:
     FR[fd] = FP64_class(FR[fj])
     sedMultiplyAdd(FR[fj], FR[fk], FR[fa])
 ----
+
+===== `F{RECIPE/RSQRTE}.{S/D}`
+
+Instruction formats:
+
+[source]
+----
+frecipe.s           fd, fj
+frecipe.d           fd, fj
+frsqrte.s           fd, fj
+frsqrte.d           fd, fj
+----
+
+The `FRECIPE.{S/D}` instruction selects the single-precision  or double-precision floating-point number in the floating-point register `fj`, calculates the single-precision or double-precision floating-point number approximation obtained by dividing the floating-point number by `1.0`, and writes the approximation to the floating-point register `fd` . The relative error of the approximation is less than `2^-14`.
+
+When the input value is `2^N`, the output value is `2^-N`. The results when the input value is `QNaN`, `SNaN`, `±∞`, `±0`, the conditions for generating floating-point exceptions, and the default results when floating-point exceptions are generated without triggering exceptions are the same as those of the `FRECIP.{S/D}` instruction.
+
+[source]
+----
+FRECIPE.S:
+    FR[fd][31:0] = FP32_reciprocal_estimate(FR[fj][31:0])
+FRECIPE.D:
+    FR[fd] = FP64_reciprocal_estimate(FR[fj])
+----
+
+`FRSQRTE.{S/D}` instruction selects the single/double precision floating point number in the floating point register `fj`, first extract the Square Root it, and then divides the approximate result by `1.0`, and then writes the obtained single/double precision floating point number into the floating point register `fd`. The relative error of the obtained approximation is less than `2^-14`.
+
+When the input value is `2^2N`, the output value is `2^-N`. The results when the inputs are `QNaN`, `SNaN`, `±∞`, and `±0`, the conditions for generating floating-point exceptions, and the default results when floating-point exceptions are generated but not triggered are the same as those of the `FRSQRT.{S/D}` instruction.
+
+[source]
+----
+FRSQRTE.S:
+    FR[fd][31:0] = FP32_reciprocal_squareroot_estimate(FR[fj][31:0])
+FRSQRTE.D:
+    FR[fd] = FP64_reciprocal_squareroot_estimate(FR[fj])
+----

@@ -76,6 +76,65 @@ If the `AM*` atomic memory access instruction has the same register number as `r
 If the `AM*` atomic memory access instruction has the same register number as `rd` and `rk`, the execution result is uncertain.
 Please software to avoid this situation.
 
+===== `AM.{SWAP/ADD}[_DB].{B/H}`
+
+Instruction formats:
+
+[source]
+----
+amswap.b        rd, rk, rj
+amswap_db.b     rd, rk, rj
+amswap.h        rd, rk, rj
+amswap_db.h     rd, rk, rj
+amadd.b         rd, rk, rj
+amadd_db.b      rd, rk, rj
+amadd.h         rd, rk, rj
+amadd_db.h      rd, rk, rj
+----
+
+`AM{SWAP/ADD}[_DB].{B/H}` and `AM{SWAP/ADD}[_DB].{W/D}` are atomic access instructions, can atomically complete the "read - modify - write" sequence of operations on a memory cell, the main difference is that the data being accessed is byte/half-word or word/double-word.
+
+`AM{SWAP/ADD}[_DB].{B/H}` retrieve the old byte/half word value at the specified address in memory and write it to the general register `rd` after symbol extension, At the same time, the old value in the memory is exchanged or added with the byte/half-word value of the general register `rk` [7:0]/[15:0] bit, and then the byte/half-word results will be written back to the specified address of the memory.
+The entire "read-modify-write" process is atomic, meaning that the execution of the instruction, from the access to read the data return to the access to write the implementation of the effect of global visibility at the time, the processor executing the instruction neither executes other memory access write operations nor triggers any exception, and no other processor core or Cache coherence module can globally see the execution effect of the write operation on the Cache line of the object accessed by the instruction.
+
+`AM{SWAP/ADD}[_DB].{B/H}` The access address of an atomic access instruction is the value of general-purpose register `rj`.
+
+`AM{SWAP/ADD}[_DB].H` access address of an atomic access instruction is always required to be naturally aligned, and a non-alignment exception is triggered if this condition is not met.
+
+In addition to the above atomic sequence of operations, the `AM{SWAP/ADD}_DB.{B/H}` instruction also implements the data barrier function.
+That is, when this kind of atomic access instruction is allowed to execute before, all in the same processor core before the atomic access instruction access operations have been completed;
+at the same time, only until the completion of this kind of atomic access instruction execution, all in the same processor core after the atomic access instruction access operation is allowed to execute.
+
+If rd and `rj` have the same register number in `AM{SWAP/ADD}[_DB].{B/H}` instruction, there is no exception for trigger instruction.
+
+If the register numbers of `rd` and `rk` in an `AM{SWAP/ADD}[_DB].{B/H}` instruction are the same, the execution result is uncertain, so please ask the software to avoid this situation.
+
+===== `AMCAS[_DB].{B/H/W/D}`
+
+Instruction formats:
+
+[source]
+----
+amcas.b         rd, rk, rj
+amcas_db.b      rd, rk, rj
+amcas.h         rd, rk, rj
+amcas_db.h      rd, rk, rj
+amcas.w         rd, rk, rj
+amcas_db.w      rd, rk, rj
+amcas.d         rd, rk, rj
+amcas_db.d      rd, rk, rj
+----
+
+`AMCAS[_DB].{B/H/W/D}` instruction performs a byte/half-word/word/double-word sized Compare-and-Swap operation on a specified address in memory: The byte/half-word/word/double-word value retrieved from memory (old memory value) is compared with the value stored in the [7:0]/`[15:0]/[31:0]/[63:0]` location of the general-purpose register `rd` (expected value), and the value stored in the `[7:0]/[15:0]/[31:0]/[63:0]` location of the general-purpose register `rk` (new value) is written to the same location in the memory only when the comparison results are equal.
+Regardless of whether the comparison results are equal or not, the old memory value is written to the general-purpose register `rd` after sign expansion.
+
+The above process, If a write occurs because the old memory value is equal to the expected value, then the entire "read - modify - write" process is atomic, that is, from the access to the read operation data return to the access to the write operation to perform the effect of the global visibility of this time, the processor executing the instruction is neither the implementation of the other access to the write operation nor trigger Any exception, and no other processor core or Cache Consistency Module to the instruction access object where the Cache line of the write operation of the execution of the effect of the global visible.
+
+`AMCAS[_DB].{H/W/D}` The access address of the instruction is the value of general-purpose register `rj`, and the access address is always required to be naturally aligned, if this condition is not met, a non-aligned exception will be triggered.
+
+In addition to the above atomic sequence of operations, the `AMCAS_DB.{B/H/W/D}` instruction also implements the data barrier function.
+That is, when this kind of atomic access instruction is allowed to execute before, all in the same processor core before the atomic access instruction access operations have been completed; at the same time, only when this kind of atomic access instruction execution is completed, all in the same processor core after the atomic access instruction access operations are allowed to execute.
+
 ===== `LL.{W/D}`, `SC.{W/D}`
 
 Instruction formats:
@@ -103,3 +162,49 @@ During the execution of the paired `LLSC`, the following events will clear the `
 * Other processor cores or Cache Coherent I/O masters perform a store operation on the Cache line where the address corresponding to the `LLbit` is located.
 
 If the memory access attribute of the `LLSC` instruction to the access address is not Cached, then the execution result is uncertain.
+
+===== `SC.Q`
+
+Instruction formats:
+
+[source]
+----
+SC.Q            rd, rk, rj
+----
+
+The `SC.Q`  instruction is similar to the SC.D instruction and is used in conjunction with the LL.D instruction to implement an atomic "read-modify-write" access sequence for 128-bit data.
+
+`SC.Q`  writes the 128-bit data {GR[rk][63:0], GR[rd][63:0]} obtained by splicing the general-purpose registers rk and rd into memory, and its access address is the value of the general-purpose register rj.
+`SC.Q`  instruction will check LLbit when executing, and only when LLbit is 1, then it will write, otherwise it will not write, `SC.Q`  instruction will write the flag of success or failure (also can be understood as the value of LLbit when `SC.Q`  instruction executes) into general register rd and return to the memory.
+
+The access address of `SC.Q`  instruction is always required to be 16-byte aligned, if this condition is not met, a non-aligned exception will be triggered.
+
+If the `SC.Q`  instruction's memory access attribute for the access address is not consistently cacheable (CC), the result of the execution is indeterminate.
+
+===== `LL.ACQ.{W/D}, SC.REL.{W/D}`
+
+Instruction formats:
+
+[source]
+----
+ll.acq.w        rd, rj
+ll.acq.d        rd, rj
+sc.rel.w        rd, rj
+sc.rel.d        rd, rj
+----
+
+`LL.ACQ.{W/D`} is an  LL.{W/D} instruction with read-acquire semantics, that is, only when  `LL.ACQ.{W/D}` is executed (globally visible), all subsequent access operations can start executing (globally visible effect); `SC.REL.{W/D}` is an `SC.{W/D}` instruction with write-release semantics, that is, only when `SC.REL.{W/D}` is executed (globally visible), all access operations can start executing (globally visible effect).
+
+The `LL.ACQ.{W/D}` instruction fetches a word/double word of data symbol expansion from the specified address in memory and writes it to the general-purpose register rd, and at the same time records the access address and places a flag (LLbit set to 1).
+The `SC.REL.{W/D}` instruction conditionally writes the word/double-word value of `[31:0]/[63:0]` in the general-purpose register rd to the specified address in the memory, whether or not to write to the memory depends on the LLbit, and only when the LLbit is 1 does it really generate a write action, otherwise it does not write.
+`SC.REL` instruction will write the flag of success or failure of its execution (which can be simply understood as the LLbit value seen by the `SC.REL` instruction when it is executed) into the general-purpose register rd and return it, regardless of whether it writes to the memory or not.
+
+During paired `LL-SC` execution, the following events clear the LLbit to zero:
+
+    * An `ERTN` instruction is executed and the KLO bit in `CSR.LLBCTL` is not equal to 1 at the time of execution.
+
+    * another processor core or Cache Coherent master completes a store operation on the Cache line corresponding to the address of the LLbit.
+
+LL.ACQ and SC.REL instructions always require a natural alignment of the access address, if this condition is not met a non-alignment exception is triggered.
+
+If the LL.ACQ and SC.REL instructions direct that the store access attribute of the access address is not cache-consistent (CC), then the result of the execution is indeterminate.
