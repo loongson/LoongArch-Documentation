@@ -1,0 +1,61 @@
+= LoongArch ABI 1.0 and ABI 2.0 Differences
+Loongson Technology Corporation Limited
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+
+== Introduction
+
+LoongArch's software ecology has gone through two stages. The first phase is the commercial product stage, in which the company's R&D focused on building the ecology from scratch, and brought a lot of baggage with it; the second stage is the package upstream stage, in which the engineers responsible for the relevant packages (especially the underlying compiler, kernel, etc.) listened to the opinions of community maintainers and developers, and refactored the code partially one after another, and also got rid of some package.
+
+The second stage lasted about two years, which is a long time for a commercial company and is unacceptable. So during this time, the product version has been using the first stage of the software ecology, which is called ABI 1.0 (commonly known as the old world) by the company's engineers, and users only have access to binary packages, and as of today, we use loongnix, uos, Kylin, and other commercial OS distributions that belong to ABI 1.0.
+
+The second stage of upstream software ecology is called ABI 2.0 (commonly known as the new world) by engineers and community developers. Archlinux, Gentoo (upstreamed).
+
+=== LoongArch's ABI 1.0/2.0 difference has four levels
+
+* BIOS
+* grub
+* linux
+* OS
+
+==== BIOS
+
+The difference between ABI 1.0 and ABI 2.0 at the BIOS level lies mainly in the state of the MMU at the start of the EFI application and in the form of the addresses contained in the pointer fields of each data structure.
+
+Since the UEFI and ACPI specifications require the BIOS to use physical addresses, while the product version BIOS uses virtual addresses, the ABI 2.0 BIOS must change to physical addresses in order to enter the specifications; ABI 1.0 uses the X86 interrupt controller data structure, while ABI 2.0 uses the Loongson interrupt controller data structure; in addition, the new ABI 1.0 uses a different UEFI data structure.
+
+==== grub
+
+grub distinguishes between ABI 1.0 and ABI 2.0 by bootstrapping kernels of different formats; ABI 1.0 only recognizes ELF kernels, ABI 2.0 only recognizes PE format Linux EFI stubs; ABI 1.0 passes rd_start/rd_size, ABI 2.0 passes initrd, and adds Loadfile2 for internal passing.
+
+==== linux
+
+The kernel distinguishes ABI 1.0 and ABI 2.0 with different boot protocols: ABI 1.0 with ELF boot protocol, ABI 2.0 with EFI stub boot protocol, and ABI 1.0 with NSIG=128 and user_pt_regs without orig_a0 export; ABI 2.0 with NSIG=64 and user_pt_regs with orig_a0 export; ABI 1.0 with MINSIGSTKSZ/SIGSTKSZ=2048/8192, ABI 2.0 MINSIGSTKSZ/SIGSTKSZ=4096/16384; in addition, ABI 1.0/2.0 kernel has slight differences in ucontext, sigcontext, rt_sigframe and other structures. Interested readers can go to the linux-arch archive at lore.kernel.org to compare the differences between the patches for each version of the LoongArch kernel upstream.
+
+==== OS
+
+The OS distinguishes ABI 1.0 and ABI 2.0 by the different program interpreter; ABI 1.0 uses /lib64/ld.so.1, ABI 2.0 uses /lib64/ld-linux-loongarch-lp64d.so.1; ABI 1.0 has 79 and 80 system calls, ABI 2.0 does not; ABI 1.0's /proc/cpuinfo field name is lowercase, ABI 2.0 has mostly uppercase; Glibc symbol version also differs.
+
+In the daily development process, OS developers will pay more attention to the software version, so here is a table to be improved, subsequent to the need, please submit a modification pull request in a timely manner.
+
+.Key Software Versions for ABI 1.0/2.0
+|===
+|Name |ABI 1.0 |ABI 2.0
+
+|gcc
+|8.3
+|12.0
+
+|glibc symbol version
+|2.27
+|2.36
+
+|linux
+|4.19
+|5.19
+|===
+
+
+
