@@ -850,6 +850,14 @@ with check 28-bit signed overflow and 4-bit aligned
 |R_LARCH_RELAX
 |Instruction can be relaxed, paired with a normal relocation at the same address
 |
+
+|101
+|R_LARCH_JIRL_LO12
+|Sign-extend [11 ... 2] bits of 32/64-bit absolute address to 16 bit
+|`+(*(uint32_t *) PC) [25 ... 10] = sign_ext((S+A) [11 ... 2])+`
+
+with checking for 4-bit alignment
+
 |===
 
 
