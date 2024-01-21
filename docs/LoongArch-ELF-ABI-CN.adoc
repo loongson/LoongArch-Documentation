@@ -847,6 +847,46 @@ v2.01
 |R_LARCH_RELAX
 |在相同的地址和其它重定位成对使用，标识指令可能被修改或删除(relaxed)。
 |
+
+|101
+|R_LARCH_DELETE
+|指令在链接时被删除。
+|
+
+|102
+|R_LARCH_ALIGN
+|对齐声明，重定位加数表示 NOP 指令在重定位位置所占用的字节数，对齐边界向上舍入到大于重定位加数的最小的 2 的 n 次幂。
+|
+
+|103
+|R_LARCH_PCREL20_S2
+|22 位相对 PC 偏移
+|`+(*(uint32_t *) PC) [24 ... 5] = (S + A - PC) [21 ... 2]+`
+
+|104
+|R_LARCH_CFA
+|Canonical Frame Address
+|
+
+|105
+|R_LARCH_ADD6
+|6 位原地加法
+|
+
+|106
+|R_LARCH_SUB6
+|6 位原地减法
+|
+
+|107
+|R_LARCH_ADD_ULEB128
+|ULEB128 原地加法
+|
+
+|108
+|R_LARCH_SUB_ULEB128
+|ULEB128 原地减法
+|
 |===
 
 
