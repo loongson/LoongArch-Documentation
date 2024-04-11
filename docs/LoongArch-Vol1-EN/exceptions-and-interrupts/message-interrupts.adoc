@@ -1,0 +1,10 @@
+[[message-interrupts]]
+=== Message-Interrupts
+
+include::message-interrupts/message-interrupt-types.adoc[]
+
+include::message-interrupts/message-interrupt-priority.adoc[]
+
+include::message-interrupts/message-interrupt-entry.adoc[]
+
+include::message-interrupts/message-interrupt-response-processing.adoc[]

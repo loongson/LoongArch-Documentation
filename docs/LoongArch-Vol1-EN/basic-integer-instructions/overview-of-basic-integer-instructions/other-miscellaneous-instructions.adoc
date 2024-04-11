@@ -150,8 +150,8 @@ The undefined field in the defined configuration word can be read back to any va
 |`1` indicates support for page attributes of huge page
 
 ^m|25
-^m|IOCSR_BRD
-|`1` indicates that the string of processor product information is recorded at address `0` of the IOCSR access space
+^m|CRC
+|`1` indicates that support CRC instruction
 
 That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 
@@ -159,7 +159,7 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|MSG_INT
 |`1` indicates that the external interrupt uses the message interrupt mode, otherwise it is the level interrupt line mode
 
-.17+^m|0x2
+.24+^m|2
 ^m|0
 ^m|FP
 |`1` indicates support for basic floating-point instructions
@@ -231,7 +231,37 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|LAM
 |`1` indicates support `AM*` atomic memory access instruction
 
-.12+^m|0x3
+^m|24
+^m|HPTW
+|`1` indicates support Page Table Walker
+
+^m|25
+^m|FRECIPE
+|`1` indicates support  FRECIPE.{S/D}、FRSQRTE.{S/D}.
+If 128-bit vector extension is also supported, VFRECIPE.{S/D}、VFRSQRTE.{S/D} is supported.
+If 256-bit vector extension is also supported, XVFRECIPE.{S/D}、XVFRSQRTE.{S/D} is supported.
+
+^m|26
+^m|DIV32
+|`1` indicates that  DIV.W[U] and MOD.W[U] instructions on 64-bit machines compute only the low 32-bit data of the input register
+
+^m|27
+^m|LAM_BH
+|`1` indicates support AM{SWAP/ADD}[_DB].{B/H}.
+
+^m|28
+^m|LAMCAS
+|`1` indicates support AMCAS[_DB].{B/H/W/D}.
+
+^m|29
+^m|LLACQ_SCREL
+|`1` indicates support LLACQ.{W/D}、SCREL.{W/D}.
+
+^m|30
+^m|SCQ
+|`1` indicates support SC.Q.
+
+.14+^m|3
 ^m|0
 ^m|CCDMA
 |`1` indicates support for hardware Cache coherent DMA
@@ -257,11 +287,11 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 |`1` indicates support LL automatic with dbar function
 
 ^m|6
-^m|ITLBT
+^m|ITLBTHMC
 |`1` indicates that the hardware maintains the consistency between ITLB and TLB
 
 ^m|7
-^m|ICACHET
+^m|ICHMC
 |`1` indicates that the hardware maintains the data consistency between ICache and DCache in one processor core
 
 ^m|10:8
@@ -279,6 +309,14 @@ That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 ^m|16:13
 ^m|RVAMAX-1
 |The maximum configurable virtual address is shortened by `-1`
+
+^m|17
+^m|DBAR_hints
+|1 indicates that the non-0 value of the DBAR is implemented according to the recommended meaning of the manual.
+
+^m|23
+^m|LD_SEQ_SA
+|1 indicates that the hardware is enabled to guarantee sequential execution of load operations at the same address.
 
 ^m|0x4
 ^m|31:0

@@ -1,0 +1,6 @@
+[[message-interrupt-types]]
+==== Message-Interrupt Types
+
+In the Loongson architecture, 256 message interrupts can be recorded inside each logical processor core, which can include message-type intercore interrupts and message-type hard interrupts input from outside the processor core.
+Within a processor core, four 64-bit CSRS, CSR.MSGIS0 to CSR.MSGIS3, record in turn whether messages from 0 to 255 are interrupted or not.
+The exact source of the 256 message interrupts inside each processor core is determined by the implementation, and software developers need to refer to the specific chip user manual for information.

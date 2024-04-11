@@ -12,3 +12,5 @@ include::introduction/instruction-formats.adoc[]
 include::introduction/assembly-instruction-mnemonic-formats.adoc[]
 
 include::introduction/conventions-used-in-this-manual.adoc[]
+
+include::introduction/version-evolution.adoc[]

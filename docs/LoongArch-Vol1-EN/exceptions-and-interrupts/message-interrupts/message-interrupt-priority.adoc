@@ -1,0 +1,8 @@
+[[message-interrupt-priority]]
+==== Message-Interrupt-Priority
+
+Loongson architecture adopts a fixed priority among 256 message interrupts in each logical processor core. The larger the interrupt number, the higher the priority, that is, message number 255 has the highest priority, message number 254 has the second,...... , message 0 has the lowest interrupt priority.
+
+Only message interrupts recorded inside each logical processor core whose priority is not lower than the message interrupt enable priority threshold (recorded in the CSR.MSGIE.PT field) can be further selected and set by the hardware.
+
+When there are both message interrupt request and line interrupt request in a processor core, the message interrupt request has higher priority than the line interrupt request.

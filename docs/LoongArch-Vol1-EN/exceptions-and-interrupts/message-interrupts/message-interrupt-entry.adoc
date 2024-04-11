@@ -1,0 +1,4 @@
+[[message-interrupt-entry]]
+==== Message-Interrupt-Entry
+
+All message interrupts adopt a uniform entry, and the "entry page number" of their computed entry address coincides with the line interrupt, coming from an "in-page offset" equal to 2(CSR.ECFG.VS+2)×78(0x4E) of their computed entry address.

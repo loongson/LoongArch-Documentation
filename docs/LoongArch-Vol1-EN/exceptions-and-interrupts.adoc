@@ -3,6 +3,8 @@
 
 include::exceptions-and-interrupts/interrupts.adoc[]
 
+include::exceptions-and-interrupts/message-interrupts.adoc[]
+
 include::exceptions-and-interrupts/exceptions.adoc[]
 
 include::exceptions-and-interrupts/reset.adoc[]

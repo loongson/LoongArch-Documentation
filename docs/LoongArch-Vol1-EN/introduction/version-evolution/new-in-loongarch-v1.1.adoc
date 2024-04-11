@@ -1,0 +1,24 @@
+[[new-in-loongarch-v1.1]]
+==== New In LoongArch V1.1
+
+LoongArch V1.1 adds the following:
+
+1. New instructions for approximately solving floating-point root and inverse floating-point root, including FRECIPE.S, FRECIPE.D, FRSQRTE.S, FRSQRTE.D for scalar operations. VFRECIPE.S, VFRECIPE.D, VFRSQRTE.S, VFRSQRTE.D commands for 128-bit SIMD operations and XVFRECIPE.S, XVFRECIPE.D, XVFRSQRTE.S, XVFRSQRTE.D commands for 256-bit SIMD operations instructions.
+
+2. Add SC.Q instruction.
+
+3. Add LLACQ.W, SCREL.W, LLACQ.D, SCREL instructions.
+
+4. Add AMCAS.B, AMCAS.H, AMCAS.W, AMCAS.D, AMCAS_DB.B, AMCAS_DB.H, AMCAS_DB.W, AMCAS_DB.D, AMSWAP.B, AMSWAP.H instructions.
+
+5. Add AMADD.B, AMADD.H, AMSWAP_DB.B, AMSWAP_DB.H, AMADD_DB.B, AMADD_DB.H instructions.
+
+6. Add the function definition of non-zero hint value in the dbar instruction part.
+
+7. A new method for determining whether 32-bit integer division instructions on 64-bit machines are affected by the higher 32-bit value of the source operand register.
+
+8. Standardize the way to determine the sequential execution behavior of load memory access operations at the same address.
+
+9. Add the definition of a message interrupt.
+
+10. Hardware page table traversals are allowed.
