@@ -1,0 +1,61 @@
+= LoongArch ABI 1.0 和 ABI 2.0  差异
+龙芯中科技术股份有限公司
+:docinfodir: ../themes
+:docinfo: shared
+:doctype: book
+:toc: left
+:toc-title: 目录
+:scripts: cjk
+
+== 概述
+
+LoongArch 的软件生态经历了两个阶段。第一阶段是商业化的产品阶段，在这一阶段，公司的研发重点是从无到有的生态建设阶段，而且带了很多包袱；第二阶段是软件包的 upstream 阶段，在这一阶段，负责相关软件包（尤其是底层的编译器、内核等）的工程师听取了社区 maintainer 和广大开发者的意见，陆续对代码进行了局部重构，同时也甩掉了一些包袱。
+
+第二阶段大概持续了两年，对于一个商业公司来说，时间相当漫长，这是不可接受的。所以在此期间，产品版一直使用第一阶段的软件生态，该阶段软件生态被公司的工程师称为 ABI 1.0 （俗称旧世界），且用户只能获取到二进制软件包，截止到今天，我们使用的 loongnix、uos、Kylin 等商业操作系统发行版都属于 ABI 1.0。
+
+与 ABI 1.0 相对应的，第二阶段的 upstream 软件生态被工程师和广大社区开发者称之为 ABI 2.0 （俗称新世界），ABI 2.0 的软件生态有一个特点，即我们可以直接从社区拉下来软件包的源代码，在 LoongArch 机器上编译安装后，能直接运行，所以，ABI 2.0 是对开源友好的，我们现在能获取到的 ABI 2.0 操作系统发行版有 CLFS、Archlinux、Gentoo（upstreamed）。
+
+=== LoongArch的 ABI 1.0/2.0 的差异一共有四个层次
+
+* 固件
+* 引导器
+* 内核
+* 操作系统
+
+==== 固件
+
+ABI 1.0 和 ABI 2.0 在固件层面的区分主要在于 EFI 应用程序启动时 MMU 所处状态，以及各数据结构中指针字段所含地址的形式。
+
+由于 UEFI、ACPI 规范规定了固件必须使用物理地址，而产品版固件使用的是虚拟地址，为了进规范，所以 ABI 2.0 固件必须改用物理地址；ABI 1.0 使用 X86 中断控制器数据结构，ABI 2.0 使用龙芯中断控制器数据结构；另外新 ABI 1.0 使用的 UEFI 数据结构也不太相同。
+
+==== 引导器
+
+grub 以引导不同格式的内核来区分 ABI 1.0 和 ABI 2.0。只能识别 ELF 内核的为 ABI 1.0，只能识别 PE 格式的 Linux EFI stub 的为 ABI 2.0；ABI 1.0 传递 rd_start/rd_size，ABI 2.0 传递 initrd，并增加了 Loadfile2 在内部传递。
+
+==== 内核
+
+内核以不同的引导协议来区分 ABI 1.0 和 ABI 2.0。使用ELF引导协议的为 ABI 1.0，使用 EFI stub 引导协议的为 ABI 2.0。同时，ABI 1.0 内核 NSIG=128，user_pt_regs不导出 orig_a0；ABI 2.0 内核 NSIG=64，user_pt_regs 要导出 orig_a0；ABI 1.0 的 MINSIGSTKSZ/SIGSTKSZ=2048/8192，ABI 2.0 的 MINSIGSTKSZ/SIGSTKSZ=4096/16384；另外，ABI 1.0/2.0 内核在 ucontext、sigcontext、rt_sigframe 等结构体上也有些许差异。感兴趣的读者可以去 lore.kernel.org 的 linux-arch 存档里面对比 LoongArch 内核进上游的各个版本补丁之间的差异。
+
+==== 操作系统
+
+OS 以不同的动态链接器路径来区分 ABI 1.0 和 ABI 2.0。ABI 1.0 使用 /lib64/ld.so.1，ABI 2.0 使用 /lib64/ld-linux-loongarch-lp64d.so.1；ABI 1.0 有79、80系统调用，ABI 2.0 没有；ABI 1.0 的/proc/cpuinfo字段名称是小写，ABI 2.0 的大都改为首字母大写；Glibc symbol version 也有差异。
+
+在日常开发过程中，OS开发者会更关注软件版本，所以这里列一个待完善的表格，后续有需要，请开发者及时提pr修改。
+
+.ABI 1.0/2.0 具有标志性的软件版本
+|===
+|名称 |ABI 1.0 |ABI 2.0
+
+|gcc
+|8.3
+|12.0
+
+|glibc symbol version
+|2.27
+|2.36
+
+|linux
+|4.19
+|5.19
+|===
+

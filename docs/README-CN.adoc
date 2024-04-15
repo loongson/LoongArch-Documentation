@@ -46,6 +46,9 @@
 * 龙芯架构 SMBIOS 规范：该文档定义了龙芯架构处理器附加信息，是 SMBIOS 结构 type 44 的补充。本文档仅提供 *英文版*。
 ** link:LoongArch-Processor-SMBIOS-Spec-EN.html[HTML 版本]。
 
+* LoongArch ABI 1.0 和 ABI 2.0 差异：该文档描述了LoongArch新旧软件生态的差异。
+** link:LoongArch-ABI-1.0-and-ABI-2.0-Differences-CN.html[HTML 版本]。
+** link:LoongArch-ABI-1.0-and-ABI-2.0-Differences-CN.pdf[PDF 版本]。
 
 [[getting-start]]
 == 开始
