@@ -398,7 +398,6 @@ FCLASS.S:
 
 FCLASS.D:
     FR[fd] = FP64_class(FR[fj])
-    sedMultiplyAdd(FR[fj], FR[fk], FR[fa])
 ----
 
 ===== `F{RECIPE/RSQRTE}.{S/D}`
