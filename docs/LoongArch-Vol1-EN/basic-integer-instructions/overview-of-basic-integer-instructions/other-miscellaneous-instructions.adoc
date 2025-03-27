@@ -99,12 +99,12 @@ The undefined field in the defined configuration word can be read back to any va
 
 ^m|0x0
 ^m|31:0
-^m|PRID
+^m|[[cpucfg-prid]]PRID
 |Processor Identity
 
 .12+^m|0x1
 ^m|1:0
-^m|ARCH
+^m|[[cpucfg-arch]]ARCH
 |`2'b00` indicates the implementation of simplified LA32;
 
 `2'b01` indicates the implementation of LA32;
@@ -114,363 +114,363 @@ The undefined field in the defined configuration word can be read back to any va
 `2'b11` is reserved.
 
 ^m|2
-^m|PGMMU
+^m|[[cpucfg-pgmmu]]PGMMU
 |`1` indicates that the MMU supports page mapping mode
 
 ^m|3
-^m|IOCSR
+^m|[[cpucfg-iocsr]]IOCSR
 |`1` indicates support for the IOCSR instruction
 
 ^m|11:4
-^m|PALEN
+^m|[[cpucfg-palen]]PALEN
 |The supported physical address bits `PALEN` value minus `1`
 
 ^m|19:12
-^m|VALEN
+^m|[[cpucfg-valen]]VALEN
 |The supported virtual address bits `VALEN` value minus `1`
 
 ^m|20
-^m|UAL
+^m|[[cpucfg-ual]]UAL
 |`1` indicates support for non-aligned memory access
 
 ^m|21
-^m|RI
+^m|[[cpucfg-ri]]RI
 |`1` indicates support for page attribute of "`Read Inhibit`"
 
 ^m|22
-^m|EP
+^m|[[cpucfg-ep]]EP
 |`1` indicates support for  page attribute of "`Execution Protection`"
 
 ^m|23
-^m|RPLV
+^m|[[cpucfg-rplv]]RPLV
 |`1` indicates support for page attributes of `RPLV`
 
 ^m|24
-^m|HP
+^m|[[cpucfg-hp]]HP
 |`1` indicates support for page attributes of huge page
 
 ^m|25
-^m|CRC
+^m|[[cpucfg-crc]]CRC
 |`1` indicates that support CRC instruction
 
 That is, information such as "`Loongson3A5000 @ 2.5GHz`"
 
 ^m|26
-^m|MSG_INT
+^m|[[cpucfg-msg_int]]MSG_INT
 |`1` indicates that the external interrupt uses the message interrupt mode, otherwise it is the level interrupt line mode
 
 .24+^m|2
 ^m|0
-^m|FP
+^m|[[cpucfg-fp]]FP
 |`1` indicates support for basic floating-point instructions
 
 ^m|1
-^m|FP_SP
+^m|[[cpucfg-fp_sp]]FP_SP
 |`1` indicates support for single-precision floating-point numbers
 
 ^m|2
-^m|FP_DP
+^m|[[cpucfg-fp_dp]]FP_DP
 |`1` indicates support for double-precision floating-point numbers
 
 ^m|5:3
-^m|FP_ver
+^m|[[cpucfg-fp_ver]]FP_ver
 |The version number of the floating-point arithmetic standard.
 `1` is the initial version number, indicating that it is compatible with the IEEE 754-2008 standard
 
 ^m|6
-^m|LSX
+^m|[[cpucfg-lsx]]LSX
 |`1` indicates support for 128-bit vector extension
 
 ^m|7
-^m|LASX
+^m|[[cpucfg-lasx]]LASX
 |`1` indicates support for 256-bit vector expansion
 
 ^m|8
-^m|COMPLEX
+^m|[[cpucfg-complex]]COMPLEX
 |`1` indicates support for complex vector operation instructions
 
 ^m|9
-^m|CRYPTO
+^m|[[cpucfg-crypto]]CRYPTO
 |`1` indicates support for encryption and decryption vector instructions
 
 ^m|10
-^m|LVZ
+^m|[[cpucfg-lvz]]LVZ
 |`1` indicates support for virtualization expansion
 
 ^m|13:11
-^m|LVZ_ver
+^m|[[cpucfg-lvz_ver]]LVZ_ver
 |The version number of the virtualization hardware acceleration specification.
 `1` is the initial version number
 
 ^m|14
-^m|LLFTP
+^m|[[cpucfg-llftp]]LLFTP
 |`1` indicates support for constant frequency counter and timer
 
 ^m|17:15
-^m|LLFTP_ver
+^m|[[cpucfg-llftp_ver]]LLFTP_ver
 |Constant frequency counter and timer version number.
 `1` is the initial version
 
 ^m|18
-^m|LBT_X86
+^m|[[cpucfg-lbt_x86]]LBT_X86
 |`1` indicates support for X86 binary translation extension
 
 ^m|19
-^m|LBT_ARM
+^m|[[cpucfg-lbt_arm]]LBT_ARM
 |`1` indicates support for ARM binary translation extension
 
 ^m|20
-^m|LBT_MIPS
+^m|[[cpucfg-lbt_mips]]LBT_MIPS
 |`1` indicates support for MIPS binary translation extension
 
 ^m|21
-^m|LSPW
+^m|[[cpucfg-lspw]]LSPW
 |`1` indicates support for the software page table walking instruction
 
 ^m|22
-^m|LAM
+^m|[[cpucfg-lam]]LAM
 |`1` indicates support `AM*` atomic memory access instruction
 
 ^m|24
-^m|HPTW
+^m|[[cpucfg-hptw]]HPTW
 |`1` indicates support Page Table Walker
 
 ^m|25
-^m|FRECIPE
+^m|[[cpucfg-frecipe]]FRECIPE
 |`1` indicates support  FRECIPE.{S/D}、FRSQRTE.{S/D}.
 If 128-bit vector extension is also supported, VFRECIPE.{S/D}、VFRSQRTE.{S/D} is supported.
 If 256-bit vector extension is also supported, XVFRECIPE.{S/D}、XVFRSQRTE.{S/D} is supported.
 
 ^m|26
-^m|DIV32
+^m|[[cpucfg-div32]]DIV32
 |`1` indicates that  DIV.W[U] and MOD.W[U] instructions on 64-bit machines compute only the low 32-bit data of the input register
 
 ^m|27
-^m|LAM_BH
+^m|[[cpucfg-lam_bh]]LAM_BH
 |`1` indicates support AM{SWAP/ADD}[_DB].{B/H}.
 
 ^m|28
-^m|LAMCAS
+^m|[[cpucfg-lamcas]]LAMCAS
 |`1` indicates support AMCAS[_DB].{B/H/W/D}.
 
 ^m|29
-^m|LLACQ_SCREL
+^m|[[cpucfg-llacq_screl]]LLACQ_SCREL
 |`1` indicates support LLACQ.{W/D}、SCREL.{W/D}.
 
 ^m|30
-^m|SCQ
+^m|[[cpucfg-scq]]SCQ
 |`1` indicates support SC.Q.
 
 .14+^m|3
 ^m|0
-^m|CCDMA
+^m|[[cpucfg-ccdma]]CCDMA
 |`1` indicates support for hardware Cache coherent DMA
 
 ^m|1
-^m|SFB
+^m|[[cpucfg-sfb]]SFB
 |`1` indicates support for Store Fill Buffer (SFB)
 
 ^m|2
-^m|UCACC
+^m|[[cpucfg-ucacc]]UCACC
 |`1` indicates support for ucacc win
 
 ^m|3
-^m|LLEXC
+^m|[[cpucfg-llexc]]LLEXC
 |`1` indicates support for LL instruction to fetch exclusive block function_
 
 ^m|4
-^m|SCDLY
+^m|[[cpucfg-scdly]]SCDLY
 |`1` indicates support random delay function after SC
 
 ^m|5
-^m|LLDBAR
+^m|[[cpucfg-lldbar]]LLDBAR
 |`1` indicates support LL automatic with dbar function
 
 ^m|6
-^m|ITLBTHMC
+^m|[[cpucfg-itlbthmc]]ITLBTHMC
 |`1` indicates that the hardware maintains the consistency between ITLB and TLB
 
 ^m|7
-^m|ICHMC
+^m|[[cpucfg-ichmc]]ICHMC
 |`1` indicates that the hardware maintains the data consistency between ICache and DCache in one processor core
 
 ^m|10:8
-^m|SPW_LVL
+^m|[[cpucfg-spw_lvl]]SPW_LVL
 |The maximum number of directory levels supported by the page walk instruction
 
 ^m|11
-^m|SPW_HP_HF
+^m|[[cpucfg-spw_hp_hf]]SPW_HP_HF
 |`1` indicates that the page walk instruction fills the TLB in half when it encounters a large page
 
 ^m|12
-^m|RVA
+^m|[[cpucfg-rva]]RVA
 |`1` indicates that the software configuration can be used to shorten the virtual address range
 
 ^m|16:13
-^m|RVAMAX-1
+^m|[[cpucfg-rvamax-1]]RVAMAX-1
 |The maximum configurable virtual address is shortened by `-1`
 
 ^m|17
-^m|DBAR_hints
+^m|[[cpucfg-dbar_hints]]DBAR_hints
 |1 indicates that the non-0 value of the DBAR is implemented according to the recommended meaning of the manual.
 
 ^m|23
-^m|LD_SEQ_SA
+^m|[[cpucfg-ld_seq_sa]]LD_SEQ_SA
 |1 indicates that the hardware is enabled to guarantee sequential execution of load operations at the same address.
 
 ^m|0x4
 ^m|31:0
-^m|CC_FREQ
+^m|[[cpucfg-cc_freq]]CC_FREQ
 |Constant frequency timer and the crystal frequency corresponding to the clock used by the timer
 
 .2+^m|0x5
 ^m|15:0
-^m|CC_MUL
+^m|[[cpucfg-cc_mul]]CC_MUL
 |Constant frequency timer and the corresponding multiplication factor of the clock used by the timer
 
 ^m|31:16
-^m|CC_DIV
+^m|[[cpucfg-cc_div]]CC_DIV
 |Constant frequency timer and the division coefficient corresponding to the clock used by the timer
 
 .5+^m|0x6
 ^m|0
-^m|PMP
+^m|[[cpucfg-pmp]]PMP
 |`1` indicates support for the performance counter
 
 ^m|3:1
-^m|PMVER
+^m|[[cpucfg-pmver]]PMVER
 |In the performance monitor, the architecture defines the version number of the event, and `1` is the initial version
 
 ^m|7:4
-^m|PMNUM
+^m|[[cpucfg-pmnum]]PMNUM
 |Number of performance monitors minus `1`
 
 ^m|13:8
-^m|PMBITS
+^m|[[cpucfg-pmbits]]PMBITS
 |Number of bits of a performance monitor minus `1`
 
 ^m|14
-^m|UPM
+^m|[[cpucfg-upm]]UPM
 |`1` indicates support for reading performance counter in user mode
 
 .17+^m|0x10
 ^m|0
-^m|L1 IU_Present
+^m|[[cpucfg-l1-iu-present]]L1 IU_Present
 |`1` indicates that there is a first-level instruction Cache or a first-level unified Cache
 
 ^m|1
-^m|L1 IU Unify
+^m|[[cpucfg-l1-iu-unify]]L1 IU Unify
 |`1` indicates that the Cache shown by `L1 IU_Present` is the unified Cache
 
 ^m|2
-^m|L1 D Present
+^m|[[cpucfg-l1-d-present]]L1 D Present
 |`1` indicates there is a first-level data Cache
 
 ^m|3
-^m|L2 IU Present
+^m|[[cpucfg-l2-iu-present]]L2 IU Present
 |`1` indicates there is a second-level instruction Cache or a second-level unified Cache
 
 ^m|4
-^m|L2 IU Unitfy
+^m|[[cpucfg-l2-iu-unify]]L2 IU Unify
 |`1` indicates that the Cache shown by `L2 IU_Present` is the unified Cache
 
 ^m|5
-^m|L2 IU Private
+^m|[[cpucfg-l2-iu-private]]L2 IU Private
 |`1` indicates that the Cache shown by `L2 IU_Present` is private to each core
 
 ^m|6
-^m|L2 IU Inclusive
+^m|[[cpucfg-l2-iu-inclusive]]L2 IU Inclusive
 |`1` indicates that the Cache shown by `L2 IU_Present` has an inclusive relationship to the lower levels (L1)
 
 ^m|7
-^m|L2 D Present
+^m|[[cpucfg-l2-d-present]]L2 D Present
 |`1` indicates there is a secondary data Cache
 
 ^m|8
-^m|L2 D Private
+^m|[[cpucfg-l2-d-private]]L2 D Private
 |`1` indicates that the secondary data Cache is private to each core
 
 ^m|9
-^m|L2 D Inclusive
+^m|[[cpucfg-l2-d-inclusive]]L2 D Inclusive
 |`1` indicates that the secondary data Cache has a containment relationship to the lower level (L1)
 
 ^m|10
-^m|L3 IU Present
+^m|[[cpucfg-l3-iu-present]]L3 IU Present
 |`1` indicates there is a three-level instruction Cache or a three-level system Cache
 
 ^m|11
-^m|L3 IU Unify
+^m|[[cpucfg-l3-iu-unify]]L3 IU Unify
 |`1` indicates that the Cache shown by `L3 IU_Present` is unified Cache
 
 ^m|12
-^m|L3 IU Private
+^m|[[cpucfg-l3-iu-private]]L3 IU Private
 |`1` indicates that the Cache shown by `L3 IU_Present` is private to each core
 
 ^m|13
-^m|L3 IU Inclusive
+^m|[[cpucfg-l3-iu-inclusive]]L3 IU Inclusive
 |`1` indicates that the Cache shown by `L3 IU_Present` has an inclusive relationship to the lower levels (L1 and L2)
 
 ^m|14
-^m|L3 D Present
+^m|[[cpucfg-l3-d-present]]L3 D Present
 |`1` indicates there is a three-level data Cache
 
 ^m|15
-^m|L3 D Private
+^m|[[cpucfg-l3-d-private]]L3 D Private
 |`1` indicates that the three-level data Cache is private to each core
 
 ^m|16
-^m|L3 D Inclusive
+^m|[[cpucfg-l3-d-inclusive]]L3 D Inclusive
 |`1` indicates that the three-level data Cache has an inclusive relationship to the lower levels (L1 and 12)
 
 .3+^m|0x11
 ^m|15:0
-^m|Way-1
+^m|[[cpucfg-l1-iu-way-1]]Way-1
 |Number of channels minus `1` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
 
 ^m|23:16
-^m|Index-log2
+^m|[[cpucfg-l1-iu-index-log2]]Index-log2
 |`log2(number of Cache rows per channel)` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
 
 ^m|30:24
-^m|Linesize-log2
+^m|[[cpucfg-l1-iu-linesize-log2]]Linesize-log2
 |`log2(Cache line bytes)` (Cache corresponding to `L1 IU_Present` in configuration word `10`)
 
 .3+^m|0x12
 ^m|15:0
-^m|Way-1
+^m|[[cpucfg-l1-d-way-1]]Way-1
 |Number of channels minus `1` (Cache corresponding to `L1 D Present` in configuration word `10`)
 
 ^m|23:16
-^m|Index-log2
+^m|[[cpucfg-l1-d-index-log2]]Index-log2
 |`log2(number of Cache rows per channel)` (Cache corresponding to `L1 D Present` in configuration word `10`)
 
 ^m|30:24
-^m|Linesize-log2
+^m|[[cpucfg-l1-d-linesize-log2]]Linesize-log2
 |`log2(Cache row bytes)` (Cache corresponding to `L1 D Present` in configuration word `10`)
 
 .3+^m|0x13
 ^m|15:0
-^m|Way-1
+^m|[[cpucfg-l2-iu-way-1]]Way-1
 |Number of channels minus `1` (Cache corresponding to `L2 IU Present` in configuration word `10`)
 
 ^m|23:16
-^m|Index-log2
+^m|[[cpucfg-l2-iu-index-log2]]Index-log2
 |`log2(number of Cache rows per channel)` (Cache corresponding to `L2 IU Present` in configuration word `10`)
 
 ^m|30:24
-^m|Linesize-log2
+^m|[[cpucfg-l2-iu-linesize-log2]]Linesize-log2
 |`log2(Cache row bytes)` (Cache corresponding to `L2 IU Present` in configuration word `10`)
 
 .3+^m|0x14
 ^m|15:0
-^m|Way-1
+^m|[[cpucfg-l3-iu-way-1]]Way-1
 |Number of channels minus `1` (Cache corresponding to `L3 IU Present` in configuration word `10`)
 
 ^m|23:16
-^m|Index-log2
+^m|[[cpucfg-l3-iu-index-log2]]Index-log2
 |`log2(number of Cache rows per channel)` (Cache corresponding to `L3 IU Present` in configuration word `10`)
 
 ^m|30:24
-^m|Linesize-log2
+^m|[[cpucfg-l3-iu-linesize-log2]]Linesize-log2
 |`log2(Cache row bytes)` (Cache corresponding to `L3 IU Present` in configuration word `10`)
 |===
