@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="author" content="Loongson Technology Corporation Limited">
+<title>LoongArch ELF ABI specification</title>
+<style>
+/**
+ * This is an empty stylesheet.
+ * We use a JS switcher to rendere the contents with any of the available asciidoctor skins.
+ * The JS switcher comes from https://github.com/darshandsoni/asciidoctor-skins.
+ * This file is necessary, otherwise Asciidoctor will use the default theme.
+ * We just leave this CSS file empty to avoid redundant rendering.
+ */
+
+</style>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>LoongArch ELF ABI specification</h1>
+<div class="details">
+<span id="author" class="author">Loongson Technology Corporation Limited</span><br>
+<span id="revnumber">version 2.01</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_register_convention">Register Convention</a>
+<ul class="sectlevel2">
+<li><a href="#_aliases_for_return_value_registers">Aliases for return value registers</a></li>
+</ul>
+</li>
+<li><a href="#c-lang-data-model">Type Size and Alignment</a></li>
+<li><a href="#_elf_object_files">ELF Object Files</a>
+<ul class="sectlevel2">
+<li><a href="#_ei_class_file_class">EI_CLASS: File class</a></li>
+<li><a href="#_e_machine_identifies_the_machine">e_machine: Identifies the machine</a></li>
+<li><a href="#_e_flags_identifies_abi_type_and_version">e_flags: Identifies ABI type and version</a></li>
+</ul>
+</li>
+<li><a href="#_relocations">Relocations</a></li>
+<li><a href="#_program_interpreter_path">Program Interpreter Path</a></li>
+<li><a href="#_procedure_calling_convention">Procedure Calling Convention</a>
+<ul class="sectlevel2">
+<li><a href="#_abbreviations">Abbreviations</a></li>
+<li><a href="#_argument_registers">Argument Registers</a></li>
+<li><a href="#_abi_lp64d">ABI LP64D</a></li>
+<li><a href="#_c_data_types_and_alignment">C Data Types and Alignment</a></li>
+<li><a href="#_argument_passing">Argument passing</a></li>
+<li><a href="#_return_values">Return values</a></li>
+<li><a href="#_stack">Stack</a></li>
+</ul>
+</li>
+<li><a href="#_appendix_revision_history">Appendix: Revision History</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_register_convention">Register Convention</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. General-purpose Register Convention</caption>
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 41.6666%;">
+<col style="width: 25.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Alias</th>
+<th class="tableblock halign-center valign-top">Meaning</th>
+<th class="tableblock halign-center valign-top">Preserved across calls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$zero</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Constant zero</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">(Constant)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$ra</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Return address</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$tp</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Thread pointer</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">(Non-allocatable)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$sp</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack pointer</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r4</code> - <code>$r5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$a0</code> - <code>$a1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Argument registers / return value registers</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r6</code> - <code>$r11</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$a2</code> - <code>$a7</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Argument registers</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r12</code> - <code>$r20</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$t0</code> - <code>$t8</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Temporary registers</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r21</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Reserved</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">(Non-allocatable)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r22</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$fp</code> / <code>$s9</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Frame pointer / Static register</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r23</code> - <code>$r31</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$s0</code> - <code>$s8</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Static registers</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Yes</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Floating-point Register Convention</caption>
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 41.6666%;">
+<col style="width: 25.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Alias</th>
+<th class="tableblock halign-center valign-top">Meaning</th>
+<th class="tableblock halign-center valign-top">Preserved across calls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$f0</code> - <code>$f1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$fa0</code> - <code>$fa1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Argument registers / return value registers</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$f2</code> - <code>$f7</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$fa2</code> - <code>$fa7</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Argument registers</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$f8</code> - <code>$f23</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$ft0</code> - <code>$ft15</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Temporary registers</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$f24</code> - <code>$f31</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$fs0</code> - <code>$fs7</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Static registers</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Yes</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Temporary registers are also known as caller-saved registers.
+Static registers are also known as callee-saved registers.</p>
+</div>
+<div class="sect2">
+<h3 id="_aliases_for_return_value_registers">Aliases for return value registers</h3>
+<div class="paragraph">
+<p>You may see the names <code>$v0</code> <code>$v1</code> <code>$fv0</code> <code>$fv1</code> in some very early LoongArch
+assembly code; they simply alias to <code>$a0</code> <code>$a1</code> <code>$fa0</code> <code>$fa1</code> respectively.
+The aliases are initially meant to match MIPS convention with separate
+argument / return value registers. However, because LoongArch actually has no
+dedicated return value registers, such usage may lead to confusion.
+Hence, it is not recommended to use these aliases.</p>
+</div>
+<div class="paragraph">
+<p>Due to implementation details, it may not be easy to give a register multiple
+ABI names for a given downstream project.
+New programs processing LoongArch assembly should not support these aliases.
+Portable LoongArch assembly should avoid these aliases.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For toolchain components provided by the Loongson Corporation, the migration procedure is:</p>
+</div>
+<div class="paragraph">
+<p>Let the version of the component at this spec&#8217;s effect date be N,</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>keep support in the version N and its stable branch,</p>
+</li>
+<li>
+<p>warn on such usage in the version N+1,</p>
+</li>
+<li>
+<p>remove support in the version N+2.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For the respective upstream projects of the components, the procedure above shall be followed if support for such usage is already upstream;
+"version N" shall be interpreted as the first release version containing LoongArch support in that case.
+For the components not yet upstream, and not interacting with other components that may expect such usage, support for such usage will never be implemented.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="c-lang-data-model">Type Size and Alignment</h2>
+<div class="sectionbody">
+<table id="dm-lp64" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. LP64 Data Model (base ABI types: <code>lp64d</code> <code>lp64f</code> <code>lp64s</code>)</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Scalar type</th>
+<th class="tableblock halign-center valign-top">Size (Bytes)</th>
+<th class="tableblock halign-center valign-top">Alignment (Bytes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code> / <code>_Bool</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned char</code> / <code>char</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned short</code> / <code>short</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned int</code> / <code>int</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned long</code> / <code>long</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned long long</code> / <code>long long</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pointer types</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>double</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>long double</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16</p></td>
+</tr>
+</tbody>
+</table>
+<table id="dm-ilp32" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. ILP32 Data Model (base ABI types: <code>ilp32d</code> <code>ilp32f</code> <code>ilp32s</code>)</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Scalar type</th>
+<th class="tableblock halign-center valign-top">Size (Bytes)</th>
+<th class="tableblock halign-center valign-top">Alignment (Bytes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code> / <code>_Bool</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned char</code> / <code>char</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned short</code> / <code>short</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned int</code> / <code>int</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned long</code> / <code>long</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned long long</code> / <code>long long</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pointer types</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>double</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>long double</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For all <a href="#base-abi-type-marks">base ABI types</a> of LoongArch,
+the <code>char</code> datatype is signed by default.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_elf_object_files">ELF Object Files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All common ELF definitions referenced in this section
+can be found in <a href="http://sco.com/developers/gabi/latest/contents.html">the latest SysV gABI specification</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_ei_class_file_class">EI_CLASS: File class</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. ELF file classes</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">EI_CLASS</th>
+<th class="tableblock halign-center valign-top">Value</th>
+<th class="tableblock halign-center valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ELFCLASS32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">ELF32 object file</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ELFCLASS64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">ELF64 object file</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_e_machine_identifies_the_machine">e_machine: Identifies the machine</h3>
+<div class="paragraph">
+<p><code>LoongArch (258)</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_e_flags_identifies_abi_type_and_version">e_flags: Identifies ABI type and version</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 6. ABI-related bits in <code>e_flags</code></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Bit 31 - 8</th>
+<th class="tableblock halign-left valign-top">Bit 7 - 6</th>
+<th class="tableblock halign-left valign-top">Bit 5 - 3</th>
+<th class="tableblock halign-left valign-top">Bit 2 - 0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(reserved)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ABI version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ABI extension</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base ABI Modifier</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The ABI type of an ELF object is uniquely identified by <code>EI_CLASS</code> and <code>e_flags[7:0]</code> in its header.</p>
+</div>
+<div class="paragraph">
+<p>Within this combination, <code>EI_CLASS</code> and <code>e_flags[2:0]</code> correspond to the <strong>base ABI</strong> type,
+where the expression of C integral and pointer types (<a href="#c-lang-data-model">data model</a>)
+is uniquely determined by <code>EI_CLASS</code> value, and <code>e_flags[2:0]</code> represents additional properties
+of the base ABI type, including the FP calling convention.  We refer to <code>e_flags[2:0]</code> as
+the <strong>base ABI modifier</strong>.</p>
+</div>
+<div class="paragraph">
+<p>As a result, programs in <code>lp64*</code> / <code>ilp32*</code> ABI should only be encoded with ELF64 / ELF32
+object files, respectively.</p>
+</div>
+<div class="paragraph">
+<p><code>0x0</code> <code>0x4</code> <code>0x5</code> <code>0x6</code> <code>0x7</code> are reserved values for <code>e_flags[2:0]</code>.</p>
+</div>
+<table id="base-abi-type-marks" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 7. Base ABI Types</caption>
+<colgroup>
+<col style="width: 28.5714%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-center valign-top">EI_CLASS</th>
+<th class="tableblock halign-center valign-top">Base ABI Modifier (<code>e_flags[2:0]</code>)</th>
+<th class="tableblock halign-center valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lp64s</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Uses 64-bit GPRs and the stack for parameter passing.
+Data model is <a href="#dm-lp64">LP64</a>, where <code>long</code> and pointers are 64-bit while <code>int</code> is 32-bit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lp64f</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Uses 64-bit GPRs, 32-bit FPRs and the stack for parameter passing.
+Data model is <a href="#dm-lp64">LP64</a>, where <code>long</code> and pointers are 64-bit while <code>int</code> is 32-bit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lp64d</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x3</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Uses 64-bit GPRs, 64-bit FPRs and the stack for parameter passing.
+Data model is <a href="#dm-lp64">LP64</a>, where <code>long</code> and pointers are 64-bit while <code>int</code> is 32-bit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ilp32s</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Uses 32-bit GPRs and the stack for parameter passing.
+Data model is <a href="#dm-ilp32">ILP32</a>, where <code>int</code>, <code>long</code> and pointers are 32-bit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ilp32f</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Uses 32-bit GPRs, 32-bit FPRs and the stack for parameter passing.
+Data model is <a href="#dm-ilp32">ILP32</a>, where <code>int</code>, <code>long</code> and pointers are 32-bit.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ilp32d</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x3</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Uses 32-bit GPRs, 64-bit FPRs and the stack for parameter passing.
+Data model is <a href="#dm-ilp32">ILP32</a>, where <code>int</code>, <code>long</code> and pointers are 32-bit.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><code>e_flags[5:3]</code> correspond to the ABI extension type.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 8. ABI Extension types</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-center valign-top">e_flags[5:3]</th>
+<th class="tableblock halign-center valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x0</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">No extra ABI features.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x1</code> - <code>0x7</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">(reserved)</p></td>
+</tr>
+</tbody>
+</table>
+<div id="abi-versioning" class="paragraph">
+<p><code>e_flags[7:6]</code> marks the ABI version of an ELF object.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 9. ABI Version</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 62.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">ABI version</th>
+<th class="tableblock halign-center valign-top">Value</th>
+<th class="tableblock halign-center valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>v0</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x0</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack operands base relocation type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>v1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Supporting relocation types directly writing to immediate slots. Can be implemented separately without compatibility with v0.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x2</code> <code>0x3</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Reserved.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_relocations">Relocations</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 10. ELF Relocation types</caption>
+<colgroup>
+<col style="width: 7.6923%;">
+<col style="width: 15.3846%;">
+<col style="width: 38.4615%;">
+<col style="width: 38.4616%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">Enum</th>
+<th class="tableblock halign-center valign-top">ELF reloc type</th>
+<th class="tableblock halign-center valign-top">Usage</th>
+<th class="tableblock halign-left valign-top">Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_NONE</code></p></td>
+<td class="tableblock halign-center valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime address resolving</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC = RtAddr + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime address resolving</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC = RtAddr + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_RELATIVE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime fixup for load-address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(void **) PC = B + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_COPY</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime memory copy in executable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memcpy (PC, RtAddr, sizeof (sym))</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_JUMP_SLOT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime PLT supporting</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>implementation-defined</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_DTPMOD32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime relocation for TLS-GD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC = ID of module defining sym</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_DTPMOD64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime relocation for TLS-GD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC = ID of module defining sym</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_DTPREL32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime relocation for TLS-GD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC = DTV-relative offset for sym</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_DTPREL64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime relocation for TLS-GD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC = DTV-relative offset for sym</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_TPREL32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime relocation for TLE-IE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC = T</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_TPREL64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime relocation for TLE-IE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC = T</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_IRELATIVE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Runtime local indirect function resolving</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(void **) PC = (((void *)(*)()) (B + A)) ()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock">&#8230;&#8203; Reserved for dynamic linker.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_MARK_LA</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Mark la.abs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Load absolute address for static link.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_MARK_PCREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Mark external label branch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access PC relative address for static link.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_PCREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Push PC-relative offset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (S - PC + A)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_ABSOLUTE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Push constant or absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (S + A)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_DUP</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Duplicate stack top</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), push (opr1), push (opr1)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_GPREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Push for access GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (G)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_TLS_TPREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Push for TLS-LE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (T)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_TLS_GOT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Push for TLS-IE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (IE)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">28</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_TLS_GD</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Push for TLS-GD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (GD)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">29</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_PLT_PCREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Push for external function calling</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (PLT - PC)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_ASSERT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Assert stack top</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>assert (pop ())</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">31</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_NOT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack top operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (!pop ())</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_SUB</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack top operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 - opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">33</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_SL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack top operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 &lt;&lt; opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">34</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_SR</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack top operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 &gt;&gt; opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">35</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_ADD</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack top operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 + opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">36</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_AND</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack top operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 &amp; opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">37</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_IF_ELSE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Stack top operation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr3 = pop (), opr2 = pop (), opr1 = pop (), push (opr1 ? opr2 : opr3)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">38</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_10_5</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction imm-field relocation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [14 ... 10] = opr1 [4 ... 0]</code></p>
+<p class="tableblock">with check 5-bit signed overflow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">39</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_U_10_12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction imm-field relocation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [21 ... 10] = opr1 [11 ... 0]</code></p>
+<p class="tableblock">with check 12-bit unsigned overflow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">40</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_10_12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction imm-field relocation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [21 ... 10] = opr1 [11 ... 0]</code></p>
+<p class="tableblock">with check 12-bit signed overflow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">41</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_10_16</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction imm-field relocation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [25 ... 10] = opr1 [15 ... 0]</code></p>
+<p class="tableblock">with check 16-bit signed overflow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">42</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_10_16_S2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction imm-field relocation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]</code></p>
+<p class="tableblock">with check 18-bit signed overflow and 4-bit aligned</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">43</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_5_20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction imm-field relocation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [24 ... 5] = opr1 [19 ... 0]</code></p>
+<p class="tableblock">with check 20-bit signed overflow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">44</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_0_5_10_16_S2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction imm-field relocation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [4 ... 0] = opr1 [22 ... 18],</code></p>
+<p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]</code></p>
+<p class="tableblock">with check 23-bit signed overflow and 4-bit aligned</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">45</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_0_10_10_16_S2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction imm-field relocation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [9 ... 0] = opr1 [27 ... 18],</code></p>
+<p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]</code></p>
+<p class="tableblock">with check 28-bit signed overflow and 4-bit aligned</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">46</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_U</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction fixup</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) = pop ()</code></p>
+<p class="tableblock">with check 32-bit unsigned overflow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">47</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD8</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8-bit in-place addition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int8_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">48</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD16</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16-bit in-place addition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int16_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">49</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD24</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">24-bit in-place addition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int24_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">50</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32-bit in-place addition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">51</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64-bit in-place addition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">52</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB8</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8-bit in-place subtraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int8_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">53</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB16</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16-bit in-place subtraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int16_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">54</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB24</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">24-bit in-place subtraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int24_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">55</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32-bit in-place subtraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">56</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64-bit in-place subtraction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">57</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GNU_VTINHERIT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GNU C++ vtable hierarchy</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">58</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GNU_VTENTRY</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GNU C++ vtable member usage</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock">&#8230;&#8203; Reserved</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_B16</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">18-bit PC-relative jump</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]</code></p>
+<p class="tableblock">with check 18-bit signed overflow and 4-bit aligned</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_B21</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">23-bit PC-relative jump</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [4 ... 0] = (S+A-PC) [22 ... 18],</code></p>
+<p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]</code></p>
+<p class="tableblock">with check 23-bit signed overflow and 4-bit aligned</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">66</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_B26</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">28-bit PC-relative jump</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [9 ... 0] = (S+A-PC) [27 ... 18],</code></p>
+<p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]</code></p>
+<p class="tableblock">with check 28-bit signed overflow and 4-bit aligned</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">67</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ABS_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (S+A) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">68</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ABS_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[11 &#8230;&#8203; 0] bits of 32/64-bit absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (S+A) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">69</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ABS64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[51 &#8230;&#8203; 32] bits of 64-bit absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (S+A) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">70</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ABS64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[63 &#8230;&#8203; 52] bits of 64-bit absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (S+A) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">71</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_PCALA_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit PC-relative offset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((S+A) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p>
+<p class="tableblock"><code>Note: The lower 12 bits are not included when calculating the PC-relative offset.</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">72</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_PCALA_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[11 &#8230;&#8203; 0] bits of 32/64-bit address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (S+A) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">73</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_PCALA64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[51 &#8230;&#8203; 32] bits of 64-bit PC-relative offset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (S+A - (PC &amp; ~0xffffffff)) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">74</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_PCALA64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[63 &#8230;&#8203; 52] bits of 64-bit PC-relative offset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (S+A - (PC &amp; ~0xffffffff)) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">75</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT_PC_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit PC-relative offset to GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((GP+G) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">76</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT_PC_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[11 &#8230;&#8203; 0] bits of 32/64-bit GOT entry address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+G) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">77</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT64_PC_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[51 &#8230;&#8203; 32] bits of 64-bit PC-relative offset to GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+G - (PC &amp; ~0xffffffff)) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">78</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT64_PC_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[63 &#8230;&#8203; 52] bits of 64-bit PC-relative offset to GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+G - (PC &amp; ~0xffffffff)) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">79</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+G) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[11 &#8230;&#8203; 0] bits of 32/64-bit GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+G) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">81</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[51 &#8230;&#8203; 32] bits of 64-bit GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+G) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">82</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[63 &#8230;&#8203; 52] bits of 64-bit GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+G) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">83</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LE_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of TLS LE 32/64-bit offset from TP register</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = T [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">84</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LE_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[11 &#8230;&#8203; 0] bits of TLS LE 32/64-bit offset from TP register</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = T [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">85</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LE64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[51 &#8230;&#8203; 32] bits of TLS LE 64-bit offset from TP register</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = T [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">86</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LE64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[63 &#8230;&#8203; 52] bits of TLS LE 64-bit offset from TP register</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = T [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">87</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE_PC_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit PC-relative offset to TLS IE GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((GP+IE) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">88</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE_PC_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[11 &#8230;&#8203; 0] bits of 32/64-bit TLS IE GOT entry address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">89</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE64_PC_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[51 &#8230;&#8203; 32] bits of 64-bit PC-relative offset to TLS IE GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE - (PC &amp; ~0xffffffff)) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">90</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE64_PC_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[63 &#8230;&#8203; 52] bits of 64-bit PC-relative offset to TLS IE GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+IE - (PC &amp; ~0xffffffff)) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">91</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit TLS IE GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">92</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[11 &#8230;&#8203; 0] bits of 32/64-bit TLS IE GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">93</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[51 &#8230;&#8203; 32] bits of 64-bit TLS IE GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">94</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[63 &#8230;&#8203; 52] bits of 64-bit TLS IE GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">95</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LD_PC_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit PC-relative offset to TLS LD GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((GP+GD) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">96</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LD_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit TLS LD GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">97</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_GD_PC_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit PC-relative offset to TLS GD GOT entry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((GP+GD) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">98</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_GD_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">[31 &#8230;&#8203; 12] bits of 32/64-bit TLS GD GOT entry absolute address</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">99</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_32_PCREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32-bit PC relative</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) = (S+A-PC) [31 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_RELAX</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Instruction can be relaxed, paired with a normal relocation at the same address</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_program_interpreter_path">Program Interpreter Path</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 11. Standard Program Interpreter Paths</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">Base ABI type</th>
+<th class="tableblock halign-center valign-top">ABI extension type</th>
+<th class="tableblock halign-center valign-top">Operating system / C library</th>
+<th class="tableblock halign-center valign-top">Program interpreter path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>lp64d</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib64/ld-linux-loongarch-lp64d.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>lp64f</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib64/ld-linux-loongarch-lp64f.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>lp64s</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib64/ld-linux-loongarch-lp64s.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ilp32d</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib32/ld-linux-loongarch-ilp32d.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ilp32f</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib32/ld-linux-loongarch-ilp32f.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ilp32s</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib32/ld-linux-loongarch-ilp32s.so.1</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_procedure_calling_convention">Procedure Calling Convention</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_abbreviations">Abbreviations</h3>
+<div class="paragraph">
+<p>In this document, <strong>GRLEN</strong> is the bit width of general-purpose register, <strong>FRLEN</strong> is the bit width of floating-point register and <strong>WOA</strong> is the bit width of the argument.
+The general-purpose argument register is denoted as <strong>GAR</strong> and the floating-point argument register is denoted as <strong>FAR</strong>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_argument_registers">Argument Registers</h3>
+<div class="paragraph">
+<p>The basic principle of the LoongArch procedure calling convention is to pass arguments in registers as much as possible (i.e. floating-point arguments are passed in floating-point registers and non floating-point arguments are passed in general-purpose registers, as much as possible); arguments are passed on the stack only when no appropriate register is available.</p>
+</div>
+<div class="paragraph">
+<p>The argument registers are:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Eight floating-point registers <code>fa0-fa7</code> used for passing pass floating-point arguments, and <code>fa0-fa1</code> are also used to return values.</p>
+</li>
+<li>
+<p>Eight general-purpose registers <code>a0-a7</code> used for passing pass integer arguments, with <code>a0-a1</code> reused to return values.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Generally, the GARs are used to pass fixed-point arguments, and floating-point arguments when no FAR is available.
+Bit fields are stored in little endian.
+In addition, subroutines should ensure that the values of general-purpose registers <code>s0-s9</code> and floating-point registers <code>fs0-fs7</code> are preserved across procedure calls.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_abi_lp64d">ABI LP64D</h3>
+<div class="paragraph">
+<p>That is, <strong>GRLEN</strong> = 64, <strong>FRLEN</strong> = 64.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_c_data_types_and_alignment">C Data Types and Alignment</h3>
+<div class="paragraph">
+<p>The C data types and alignment in the LP64D ABI are defined in the <a href="#c-lang-data-model">table 3</a>.</p>
+</div>
+<div class="paragraph">
+<p>In most cases, the unsigned integer data types are zero-extended when stored in general-purpose register, and the signed integer data types are sign-extended.
+However, in the <strong>LP64D</strong> ABI, unsigned 32-bit types, such as <code><strong>unsigned int</strong></code>, are stored in general-purpose registers as proper sign extensions of their 32-bit values.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_argument_passing">Argument passing</h3>
+<div class="paragraph">
+<p>Generally speaking, FARs are only used to pass floating-point arguments, GARs are used to pass non floating-point arguments and floating-point arguments when no FAR is available(<code>long double</code> type is also passed in a pair of GARs) and the reference.</p>
+</div>
+<div class="paragraph">
+<p>Arguments passed by reference may be modified by the callee.</p>
+</div>
+<div class="sect3">
+<h4 id="_scalar">Scalar</h4>
+<div class="paragraph">
+<p>There are two cases:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>0 &lt; WOA ≤ GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Argument is passed in a single argument register, or on the stack by value if none is available.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>If the argument is floating-point type, the argument is passed in FAR.
+if no FAR is available, it’s passed in GAR. If no GAR is available, it’s passed on the stack.
+When passed in registers or on the stack, floating-point types narrower than GRLEN bits are widened to GRLEN bits, with the upper bits undefined.</p>
+</li>
+<li>
+<p>If the argument is integer or pointer type, the argument is passed in GAR.
+If no GAR is available, it’s passed on the stack.
+When passed in registers or on the stack, the unsigned integer scalars narrower than GRLEN bits are zero-extended to GRLEN bits, and the signed integer scalars are sign-extended.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>GRLEN &lt; WOA ≤ 2 × GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The argument is passed in a pair of GAR, with the low-order GRLEN bits in the lower-numbered register and the high-order GRLEN bits in the higher-numbered register.
+If exactly one register is available, the low-order GRLEN bits are passed in the register and the high-order GRLEN bits are passed on the stack.
+If no GAR is available, it’s passed on the stack.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_structure">Structure</h4>
+<div class="paragraph">
+<p>Empty structures are ignored by C compilers which support them as a non-standard extension(same as union arguments and return values).
+Bits unused due to padding, and bits past the end of a structure whose size in bits is not divisible by GRLEN, are undefined.
+And the layout of the structure on the stack is consistent with that in memory.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>0 &lt; WOA ≤ GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The structure has only fixed-point members.
+If there is an available GAR, the structure is passed through the GAR by value passing; If no GAR is available, it’s passed on the stack.</p>
+</li>
+<li>
+<p>The structure has only floating-point members:</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>One floating-point member.
+The argument is passed in a FAR; If no FAR is available, the value is passed in a GAR; if no GAR is available, the value is passed on the stack.</p>
+</li>
+<li>
+<p>Two floating-point members.
+The argument is passed in a pair of available FAR, with the low-order <code>float</code> member bits in the lower-numbered FAR and the high-order <code>float</code> member bits in the higher-numbered FAR.
+If the number of available FAR is less than 2, it’s passed in a GAR, and passed on the stack if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>The structure has both fixed-point and floating-point members, i.e. the structure has one <code>float</code> member and&#8230;&#8203;</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Multiple fixed-point members.
+If there are available GAR, the structure is passed in a GAR, and passed on the stack if no GAR is available.</p>
+</li>
+<li>
+<p>Only one fixed-point member.
+If one FAR and one GAR are available, the floating-point member of the structure is passed in the FAR, and the integer member of the structure is passed in the GAR; If no floating-point register but one GAR is available, it’s passed in GAR; If no GAR is available, it’s passed on the stack.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>GRLEN &lt; WOA ≤ 2 × GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Only fixed-point members.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
+If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Only floating-point members.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>The structure has one <code>long double</code> member or one <code>double</code> member and two adjacent <code>float</code> members or 3-4 <code>float</code> members.
+The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
+If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.</p>
+</li>
+<li>
+<p>The structure with two <code>double</code> members is passed in a pair of available FARs. If no a pair of available FARs, it&#8217;s passed in GARs. A structure with one <code>double</code> member and one <code>float</code> member is same.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Both fixed-point and floating-point members.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>The structure has one <code>double</code> member and only one fixed-point member.</p>
+<div class="olist upperalpha">
+<ol class="upperalpha" type="A">
+<li>
+<p>If one FAR and one GAR are available, the floating-point member of the structure is passed in the FAR, and the integer member of the structure is passed in the GAR; If no floating-point registers but two GARs are available, it’s passed in the two GARs; If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack; And it’s passed on the stack if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Others</p>
+<div class="olist upperalpha">
+<ol class="upperalpha" type="A">
+<li>
+<p>The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
+If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>WOA &gt; 2 × GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>It’s passed by reference and are replaced in the argument list with the address.
+If there is an available GAR, the reference is passed in the GAR, and passed on the stack if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Structure and scalars passed on the stack are aligned to the greater of the type alignment and GRLEN bits, but never more than the stack alignment.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_union">Union</h4>
+<div class="paragraph">
+<p>Union is passed in GAR or stack.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>0 &lt; WOA ≤ GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The argument is passed in a GAR, or on the stack by value if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>GRLEN &lt; WOA ≤ 2 × GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The argument is passed in a pair of available GAR, with the low-order bits in the lower-numbered GAR and the high-order bits in the higher-numbered GAR.
+If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack.
+The arguments are passed on the stack when no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>WOA &gt; 2 × GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>It’s passed by reference and are replaced in the argument list with the address.
+If there is an available GAR, the reference is passed in the GAR, and passed on the stack if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_complex">Complex</h4>
+<div class="paragraph">
+<p>A complex floating-point number, or a structure containing just one complex floating-point number, is passed as though it were a structure containing two floating-point reals.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_variadic_arguments">Variadic arguments</h4>
+<div class="paragraph">
+<p>Variadic arguments are passed in GARs in the same manner as named arguments. And after a variadic argument has been passed on the stack, all future arguments will also be passed on the stack, i.e., the last argument register may be left unused due to the aligned register pair rule.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>0 &lt; WOA ≤ GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The variadic arguments are passed in a GAR, or on the stack by value if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>GRLEN &lt; WOA ≤ 2 × GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The variadic arguments are passed in a pair of GARs. If only one GAR is available, the low-order bits are in the GAR and the high-order bits are on the stack, and passed on the stack if no GAR is available. or on the stack by value if none is available. It should be noted that <code>long double</code> data tpye is passed in an aligned GAR pair(the first register in the pair is even-numbered).</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>WOA &gt; 2 × GRLEN</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>It’s passed by reference and are replaced in the argument list with the address.
+If there is an available GAR, the reference is passed in the GAR, and passed on the stack if no GAR is available.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_return_values">Return values</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Generally speaking, <code>a0</code> and <code>a1</code> are used to return non floating-point values, and <code>fa0</code> and <code>fa1</code> are used to return floating-point values.</p>
+</li>
+<li>
+<p>Values are returned in the same manner as a first named argument of the same type would be passed.
+If such an argument would have been passed by reference, the caller allocates memory for the return value, and passes the address as an implicit first argument.</p>
+</li>
+<li>
+<p>The reference of the return value is returned that is stored in GAR <code>a0</code> if the size of the return value is larger than 2×GRLEN bits.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_stack">Stack</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In general, the stack frame for a subroutine may contain space to contain the following:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Space to store arguments passed to subroutines that this subroutine calls.</p>
+</li>
+<li>
+<p>A place to store the subroutine’s return address.</p>
+</li>
+<li>
+<p>A place to store the values of saved registers.</p>
+</li>
+<li>
+<p>A place for local data storage.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>The stack grows downwards (towards lower addresses) and the stack pointer shall be aligned to a 128-bit boundary upon procedure entry.
+The first argument passed on the stack is located at offset zero of the stack pointer on function entry; following arguments are stored at correspondingly higher addresses.</p>
+</li>
+<li>
+<p>Procedures must not rely upon the persistence of stack-allocated data whose addresses lies below the stack pointer.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_revision_history">Appendix: Revision History</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>v1.00</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add register usage convention, data type conventions and the list of  ELF relocation types.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>v2.00</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add description of ILP32 data model.</p>
+</li>
+<li>
+<p>Add description of return value register aliases.</p>
+</li>
+<li>
+<p>Add relocation types with direct immediate-filling semantics.</p>
+</li>
+<li>
+<p>Add ABI version porting guidelines for toolchain implementations.</p>
+</li>
+<li>
+<p>Add link to SysV gABI documentation.</p>
+</li>
+<li>
+<p>Adjust asciidoc code style.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>v2.01</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Adjust description of ABI type encoding scheme.</p>
+</li>
+<li>
+<p>Add header for all tables.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 2.01<br>
+Last updated 2025-03-27 09:34:57 UTC
+</div>
+</div>
+<!-- License -->
+<div style="text-align: center;">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" />
+    </a>
+    <br />
+    This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+</div>
+
+<!-- Subtitle -->
+<script>
+    var header = document.getElementById("header");
+    var h1 = header.getElementsByTagName("h1")[0];
+    if (h1.innerHTML.includes("-")) {
+        var titles = h1.innerHTML.split("-");
+        var h2 = document.createElement("h2");
+        header.insertBefore(h2, h1.nextSibling);
+        h1.innerHTML = titles[0].trim();
+        h2.innerHTML = titles[1].trim();
+    }
+</script>
+
+<!-- JS switcher -->
+<script src="https://darshandsoni.com/asciidoctor-skins/switcher.js" type="text/javascript"></script>
+<script>
+    var res = document.getElementById("switcher")
+    res.innerHTML = '<!-- The JS switcher is under the MIT License, see https://github.com/darshandsoni/asciidoctor-skins. -->\n' +
+                    '<table style="width: 100%;">\n' +
+                        '<tr>\n' +
+                            '<td style="width: 20%;">Theme:</td>\n' +
+                            '<td style="width: 80%;">' + res.innerHTML + '</td>' +
+                        '</tr>\n' +
+                    '</table>'
+</script>
+</body>
+</html>

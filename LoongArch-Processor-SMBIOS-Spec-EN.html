@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="author" content="Loongson Technology Corporation Limited">
+<title>LoongArch Processor SMBIOS Spec</title>
+<style>
+/**
+ * This is an empty stylesheet.
+ * We use a JS switcher to rendere the contents with any of the available asciidoctor skins.
+ * The JS switcher comes from https://github.com/darshandsoni/asciidoctor-skins.
+ * This file is necessary, otherwise Asciidoctor will use the default theme.
+ * We just leave this CSS file empty to avoid redundant rendering.
+ */
+
+</style>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>LoongArch Processor SMBIOS Spec</h1>
+<div class="details">
+<span id="author" class="author">Loongson Technology Corporation Limited</span><br>
+<span id="revnumber">version 1.00</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_1_symbols">1. Symbols</a></li>
+<li><a href="#_2_vendor_name_register_and_cpu_name_register">2. Vendor Name register and CPU Name register</a></li>
+<li><a href="#_3_loongarch_type_44_processor_additional_information">3. LoongArch Type 44 Processor Additional Information</a>
+<ul class="sectlevel2">
+<li><a href="#_3_1_standard_processor_additonal_information_type_44_structure">3.1 Standard Processor Additonal Information (Type 44) structure</a></li>
+<li><a href="#_3_2_standard_processor_specific_block">3.2 Standard Processor-specific Block</a></li>
+<li><a href="#_3_3_loongarch_processor_specific_block_structure">3.3 LoongArch Processor-specific Block Structure</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document defines LoongArch processor-specific data block to supplement the upstream definition of SMBIOS structure Type 44 (Processor Additional Information, section 7.45 in SMBIOS specification V3.5.0 or later).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_symbols">1. Symbols</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>DQWORD</strong><br>
+128-bits (In the SMBIOS specification, WORD is 16-bits, DWORD is 32-bits, and QWORD is 64-bits).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_vendor_name_register_and_cpu_name_register">2. Vendor Name register and CPU Name register</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LoongArch CPUs designed by Loongson have two registers representing Machine Vendor Name and CPU Name, both of which are DQWORD-format NUL-terminated ASCII string values, located at offsets 0x10 and 0x20 of the IOCSR space respectively.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_3_loongarch_type_44_processor_additional_information">3. LoongArch Type 44 Processor Additional Information</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The information in this structure defines the processor additional information in case SMBIOS type 4 is not sufficient to describe processor characteristics. The SMBIOS type 44 structure has a reference handle field to link back to the related SMBIOS type 4 structure. There may be multiple SMBIOS type 44 structures linked to the same SMBIOS type 4 structure. For example, when cores are not identical in a processor, SMBIOS type 44 structures describe different core-specific information.<br></p>
+</div>
+<div class="paragraph">
+<p>SMBIOS type 44 defines the standard header for the processor-specific block (see 7.45.1), while the contents of processor-specific data are maintained by processor architecture workgroups or vendors in separate documents (see 7.45.2).</p>
+</div>
+<div class="sect2">
+<h3 id="_3_1_standard_processor_additonal_information_type_44_structure">3.1 Standard Processor Additonal Information (Type 44) structure</h3>
+<div class="paragraph">
+<p>The following is the standard header of SMBIOS type 44 defined in SMBIOS specification section 7.45.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">Offset</th>
+<th class="tableblock halign-center valign-top">Name</th>
+<th class="tableblock halign-center valign-top">Length</th>
+<th class="tableblock halign-center valign-top">Value</th>
+<th class="tableblock halign-center valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">00h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">BYTE</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">44</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Processor Additional Information</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">01h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Length</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">BYTE</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">6 + Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Length of the structure. Y is the length of <em>Processor-specific Block</em> specified at offset 06h.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">02h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Handle</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">WORD</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Handle, or instance number, associated with the structure</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">04h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Referenced Handle</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">WORD</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Handle, or instance number, associated with the Processor structure (SMBIOS type 4) which the <em>Processor Additional Information</em> structure describes.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">06h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Processor-Specific Block</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies (Y)</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Processor-specific block (See section 3.2)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_3_2_standard_processor_specific_block">3.2 Standard Processor-specific Block</h3>
+<div class="paragraph">
+<p>Processor-specific block is the standard header of processor-specific data as defined in SMBIOS section 7.45.1.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">Offset</th>
+<th class="tableblock halign-center valign-top">Name</th>
+<th class="tableblock halign-center valign-top">Length</th>
+<th class="tableblock halign-center valign-top">Value</th>
+<th class="tableblock halign-center valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">00h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Block Length</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">BYTE</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies (N)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Length of Processor-specific Data</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">01h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Processor Type</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">BYTE</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The processor architecture delineated by this Processor-specific Block. (See SMBIOS Table 131)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">02h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Processor-Specific Data</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">N BYTEs</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Processor-specific data. (See section 3.3)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_3_3_loongarch_processor_specific_block_structure">3.3 LoongArch Processor-specific Block Structure</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">Offset</th>
+<th class="tableblock halign-center valign-top">Name</th>
+<th class="tableblock halign-center valign-top">Length</th>
+<th class="tableblock halign-center valign-top">Value</th>
+<th class="tableblock halign-center valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">00h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Revision</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">WORD</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">0100h (v1.00)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Revision of LoongArch Processor-specific Block structure.<br>
+Bits [15:8] Major revision, bits [7:0] Minor revision.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">02h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Block Length</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">BYTE</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">28h (40d)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Length of Processor-specific Data</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">03h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Reserved</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">BYTE</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reserved.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">04h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Machine Vendor ID</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">DQWORD</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The manufacturer vendor ID of the processor.<br>
+It is semantically equivalent to the value at the offset 0x10 of the IOCSR space on a Loongson CPU.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">14h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">CPU ID</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">DQWORD</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Varies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The CPU ID used for this LoongArch processor manufacturer to mark different CPU types or CPU instances.<br>
+It is semantically equivalent to the value at the offset 0x20 of the IOCSR space on a Loongson CPU.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">24h</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">ISA extensions support</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">DWORD</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Bit-field</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The bit field [3:0] indicates support for the existing LoongArch standard ISA extensions. It is modeled after the LoongArch EUEN register (CSR 0x2), and meaning of each bit is the same as defined for the EUEN register.<br>
+Setting a bit in this field indicates that this system supports the corresponding ISA extension.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 1.00<br>
+Last updated 2025-03-27 09:34:57 UTC
+</div>
+</div>
+<!-- License -->
+<div style="text-align: center;">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" />
+    </a>
+    <br />
+    This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+</div>
+
+<!-- Subtitle -->
+<script>
+    var header = document.getElementById("header");
+    var h1 = header.getElementsByTagName("h1")[0];
+    if (h1.innerHTML.includes("-")) {
+        var titles = h1.innerHTML.split("-");
+        var h2 = document.createElement("h2");
+        header.insertBefore(h2, h1.nextSibling);
+        h1.innerHTML = titles[0].trim();
+        h2.innerHTML = titles[1].trim();
+    }
+</script>
+
+<!-- JS switcher -->
+<script src="https://darshandsoni.com/asciidoctor-skins/switcher.js" type="text/javascript"></script>
+<script>
+    var res = document.getElementById("switcher")
+    res.innerHTML = '<!-- The JS switcher is under the MIT License, see https://github.com/darshandsoni/asciidoctor-skins. -->\n' +
+                    '<table style="width: 100%;">\n' +
+                        '<tr>\n' +
+                            '<td style="width: 20%;">Theme:</td>\n' +
+                            '<td style="width: 80%;">' + res.innerHTML + '</td>' +
+                        '</tr>\n' +
+                    '</table>'
+</script>
+</body>
+</html>

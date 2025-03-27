@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="author" content="龙芯中科技术股份有限公司">
+<title>龙芯架构文档</title>
+<style>
+/**
+ * This is an empty stylesheet.
+ * We use a JS switcher to rendere the contents with any of the available asciidoctor skins.
+ * The JS switcher comes from https://github.com/darshandsoni/asciidoctor-skins.
+ * This file is necessary, otherwise Asciidoctor will use the default theme.
+ * We just leave this CSS file empty to avoid redundant rendering.
+ */
+
+</style>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>龙芯架构文档</h1>
+<div class="details">
+<span id="author" class="author">龙芯中科技术股份有限公司</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">目录</div>
+<ul class="sectlevel1">
+<li><a href="#_简介">简介</a></li>
+<li><a href="#_文档">文档</a></li>
+<li><a href="#getting-start">开始</a></li>
+<li><a href="#_贡献">贡献</a></li>
+<li><a href="#references">引用</a></li>
+<li><a href="#_问题解决">问题解决</a>
+<ul class="sectlevel2">
+<li><a href="#developing-on-windows">在 Windows 上开发</a></li>
+<li><a href="#developing-on-docker">在 Docker 上开发</a></li>
+</ul>
+</li>
+<li><a href="#_许可证">许可证</a></li>
+<li><a href="#_贡献者">贡献者</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_简介">简介</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>这是龙芯架构文档。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>您可以在 <a href="https://loongson.github.io/LoongArch-Documentation">这里</a> 找到在线文档。</p>
+</li>
+<li>
+<p>您可以在 <a href="https://github.com/loongson/LoongArch-Documentation/releases">这里</a> 找到所有历史版本。</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>因为文档中存在过长的表格，而且 HTML 版本的主题更易定制，所以 HTML 版本比 PDF 版本更好阅读。
+为了方便下载，每个 HTML 页面都嵌入了 CSS 和图像。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_文档">文档</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>龙芯架构参考手册 - 卷一：基础架构： 该手册介绍了龙芯架构中基础架构部分的内容。</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/loongson/LoongArch-Documentation/releases/latest/download/LoongArch-Vol1-v1.10-CN.pdf">原始文档</a> 。</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>龙芯架构参考手册 - 卷二：向量指令扩展： 该手册介绍了龙芯架构中向量指令扩展（SIMD 和 高级 SIMD 扩展）部分的内容。（<strong>待定</strong>）</p>
+<div class="ulist">
+<ul>
+<li>
+<p>原始文档 。</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>龙芯架构参考手册 - 卷三：虚拟化及二进制翻译扩展：该手册介绍了龙芯架构中虚拟化及二进制翻译扩展部分的内容。（<strong>待定</strong>）</p>
+<div class="ulist">
+<ul>
+<li>
+<p>原始文档 。</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>龙芯 3A5000/3B5000 处理器寄存器使用手册 - 多核处理架构、寄存器描述与系统软件编程指南：该手册介绍了龙芯 3A5000/3B5000 多核处理器架构与寄存器描述。</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-3A5000-usermanual-v1.03-CN.pdf">原始文档</a> 。</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>龙芯 7A1000 桥片用户手册：该手册介绍了桥片总体架构、时钟结构、地址空间、配置寄存器以及各个功能接口，主要供 BIOS 和内核开发人员使用。</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/loongson/LoongArch-Documentation/releases/latest/download/Loongson-7A1000-usermanual-v2.00-CN.pdf">原始文档</a> 。</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>龙芯架构 ELF psABI：该手册介绍了龙芯架构 ELF psABI。</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="LoongArch-ELF-ABI-CN.html">HTML 版本</a>。</p>
+</li>
+<li>
+<p><a href="LoongArch-ELF-ABI-CN.pdf">PDF 版本</a>。</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>龙芯架构工具链约定：该手册介绍了龙芯架构工具链的命令行界面和操作系统相关惯例。</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="LoongArch-toolchain-conventions-CN.html">HTML 版本</a>。</p>
+</li>
+<li>
+<p><a href="LoongArch-toolchain-conventions-CN.pdf">PDF 版本</a>。</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>龙芯架构 SMBIOS 规范：该文档定义了龙芯架构处理器附加信息，是 SMBIOS 结构 type 44 的补充。本文档仅提供 <strong>英文版</strong>。</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="LoongArch-Processor-SMBIOS-Spec-EN.html">HTML 版本</a>。</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="getting-start">开始</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>我们 <strong>强烈建议</strong> 您在 Linux/UNIX 或 macOS 上开发。
+如果您想在 Windows 上开发, 先参阅 <a href="#developing-on-windows">在 Windows 上开发</a> 。</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>确保 <a href="https://www.ruby-lang.org/en/downloads">Ruby 开发环境</a> 已经安装。</p>
+</li>
+<li>
+<p>安装 bunlder：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>gem install bundler</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>克隆该项目：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>git clone https://github.com/loongson/LoongArch-Documentation</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>进入项目仓库，并使用 bundle 命令安装 gems 到该项目（这会花一些时间，期间大约 <code>20MB</code> 的数据会被下载）：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>cd LoongArch-Documentation
+bundle config set --local path .bundle/gems
+bundle</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>现在您可以生产文档了。</p>
+<div class="ulist">
+<ul>
+<li>
+<p>把 AsciiDoc 转换成 HTML 和 PDF：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>bundle exec rake book:all</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>只把 AsciiDoc 转换成 HTML：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>bundle exec rake book:html</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>只把 AsciiDoc 转换成 PDF：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>bundle exec rake book:pdf</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>把特定的 <code>book.adoc</code> 转换成 HTML：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>bundle exec rake book:html['book.adoc']</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>把特定的 <code>book.adoc</code> 转换成 PDF：</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>bundle exec rake book:pdf['book.adoc']</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_贡献">贡献</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>感谢您花时间为该项目作贡献！</strong></p>
+</div>
+<div class="paragraph">
+<p>您可以直接创建一个 issue 或发起一个 pull request。
+如果您提交了一个 pull request，在成功渲染后，您可以在 <a href="https://loongson.github.io/LoongArch-Documentation-Preview">这里</a> 看到预览版本。</p>
+</div>
+<div class="paragraph">
+<p>编写文档时请遵循 <a href="style-guide-CN.html">风格指南</a> 。</p>
+</div>
+<div class="paragraph">
+<p>HTML 版本的文档会被自动部署，而 PDF 版本的文档则由手动发布。
+如果您在 <a href="https://github.com/loongson/LoongArch-Documentation/releases">release 页面</a> 上的文档中发现问题，请复查它是否依然在该仓库中存在。
+这个问题可能已经被更正，而修改的内容还未发布。</p>
+</div>
+<div class="paragraph">
+<p><code>gh-pages</code> 分支是由 <a href="https://docs.github.com/en/actions">Github Actions</a> 自动生成的，用于给 <a href="https://docs.github.com/en/pages">Github Pages</a> 来发布项目网站。
+所以您不应该直接修改该分支。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="references">引用</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>该项目的灵感来源于 <a href="https://github.com/progit/progit2">Pro Git, Second Edition</a> 。</p>
+</li>
+<li>
+<p>该项目使用 <a href="https://asciidoctor.org">Asciidoctor</a> 来生成 HTML 文档，使用 <a href="https://github.com/asciidoctor/asciidoctor-pdf">Asciidoctor PDF</a> 来生成 PDF 文档。</p>
+</li>
+<li>
+<p>AsciiDoc 的语法见 <a href="https://docs.asciidoctor.org/asciidoc/latest">AsciiDoc Language Documentation</a> 。</p>
+</li>
+<li>
+<p>Asciidoctor 的 CSS 样式表见 <a href="https://github.com/darshandsoni/asciidoctor-skins">
+asciidoctor-skins</a> 。
+Asciidoctor PDF 从 AsciiDoc 生成的 PDF 的样式见 <a href="https://github.com/asciidoctor/asciidoctor-pdf/blob/main/docs/theming-guide.adoc">Asciidoctor PDF Theming Guide</a> 。</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_问题解决">问题解决</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="developing-on-windows">在 Windows 上开发</h3>
+<div class="paragraph">
+<p>一些文件的路径过长，超过了 Windows API 的 260 个字符的限制，这可能导致一些奇怪的问题。</p>
+</div>
+<div class="paragraph">
+<p>在 Windows 10 1607 版本或更新的版本中，这些问题能被解决。
+如果您使用了一个早期的版本，或者您不想进行一些额外的操作，您可以考虑使用 Docker，具体细节参考 <a href="#developing-on-docker">在 Docker 上开发</a> 。</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="https://docs.microsoft.com/zh-cn/windows/win32/fileio/maximum-file-path-limitation?tabs=cmd#enable-long-paths-in-windows-10-version-1607-and-later">启用</a> 长路径支持。</p>
+</li>
+<li>
+<p>使用最新的 <a href="https://git-scm.com/downloads">Git</a> 。
+用 Git Bash 执行所有命令。
+运行 <code>git config --global core.longpaths true</code> 来修改全局配置或在仓库中运行 <code>git config core.longpaths true</code> 来修改本地配置。</p>
+</li>
+<li>
+<p>使用最新的 <a href="https://www.jruby.org/download">JRuby</a> 来替代 Ruby。</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>剩余部分和 <a href="#getting-start">开始</a> 部分的一样，但 JRuby 运行起来要慢得多，而且在运行命令时可能会伴随 cmd 弹窗。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="developing-on-docker">在 Docker 上开发</h3>
+<div class="paragraph">
+<p>我们假设您知道如何使用 <a href="https://www.docker.com">Docker</a> 进行开发。
+如果您不知道，请参考 <a href="https://docs.docker.com/get-started/overview">官方教程</a> 。</p>
+</div>
+<div class="paragraph">
+<p>您可能会觉得官方的 <a href="https://hub.docker.com/r/asciidoctor/docker-asciidoctor">Docker 容器</a> 很有用。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_许可证">许可证</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+To view a copy of this license, visit <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" class="bare">http://creativecommons.org/licenses/by-nc-nd/4.0/</a> or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_贡献者">贡献者</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>自从该项目发布，我们已经收到了一些纠错和贡献的内容修改。
+下面列出所有为开源项目 <a href="https://github.com/loongson/LoongArch-Documentation">LoongArch Documentation</a> 作贡献的人。
+感谢每一个帮助完善该项目的人。</p>
+</div>
+<div class="paragraph">
+<p>贡献者按字母顺序列出：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Chao LI &lt;lichao@loongson.cn&gt;
+Chenghua Xu &lt;xuchenghua@loongson.cn&gt;
+Dandan Zhang &lt;zhangdandan@loongson.cn&gt;
+Feiyang Chen &lt;chenfeiyang@loongson.cn&gt;
+FreeFlyingSheep &lt;fyang.168.hi@163.com&gt;
+Konstantin Romanov &lt;konstantinsromanov@gmail.com&gt;
+LI Chao &lt;lichao@loongson.cn&gt;
+limeidan &lt;limeidan@loongson.cn&gt;
+liuzhensong &lt;liuzhensong@loongson.cn&gt;
+mengqinggang &lt;mengqinggang@loongson.cn&gt;
+Qi Hu &lt;huqi@loongson.cn&gt;
+qmuntal &lt;quimmuntal@gmail.com&gt;
+tangxiaolin &lt;tangxiaolin@loongson.cn&gt;
+WANG Rui &lt;wangrui@loongson.cn&gt;
+WANG Xuerui &lt;git@xen0n.name&gt;
+wangguofeng &lt;wangguofeng@loongson.cn&gt;
+Wu Xiaotian &lt;wuxiaotian@loongson.cn&gt;
+Wu Xiaotian &lt;yetist@gmail.com&gt;
+Xi Ruoyao &lt;xry111@mengyan1223.wang&gt;
+Yang Yujie &lt;yangyujie@alumni.sjtu.edu.cn&gt;
+Yang Yujie &lt;yangyujie@loongson.cn&gt;
+Yanteng &lt;siyanteng@loongson.cn&gt;
+Yanteng Si &lt;siyanteng@loongson.cn&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-03-27 09:34:57 UTC
+</div>
+</div>
+<!-- License -->
+<div style="text-align: center;">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" />
+    </a>
+    <br />
+    This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+</div>
+
+<!-- Subtitle -->
+<script>
+    var header = document.getElementById("header");
+    var h1 = header.getElementsByTagName("h1")[0];
+    if (h1.innerHTML.includes("-")) {
+        var titles = h1.innerHTML.split("-");
+        var h2 = document.createElement("h2");
+        header.insertBefore(h2, h1.nextSibling);
+        h1.innerHTML = titles[0].trim();
+        h2.innerHTML = titles[1].trim();
+    }
+</script>
+
+<!-- JS switcher -->
+<script src="https://darshandsoni.com/asciidoctor-skins/switcher.js" type="text/javascript"></script>
+<script>
+    var res = document.getElementById("switcher")
+    res.innerHTML = '<!-- The JS switcher is under the MIT License, see https://github.com/darshandsoni/asciidoctor-skins. -->\n' +
+                    '<table style="width: 100%;">\n' +
+                        '<tr>\n' +
+                            '<td style="width: 20%;">Theme:</td>\n' +
+                            '<td style="width: 80%;">' + res.innerHTML + '</td>' +
+                        '</tr>\n' +
+                    '</table>'
+</script>
+</body>
+</html>

@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="author" content="龙芯中科技术股份有限公司">
+<title>龙芯架构 ELF psABI 规范</title>
+<style>
+/**
+ * This is an empty stylesheet.
+ * We use a JS switcher to rendere the contents with any of the available asciidoctor skins.
+ * The JS switcher comes from https://github.com/darshandsoni/asciidoctor-skins.
+ * This file is necessary, otherwise Asciidoctor will use the default theme.
+ * We just leave this CSS file empty to avoid redundant rendering.
+ */
+
+</style>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>龙芯架构 ELF psABI 规范</h1>
+<div class="details">
+<span id="author" class="author">龙芯中科技术股份有限公司</span><br>
+<span id="revnumber">version 2.01</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">目录</div>
+<ul class="sectlevel1">
+<li><a href="#_寄存器使用约定">寄存器使用约定</a>
+<ul class="sectlevel2">
+<li><a href="#_返回值寄存器的别名写法">返回值寄存器的别名写法</a></li>
+</ul>
+</li>
+<li><a href="#c-lang-data-model">C 语言数据类型规格</a></li>
+<li><a href="#_elf_目标文件">ELF 目标文件</a>
+<ul class="sectlevel2">
+<li><a href="#_ei_class_elf_文件格式">EI_CLASS: ELF 文件格式</a></li>
+<li><a href="#_e_machine_体系结构_id">e_machine: 体系结构 ID</a></li>
+<li><a href="#_e_flags_abi_类型和版本_id">e_flags: ABI 类型和版本 ID</a></li>
+</ul>
+</li>
+<li><a href="#_重定位类型">重定位类型</a></li>
+<li><a href="#_动态链接器路径">动态链接器路径</a></li>
+<li><a href="#_附录版本修订历史">附录：版本修订历史</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_寄存器使用约定">寄存器使用约定</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. 通用寄存器使用约定</caption>
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 41.6666%;">
+<col style="width: 25.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">名称</th>
+<th class="tableblock halign-left valign-top">别名</th>
+<th class="tableblock halign-center valign-top">用途</th>
+<th class="tableblock halign-center valign-top">在调用中是否保留</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$zero</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">常数 <code>0</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">（常数）</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$ra</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">返回地址</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$tp</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">线程指针</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">（不可分配）</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$sp</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈指针</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">是</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r4</code> - <code>$r5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$a0</code> - <code>$a1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">传参寄存器、返回值寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r6</code> - <code>$r11</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$a2</code> - <code>$a7</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">传参寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r12</code> - <code>$r20</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$t0</code> - <code>$t8</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">临时寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r21</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">保留</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">（不可分配）</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r22</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$fp</code> / <code>$s9</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈帧指针 / 静态寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">是</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$r23</code> - <code>$r31</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$s0</code> - <code>$s8</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">静态寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">是</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. 浮点寄存器使用约定</caption>
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 41.6666%;">
+<col style="width: 25.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">名称</th>
+<th class="tableblock halign-left valign-top">别名</th>
+<th class="tableblock halign-center valign-top">用途</th>
+<th class="tableblock halign-center valign-top">在调用中是否保留</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$f0</code> - <code>$f1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$fa0</code> - <code>$fa1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">传参寄存器、返回值寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$f2</code> - <code>$f7</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$fa2</code> - <code>$fa7</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">传参寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$f8</code> - <code>$f23</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$ft0</code> - <code>$ft15</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">临时寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">否</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$f24</code> - <code>$f31</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>$fs0</code> - <code>$fs7</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">静态寄存器</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">是</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>临时寄存器也被称为调用者保存寄存器。
+静态寄存器也被称为被调用者保存寄存器。</p>
+</div>
+<div class="sect2">
+<h3 id="_返回值寄存器的别名写法">返回值寄存器的别名写法</h3>
+<div class="paragraph">
+<p>在一些早期的 LoongArch 汇编代码中，您可能会见到形如 <code>$v0</code> <code>$v1</code> <code>$fv0</code> <code>$fv1</code>
+的寄存器写法：这些名字分别等价于 <code>$a0</code> <code>$a1</code> <code>$fa0</code> <code>$fa1</code> 。
+这些别名最初是仿照 MIPS 的分立传参、返回值寄存器写法而设计的。
+由于 LoongArch 实际并没有专门的返回值寄存器，这种写法反而会造成误解，
+因而不建议使用。</p>
+</div>
+<div class="paragraph">
+<p>由于各下游项目的实现细节差异，
+给一个寄存器赋予多个 ABI 名字并不一定是简单的事情。
+新写作的处理 LoongArch 汇编语言的程序不应当实现该套别名。
+可移植的 LoongArch 汇编代码不应当使用该套别名。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>对于龙芯公司提供的工具链组件，迁移流程为：</p>
+</div>
+<div class="paragraph">
+<p>设本规范生效时相应组件的当前版本为 N，</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>在版本 N 及其稳定分支（补丁版本）保留支持，</p>
+</li>
+<li>
+<p>在版本 N+1 对该用法进行警告，</p>
+</li>
+<li>
+<p>在版本 N+2 删除该用法的支持。</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>对于这些组件相应的上游项目，已进入上游的那部分如果存在对该用法的支持，则按上述流程进行，“版本 N”理解为第一次加入 LoongArch 支持的那个正式发布版本。
+对于暂未进入上游，且不与预期必须使用该用法的其他组件交互的组件，上游版本将自始不支持该用法。</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="c-lang-data-model">C 语言数据类型规格</h2>
+<div class="sectionbody">
+<table id="dm-lp64" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. LP64 数据模型 （对应基础 ABI 类型：<code>lp64d</code> <code>lp64f</code> <code>lp64s</code>）</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">标量类型</th>
+<th class="tableblock halign-center valign-top">大小（字节）</th>
+<th class="tableblock halign-center valign-top">对齐（字节）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code> / <code>_Bool</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned char</code> / <code>char</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned short</code> / <code>short</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned int</code> / <code>int</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned long</code> / <code>long</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned long long</code> / <code>long long</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">指针类型</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>double</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>long double</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16</p></td>
+</tr>
+</tbody>
+</table>
+<table id="dm-ilp32" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. ILP32 数据模型 （对应基础 ABI 类型：<code>ilp32d</code> <code>ilp32f</code> <code>ilp32s</code>）</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">标量类型</th>
+<th class="tableblock halign-center valign-top">大小（字节）</th>
+<th class="tableblock halign-center valign-top">对齐（字节）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code> / <code>_Bool</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned char</code> / <code>char</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned short</code> / <code>short</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned int</code> / <code>int</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned long</code> / <code>long</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>unsigned long long</code> / <code>long long</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">指针类型</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>float</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>double</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>long double</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>对于任何<a href="#base-abi-type-marks">基础 ABI 类型</a>，<code>char</code> 默认是有符号类型。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_elf_目标文件">ELF 目标文件</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>本节内容中关于 ELF 目标文件的通用格式定义
+均参考 <a href="http://sco.com/developers/gabi/latest/contents.html">最新版本的 SysV gABI</a>。</p>
+</div>
+<div class="sect2">
+<h3 id="_ei_class_elf_文件格式">EI_CLASS: ELF 文件格式</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. ELF 文件格式</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">EI_CLASS</th>
+<th class="tableblock halign-center valign-top">枚举值</th>
+<th class="tableblock halign-center valign-top">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ELFCLASS32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32 位 ELF 格式 (ELF32)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ELFCLASS64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64 位 ELF 格式 (ELF64)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_e_machine_体系结构_id">e_machine: 体系结构 ID</h3>
+<div class="paragraph">
+<p><code>LoongArch (258)</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_e_flags_abi_类型和版本_id">e_flags: ABI 类型和版本 ID</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 6. <code>e_flags</code> 中的 ABI 相关位</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><code>[31:8]</code> 位</th>
+<th class="tableblock halign-left valign-top"><code>[7:6]</code> 位</th>
+<th class="tableblock halign-left valign-top"><code>[5:3]</code> 位</th>
+<th class="tableblock halign-left valign-top"><code>[2:0]</code> 位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">（保留）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ABI 版本</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ABI 扩展特性</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">基础 ABI 修饰符</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><code>EI_CLASS</code> 和 <code>e_flags[7:0]</code> 完整确定了 ELF 目标文件使用的 ABI 类型。</p>
+</div>
+<div class="paragraph">
+<p>其中，<strong>基础 ABI 类型</strong>由 <code>EI_CLASS</code> 和 <code>e_flags[2:0]</code> 共同标记，
+前者唯一确定了 C 语言整数和指针类型的表示（<a href="#c-lang-data-model">数据模型</a>）和传参方式，
+后者则在此基础上表示其他基础 ABI 性质，如浮点类型传参方式，称为 <strong>基础 ABI 修饰符</strong>。</p>
+</div>
+<div class="paragraph">
+<p>因此，龙芯架构的 ELF64 / ELF32 目标文件分别仅用于编码 <code>lp64*</code> / <code>ilp32*</code> ABI 的程序。</p>
+</div>
+<div class="paragraph">
+<p><code>0x0</code> <code>0x4</code> <code>0x5</code> <code>0x6</code> <code>0x7</code> 为 <code>e_flags[2:0]</code> 的保留值。</p>
+</div>
+<table id="base-abi-type-marks" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 7. 基础 ABI 类型</caption>
+<colgroup>
+<col style="width: 28.5714%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">基础 ABI 名称</th>
+<th class="tableblock halign-center valign-top">EI_CLASS</th>
+<th class="tableblock halign-center valign-top">基础 ABI 修饰符 (<code>e_flags[2:0]</code>)</th>
+<th class="tableblock halign-center valign-top">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lp64s</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">使用 64 位通用寄存器和栈传参，
+数据模型为 <a href="#dm-lp64"><code>LP64</code></a>（<code>long</code> 和指针类型宽度为 64 位，<code>int</code> 为 32 位）</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lp64f</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">使用 64 位通用寄存器，32 位浮点寄存器和栈传参，
+数据模型为 <a href="#dm-lp64"><code>LP64</code></a>（<code>long</code> 和指针类型宽度为 64 位，<code>int</code> 为 32 位）</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lp64d</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x3</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">使用 64 位通用寄存器，64 位浮点寄存器和栈传参，
+数据模型为 <a href="#dm-lp64"><code>LP64</code></a>（<code>long</code> 和指针类型宽度为 64 位，<code>int</code> 为 32 位）</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ilp32s</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">使用 32 位通用寄存器和栈传参，
+数据模型为 <a href="#dm-ilp32"><code>ILP32</code></a>（<code>int</code>，<code>long</code> 和指针类型宽度为 32 位）</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ilp32f</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">使用 32 位通用寄存器，32 位浮点寄存器和栈传参，
+数据模型为 <a href="#dm-ilp32"><code>ILP32</code></a>（<code>int</code>，<code>long</code> 和指针类型宽度为 32 位）</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ilp32d</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ELFCLASS32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x3</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">使用 32 位通用寄存器，64 位浮点寄存器和栈传参，
+数据模型为 <a href="#dm-ilp32"><code>ILP32</code></a>（<code>int</code>，<code>long</code> 和指针类型宽度为 32 位）</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><code>e_flags[5:3]</code> 标记了 ABI 扩展特性。</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 8. ABI 扩展特性类型</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">ABI 扩展特性名称</th>
+<th class="tableblock halign-center valign-top">e_flags[5:3]</th>
+<th class="tableblock halign-center valign-top">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x0</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">默认，无扩展特性</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x1</code> - <code>0x7</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">保留值</p></td>
+</tr>
+</tbody>
+</table>
+<div id="abi-versioning" class="paragraph">
+<p><code>e_flags[7:6]</code> 标记了 ELF 目标文件使用的 ABI 版本。</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 9. ABI 版本</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 62.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">ABI 版本</th>
+<th class="tableblock halign-center valign-top">枚举值</th>
+<th class="tableblock halign-center valign-top">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>v0</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x0</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">支持具有栈操作语义的重定位类型</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>v1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x1</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">支持指令立即数域语义的重定位类型，可以不兼容v0单独实现。</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>0x2</code> <code>0x3</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">保留值</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_重定位类型">重定位类型</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 10. ELF 重定位类型</caption>
+<colgroup>
+<col style="width: 7.6923%;">
+<col style="width: 15.3846%;">
+<col style="width: 38.4615%;">
+<col style="width: 38.4616%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">枚举值</th>
+<th class="tableblock halign-center valign-top">名称</th>
+<th class="tableblock halign-center valign-top">描述</th>
+<th class="tableblock halign-left valign-top">语义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_NONE</code></p></td>
+<td class="tableblock halign-center valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">动态符号地址解析</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC = RtAddr + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">动态符号地址解析</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC = RtAddr + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_RELATIVE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">模块动态加载地址修正</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(void **) PC = B + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_COPY</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">可执行映像数据动态填充</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>memcpy (PC, RtAddr, sizeof (sym))</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_JUMP_SLOT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">PLT 跳转支持</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>由具体实现定义</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_DTPMOD32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS-GD 动态重定位支持</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC = ID of module defining sym</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_DTPMOD64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS-GD 动态重定位支持</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC = ID of module defining sym</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_DTPREL32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS-GD 动态重定位支持</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC = DTV-relative offset for sym</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_DTPREL64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS-GD 动态重定位支持</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC = DTV-relative offset for sym</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_TPREL32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS-IE 动态重定位支持</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC = T</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_TPREL64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS-IE 动态重定位支持</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC = T</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_IRELATIVE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">本地间接跳转解析</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(void **) PC = (((void *)(*)()) (B + A)) ()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock">&#8230;&#8203; 动态链接器保留项</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_MARK_LA</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">标记 la.abs 宏指令</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">静态填充符号绝对地址</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_MARK_PCREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">标记外部标签跳转</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">静态填充符号地址偏移量</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_PCREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">将符号相对地址压栈</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (S - PC + A)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_ABSOLUTE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">将常数或绝对地址压栈</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (S + A)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_DUP</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">复制栈顶元素</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), push (opr1), push (opr1)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_GPREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">将符号的 GOT 表项偏移量压栈</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (G)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_TLS_TPREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">将 TLS-LE 偏移量压栈</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (T)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_TLS_GOT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">将 TLS-IE 偏移量压栈</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (IE)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">28</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_TLS_GD</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">将 TLS-GD 偏移量压栈</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (GD)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">29</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_PUSH_PLT_PCREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">将符号 PLT stub 的地址偏移量压栈</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (PLT - PC)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_ASSERT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">断言栈顶元素为真</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>assert (pop ())</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">31</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_NOT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈顶运算</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>push (!pop ())</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_SUB</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈顶运算</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 - opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">33</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_SL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈顶运算</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 &lt;&lt; opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">34</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_SR</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈顶运算</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 &gt;&gt; opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">35</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_ADD</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈顶运算</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 + opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">36</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_AND</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈顶运算</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr2 = pop (), opr1 = pop (), push (opr1 &amp; opr2)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">37</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_IF_ELSE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">栈顶运算</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr3 = pop (), opr2 = pop (), opr1 = pop (), push (opr1 ? opr2 : opr3)</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">38</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_10_5</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令立即数重定位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [14 ... 10] = opr1 [4 ... 0]</code></p>
+<p class="tableblock">带 5 位有符号数溢出检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">39</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_U_10_12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令立即数重定位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [21 ... 10] = opr1 [11 ... 0]</code></p>
+<p class="tableblock">带 12 位无符号数溢出检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">40</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_10_12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令立即数重定位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [21 ... 10] = opr1 [11 ... 0]</code></p>
+<p class="tableblock">带 12 位有符号数溢出检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">41</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_10_16</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令立即数重定位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [25 ... 10] = opr1 [15 ... 0]</code></p>
+<p class="tableblock">带 16 位有符号数溢出检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">42</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_10_16_S2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令立即数重定位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]</code></p>
+<p class="tableblock">带 18 位有符号数溢出和4字节对齐检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">43</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_5_20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令立即数重定位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [24 ... 5] = opr1 [19 ... 0]</code></p>
+<p class="tableblock">带 20 位有符号数溢出检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">44</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_0_5_10_16_S2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令立即数重定位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [4 ... 0] = opr1 [22 ... 18],</code></p>
+<p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]</code></p>
+<p class="tableblock">带 23 位有符号数溢出和4字节对齐检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">45</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_S_0_10_10_16_S2</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令立即数重定位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opr1 = pop (), (*(uint32_t *) PC) [9 ... 0] = opr1 [27 ... 18],</code></p>
+<p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = opr1 [17 ... 2]</code></p>
+<p class="tableblock">带 28 位有符号数溢出和4字节对齐检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">46</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SOP_POP_32_U</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">指令修正</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) = pop ()</code></p>
+<p class="tableblock">带 32 位无符号数溢出检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">47</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD8</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8 位原地加法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int8_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">48</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD16</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16 位原地加法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int16_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">49</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD24</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">24 位原地加法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int24_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">50</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32 位原地加法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">51</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ADD64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64 位原地加法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC += S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">52</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB8</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">8 位原地减法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int8_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">53</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB16</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">16 位原地减法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int16_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">54</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB24</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">24 位原地减法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int24_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">55</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB32</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32 位原地减法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int32_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">56</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_SUB64</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64 位原地减法</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*(int64_t *) PC -= S + A</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">57</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GNU_VTINHERIT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GNU C++ vtable 支持</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">58</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GNU_VTENTRY</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GNU C++ vtable 支持</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top" colspan="4"><p class="tableblock">&#8230;&#8203; 保留项</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_B16</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">18 位相对 PC 跳转</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]</code></p>
+<p class="tableblock">带 18 位有符号数溢出和4字节对齐检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_B21</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">23 位相对 PC 跳转</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [4 ... 0] = (S+A-PC) [22 ... 18],</code></p>
+<p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]</code></p>
+<p class="tableblock">带 23 位有符号数溢出和4字节对齐检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">66</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_B26</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">28 位相对 PC 跳转</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [9 ... 0] = (S+A-PC) [27 ... 18],</code></p>
+<p class="tableblock"><code>(*(uint32_t *) PC) [25 ... 10] = (S+A-PC) [17 ... 2]</code></p>
+<p class="tableblock">带 28 位有符号数溢出和4字节对齐检测功能</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">67</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ABS_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32/64 位绝对地址的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (S+A) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">68</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ABS_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32/64 位绝对地址的  [11 &#8230;&#8203; 0]  位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (S+A) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">69</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ABS64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64 位绝对地址 [51 &#8230;&#8203; 32] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (S+A) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">70</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_ABS64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">64 位绝对地址 [63 &#8230;&#8203; 52] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (S+A) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">71</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_PCALA_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">相对 PC 偏移 32/64 位的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((S+A) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p>
+<p class="tableblock"><code>注意：所有相对 PC 偏移计算都不包含低12位。</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">72</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_PCALA_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32/64 位地址的 [11 &#8230;&#8203; 0] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (S+A) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">73</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_PCALA64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">相对 PC 偏移 64 位的 [51 &#8230;&#8203; 32] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (S+A - (PC &amp; ~0xffffffff)) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">74</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_PCALA64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">相对 PC 偏移 64 位的 [63 &#8230;&#8203; 52] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (S+A - (PC &amp; ~0xffffffff)) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">75</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT_PC_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GOT 表项相对 PC 偏移 32/64 位的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((GP+G) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">76</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT_PC_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GOT 表项 32/64 位地址的 [11 &#8230;&#8203; 0] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+G) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">77</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT64_PC_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GOT 表项相对 PC 偏移 64 位的 [51 &#8230;&#8203; 32] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+G - (PC &amp; ~0xffffffff)) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">78</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT64_PC_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GOT 表项相对 PC 偏移 64 位的 [63 &#8230;&#8203; 52] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+G - (PC &amp; ~0xffffffff)) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">79</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GOT 表项 32/64 位绝对地址的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+G) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GOT 表项 32/64 位绝对地址的 [11 &#8230;&#8203; 0] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+G) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">81</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GOT 表项 64 位绝对地址的 [51 &#8230;&#8203; 32] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+G) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">82</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_GOT64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">GOT 表项 64 位绝对地址的 [63 &#8230;&#8203; 52] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+G) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">83</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LE_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS LE 符号相对 TP 寄存器偏移 32/64 位的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = T [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">84</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LE_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS LE 符号相对 TP 寄存器偏移 32/64 位的 [11 &#8230;&#8203; 0] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = T [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">85</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LE64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS LE 符号相对 TP 寄存器偏移 64 位的 [51 &#8230;&#8203; 32] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = T [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">86</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LE64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS LE 符号相对 TP 寄存器偏移 64 位的 [63 &#8230;&#8203; 52] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = T [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">87</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE_PC_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS IE 符号 GOT 表项相对 PC 偏移 32/64 位的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((GP+IE) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">88</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE_PC_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS IE 符号 GOT 表项 32/64 位地址的 [11 &#8230;&#8203; 0] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">89</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE64_PC_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS IE 符号 GOT 表项相对 PC 偏移 64 位的 [51 &#8230;&#8203; 32] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE - (PC &amp; ~0xffffffff)) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">90</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE64_PC_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS IE 符号 GOT 表项相对 PC 偏移 64 位的 [63 &#8230;&#8203; 52] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+IE - (PC &amp; ~0xffffffff)) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">91</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS IE 符号 GOT 表项 32/64 位绝对地址的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">92</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE_LO12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS IE 符号 GOT 表项 32/64 位绝对地址的 [11 &#8230;&#8203; 0] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [11 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">93</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE64_LO20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS IE 符号 GOT 表项 64 位绝对地址的 [51 &#8230;&#8203; 32] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [51 ... 32]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">94</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_IE64_HI12</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS IE 符号 GOT 表项 64 位绝对地址的 [63 &#8230;&#8203; 52] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [21 ... 10] = (GP+IE) [63 ... 52]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">95</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LD_PC_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS LD 符号 GOT 表项相对 PC 偏移 32/64 位的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((GP+GD) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">96</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_LD_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS LD 符号 GOT 表项 32/64 位绝对地址的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">97</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_GD_PC_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS GD 符号 GOT 表项相对 PC 偏移 32/64 位的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (((GP+GD) &amp; ~0xfff) - (PC &amp; ~0xfff)) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">98</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_TLS_GD_HI20</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">TLS GD 符号 GOT 表项 32/64 位绝对地址的 [31 &#8230;&#8203; 12] 位</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) [24 ... 5] = (GP+IE) [31 ... 12]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">99</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_32_PCREL</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">32 位相对 PC 偏移</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>(*(uint32_t *) PC) = (S+A-PC) [31 ... 0]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>R_LARCH_RELAX</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">在相同的地址和其它重定位成对使用，标识指令可能被修改或删除(relaxed)。</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_动态链接器路径">动态链接器路径</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 11. 标准动态链接器路径列表：</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 28.5714%;">
+<col style="width: 42.8572%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-center valign-top">基础 ABI 类型</th>
+<th class="tableblock halign-center valign-top">ABI 扩展特性</th>
+<th class="tableblock halign-center valign-top">操作系统 / C 库</th>
+<th class="tableblock halign-center valign-top">ELF interpreter 路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>lp64d</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib64/ld-linux-loongarch-lp64d.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>lp64f</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib64/ld-linux-loongarch-lp64f.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>lp64s</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib64/ld-linux-loongarch-lp64s.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ilp32d</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib32/ld-linux-loongarch-ilp32d.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ilp32f</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib32/ld-linux-loongarch-ilp32f.so.1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>ilp32s</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>base</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Linux, Glibc</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>/lib32/ld-linux-loongarch-ilp32s.so.1</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_附录版本修订历史">附录：版本修订历史</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>v1.00</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>新增寄存器使用惯例、数据类型惯例和重定位类型列表；</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>v2.00</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>新增 ILP32 数据模型说明；</p>
+</li>
+<li>
+<p>新增返回值寄存器别名写法说明；</p>
+</li>
+<li>
+<p>新增指令立即数域语义的重定位类型；</p>
+</li>
+<li>
+<p>新增 ABI 规范修订时，工具链实现的指导迁移流程；</p>
+</li>
+<li>
+<p>增加 SysV gABI 参考链接；</p>
+</li>
+<li>
+<p>调整 asciidoc 代码风格；</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>v2.01</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>调整关于 ABI 类型在 ELF 文件中编码方式的说明；</p>
+</li>
+<li>
+<p>各表格统一添加表头；</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 2.01<br>
+Last updated 2025-03-27 09:34:57 UTC
+</div>
+</div>
+<!-- License -->
+<div style="text-align: center;">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" />
+    </a>
+    <br />
+    This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+</div>
+
+<!-- Subtitle -->
+<script>
+    var header = document.getElementById("header");
+    var h1 = header.getElementsByTagName("h1")[0];
+    if (h1.innerHTML.includes("-")) {
+        var titles = h1.innerHTML.split("-");
+        var h2 = document.createElement("h2");
+        header.insertBefore(h2, h1.nextSibling);
+        h1.innerHTML = titles[0].trim();
+        h2.innerHTML = titles[1].trim();
+    }
+</script>
+
+<!-- JS switcher -->
+<script src="https://darshandsoni.com/asciidoctor-skins/switcher.js" type="text/javascript"></script>
+<script>
+    var res = document.getElementById("switcher")
+    res.innerHTML = '<!-- The JS switcher is under the MIT License, see https://github.com/darshandsoni/asciidoctor-skins. -->\n' +
+                    '<table style="width: 100%;">\n' +
+                        '<tr>\n' +
+                            '<td style="width: 20%;">Theme:</td>\n' +
+                            '<td style="width: 80%;">' + res.innerHTML + '</td>' +
+                        '</tr>\n' +
+                    '</table>'
+</script>
+</body>
+</html>

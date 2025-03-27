@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<title>风格指南</title>
+<style>
+/**
+ * This is an empty stylesheet.
+ * We use a JS switcher to rendere the contents with any of the available asciidoctor skins.
+ * The JS switcher comes from https://github.com/darshandsoni/asciidoctor-skins.
+ * This file is necessary, otherwise Asciidoctor will use the default theme.
+ * We just leave this CSS file empty to avoid redundant rendering.
+ */
+
+</style>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>风格指南</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">目录</div>
+<ul class="sectlevel1">
+<li><a href="#_项目布局">项目布局</a></li>
+<li><a href="#_小节">小节</a></li>
+<li><a href="#_html_实体">HTML 实体</a></li>
+<li><a href="#_表格">表格</a></li>
+<li><a href="#_目录">目录</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_项目布局">项目布局</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>.
+|-- contributors.txt            # 贡献者
+|-- docs                        # 文档目录
+|   |-- index.adoc              # Github Pages 上的主页
+|   |-- Document1               # 小节（级别 0）目录
+|   |   |-- section1            # 小节（级别 1）目录
+|   |   |   |-- section1-1.adoc # 小节（级别 2）
+|   |   |   `-- ...
+|   |   |-- section1.adoc       # 小节（级别 1）
+|   |   `-- ...
+|   |-- Document1.adoc          # 小节（级别 0）
+|   |-- README-CN.adoc          # 中文版 README
+|   |-- README-EN.adoc          # 英文版 README
+|   `-- ...
+|-- fonts                       # 字体目录
+|-- Gemfile
+|-- images                      # 图像目录
+|   |-- Document1               # Document1 的图像目录
+|   `-- ...
+|-- LICENSE                     # 许可证
+|-- public                      # 输出目录
+|-- Rakefile
+|-- README.adoc                 # README
+|-- themes                      # 主题目录
+|   |-- docinfo-footer.html
+|   |-- html.css                # HTML 主题
+|   `-- pdf.yml                 # PDF 主题
+`-- ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>文件名全部使用小写字母，用 “-” 来替代空格。
+英文/中文文档以 “EN”/“CN” 结尾。
+文件命名和目录结构应该和标题级别保持一致。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>= 文档标题（级别 0）
+
+== 级别 1 小节标题
+
+=== 级别 2 小节标题
+
+...</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_小节">小节</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>在写小节标题时大写每个单词的首字母。</p>
+</div>
+<div class="paragraph">
+<p>自定义的 ID 必须以英文字母开头，且内容只包含小写字母、阿拉伯数字和 “-”。
+把自定义的小节 ID（<code>[[id]]</code>）放到小节标题上面：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>[[section-id]]
+== 小节标题
+
+参考 &lt;&lt;section-id,小节标题&gt;&gt; 。</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果有很多重复的标题，不要使用自动生成的小节 ID。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_html_实体">HTML 实体</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Asciidoctor PDF 不支持所有命名的 HTML 实体（例如 <code>&amp;times;</code>），所以您必须在这里使用实体编号（例如 <code>&amp;#215;</code>）。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_表格">表格</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>用以下格式来画表格（表格标题仅首字母大写）：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>[[table-id]]
+.表格标题
+[%header,cols="3*1"]
+|===
+|列 1
+|列 2
+|列 3
+
+|列 1，行 2 的单元格
+|列 2，行 2 的单元格
+|列 3，行 2 的单元格
+
+|列 1，行 3 的单元格
+|列 2，行 3 的单元格
+|列 3，行 3 的单元格
+|===</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. 表格标题</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">列 1</th>
+<th class="tableblock halign-left valign-top">列 2</th>
+<th class="tableblock halign-left valign-top">列 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">列 1，行 2 的单元格</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">列 2，行 2 的单元格</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">列 3，行 2 的单元格</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">列 1，行 3 的单元格</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">列 2，行 3 的单元格</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">列 3，行 3 的单元格</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_目录">目录</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>我们推荐您使用工具而不是手动维护“表目录”和“图目录”。</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/FreeFlyingSheep/golang-asciidoc-tools">Golang AsciiDoc Tools</a> 仓库可能有有用的工具。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-03-27 09:34:57 UTC
+</div>
+</div>
+<!-- License -->
+<div style="text-align: center;">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" />
+    </a>
+    <br />
+    This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+</div>
+
+<!-- Subtitle -->
+<script>
+    var header = document.getElementById("header");
+    var h1 = header.getElementsByTagName("h1")[0];
+    if (h1.innerHTML.includes("-")) {
+        var titles = h1.innerHTML.split("-");
+        var h2 = document.createElement("h2");
+        header.insertBefore(h2, h1.nextSibling);
+        h1.innerHTML = titles[0].trim();
+        h2.innerHTML = titles[1].trim();
+    }
+</script>
+
+<!-- JS switcher -->
+<script src="https://darshandsoni.com/asciidoctor-skins/switcher.js" type="text/javascript"></script>
+<script>
+    var res = document.getElementById("switcher")
+    res.innerHTML = '<!-- The JS switcher is under the MIT License, see https://github.com/darshandsoni/asciidoctor-skins. -->\n' +
+                    '<table style="width: 100%;">\n' +
+                        '<tr>\n' +
+                            '<td style="width: 20%;">Theme:</td>\n' +
+                            '<td style="width: 80%;">' + res.innerHTML + '</td>' +
+                        '</tr>\n' +
+                    '</table>'
+</script>
+</body>
+</html>
