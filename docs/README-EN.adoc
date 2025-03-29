@@ -54,6 +54,10 @@ To make it easier to download, each HTML page contains embedded CSS and images.
 * LoongArch Processor SMBIOS Spec: This document introduces additional information about LoongArch in SMBIOS.
 ** link:LoongArch-Processor-SMBIOS-Spec-EN.html[HTML version].
 
+* LoongArch ABI 1.0 and ABI 2.0 Differences: This document describes the differences between the old and new software environments of LoongArch.
+** link:LoongArch-ABI-1.0-and-ABI-2.0-Differences-EN.html[HTML version].
+** link:LoongArch-ABI-1.0-and-ABI-2.0-Differences-EN.pdf[PDF version].
+
 == Translator`'s Note
 
 Due to the limited knowledge of the translators, there are some inevitable errors and omissions existing in this document, please feel free to correct.
